@@ -10,4 +10,7 @@ cd .\server\
 ```
 
 2. run this command on terminal to run project
-   > npm start
+```
+npm start
+```
+  
