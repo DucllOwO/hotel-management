@@ -1,5 +1,5 @@
-
-
+const { getAllBookings, getBooking, getCustomerBooking, createBooking, deleteBooking } = require('../controllers/bookingController')
+const {verifyEmployee, verifyToken} = require('../middlewares/verify')
 const router = require('express').Router();
 
 // all employee, manager, admin can get booking
@@ -13,3 +13,4 @@ router.post('/', verifyToken, createBooking);
 
 router.delete('/:id', verifyEmployee, deleteBooking);
 
+module.exports = router;

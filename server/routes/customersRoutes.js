@@ -1,13 +1,7 @@
-const { verify } = require('jsonwebtoken');
+const { getCustomerAccount } = require('../controllers/customerController')
+const { verifyToken } = require('../middlewares/verify')
+const router = require("express").Router();
 
+router.get("/:username", verifyToken, getCustomerAccount);
 
-const router = require('express').Router();
-
-
-router.get('/',)
-
-router.get('/:username', verifyToken, getCustomerAccount);
-
-router.get('/:id',)
-
-router.put('/:id', verifyToken)
+module.exports = router;
