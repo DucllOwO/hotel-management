@@ -6,16 +6,17 @@ const {
   updateEmployees,
   deleteEmployees,
 } = require("../controllers/employeeController.js");
+const { verifyManager } = require('../middlewares/verify')
 const router = require("express").Router();
 
-router.get("/", getAllEmployees);
+router.get("/", verifyManager, getAllEmployees);
 
-router.get("/:id", getEmployees);
+router.get("/:id", verifyManager, getEmployees);
 
-router.post("/", createEmployees);
+router.post("/", verifyManager, createEmployees);
 
-router.put("/:id", updateEmployees);
+router.put("/:id", verifyManager, updateEmployees);
 
-router.delete("/:id", deleteEmployees);
+router.delete("/:id", verifyManager, deleteEmployees);
 
 module.exports = router;

@@ -1,7 +1,12 @@
 const getCustomerAccount = (req, res) => {
-  res.send("getAllBookings route");
+  res.send("getCustomerAccount route");
+};
+
+const getCustomerBooking = (req, res) => {
+  res.send("getCustomerBooking route");
 };
 
 module.exports = {
-  getCustomerAccount
+  getCustomerAccount,
+  getCustomerBooking
 };

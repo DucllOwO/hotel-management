@@ -13,8 +13,9 @@ const bookingsRoutes = require("./routes/bookingsRoutes");
 const vouchersRoutes = require("./routes/vouchersRoutes");
 const roomsRoutes = require("./routes/roomsRoutes");
 const roomFeaturesRoutes = require("./routes/roomFeaturesRoutes");
-const customers = require("./routes/customersRoutes");
-const employees = require("./routes/employeesRoutes");
+const customersRoutes = require("./routes/customersRoutes");
+const employeesRoutes = require("./routes/employeesRoutes");
+const managersRoutes = require("./routes/managersRoutes");
 const app = express();
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use("/rooms", roomsRoutes);
 app.use("/room_features", roomFeaturesRoutes);
 app.use("/customers", customersRoutes);
 app.use("/employees", employeesRoutes);
+app.use("/managers", managersRoutes);
 
 app.use(handle404Error);
 

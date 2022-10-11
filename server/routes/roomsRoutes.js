@@ -1,7 +1,6 @@
 // hide
 const {
   getAllRoom,
-  getRoom,
   createRoom,
   updateRoom,
   hideRoom,
@@ -10,15 +9,15 @@ const { verifyManager } = require("../middlewares/verify");
 const router = require("express").Router();
 
 // only manager need to get all room feature to edit
-router.get("/", verifyManager, getAllFeature);
+router.get("/", verifyManager, getAllRoom);
 
 // dont need get single feature
 //router.get('/:id', )
 
-router.post("/", verifyManager, createFeature);
+router.post("/", verifyManager, createRoom);
 
-router.put("/:id", verifyManager, updateFeature);
+router.put("/:id", verifyManager, updateRoom);
 
-router.delete("/:id", verifyManager, hideFeature);
+router.delete("/:id", verifyManager, hideRoom);
 
 module.exports = router;

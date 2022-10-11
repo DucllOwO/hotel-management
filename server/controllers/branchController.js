@@ -7,7 +7,8 @@ const getBranch = (req, res) => {
 };
 
 const createBranch = (req, res) => {
-  res.send("createBranch route");
+  const test = { id: 1, name: 'chi nhanh nha trang' };
+  res.send("createBranch route " + JSON.stringify(test));
 };
 
 const updateBranch = (req, res) => {

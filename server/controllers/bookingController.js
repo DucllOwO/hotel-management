@@ -6,12 +6,9 @@ const getBooking = (req, res) => {
   res.send("getBooking route");
 };
 
-const getCustomerBooking = (req, res) => {
-  res.send("getCustomerBooking route");
-};
-
 const createBooking = (req, res) => {
-  res.send("createBooking route");
+  const test = { id: 1, name: 'test booking'}
+  res.send("createBooking route " + JSON.stringify(test));
 };
 
 const deleteBooking = (req, res) => {
@@ -21,7 +18,6 @@ const deleteBooking = (req, res) => {
 module.exports = {
   getAllBookings,
   getBooking,
-  getCustomerBooking,
   createBooking,
   deleteBooking
 };
