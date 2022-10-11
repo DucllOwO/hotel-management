@@ -5,7 +5,7 @@ const {
   updateRoom,
   hideRoom,
 } = require("../controllers/roomController");
-const { verifyManager } = require("../middlewares/verify");
+const { verifyManager } = require("../middlewares/verifyAuthorization");
 const router = require("express").Router();
 
 // only manager need to get all room feature to edit

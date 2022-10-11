@@ -1,16 +1,22 @@
 // hide
-const { getAllRoomFeatures, getRoomFeature, createRoomFeature, updateRoomFeature, hideRoomFeature } = require('../controllers/roomFeatureController')
-const { verifyManager } = require("../middlewares/verify");
+const {
+  getAllRoomFeatures,
+  getRoomFeature,
+  createRoomFeature,
+  updateRoomFeature,
+  hideRoomFeature,
+} = require("../controllers/roomFeatureController");
+const { verifyManager } = require("../middlewares/verifyAuthorization");
 const router = require("express").Router();
 
-router.get('/', getAllRoomFeatures);
+router.get("/", getAllRoomFeatures);
 
-router.get('/:id', getRoomFeature);
+router.get("/:id", getRoomFeature);
 
-router.post('/', verifyManager, createRoomFeature);
+router.post("/", verifyManager, createRoomFeature);
 
-router.put('/:id', verifyManager, updateRoomFeature);
+router.put("/:id", verifyManager, updateRoomFeature);
 
-router.delete('/:id', verifyManager, hideRoomFeature);
+router.delete("/:id", verifyManager, hideRoomFeature);
 
 module.exports = router;

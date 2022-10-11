@@ -6,11 +6,10 @@ const {
   updateManager,
   deleteManager,
 } = require("../controllers/managerController.js");
-const { verifyAdmin } = require('../middlewares/verify')
+const { verifyAdmin } = require("../middlewares/verifyAuthorization");
 const router = require("express").Router();
 
--
-router.get("/", verifyAdmin, getAllManager);
+-router.get("/", verifyAdmin, getAllManager);
 
 router.get("/:id", verifyAdmin, getManager);
 

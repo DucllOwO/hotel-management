@@ -6,7 +6,7 @@ const {
   updateEmployees,
   deleteEmployees,
 } = require("../controllers/employeeController.js");
-const { verifyManager } = require('../middlewares/verify')
+const { verifyManager } = require("../middlewares/verifyAuthorization");
 const router = require("express").Router();
 
 router.get("/", verifyManager, getAllEmployees);

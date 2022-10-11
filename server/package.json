@@ -22,5 +22,8 @@
     "nodemon": "^2.0.19",
     "sharp": "^0.30.7",
     "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0"
   }
 }

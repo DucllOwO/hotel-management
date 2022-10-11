@@ -2,9 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const compression = require("compression");
 const dotenv = require("dotenv");
+const morgan = require('morgan')
 const {
   handle404Error,
-  handle500Error,
+  handleOtherError,
 } = require("./middlewares/errorHandler");
 const branchesRoutes = require("./routes/branchesRoutes");
 const authRoute = require("./routes/authRoute");
@@ -20,8 +21,13 @@ const app = express();
 dotenv.config();
 
 app.use(cors());
+app.use(morgan('dev'));
+app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+
 app.use(compression());
+
+
 
 app.use("/auth", authRoute);
 app.use("/reports", reportsRoutes);
@@ -36,7 +42,7 @@ app.use("/managers", managersRoutes);
 
 app.use(handle404Error);
 
-app.use(handle500Error);
+app.use(handleOtherError);
 
 app.listen(process.env.PORT || 1205, async () => {
   // console.log("server is running");

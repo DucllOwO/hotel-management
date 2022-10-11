@@ -1,11 +1,16 @@
 /// hide
-const { getAllVoucher, createVoucher, updateVoucher, hideVoucher } = require('../controllers/voucherController')
-const { verifyAdmin } = require("../middlewares/verify");
+const {
+  getAllVoucher,
+  createVoucher,
+  updateVoucher,
+  hideVoucher,
+} = require("../controllers/voucherController");
+const { verifyAdmin } = require("../middlewares/verifyAuthorization");
 const router = require("express").Router();
 // only manager need to get all room feature to edit
 router.get("/", verifyAdmin, getAllVoucher);
 
-// dont need get single voucher because 
+// dont need get single voucher because
 //router.get('/:id', )
 
 router.post("/", verifyAdmin, createVoucher);
