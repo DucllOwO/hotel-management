@@ -2,6 +2,7 @@ const { users } = require("../utils/dummyData");
 const jwt = require("jsonwebtoken");
 
 const login = (req, res) => {
+  console.log(jwt);
   const { username, password } = req.body;
   // Filter user from the users array by username and password
   const user = users.find((u) => {
