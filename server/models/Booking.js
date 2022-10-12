@@ -1,4 +1,5 @@
 const supabase = require("../database");
+const Invoice = require('./Invoice')
 
 class Booking
 {
@@ -21,5 +22,8 @@ class Booking
         {
             console.log(error);
         }
+    }
+    checkIn(){
+        const newInvoice = new Invoice();
     }
 }

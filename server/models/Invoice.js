@@ -17,9 +17,7 @@ class Invoice{
         this.checkInTime = Date.now;
 
     }
-    checkIn(){
-        this.checkInTime = Date.now;
-    }
+    
     checkOut(){
         this.checkOutTime = Date.now;
     }

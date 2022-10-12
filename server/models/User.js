@@ -5,17 +5,16 @@ class User{
     password;
     email;
     isAdmin;
-    constructor(username, password, isAdmin = false)
+    constructor(username, password)
     {
         this.username = username;
         this.password = password;
-        this.isAdmin = isAdmin;
-        this.getEmailFromDB();
+        
     }
-    async getEmailFromDB(){
+    async getInformationFromDB(){
         const {data, error} = await supabase
         .from('Accounts')
-        .select('email')
+        .select('email, is_admin')
         .eq('username', this.username);
         if(error)
         {
@@ -23,18 +22,25 @@ class User{
         }
         else
         {   
-            this.email = data;
+            this.email = data.email;
+            this.isAdmin = data.is_admin;
         }
     }
     async login(){
         const {data, error} = await supabase
         .from('accounts')
         .select('password')
-        .eq('username', username);
+        .eq('username', username);  
         if(error)
         {
             console.log(error);
         }
-        else return;
+        else if(data === this.password)
+        {
+            this.getInformationFromDB();
+        }
+        else{
+            return;
+        }
     }
 }
