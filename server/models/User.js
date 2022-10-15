@@ -1,46 +1,37 @@
 import supabase from '../database'
 
 class User{
-    username;
-    password;
-    email;
-    isAdmin;
-    constructor(username, password)
+    constructor(newUser)
     {
-        this.username = username;
-        this.password = password;
+        this.#username = newUser.username;
+        this.#password = newUser.password;
+        this.#email = newUser.email;
+        this.#isAdmin = newUser.isAdmin;
         
     }
-    async getInformationFromDB(){
-        const {data, error} = await supabase
-        .from('Accounts')
-        .select('email, is_admin')
-        .eq('username', this.username);
-        if(error)
-        {
-            console.log(error);
-        }
-        else
-        {   
-            this.email = data.email;
-            this.isAdmin = data.is_admin;
-        }
+    get username()
+    {
+        return this.username;
     }
-    async login(){
-        const {data, error} = await supabase
-        .from('accounts')
-        .select('password')
-        .eq('username', username);  
-        if(error)
-        {
-            console.log(error);
-        }
-        else if(data === this.password)
-        {
-            this.getInformationFromDB();
-        }
-        else{
-            return;
-        }
+    set username(newUsername)
+    {
+        this.username = newUsername;
     }
+    get password()
+    {
+        return this.password;
+    }
+    set password(newPassword)
+    {
+        this.password = newPassword;
+    }
+    get email()
+    {
+        return this.email;
+    }
+    set email(newEmail)
+    {
+        this.email = newEmail;
+    }
+
 }

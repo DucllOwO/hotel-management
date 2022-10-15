@@ -1,3 +1,5 @@
+const Booking = require('../models/Booking');
+
 const getAllBookings = (req, res) => {
   res.send("getAllBookings route");
 };
@@ -7,12 +9,13 @@ const getBooking = (req, res) => {
 };
 
 const createBooking = (req, res) => {
-  const test = { id: 1, name: 'test booking'}
-  res.send("createBooking route " + JSON.stringify(test));
+  const newBooking = new Booking();
+  res.status(200).json(newBooking.createBooking());
 };
 
 const deleteBooking = (req, res) => {
-  res.send("deleteBooking route");
+  const cancelBooking = new Booking();
+  res.send(cancelBooking.cancelBooking());
 };
 
 module.exports = {

@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const compression = require("compression");
-const dotenv = require("dotenv");
+require("dotenv").config();
 const morgan = require('morgan')
 const {
   handle404Error,
@@ -19,7 +19,6 @@ const employeesRoutes = require("./routes/employeesRoutes");
 const managersRoutes = require("./routes/managersRoutes");
 
 const app = express();
-dotenv.config();
 
 app.use(cors());
 app.use(morgan('dev'));

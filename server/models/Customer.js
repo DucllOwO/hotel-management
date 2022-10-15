@@ -2,24 +2,48 @@ import supabase from '../database'
 const User = require("User")
 
 class Customer extends User{
-        customerID;
-        firstname;
-        lastname;
-        dateOfBirth;
-        phoneNumber;
-
-        async createNewCustomer()
+        constructor(newCustomer)
         {
-                const {data, error} = await supabase
-                .from('customer')
-                .insert([
-                        {firstname : this.firstname, lastname: this.lastname, date_of_birth : this.dateOfBirth, phone_number : this.phoneNumber }
-                ])
-                if(error)
-                {
-                        console.log(error);
-                }
-                else    
-                        return;
+                this.#customerID = newCustomer.customerID;
+                this.#firstname = newCustomer.firstname;
+                this.#lastname = newCustomer.lastname;
+                this.#dateOfBirth = newCustomer.dateOfBirth;
+                this.#phoneNumber = newCustomer.phoneNumber;
+        }
+        get customerID()
+        {
+                return this.customerID;
+        }
+        get firstname()
+        {
+                return this.firstname;
+        }
+        set firstname(newFirstname)
+        {
+                this.firstname = newFirstname;
+        }
+        get lastname()
+        {
+                return this.lastname;
+        }
+        set lastname(newLastname)
+        {
+                this.lastname = newLastname;
+        }
+        get dateOfBirth()
+        {
+                return this.dateOfBirth;
+        }
+        set dateOfBirth(newDateOfBirth)
+        {
+                this.dateOfBirth = newDateOfBirth;
+        }
+        get phoneNumber()
+        {
+                return this.phoneNumber;
+        }
+        set phoneNumber(newPhoneNumber)
+        {
+                this.phoneNumber = newPhoneNumber;
         }
 }
