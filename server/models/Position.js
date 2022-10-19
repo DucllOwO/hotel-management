@@ -1,10 +1,9 @@
 class Position{
     constructor(newPosition)
     {
-        this.#positionID = newPosition.positionID;
-        this.#positionName = newPosition.positionName;
-        this.#branch = newPosition.branch;
-        this.#feature = newPosition.feature;
+        this.#positionID = newPosition.id;
+        this.#positionName = newPosition.name;
+        this.#feature = null;
     }
 
     get positionID()
@@ -18,14 +17,6 @@ class Position{
     set positionName(newName)
     {
         this.positionName = newName;
-    }
-    get branch()
-    {
-        return this.branch;
-    }
-    set branch(newBranch)
-    {
-        this.branch = newBranch;
     }
     get feature()
     {

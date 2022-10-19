@@ -3,11 +3,11 @@ class Voucher{
     
     constructor(newVoucher)
     {
-        this.#voucherID = newVoucher.voucherID;
-        this.#voucherName = newVoucher.voucherName;
+        this.#voucherID = newVoucher.id;
+        this.#voucherName = newVoucher.name;
         this.#offer = newVoucher.offer;
-        this.#validFrom = newVoucher.validFrom;
-        this.#validTo = newVoucher.validTo;
+        this.#validFrom = newVoucher.valid_from;
+        this.#validTo = newVoucher.valid_to;
     }   
     get voucherID()
     {

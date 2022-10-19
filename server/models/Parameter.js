@@ -2,9 +2,9 @@
 
 class Parameter{
     constructor(newParameter){
-        this.#parameterID = newParameter.parameterID;
-        this.#parameterName = newParameter.parameter.Name;
-        this.#parameterValue = newParameter.parameterValue;
+        this.#parameterID = newParameter.id;
+        this.#parameterName = newParameter.name;
+        this.#parameterValue = newParameter.value;
     }
     get parameterID()
     {

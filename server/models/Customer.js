@@ -4,11 +4,11 @@ const User = require("User")
 class Customer extends User{
         constructor(newCustomer)
         {
-                this.#customerID = newCustomer.customerID;
+                this.#customerID = newCustomer.id;
                 this.#firstname = newCustomer.firstname;
                 this.#lastname = newCustomer.lastname;
-                this.#dateOfBirth = newCustomer.dateOfBirth;
-                this.#phoneNumber = newCustomer.phoneNumber;
+                this.#dateOfBirth = newCustomer.date_of_birth;
+                this.#phoneNumber = newCustomer.phone_number;
         }
         get customerID()
         {

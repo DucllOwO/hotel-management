@@ -3,13 +3,14 @@ class Room{
     constructor(newRoom)
     {
         this.#roomName = newRoom.roomName;
-        this.#roomImage = newRoom.roomImage;
-        this.#roomDescription = newRoom.roomDescription;
-        this.#roomSize = newRoom.roomSize;
-        this.#inUse = newRoom.inUse;
+        this.#roomImage = newRoom.image;
+        this.#roomDescription = newRoom.description;
+        this.#roomSize = newRoom.size;
+        this.#status = newRoom.status;
         this.#price = newRoom.price;
-        this.#branch = newRoom.branch;
-        this.#roomFeature = newRoom.roomFeature;
+        this.#roomType = newRoom.room_type_id;
+        this.#roomFeature = null;
+        this.#isActive = newRoom.is_active
     }
     get roomName()
     {
@@ -39,13 +40,13 @@ class Room{
     {
         this.roomSize = newSize;
     }
-    get inUse()
+    get status()
     {
-        return this.inUse;
+        return this.status;
     }
-    set inUse(newState)
+    set status(newState)
     {
-        this.inUse = newState;
+        this.status = newState;
     }
     get price()
     {
@@ -55,13 +56,13 @@ class Room{
     {
         this.price = newPrice;
     }
-    get branch()
+    get roomType()
     {
-        return this.branch;
+        return this.roomType;
     }
-    set branch(newBranch)
+    set roomType(newType)
     {
-        this.branch = newBranch;
+        this.roomType = newType;
     }
     get roomFeature()
     {
@@ -70,5 +71,13 @@ class Room{
     set roomFeature(newFeature)
     {
         this.roomFeature = newFeature;
+    }
+    get isActive()
+    {
+        return this.isActive;
+    }
+    set isActive(newState)
+    {
+        this.isActive = newState;
     }
 }

@@ -3,10 +3,10 @@
 class HotelRoom{
     constructor(newRoom)
     {
-        this.#roomTypeID = newRoom.roomTypeID;
-        this.#roomTypeName = newRoom.roomTypeName;
-        this.#maxCustomer = newRoom.maxCustomer;
-        this.#bedAmount = newRoom.bedAmount;
+        this.#roomTypeID = newRoom.id;
+        this.#roomTypeName = newRoom.name;
+        this.#maxCustomer = newRoom.max_customer;
+        this.#bedAmount = newRoom.bed_amount;
     }
     get roomTypeID()
     {

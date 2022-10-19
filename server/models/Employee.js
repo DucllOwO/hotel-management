@@ -6,14 +6,14 @@ const e = require("express");
 class Employee extends User{
     constructor(newEmployee)
     {
-        this.#employeeID = newEmployee.employeeID;
+        this.#employeeID = newEmployee.id;
         this.#firstname = newEmployee.firstname;
         this.#lastname = newEmployee.lastname;
-        this.#dateOfBirth = newEmployee.dateOfBirth;
-        this.#phoneNumber = newEmployee.phoneNumber;
+        this.#dateOfBirth = newEmployee.date_of_birth;
+        this.#phoneNumber = newEmployee.phone_number;
         this.#salary = newEmployee.salary;
-        this.#startWorkingDate = newEmployee.startWorkingDate;
-        this.#position = newEmployee.position;
+        this.#startWorkingDate = newEmployee.start_working_date;
+        this.#position = newEmployee.position_id;
     }
     get employeeID()
         {

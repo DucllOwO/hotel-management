@@ -5,14 +5,14 @@ class Booking
 {
     constructor(newBooking)
     {
-        this.#bookingID = newBooking.bookingID;
-        this.#bookFrom = newBooking.bookFrom;
-        this.#bookTo = newBooking.bookTo;
+        this.#id = newBooking.id;
+        this.#bookFrom = newBooking.book_from;
+        this.#bookTo = newBooking.book_to;
         this.#deposit = newBooking.deposit;
         this.#status = newBooking.status;
-        this.#voucher = newBooking.voucher;
-        this.#customer = newBooking.customer;
-        this.#room = newBooking.room;
+        this.#voucher = newBooking.voucher_id;
+        this.#customer = newBooking.customer_id;
+        this.#room = null;
     }
     get bookingID()
     {

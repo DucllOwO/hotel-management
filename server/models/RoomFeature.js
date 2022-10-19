@@ -3,9 +3,9 @@ class RoomFeature{
     
     constructor(newFeature)
     {
-        this.#roomFeatureID = newFeature.roomFeatureID;
-        this.#roomFeatureName = newFeature.roomFeatureName;
-        this.#roomFeatureIcon = newFeature.roomFeatureIcon;
+        this.#roomFeatureID = newFeature.id;
+        this.#roomFeatureName = newFeature.name;
+        this.#roomFeatureIcon = newFeature.icon;
     }
     get roomFeatureID()
     {

@@ -2,8 +2,8 @@
 class Feature{
     constructor(newFeature)
     {
-        this.#featureID = newFeature.featureID;
-        this.#featureName = newFeature.featureName;
+        this.#featureID = newFeature.id;
+        this.#featureName = newFeature.name;
         this.#description = newFeature.description;
     }
     get featureID()

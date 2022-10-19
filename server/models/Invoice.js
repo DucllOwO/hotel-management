@@ -4,16 +4,19 @@ const supabase = require("../database");
 class Invoice{
     
     constructor(newInvoice){
-        this.#invoiceID = newInvoice.invoiceID;
-        this.#establishedDate = newInvoice.establishedDate;
-        this.#paymentMethod = newInvoice.paymentMethod;
-        this.#bookingMethod = newInvoice.bookingMethod;
-        this.#totalCost = newInvoice.totalCost
-        this.#checkInTime = newInvoice.checkInTime;
-        this.#checkOutTime = newInvoice.checkOutTime;
+        this.#invoiceID = newInvoice.id;
+        this.#establishedDate = newInvoice.established_date;
+        this.#paymentMethod = newInvoice.payment_method;
+        this.#checkInTime = newInvoice.checkin_time;
+        this.#checkOutTime = newInvoice.checkout_time;
+        this.#rentCost = newInvoice.rent_cost;
+        this.#serviceCost = newInvoice.service_cost;
         this.#surcharge = newInvoice.surcharge;
+        this.#totalCost = newInvoice.total_cost
         this.#note = newInvoice.note;
-        this.#employee = newInvoice.employee
+        this.#booking = newInvoice.booking_id;
+        this.#employee = newInvoice.employee_id;
+        this.#employeeName = newInvoice.employee_name;
     }
     get invoiceID()
     {
@@ -35,22 +38,7 @@ class Invoice{
     {
         this.paymentMethod = newMethod;
     }
-    get bookingMethod()
-    {
-        return this.bookingMethod;
-    }
-    set bookingMethod(newMethod)
-    {
-        this.bookingMethod = newMethod;
-    }
-    get totalCost()
-    {
-        return this.totalCost;
-    }
-    set totalCost(newCost)
-    {
-        this.totalCost = newCost;
-    }
+    
     get checkInTime()
     {
         return this.checkInTime;
@@ -67,6 +55,22 @@ class Invoice{
     {
         this.checkOutTime = newTimestamp;
     }
+    get rent_cost()
+    {
+        return this.rent_cost;
+    }
+    set rent_cost(newCost)
+    {
+        this.rent_cost = newCost;
+    }
+    get service_cost()
+    {
+        return this.service_cost;
+    }
+    set service_cost(newCost)
+    {
+        this.service_cost = newCost;
+    }
     get surcharge()
     {
         return this.surcharge;
@@ -74,6 +78,14 @@ class Invoice{
     set surcharge(newSurcharge)
     {
         this.surcharge = newSurcharge;
+    }
+    get totalCost()
+    {
+        return this.totalCost;
+    }
+    set totalCost(newCost)
+    {
+        this.totalCost = newCost;
     }
     get note()
     {
@@ -83,6 +95,14 @@ class Invoice{
     {
         this.note = newNote;
     }
+    get booking()
+    {
+        return this.booking;
+    }
+    set booking(newBooking)
+    {
+        this.booking = newBooking;
+    }
     get employee()
     {
         return this.employee;
@@ -90,5 +110,13 @@ class Invoice{
     set employee(newEmployee)
     {
         this.employee = newEmployee;
+    }
+    get employeeName()
+    {
+        return this.employeeName;
+    }
+    set employeeName(newName)
+    {
+        this.employeeName = newName;
     }
 }
