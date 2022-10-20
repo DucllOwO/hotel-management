@@ -1,4 +1,4 @@
-const supabase = require('../../database');
+const supabase = require('../database');
 const Booking = require('../Booking');
 
 async function getAllBooking()
@@ -13,7 +13,6 @@ async function getAllBooking()
     }
     else
     {
-        
         console.log(listBooking);
         return listBooking;
     }

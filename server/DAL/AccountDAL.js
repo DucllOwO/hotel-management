@@ -1,5 +1,4 @@
-const supabase = require('../../database');
-const Account = require('../Account');
+const supabase = require('../database');
 
 async function getAccountByUsername(username)
 {
@@ -13,11 +12,7 @@ async function getAccountByUsername(username)
         return null;
     }
     else{
-        console.log(data);
-        const newAccount = new Account(data[0]);
-        console.log(newAccount);
-        console.log(newAccount.password);
-        return newAccount;
+        return newAccount[0];
     }
 }
 async function getAccountByEmail(email)
@@ -33,8 +28,7 @@ async function getAccountByEmail(email)
     }
     else
     {
-        const newAccount = new Account(data[0]);
-        return newAccount;
+        return newAccount[0];
     }
 }
 
