@@ -3,27 +3,85 @@ const Invoice = require('./Invoice')
 
 class Booking
 {
-    bookingID;
-    bookFrom;
-    bookTo;
-    deposit;
-    status;
-    voucher;
-    customer;
-    room;
-
-    async cancelBooking()
+    #id;
+    #bookFrom;
+    #bookTo;
+    #deposit;
+    #status;
+    #voucher;
+    #customer;
+    #room;
+    constructor(newBooking)
     {
-        const {data, error} = await supabase
-        .from('Booking')
-        .update({Status : 0})
-        .eq('Booking_id', this.bookingID);
-        if(error)
-        {
-            console.log(error);
-        }
+        this.#id = newBooking.id;
+        this.#bookFrom = newBooking.book_from;
+        this.#bookTo = newBooking.book_to;
+        this.#deposit = newBooking.deposit;
+        this.#status = newBooking.status;
+        this.#voucher = newBooking.voucher_id;
+        this.#customer = newBooking.customer_id;
+        this.#room = null;
     }
-    checkIn(){
-        const newInvoice = new Invoice();
+    get id()
+    {
+        return this.id;
+    }
+    get bookFrom()
+    {
+        return this.bookFrom;
+    }
+    set bookFrom(newDate)
+    {
+        this.bookFrom = newDate;
+    }
+    get bookTo()
+    {
+        return this.bookTo;
+    }
+    set bookTo(newDate)
+    {
+        this.bookTo = newDate;
+    }
+    get deposit()
+    {
+        return this.deposit;
+    }
+    set deposit(newDeposit)
+    {
+        this.deposit = newDeposit;
+    }
+    get status()
+    {
+        return this.status;
+    }
+    set status(newStatus)
+    {
+        this.status = newStatus;
+    }
+    get voucher()
+    {
+        return this.voucher;
+    }
+    set voucher(newVoucher)
+    {
+        this.voucher = newVoucher;
+    }
+    get customer()
+    {
+        return this.customer;
+    }
+    set customer(newCustomer)
+    {
+        this.customer = newCustomer;
+    }
+    get room()
+    {
+        return this.room;
+    }
+    set room(newRoom)
+    {
+        this.room = newRoom;
     }
 }
+
+module.exports = Booking;
