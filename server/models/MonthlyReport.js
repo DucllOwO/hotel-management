@@ -1,6 +1,12 @@
-const Report = require("Report");
 
-class MonthlyReport extends Report{
+class MonthlyReport{
+    #reportMonth;
+    #income;
+    #outcome;
+    #profit;
+    #customerAmount;
+    #bookingAmount;
+    #reportYear;
     constructor(newReport)
     {
         this.#reportMonth = newReport.month;
@@ -64,3 +70,5 @@ class MonthlyReport extends Report{
         this.reportYear = newReport;
     }
 }
+
+module.exports = MonthlyReport;

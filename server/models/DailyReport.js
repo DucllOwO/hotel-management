@@ -1,4 +1,11 @@
 class DailyReport{
+    #reportDate;
+    #income;
+    #outcome;
+    #profit;
+    #customerAmount;
+    #bookingAmount;
+    #reportMonth;
     constructor(newReport)
     {
         this.#reportDate = newReport.date;
@@ -62,3 +69,4 @@ class DailyReport{
         this.reportMonth = newReport;
     }
 }
+module.exports = DailyReport;

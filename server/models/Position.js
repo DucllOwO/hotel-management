@@ -1,4 +1,7 @@
 class Position{
+    #positionID;
+    #positionName;
+    #feature;
     constructor(newPosition)
     {
         this.#positionID = newPosition.id;
@@ -27,3 +30,4 @@ class Position{
         this.feature = newFeature;
     }
 }
+module.exports = Position;

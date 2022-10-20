@@ -1,6 +1,10 @@
 
 class Voucher{
-    
+    #voucherID;
+    #voucherName;
+    #offer;
+    #validFrom;
+    #validTo;
     constructor(newVoucher)
     {
         this.#voucherID = newVoucher.id;
@@ -46,3 +50,4 @@ class Voucher{
         this.validTo = newDate;
     }
 }
+module.exports = Voucher;

@@ -1,9 +1,12 @@
-const User = require("./User");
-const Position = require('./Position')
-const supabase = require("../database");
-const e = require("express");
-
-class Employee extends User{
+class Employee{
+        #employeeID;
+        #firstname;
+        #lastname;
+        #dateOfBirth;
+        #phoneNumber;
+        #salary;
+        #startWorkingDate;
+        #position;
     constructor(newEmployee)
     {
         this.#employeeID = newEmployee.id;
@@ -76,3 +79,5 @@ class Employee extends User{
             this.position = newPosition;
         }
 }
+
+module.exports = Employee;

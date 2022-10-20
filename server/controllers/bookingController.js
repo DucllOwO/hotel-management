@@ -1,4 +1,4 @@
-const Booking = require('../models/Booking');
+const DAL = require('../models/DAL/AccountDAL');
 
 const getAllBookings = (req, res) => {
   res.send("getAllBookings route");
@@ -9,13 +9,11 @@ const getBooking = (req, res) => {
 };
 
 const createBooking = (req, res) => {
-  const newBooking = new Booking();
-  res.status(200).json(newBooking.createBooking());
+  res.send(DAL('admin'));
 };
 
 const deleteBooking = (req, res) => {
-  const cancelBooking = new Booking();
-  res.send(cancelBooking.cancelBooking());
+  res.send("deleting Booking");
 };
 
 module.exports = {

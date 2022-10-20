@@ -1,5 +1,8 @@
 
 class Feature{
+    #featureID;
+    #featureName;
+    #description;
     constructor(newFeature)
     {
         this.#featureID = newFeature.id;
@@ -27,3 +30,5 @@ class Feature{
         this.description = newDescription;
     }
 }
+
+module.exports = Feature;

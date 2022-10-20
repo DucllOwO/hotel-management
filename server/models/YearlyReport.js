@@ -1,6 +1,10 @@
-const Report = require("Report");
-
-class YearlyReport extends Report{
+class YearlyReport{
+    #reportYear;
+    #income;
+    #outcome;
+    #profit;
+    #customerAmount;
+    #bookingAmount;
     constructor(newReport)
     {
         this.#reportYear = newReport.year;
@@ -56,3 +60,5 @@ class YearlyReport extends Report{
     }
 
 }
+
+module.exports = YearlyReport;

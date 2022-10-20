@@ -1,6 +1,9 @@
 
 
 class Parameter{
+    #parameterID;
+    #parameterName;
+    #parameterValue;
     constructor(newParameter){
         this.#parameterID = newParameter.id;
         this.#parameterName = newParameter.name;
@@ -27,3 +30,4 @@ class Parameter{
         this.parameterValue = newValue;
     }
 }
+module.exports = Parameter;

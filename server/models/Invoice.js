@@ -2,7 +2,19 @@ const supabase = require("../database");
 
 
 class Invoice{
-    
+    #invoiceID;
+    #establishedDate;
+    #paymentMethod;
+    #checkInTime;
+    #checkOutTime;
+    #rentCost;
+    #serviceCost;
+    #surcharge;
+    #totalCost;
+    #note;
+    #booking;
+    #employee;
+    #employeeName;
     constructor(newInvoice){
         this.#invoiceID = newInvoice.id;
         this.#establishedDate = newInvoice.established_date;
@@ -120,3 +132,5 @@ class Invoice{
         this.employeeName = newName;
     }
 }
+
+module.exports = Invoice;

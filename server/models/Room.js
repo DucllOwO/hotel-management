@@ -1,5 +1,14 @@
 
 class Room{
+    #roomName;
+    #roomImage;
+    #roomDescription;
+    #roomSize;
+    #status;
+    #price;
+    #roomType;
+    #roomFeature;
+    #isActive;
     constructor(newRoom)
     {
         this.#roomName = newRoom.roomName;
@@ -81,3 +90,4 @@ class Room{
         this.isActive = newState;
     }
 }
+module.exports = Room;

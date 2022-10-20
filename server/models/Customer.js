@@ -2,6 +2,11 @@ import supabase from '../database'
 const User = require("User")
 
 class Customer extends User{
+        #customerID;
+        #firstname;
+        #lastname;
+        #dateOfBirth;
+        #phoneNumber;
         constructor(newCustomer)
         {
                 this.#customerID = newCustomer.id;
@@ -47,3 +52,4 @@ class Customer extends User{
                 this.phoneNumber = newPhoneNumber;
         }
 }
+module.exports = Customer;

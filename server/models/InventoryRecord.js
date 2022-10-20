@@ -1,4 +1,11 @@
 class InventoryRecord{
+    #recordID;
+    #recordDate;
+    #employee;
+    #invoiceID;
+    #room;
+    #item;
+    #amount;
     constructor(newRecord)
     {
         this.#recordID = newRecord.id;
@@ -58,3 +65,5 @@ class InventoryRecord{
         this.amount = newAmount
     }
 }
+
+module.exports = InventoryRecord;

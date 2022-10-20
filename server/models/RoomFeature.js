@@ -1,6 +1,9 @@
 
 class RoomFeature{
     
+    #roomFeatureID;
+    #roomFeatureName;
+    #roomFeatureIcon;
     constructor(newFeature)
     {
         this.#roomFeatureID = newFeature.id;
@@ -28,3 +31,4 @@ class RoomFeature{
         this.roomFeatureIcon = newIcon;
     }
 }
+module.exports = RoomFeature;

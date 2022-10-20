@@ -1,4 +1,7 @@
 class Item{
+    #itemID;
+    #itemName;
+    #reserveAmount;
     constructor(newItem)
     {
         this.#itemID = newItem.id;
@@ -26,3 +29,4 @@ class Item{
         this.reserveAmount = newAmount;
     }
 }
+module.exports = Item;

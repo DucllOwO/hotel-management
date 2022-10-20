@@ -1,4 +1,10 @@
 class Purchase{
+    #id;
+    #item;
+    #amount;
+    #price;
+    #totalCost;
+    #employee
     constructor(newPurchase)
     {
         this.#id = newPurchase.id;
@@ -6,7 +12,7 @@ class Purchase{
         this.#amount = newPurchase.amount;
         this.#price = newPurchase.price;
         this.#totalCost = newPurchase.total_cost;
-        this.#Employee = newPurchase.employee_id;
+        this.#employee = newPurchase.employee_id;
     }
     get id()
     {
@@ -53,3 +59,4 @@ class Purchase{
         this.employee = newEmployee;
     }
 }
+module.exports = Purchase;

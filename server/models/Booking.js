@@ -3,6 +3,14 @@ const Invoice = require('./Invoice')
 
 class Booking
 {
+    #id;
+    #bookFrom;
+    #bookTo;
+    #deposit;
+    #status;
+    #voucher;
+    #customer;
+    #room;
     constructor(newBooking)
     {
         this.#id = newBooking.id;
@@ -14,13 +22,9 @@ class Booking
         this.#customer = newBooking.customer_id;
         this.#room = null;
     }
-    get bookingID()
+    get id()
     {
-        return this.bookingID;
-    }
-    set bookingID(newBookingID)
-    {
-        this.bookingID = newBookingID;
+        return this.id;
     }
     get bookFrom()
     {
@@ -79,3 +83,5 @@ class Booking
         this.room = newRoom;
     }
 }
+
+module.exports = Booking;

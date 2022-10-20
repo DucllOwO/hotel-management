@@ -1,4 +1,9 @@
 class Service{
+    #serviceID;
+    #serviceName;
+    #image;
+    #description;
+    #price;
     constructor(newService)
     {
         this.#serviceID = newService.id;
@@ -44,3 +49,4 @@ class Service{
         this.price = newPrice;
     }
 }
+module.exports = Service;

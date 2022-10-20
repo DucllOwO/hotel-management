@@ -1,6 +1,10 @@
 
 
 class HotelRoom{
+    #roomTypeID;
+    #roomTypeName;
+    #maxCustomer;
+    #bedAmount;
     constructor(newRoom)
     {
         this.#roomTypeID = newRoom.id;
@@ -37,3 +41,5 @@ class HotelRoom{
         this.bedAmount = newAmount;
     }
 }
+
+module.exports = HotelRoom;
