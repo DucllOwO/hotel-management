@@ -7,14 +7,14 @@ const {
   handle404Error,
   handleOtherError,
 } = require("./middlewares/errorHandler");
-const branchesRoutes = require("./routes/branchesRoutes");
+//const branchesRoutes = require("./routes/branchesRoutes");
 const authRoute = require("./routes/authRoute");
 const reportsRoutes = require("./routes/reportsRoutes");
 const bookingsRoutes = require("./routes/bookingsRoutes");
 const vouchersRoutes = require("./routes/vouchersRoutes");
 const roomsRoutes = require("./routes/roomsRoutes");
 const roomFeaturesRoutes = require("./routes/roomFeaturesRoutes");
-const customersRoutes = require("./routes/customersRoutes");
+//const customersRoutes = require("./routes/customersRoutes");
 const employeesRoutes = require("./routes/employeesRoutes");
 const managersRoutes = require("./routes/managersRoutes");
 
@@ -28,18 +28,17 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(compression());
 
-
-
 app.use("/auth", authRoute);
 app.use("/reports", reportsRoutes);
 app.use("/bookings", bookingsRoutes);
 app.use("/vouchers", vouchersRoutes);
-app.use("/branches", branchesRoutes);
 app.use("/rooms", roomsRoutes);
 app.use("/room_features", roomFeaturesRoutes);
-app.use("/customers", customersRoutes);
 app.use("/employees", employeesRoutes);
 app.use("/managers", managersRoutes);
+app.use('/positions', positionsRoutes)
+//app.use("/customers", customersRoutes);
+//app.use("/branches", branchesRoutes);
 
 app.use(handle404Error);
 

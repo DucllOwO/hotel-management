@@ -1,5 +1,7 @@
 const handle404Error = (req, res, next) => {
-  res.status(404).send("Sorry can't find that!");
+  const err = new Error('Not found');
+  err.status = 404;
+  next(err);
 };
 
 const handleOtherError = (error, req, res, next) => {
