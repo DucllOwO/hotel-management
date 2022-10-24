@@ -1,4 +1,4 @@
-const DAL = require('../models/DAL/AccountDAL');
+const DAL = require('../DAL/AccountDAL');
 
 const getAllBookings = (req, res) => {
   res.send("getAllBookings route");

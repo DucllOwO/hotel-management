@@ -1,27 +1,36 @@
-const { users } = require("../utils/dummyData");
+
 const jwt = require("jsonwebtoken");
+const accountDAL = require('../DAL/AccountDAL')
 
-const login = (req, res) => {
+const login = async (req, res, next) => {
   console.log(jwt);
-  const { username, password } = req.body;
-  // Filter user from the users array by username and password
-  const user = users.find((u) => {
-    return u.username === username && u.password === password;
-  });
+  try {
+    const { username, password } = req.body;
+    //console.log(`${username} ${password}`);
+    // Filter user from the users array by username and password
+    const {user, error} = await accountDAL.getAccountByUsername(username);
+    //console.log(`${JSON.stringify(user)} ${error}`)
+    if (user) {
+      //console.log(user?.username);
+      // Generate an access token
+      const accessToken = jwt.sign(
+        { username: user.username },
+        process.env.JWT_SECRET
+      );
 
-  if (user) {
-    // Generate an access token
-    const accessToken = jwt.sign(
-      { username: user.username, role: user.role },
-      process.env.JWT_SECRET
-    );
-
-    res.json({
-      accessToken,
-    });
-  } else {
-    res.send("Username or password incorrect");
+      res.json({ user,
+        accessToken
+      });
+    } else {
+      //error.status = 404;
+      console.log(error)
+      next(error);
+    }
+  } catch (error) {
+    console.log('next cuar try catch')
+    next(error)
   }
+  
 };
 
 const register = (req, res) => {

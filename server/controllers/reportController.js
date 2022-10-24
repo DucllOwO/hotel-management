@@ -1,4 +1,4 @@
-const getAllReports = (req, res) => {
+const getAllReports = (req, res, next) => {
   res.send("getAllReports route");
 };
 

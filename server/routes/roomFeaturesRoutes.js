@@ -6,17 +6,16 @@ const {
   updateRoomFeature,
   hideRoomFeature,
 } = require("../controllers/roomFeatureController");
-const { verifyManager } = require("../middlewares/verifyAuthorization");
 const router = require("express").Router();
 
 router.get("/", getAllRoomFeatures);
 
 router.get("/:id", getRoomFeature);
 
-router.post("/", verifyManager, createRoomFeature);
+router.post("/", createRoomFeature);
 
-router.put("/:id", verifyManager, updateRoomFeature);
+router.put("/:id", updateRoomFeature);
 
-router.delete("/:id", verifyManager, hideRoomFeature);
+router.delete("/:id", hideRoomFeature);
 
 module.exports = router;

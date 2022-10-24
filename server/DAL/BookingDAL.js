@@ -1,5 +1,4 @@
 const supabase = require('../database');
-const Booking = require('../Booking');
 
 async function getAllBooking()
 {

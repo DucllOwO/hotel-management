@@ -7,7 +7,5 @@ router.post("/");
 router.put("/:id");
 router.delete("/:id");
 
-
-
 module.exports = router;
 

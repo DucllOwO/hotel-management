@@ -2,7 +2,7 @@ const { login, register, forgotPassword } = require('../controllers/authControll
 const router = require("express").Router();
 
 
-router.post('/register', register);
+//router.post('/register', register);
 
 router.post('/login', login)
 

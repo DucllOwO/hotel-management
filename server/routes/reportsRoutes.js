@@ -1,11 +1,10 @@
 const { getAllReports, getReport } = require("../controllers/reportController");
-const { verifyAdminAndManager } = require("../middlewares/verifyAuthorization");
 const router = require("express").Router();
 
 // this route use to get report of all branch
 
-router.get("/", verifyAdminAndManager, getAllReports);
+router.get("/", getAllReports);
 
-router.get("/:id", verifyAdminAndManager, getReport);
+router.get("/:id", getReport);
 
 module.exports = router;

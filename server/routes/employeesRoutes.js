@@ -5,18 +5,23 @@ const {
   createEmployees,
   updateEmployees,
   deleteEmployees,
+  logout,
+  getMyAccount
 } = require("../controllers/employeeController.js");
-const { verifyManager } = require("../middlewares/verifyAuthorization");
 const router = require("express").Router();
 
-router.get("/", verifyManager, getAllEmployees);
+router.get("/", getAllEmployees);
 
-router.get("/:id", verifyManager, getEmployees);
+router.get("/:id", getEmployees);
 
-router.post("/", verifyManager, createEmployees);
+router.post("/", createEmployees);
 
-router.put("/:id", verifyManager, updateEmployees);
+router.get('/me', getMyAccount)
 
-router.delete("/:id", verifyManager, deleteEmployees);
+router.put("/:id", updateEmployees);
+
+router.delete("/:id", deleteEmployees);
+
+router.post('/me/logout', logout)
 
 module.exports = router;

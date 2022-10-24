@@ -5,18 +5,17 @@ const {
   updateVoucher,
   hideVoucher,
 } = require("../controllers/voucherController");
-const { verifyAdmin } = require("../middlewares/verifyAuthorization");
 const router = require("express").Router();
 // only manager need to get all room feature to edit
-router.get("/", verifyAdmin, getAllVoucher);
+router.get("/", getAllVoucher);
 
 // dont need get single voucher because
 //router.get('/:id', )
 
-router.post("/", verifyAdmin, createVoucher);
+router.post("/", createVoucher);
 
-router.put("/:id", verifyAdmin, updateVoucher);
+router.put("/:id", updateVoucher);
 
-router.delete("/:id", verifyAdmin, hideVoucher);
+router.delete("/:id", hideVoucher);
 
 module.exports = router;

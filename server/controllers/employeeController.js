@@ -18,10 +18,19 @@ const deleteEmployees = (req, res) => {
   res.send("deleteEmployees route");
 };
 
+const logout = (req, res) => {
+  res.send("logout route");
+};
+
+const getMyAccount = (req, res) => {
+  res.send("getMyAccount route");
+};
+
 module.exports = {
   getAllEmployees,
   getEmployees,
   createEmployees,
   updateEmployees,
-  deleteEmployees
+  deleteEmployees,
+  logout, getMyAccount
 };
