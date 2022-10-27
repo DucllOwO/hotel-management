@@ -18,6 +18,8 @@ const resourceAC = {
   REPORT: "report",
   ROOM: "room",
   VOUCHER: "voucher",
+  POSITION: "position",
+  PERMISSION: "permission",
 };
 
 module.exports = { httpStatusCodes, actionAC, resourceAC };

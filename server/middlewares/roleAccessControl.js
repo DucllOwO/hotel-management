@@ -16,19 +16,19 @@ const initGrantList = async () => {
           resource: permission?.feature_id.resource,
         };
       });
-      console.log(JSON.stringify(grantList) + " 16");
+      //console.log(JSON.stringify(grantList) + " 16");
       return grantList;
+    } else {
+      next(err);
     }
-    console.log("init access control return a empty array");
-    return [];
   } catch (err) {
-    console.log(err.message + "");
-    return [];
+    next(err);
   }
 };
 
 const initAccessControl = async () => {
   ac.setGrants(await initGrantList());
+  //console.log(JSON.stringify(ac));
 };
 
 const hasPermission = (action, resource) => {
@@ -41,24 +41,40 @@ const hasPermission = (action, resource) => {
           permissions = ac.can(userPosition).readAny(resource);
           if (permissions.granted) {
             next();
+          } else {
+            const error = new Error(`We don't have that resource`);
+            error.status = 501;
+            next(error);
           }
           break;
         case "update":
           permissions = ac.can(userPosition).updateAny(resource);
           if (permissions.granted) {
             next();
+          } else {
+            const error = new Error(`We don't have that resource`);
+            error.status = 501;
+            next(error);
           }
           break;
         case "delete":
           permissions = ac.can(userPosition).deleteAny(resource);
           if (permissions.granted) {
             next();
+          } else {
+            const error = new Error(`We don't have that resource`);
+            error.status = 501;
+            next(error);
           }
           break;
         case "create":
           permissions = ac.can(userPosition).createAny(resource);
           if (permissions.granted) {
             next();
+          } else {
+            const error = new Error(`We don't have that resource`);
+            error.status = 501;
+            next(error);
           }
           break;
         default:
@@ -68,6 +84,7 @@ const hasPermission = (action, resource) => {
           break;
       }
     } catch (error) {
+      console.log(error.message);
       error.status = 403;
       next(error);
     }

@@ -4,7 +4,7 @@ const {
   createBooking,
   deleteBooking,
 } = require("../controllers/bookingController");
-const authorizeAccessToken = require("../middlewares/authorizaAccessToken");
+const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
 const { hasPermission } = require("../middlewares/roleAccessControl");
 const { actionAC, resourceAC } = require("../utils/constants");
 const router = require("express").Router();

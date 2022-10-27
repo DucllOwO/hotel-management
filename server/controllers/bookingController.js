@@ -1,4 +1,4 @@
-const DAL = require('../DAL/AccountDAL');
+const DAL = require("../DAL/AccountDAL");
 
 const getAllBookings = (req, res) => {
   res.send("getAllBookings route");
@@ -9,7 +9,7 @@ const getBooking = (req, res) => {
 };
 
 const createBooking = (req, res) => {
-  res.send(DAL('admin'));
+  res.send(DAL("admin"));
 };
 
 const deleteBooking = (req, res) => {
@@ -20,5 +20,5 @@ module.exports = {
   getAllBookings,
   getBooking,
   createBooking,
-  deleteBooking
+  deleteBooking,
 };
