@@ -40,9 +40,18 @@ const removePermission = async (positionID, featureID) => {
     .match({ feature_id: featureID, position_id: positionID });
 };
 
+const getPermissionByPositionID = async (positionID) => {
+  const { data, error } = await supabase
+    .from(TABLE_NAME)
+    .select("*")
+    .eq("position_id", positionID);
+  return { data, error };
+};
+
 module.exports = {
   loadAllPermission,
   updatePermissions,
   addPermission,
   removePermission,
+  getPermissionByPositionID,
 };

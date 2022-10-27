@@ -1,17 +1,15 @@
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
 const { hasPermission } = require("../middlewares/roleAccessControl");
+const { tryCatch } = require("../middlewares/errorHandler.js");
 const { actionAC, resourceAC } = require("../utils/constants");
-const {
-  getAllPermission,
-  updatePermission,
-} = require("../controllers/permissionController");
+const { getAllPermission } = require("../controllers/permissionController");
 const router = require("express").Router();
 
 router.get(
   "/",
   authorizeAccessToken,
   hasPermission(actionAC.GET, resourceAC.PERMISSION),
-  getAllPermission
+  tryCatch(getAllPermission)
 );
 
 // //can update multi permission at one time

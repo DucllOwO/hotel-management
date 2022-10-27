@@ -1,22 +1,14 @@
-const getAllPermission = (req, res) => {
-  res.send("getAllPermission route");
-};
+const permissionDAL = require("../DAL/permissionDAL");
 
-const updatePermission = (req, res) => {
-  res.send("updatePermission route");
-};
-
-const deletePermission = (req, res) => {
-  res.send("deletePermission route");
-};
-
-const createPermission = (req, res) => {
-  res.send("createPermission route");
+const getAllPermission = async (req, res, next) => {
+  //  /api/positions/1/permissions/
+  const positionID = req.baseUrl.split("/")[3];
+  const { data, error } = await permissionDAL.getPermissionByPositionID(
+    positionID
+  );
+  error ? next(error) : res.status(200).send(data);
 };
 
 module.exports = {
   getAllPermission,
-  createPermission,
-  updatePermission,
-  deletePermission,
 };
