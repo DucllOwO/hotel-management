@@ -34,15 +34,14 @@ const updatePosition = async (req, res, next) => {
   }
   // console.log(id);
   // console.log(JSON.stringify(updateFeatureList));
-  if (
-    featuresForAddPermissions.length > 0 ||
-    featuresForRemovePermissions.length > 0
-  ) {
+  if (featuresForAddPermissions.length > 0) {
     const { data: addData, error: addError } =
       await permissionDAL.addPermissions(id, featuresForAddPermissions);
+    if (addError) return next(addError);
+  }
+  if (featuresForRemovePermissions.length > 0) {
     const { data: removeData, error: removeError } =
       await permissionDAL.removePermission(id, featuresForRemovePermissions);
-    if (addError) return next(addError);
     if (removeError) return next(removeError);
   }
   if (
