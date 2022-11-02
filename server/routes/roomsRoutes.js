@@ -3,7 +3,7 @@ const {
   getAllRoom,
   createRoom,
   updateRoom,
-  hideRoom,
+  getRoom,
 } = require("../controllers/roomController");
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
 const { hasPermission } = require("../middlewares/roleAccessControl");
@@ -18,6 +18,12 @@ router.get(
   hasPermission(actionAC.GET, resourceAC.ROOM),
   tryCatch(getAllRoom)
 );
+router.get(
+  "/:room_name",
+  authorizeAccessToken,
+  hasPermission(actionAC.GET, resourceAC.ROOM),
+  tryCatch(getRoom)
+);
 
 router.post(
   "/",
@@ -27,17 +33,17 @@ router.post(
 );
 
 router.put(
-  "/:id",
+  "/:room_name",
   authorizeAccessToken,
   hasPermission(actionAC.UPDATE, resourceAC.ROOM),
   tryCatch(updateRoom)
 );
 
-router.delete(
-  "/:id",
-  authorizeAccessToken,
-  hasPermission(actionAC.DELETE, resourceAC.ROOM),
-  tryCatch(hideRoom)
-);
+// router.delete(
+//   "/:room_name",
+//   authorizeAccessToken,
+//   hasPermission(actionAC.DELETE, resourceAC.ROOM),
+//   tryCatch(hideRoom)
+// );
 
 module.exports = router;

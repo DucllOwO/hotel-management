@@ -14,6 +14,10 @@ const insertBooking = (booking) => {
   return supabase.from(TABLE_NAME).insert(booking);
 };
 
+const deleteBooking = (idBooking) => {
+  return supabase.from(TABLE_NAME).delete().eq("id", idBooking);
+};
+
 //const getBooking
 
-module.exports = { getAllBooking, getBooking, insertBooking };
+module.exports = { getAllBooking, getBooking, insertBooking, deleteBooking };

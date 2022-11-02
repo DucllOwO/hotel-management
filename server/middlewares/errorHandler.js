@@ -1,3 +1,9 @@
+const BadRequestError = () => {
+  const err = new Error("Bad request");
+  err.status = 400;
+  return err;
+};
+
 const handle404Error = (req, res, next) => {
   const err = new Error("Not found");
   err.status = 404;
@@ -21,4 +27,5 @@ module.exports = {
   handle404Error,
   handleOtherError,
   tryCatch,
+  BadRequestError,
 };

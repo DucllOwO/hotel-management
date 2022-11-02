@@ -1,5 +1,6 @@
 const bookingDAL = require("../DAL/bookingDAL");
 const customerDAL = require("../DAL/customerDAL");
+const { BadRequestError } = require("../middlewares/errorHandler");
 
 const getAllBookings = async (req, res, next) => {
   const { data, error } = await bookingDAL.getAllBooking();
@@ -18,12 +19,11 @@ const getBooking = async (req, res, next) => {
   res.status(200).send({ data: data[0] });
 };
 
+// tao booking khong can check phong trong vi chi co status available moi co nut dat phong
 const createBooking = async (req, res, next) => {
   const { booking, customer, voucher } = req.body;
 
-  if (!booking || !customer) return res.status(400).send("Bad request");
-
-  //CHECK ROOM AVAILABLE
+  if (!booking || !customer) return next(BadRequestError());
 
   const { data: customerTemp, error: customerTempError } =
     await customerDAL.getCustomerByID(customer?.id);
@@ -47,8 +47,14 @@ const createBooking = async (req, res, next) => {
   res.status(201).send("Created");
 };
 
-const deleteBooking = (req, res) => {
-  res.send("deleting Booking");
+const deleteBooking = async (req, res, next) => {
+  const { id } = req.params;
+
+  const { error } = await bookingDAL.deleteBooking(id);
+
+  if (error) return next(error);
+
+  res.status(204).send();
 };
 
 const throwErrorDataUnavailable = () => {
