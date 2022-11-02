@@ -22,4 +22,10 @@ const resourceAC = {
   PERMISSION: "permission",
 };
 
-module.exports = { httpStatusCodes, actionAC, resourceAC };
+const roomStatus = {
+  AVAILABLE: 0,
+  BOOKED: 1,
+  WAITING: 2,
+};
+
+module.exports = { httpStatusCodes, actionAC, resourceAC, roomStatus };

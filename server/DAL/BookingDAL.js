@@ -1,20 +1,19 @@
-const supabase = require('../database');
+const supabase = require("../database");
 
-async function getAllBooking()
-{
-    const {data, error}= await supabase
-    .from('booking')
-    .select('*')
-    if(error)
-    {
-        console.log(error);
-        return null;
-    }
-    else
-    {
-        console.log(listBooking);
-        return listBooking;
-    }
-}
+const TABLE_NAME = "booking";
 
-module.exports
+const getAllBooking = () => {
+  return supabase.from(TABLE_NAME).select("*");
+};
+
+const getBooking = (bookingID) => {
+  return supabase.from(TABLE_NAME).select().eq("id", bookingID);
+};
+
+const insertBooking = (booking) => {
+  return supabase.from(TABLE_NAME).insert(booking);
+};
+
+//const getBooking
+
+module.exports = { getAllBooking, getBooking, insertBooking };

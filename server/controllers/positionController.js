@@ -35,13 +35,17 @@ const updatePosition = async (req, res, next) => {
   // console.log(id);
   // console.log(JSON.stringify(updateFeatureList));
   if (featuresForAddPermissions.length > 0) {
-    const { data: addData, error: addError } =
-      await permissionDAL.addPermissions(id, featuresForAddPermissions);
+    const { error: addError } = await permissionDAL.addPermissions(
+      id,
+      featuresForAddPermissions
+    );
     if (addError) return next(addError);
   }
   if (featuresForRemovePermissions.length > 0) {
-    const { data: removeData, error: removeError } =
-      await permissionDAL.removePermission(id, featuresForRemovePermissions);
+    const { error: removeError } = await permissionDAL.removePermission(
+      id,
+      featuresForRemovePermissions
+    );
     if (removeError) return next(removeError);
   }
   if (
@@ -82,13 +86,13 @@ const createPosition = async (req, res, next) => {
     if (error) return next(error);
     idCreatedPosition = data[0].id;
   }
-  if (featuresForAddPermissions.length > 0) {
+  if (featuresForAddPermissions.length > 0 && idCreatedPosition) {
     const data = await permissionDAL.addPermissions(
       idCreatedPosition,
       featuresForAddPermissions
     );
   }
-  if (position?.editedName && featuresForAddPermissions.length > 0)
+  if (position?.name && featuresForAddPermissions.length > 0)
     await initAccessControl();
   res.status(201).send("Created");
 };
