@@ -19,6 +19,9 @@ const roomFeaturesRoutes = require("./routes/roomFeaturesRoutes");
 //const customersRoutes = require("./routes/customersRoutes");
 const employeesRoutes = require("./routes/employeesRoutes");
 const positionsRoutes = require("./routes/positionsRoutes");
+const customersRoutes = require("./routes/customersRoutes");
+const paymentsRoutes = require("./routes/paymentsRoutes");
+const importingsRoutes = require("./routes/importingsRoutes");
 
 const app = express();
 
@@ -40,8 +43,10 @@ app.use("/api/rooms", roomsRoutes);
 app.use("/api/room_features", roomFeaturesRoutes);
 app.use("/api/employees", employeesRoutes);
 app.use("/api/positions", positionsRoutes);
+app.use("/api/customers", customersRoutes);
+app.use("/api/payment", paymentsRoutes)
+app.use("/api/importing", importingsRoutes)
 //app.use('/positions', positionsRoutes)
-//app.use("/customers", customersRoutes);
 //app.use("/branches", branchesRoutes);
 app.use("*", handle404Error);
 

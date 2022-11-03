@@ -1,0 +1,34 @@
+const { mode } = require('crypto-js');
+const supabase = require('../database');
+
+async function getAllPayment()
+{
+    const{data, error} = await supabase
+    .from('payment')
+    .select()
+    return {data, error};
+};
+
+async function getPaymentByID(id)
+{
+    const {data, error} = await supabase
+    .from('payment')
+    .select()
+    .eq('id', id)
+    return {data, error};
+};
+async function createNewPayment(newPayment)
+{
+    const {data, error} = await supabase
+    .from('payment')
+    .insert({
+        name: newPayment.name,
+        price: newPayment.price
+    })
+}
+
+module.exports = {
+    getAllPayment,
+    getPaymentByID,
+    createNewPayment
+}
