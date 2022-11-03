@@ -24,7 +24,7 @@ const addPermissions = async (positionID, features) => {
         return { feature_id: feature.id, position_id: positionID };
       })
     );
-    return error;
+    return { error };
   } else {
     const conflictError = new Error(`Already have these permission`);
     conflictError.status = 409;

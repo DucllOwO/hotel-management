@@ -34,14 +34,14 @@ const updatePosition = async (req, res, next) => {
   }
   // console.log(id);
   // console.log(JSON.stringify(updateFeatureList));
-  if (featuresForAddPermissions.length > 0) {
+  if (featuresForAddPermissions?.length > 0) {
     const { error: addError } = await permissionDAL.addPermissions(
       id,
       featuresForAddPermissions
     );
     if (addError) return next(addError);
   }
-  if (featuresForRemovePermissions.length > 0) {
+  if (featuresForRemovePermissions?.length > 0) {
     const { error: removeError } = await permissionDAL.removePermission(
       id,
       featuresForRemovePermissions
@@ -50,8 +50,8 @@ const updatePosition = async (req, res, next) => {
   }
   if (
     position?.editedName ||
-    featuresForAddPermissions.length > 0 ||
-    featuresForRemovePermissions.length > 0
+    featuresForAddPermissions?.length > 0 ||
+    featuresForRemovePermissions?.length > 0
   )
     await initAccessControl();
   res.status(204).send();
