@@ -17,4 +17,6 @@ async function getAllBooking()
     }
 }
 
-module.exports
+module.exports = {
+    getAllBooking
+}

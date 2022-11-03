@@ -20,6 +20,9 @@ const resourceAC = {
   VOUCHER: "voucher",
   POSITION: "position",
   PERMISSION: "permission",
+  PURCHASE: "purchase",
+  PAYMENT: "payment",
+  CUSTOMER: "customer",
 };
 
 module.exports = { httpStatusCodes, actionAC, resourceAC };

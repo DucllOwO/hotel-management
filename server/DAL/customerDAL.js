@@ -1,6 +1,6 @@
 const supabase = require('../database');
 
-async function getAllCustomer()
+async function getAllCustomers()
 {
     const{data, error} = await supabase
     .from('customer')
@@ -33,7 +33,7 @@ async function updateCustomerInformation(newInformation)
     return {data, error};
 }
 module.exports = {
-    getAllCustomer,
+    getAllCustomers,
     createNewCustomer,
     updateCustomerInformation
 }

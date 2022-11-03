@@ -1,10 +1,10 @@
 const supabase = require('../database')
 
-async function getAllRecord()
+async function getAllRecords()
 {
     const{data, error} = await supabase
     .from('purchase')
-    .select()
+    .select('*')
     return {data, error}
 }
 async function getRecordByID(filter)
@@ -29,7 +29,7 @@ async function createNewRecord(newRecord)
 }
 
 module.exports = {
-    getAllRecord,
+    getAllRecords,
     getRecordByID,
     createNewRecord
 }

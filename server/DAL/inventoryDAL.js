@@ -1,6 +1,6 @@
 const supabase = require("../database");
 
-async function getAllInventory()
+async function getAllInventories()
 {
     const {data, error} =  await supabase
     .from('inventory')
@@ -9,5 +9,5 @@ async function getAllInventory()
 }
 
 module.exports = {
-    getAllInventory
+    getAllInventories
 }

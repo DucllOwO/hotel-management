@@ -1,7 +1,7 @@
 const { mode } = require('crypto-js');
 const supabase = require('../database');
 
-async function getAllPayment()
+async function getAllPayments()
 {
     const{data, error} = await supabase
     .from('payment')
@@ -28,7 +28,7 @@ async function createNewPayment(newPayment)
 }
 
 module.exports = {
-    getAllPayment,
+    getAllPayments,
     getPaymentByID,
     createNewPayment
-}
+};

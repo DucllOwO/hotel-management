@@ -1,9 +1,8 @@
 const{
     getAllPayment,
-    getPaymentByID,
-    createNewPayment
+    getByID,
+    createPayment
 } = require("../controllers/paymentController");
-const { createNewCustomer } = require("../DAL/customerDAL");
 
 
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
@@ -14,18 +13,18 @@ const router = require("express").Router();
 
 router.get("/", 
     authorizeAccessToken,
-    hasPermission(actionAC.GET, resourceAC.BOOKING),
+    hasPermission(actionAC.GET, resourceAC.PAYMENT),
     getAllPayment
 );
 router.get("/:id",
     authorizeAccessToken,
-    hasPermission(actionAC.GET, resourceAC.BOOKING),
-    getPaymentByID
+    hasPermission(actionAC.GET, resourceAC.PAYMENT),
+    getByID
 );
 router.post("/",
     authorizeAccessToken,
-    hasPermission(actionAC.GET, resourceAC.BOOKING),
-    createNewPayment
+    hasPermission(actionAC.CREATE, resourceAC.PAYMENT),
+    createPayment
 );
 
 module.exports = router;

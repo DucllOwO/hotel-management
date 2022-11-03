@@ -1,19 +1,21 @@
 const {
-    getAllRecord
+    getAllRecords,
+    getRecordByID,
+    createNewRecord
 } = require('../DAL/importingDAL');
 
 const getAllRecord = (req, res) => {
-    res.send(getAllRecord());
+    res.send(getAllRecords());
 }
-const getRecordByID = (req, res) =>{
+const getByID = (req, res) =>{
     res.send(getRecordByID(req.query));
 }
-const createNewRecord = (req, res) => {
+const createRecord = (req, res) => {
     res.send(createNewRecord());
 }
 
 module.exports = {
     getAllRecord,
-    getRecordByID,
-    createNewRecord
+    getByID,
+    createRecord
 }

@@ -1,9 +1,8 @@
 const{
     getAllCustomer,
-    createNewCustomer,
-    updateCustomerInformation
+    createCustomer,
+    updateInformation
 } = require("../controllers/customerController");
-const { createNewCustomer } = require("../DAL/customerDAL");
 
 
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
@@ -14,20 +13,20 @@ const router = require("express").Router();
 
 router.get("/", 
     authorizeAccessToken,
-    hasPermission(actionAC.GET, resourceAC.BOOKING),
+    hasPermission(actionAC.GET, resourceAC.CUSTOMER),
     getAllCustomer
 );
 
 router.post("/",
     authorizeAccessToken,
-    hasPermission(actionAC.GET, resourceAC.BOOKING),
-    createNewCustomer
+    hasPermission(actionAC.CREATE, resourceAC.CUSTOMER),
+    createCustomer
 );
 
 router.put("/:id",
     authorizeAccessToken,
-    hasPermission(actionAC.GET, resourceAC.BOOKING),
-    updateCustomerInformation
+    hasPermission(actionAC.UPDATE, resourceAC.CUSTOMER),
+    updateInformation
 );
 
 module.exports = router;

@@ -1,5 +1,5 @@
 const{
-    getAllCustomer,
+    getAllCustomers,
     createNewCustomer,
     updateCustomerInformation
 } = require('../DAL/customerDAL')
@@ -9,15 +9,15 @@ const getAllCustomer = (req, res) => {
     res.send(getAllCustomer());
 };
 
-const createNewCustomer = (req, res) =>{
+const createCustomer = (req, res) =>{
     res.send(createNewCustomer(req.body));
 };
-const updateCustomerInformation = (req, res) => {
+const updateInformation = (req, res) => {
     res.send(updateCustomerInformation());
 };
 
 module.exports = {
     getAllCustomer,
-    createNewCustomer,
-    updateCustomerInformation
+    createCustomer,
+    updateInformation
 }

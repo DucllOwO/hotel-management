@@ -6,12 +6,12 @@ const login = async (req, res, next) => {
   console.log(jwt);
   try {
     const { username, password } = req.body;
-    //console.log(`${username} ${password}`);
+    console.log(`${username} ${password}`);
     // Filter user from the users array by username and password
     const {user, error} = await accountDAL.getAccountByUsername(username);
     //console.log(`${JSON.stringify(user)} ${error}`)
     if (user) {
-      //console.log(user?.username);
+      console.log(user?.username);
       // Generate an access token
       const accessToken = jwt.sign(
         { username: user.username },

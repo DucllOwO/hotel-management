@@ -1,21 +1,21 @@
 const{
-    getAllPayment,
+    getAllPayments,
     getPaymentByID,
     createNewPayment
 } = require('../DAL/paymentDAL')
 
 const getAllPayment = (req, res) => {
-    res.send(getAllPayment());
+    res.send(getAllPayments());
 };
-const getPaymentByID = (req, res) => {
+const getByID = (req, res) => {
     res.send(getPaymentByID(req.query));
 };
-const createNewPayment = (req, res) => {
+const createPayment = (req, res) => {
     res.send(createNewPayment(req.params));
 };
 
 module.exports = {
     getAllPayment,
-    getPaymentByID,
-    createNewPayment
+    getByID,
+    createPayment
 }
