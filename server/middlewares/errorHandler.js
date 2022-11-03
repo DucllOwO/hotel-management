@@ -1,3 +1,9 @@
+const BadRequestError = () => {
+  const err = new Error("Bad request");
+  err.status = 400;
+  return err;
+};
+
 const handle404Error = (req, res, next) => {
   const err = new Error("Not found");
   err.status = 404;
@@ -5,6 +11,7 @@ const handle404Error = (req, res, next) => {
 };
 
 const handleOtherError = (error, req, res, next) => {
+  console.log(error);
   res.status(error.status || 500);
   res.json({
     error: {
@@ -16,4 +23,9 @@ const handleOtherError = (error, req, res, next) => {
 const tryCatch = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
-module.exports = { handle404Error, handleOtherError, tryCatch };
+module.exports = {
+  handle404Error,
+  handleOtherError,
+  tryCatch,
+  BadRequestError,
+};

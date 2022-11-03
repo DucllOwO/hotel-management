@@ -6,7 +6,6 @@ const morgan = require("morgan");
 const {
   handle404Error,
   handleOtherError,
-  tryCatch,
 } = require("./middlewares/errorHandler");
 const { initAccessControl } = require("./middlewares/roleAccessControl");
 
@@ -19,9 +18,13 @@ const roomFeaturesRoutes = require("./routes/roomFeaturesRoutes");
 //const customersRoutes = require("./routes/customersRoutes");
 const employeesRoutes = require("./routes/employeesRoutes");
 const positionsRoutes = require("./routes/positionsRoutes");
+<<<<<<< HEAD
 const customersRoutes = require("./routes/customersRoutes");
 const paymentsRoutes = require("./routes/paymentsRoutes");
 const importingsRoutes = require("./routes/importingsRoutes");
+=======
+const { removePermission } = require("./DAL/permissionDAL");
+>>>>>>> backend
 
 const app = express();
 

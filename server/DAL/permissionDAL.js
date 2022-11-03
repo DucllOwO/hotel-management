@@ -16,33 +16,56 @@ const loadAllPermission = async () => {
   //console.log("error " + JSON.stringify(error));
   return { data, error };
 };
-/**
- * updatePermissionList: [
-  {position_id, feature_id, type: (remove/add)}
-]
- */
-const updatePermissions = async (updatePermissionList) => {
-  let errorList;
-  for (const permission of updatePermissionList) {
+
+const addPermissions = async (positionID, features) => {
+  if (!(await checkPermissionExist(features, positionID))) {
+    const { error } = await supabase.from(TABLE_NAME).insert(
+      features.map((feature) => {
+        return { feature_id: feature.id, position_id: positionID };
+      })
+    );
+    return { error };
+  } else {
+    const conflictError = new Error(`Already have these permission`);
+    conflictError.status = 409;
+    return { error: conflictError };
   }
 };
 
-const addPermission = async (positionID, featureID) => {
-  return supabase
-    .from(TABLE_NAME)
-    .insert({ position_id: positionID, feature_id: featureID });
-};
-
-const removePermission = async (positionID, featureID) => {
-  return supabase
+const removePermission = async (positionID, features) => {
+  return await supabase
     .from(TABLE_NAME)
     .delete()
-    .match({ feature_id: featureID, position_id: positionID });
+    //.match({ feature_id: featureID, position_id: positionID });
+    .in(
+      "feature_id",
+      features.map((feature) => feature.id)
+    )
+    .eq("position_id", positionID);
+};
+
+const getPermissionByPositionID = async (positionID) => {
+  return await supabase
+    .from(TABLE_NAME)
+    .select("*")
+    .eq("position_id", positionID);
+};
+
+const checkPermissionExist = async (features, positionID) => {
+  const { data, error } = await supabase
+    .from(TABLE_NAME)
+    .select()
+    .in(
+      "feature_id",
+      features.map((feature) => feature.id)
+    )
+    .eq("position_id", positionID);
+  return data[0] ? true : false;
 };
 
 module.exports = {
   loadAllPermission,
-  updatePermissions,
-  addPermission,
+  addPermissions,
   removePermission,
+  getPermissionByPositionID,
 };

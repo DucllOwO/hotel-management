@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 const authorizeAccessToken = (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  const authHeader = req.headers.authorization || req.headers.Authorization;
   if (authHeader) {
     const token = authHeader.split(" ")[1];
 
@@ -14,7 +14,7 @@ const authorizeAccessToken = (req, res, next) => {
       next();
     });
   } else {
-    res.status(401).json('Access denied');
+    res.status(401).json("Access denied");
   }
 };
 
@@ -58,4 +58,4 @@ const authorizeAccessToken = (req, res, next) => {
 //   });
 // };
 
-module.exports = authorizeAccessToken
+module.exports = authorizeAccessToken;

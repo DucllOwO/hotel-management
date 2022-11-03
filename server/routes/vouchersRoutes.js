@@ -2,20 +2,42 @@
 const {
   getAllVoucher,
   createVoucher,
-  updateVoucher,
   hideVoucher,
+  getVoucher,
 } = require("../controllers/voucherController");
+const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
+const { hasPermission } = require("../middlewares/roleAccessControl");
+const { actionAC, resourceAC } = require("../utils/constants");
+const { tryCatch } = require("../middlewares/errorHandler");
+
 const router = require("express").Router();
 // only manager need to get all room feature to edit
-router.get("/", getAllVoucher);
+router.get(
+  "/",
+  authorizeAccessToken,
+  hasPermission(actionAC.GET, resourceAC.VOUCHER),
+  tryCatch(getAllVoucher)
+);
 
-// dont need get single voucher because
-//router.get('/:id', )
+router.get(
+  "/:id",
+  authorizeAccessToken,
+  hasPermission(actionAC.GET, resourceAC.VOUCHER),
+  tryCatch(getVoucher)
+);
 
-router.post("/", createVoucher);
+router.post(
+  "/",
+  authorizeAccessToken,
+  hasPermission(actionAC.CREATE, resourceAC.VOUCHER),
+  tryCatch(createVoucher)
+);
 
-router.put("/:id", updateVoucher);
-
-router.delete("/:id", hideVoucher);
+router.put(
+  "/:id",
+  authorizeAccessToken,
+  hasPermission(actionAC.PUT, resourceAC.BOOKING),
+  tryCatch(hideVoucher)
+);
 
 module.exports = router;
