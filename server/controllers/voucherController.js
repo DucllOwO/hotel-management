@@ -21,17 +21,26 @@ const getVoucher = async (req, res, next) => {
 
 const createVoucher = async (req, res, next) => {
   const { voucher } = req.body;
-  if (voucher) return next(BadRequestError());
+  if (!voucher) return next(BadRequestError());
 
   const { error } = await voucherDAL.insertVoucher(voucher);
 
   if (error) return next(error);
 
-  res.send(201).send("Created");
+  res.status(201).send("Created");
 };
 
 const hideVoucher = async (req, res, next) => {
   const { id } = req.params;
+  const { isActive } = req.body;
+
+  if (isActive == null || isActive == undefined) return next(BadRequestError());
+
+  const { error } = await voucherDAL.changeActiveVoucher(id, isActive);
+
+  if (error) return next(error);
+
+  res.status(204).send();
 };
 
 module.exports = {

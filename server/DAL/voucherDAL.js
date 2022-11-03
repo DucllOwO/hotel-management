@@ -14,6 +14,16 @@ const insertVoucher = (voucher) => {
   return supabase.from(TABLE_NAME).insert(voucher);
 };
 
-//const changeActiveVourcher = ()
+const changeActiveVoucher = (id, isActive) => {
+  return supabase
+    .from(TABLE_NAME)
+    .update({ is_active: !isActive })
+    .eq("id", id);
+};
 
-module.exports = { getAllVoucher, getVoucher, insertVoucher };
+module.exports = {
+  getAllVoucher,
+  getVoucher,
+  insertVoucher,
+  changeActiveVoucher,
+};
