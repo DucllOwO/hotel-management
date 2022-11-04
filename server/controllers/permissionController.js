@@ -7,6 +7,8 @@ const getAllPermission = async (req, res, next) => {
     positionID
   );
 
+  console.log(data);
+
   //return distinct array feature_id.name
   const temp = [...new Set(data.map((item) => item?.feature_id.name))];
 

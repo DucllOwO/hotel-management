@@ -14,12 +14,12 @@ const actionAC = {
 
 const resourceAC = {
   BOOKING: "booking",
-  EMPLOYEE: "employee",
   REPORT: "report",
   ROOM: "room",
   VOUCHER: "voucher",
   POSITION: "position",
   PERMISSION: "permission",
+  USER: "user",
 };
 
 const roomStatus = {

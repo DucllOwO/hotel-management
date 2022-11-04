@@ -55,7 +55,8 @@ const getPermissionByPositionID = (positionID) => {
   ),
   feature_id:feature(
     name
-  )`
+  )`,
+      true
     )
     .eq("position_id", positionID);
 };
