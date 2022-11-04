@@ -17,32 +17,23 @@ const getByID = (req, res, next) =>{
     else
         res.status(200).send(getByID(id));
 }
-const createRecord = (req, res, next) => {
+const createRecord = async (req, res, next) => {
     const {importing, item, employee} = req.body;
 
     if (!importing || !item || !employee) return next(BadRequestError());
 
-    const { data: employeeTemp, error: employeeTempError } =
-        await customerDAL.getCustomerByID(customer?.id);
+    const { data: employeeTemp, error: employeeTempError } = await employeeDAL.getEmployeeByID(employee?.id);
 
-    if (customerTempError) return next(customerTempError);
+    if (employeeTempError) return next(employeeTempError);
 
-    if (!customerTemp[0]) {
-        const { error: insertError } = await customerDAL.insertCustomer(customer);
-
-        if (insertError) return next(insertError);
-    }
-
-    const { error: insertBookingError } = await bookingDAL.insertBooking({
-        voucher_id: voucher?.id,
-        customer_id: customer?.id,
-        ...booking,
+    const { error: insertImportingError } = await importingDAL.createNewRecord({
+        employee_id: employee?.id,
+        ...importing,
     });
 
-    if (insertBookingError) return next(insertBookingError);
+    if (insertImportingError) return next(insertImportingError);
 
     res.status(201).send("Created");
-    res.send(createNewRecord());
 }
 
 module.exports = {
