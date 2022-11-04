@@ -2,11 +2,6 @@ const supabase = require("../database");
 
 const TABLE_NAME = "booking";
 
-<<<<<<< HEAD
-module.exports = {
-    getAllBooking
-}
-=======
 const getAllBooking = () => {
   return supabase.from(TABLE_NAME).select("*");
 };
@@ -26,4 +21,3 @@ const deleteBooking = (idBooking) => {
 //const getBooking
 
 module.exports = { getAllBooking, getBooking, insertBooking, deleteBooking };
->>>>>>> backend

@@ -23,6 +23,7 @@ const resourceAC = {
   PURCHASE: "purchase",
   PAYMENT: "payment",
   CUSTOMER: "customer",
+  ROOMTYPE: "roomtype",
 };
 
 const roomStatus = {

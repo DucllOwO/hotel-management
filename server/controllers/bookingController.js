@@ -1,10 +1,6 @@
-<<<<<<< HEAD
-
-=======
 const bookingDAL = require("../DAL/bookingDAL");
 const customerDAL = require("../DAL/customerDAL");
 const { BadRequestError } = require("../middlewares/errorHandler");
->>>>>>> backend
 
 const getAllBookings = async (req, res, next) => {
   const { data, error } = await bookingDAL.getAllBooking();
@@ -51,10 +47,6 @@ const createBooking = async (req, res, next) => {
   res.status(201).send("Created");
 };
 
-<<<<<<< HEAD
-const createBooking = (req, res) => {
-  res.send("k");
-=======
 const deleteBooking = async (req, res, next) => {
   const { id } = req.params;
 
@@ -63,7 +55,6 @@ const deleteBooking = async (req, res, next) => {
   if (error) return next(error);
 
   res.status(204).send();
->>>>>>> backend
 };
 
 const throwErrorDataUnavailable = () => {
