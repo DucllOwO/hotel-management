@@ -1,17 +1,29 @@
-const{
-    getAllPayments,
-    getPaymentByID,
-    createNewPayment
-} = require('../DAL/paymentDAL')
+const paymentDAL = require('../DAL/paymentDAL')
 
-const getAllPayment = (req, res) => {
-    res.send(getAllPayments());
+const getAllPayment = (req, res, next) => {
+    const { data, error } = paymentDAL.getAllPayments();
+    if (error) return next(error);
+  
+    res.status(200).send({ data });
 };
 const getByID = (req, res) => {
-    res.send(getPaymentByID(req.query));
+    const {id: paymentID} = req.params
+    const { data, error } = paymentDAL.getPaymentByID(paymentID);
+    if (error) 
+        return next(error);
+    res.status(200).send({ data });
 };
 const createPayment = (req, res) => {
-    res.send(createNewPayment(req.params));
+    const {payment} = req.body;
+
+    if (!payment) return next(BadRequestError());
+
+    const { error: insertPaymentError } = paymentDAL.createNewPayment({
+        ...payment
+    });
+
+    if (insertPaymentError) return next(insertPaymentError);
+    res.status(201).send("Created");
 };
 
 module.exports = {
