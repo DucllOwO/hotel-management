@@ -36,7 +36,7 @@ router.post(
 router.put(
   "/:id",
   authorizeAccessToken,
-  hasPermission(actionAC.PUT, resourceAC.BOOKING),
+  hasPermission(actionAC.UPDATE, resourceAC.BOOKING),
   tryCatch(hideVoucher)
 );
 

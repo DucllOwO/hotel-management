@@ -6,10 +6,6 @@ const getAllCustomer = () => {
   return supabase.from(TABLE_NAME).select("*");
 };
 
-const getCustomer = (CustomerID) => {
-  return supabase.from(TABLE_NAME).select().eq("id", CustomerID);
-};
-
 const getCustomerByID = (CustomerID) => {
   return supabase.from(TABLE_NAME).select().eq("id", CustomerID);
 };
@@ -18,11 +14,23 @@ const insertCustomer = (Customer) => {
   return supabase.from(TABLE_NAME).insert(Customer);
 };
 
+const updateCustomer = (Customer, id) => {
+  return supabase
+    .from(TABLE_NAME)
+    .update({ ...Customer })
+    .eq("id", id);
+};
+
+const deleteCustomer = (id) => {
+  return supabase.from(TABLE_NAME).delete().eq("id", id);
+};
+
 //const getCustomer
 
 module.exports = {
   getAllCustomer,
-  getCustomer,
   insertCustomer,
   getCustomerByID,
+  updateCustomer,
+  deleteCustomer,
 };

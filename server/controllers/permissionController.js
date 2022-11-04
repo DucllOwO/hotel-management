@@ -6,7 +6,13 @@ const getAllPermission = async (req, res, next) => {
   const { data, error } = await permissionDAL.getPermissionByPositionID(
     positionID
   );
-  error ? next(error) : res.status(200).send(data);
+
+  console.log(data);
+
+  //return distinct array feature_id.name
+  const temp = [...new Set(data.map((item) => item?.feature_id.name))];
+
+  error ? next(error) : res.status(200).send(temp);
 };
 
 module.exports = {

@@ -32,22 +32,32 @@ const addPermissions = async (positionID, features) => {
   }
 };
 
-const removePermission = async (positionID, features) => {
-  return await supabase
-    .from(TABLE_NAME)
-    .delete()
-    //.match({ feature_id: featureID, position_id: positionID });
-    .in(
-      "feature_id",
-      features.map((feature) => feature.id)
-    )
-    .eq("position_id", positionID);
+const removePermission = (positionID, features) => {
+  return (
+    supabase
+      .from(TABLE_NAME)
+      .delete()
+      //.match({ feature_id: featureID, position_id: positionID });
+      .in(
+        "feature_id",
+        features.map((feature) => feature.id)
+      )
+      .eq("position_id", positionID)
+  );
 };
 
-const getPermissionByPositionID = async (positionID) => {
-  return await supabase
+const getPermissionByPositionID = (positionID) => {
+  return supabase
     .from(TABLE_NAME)
-    .select("*")
+    .select(
+      `position_id:position(
+    name
+  ),
+  feature_id:feature(
+    name
+  )`,
+      true
+    )
     .eq("position_id", positionID);
 };
 

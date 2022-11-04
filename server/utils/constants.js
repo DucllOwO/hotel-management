@@ -14,7 +14,6 @@ const actionAC = {
 
 const resourceAC = {
   BOOKING: "booking",
-  EMPLOYEE: "employee",
   REPORT: "report",
   ROOM: "room",
   VOUCHER: "voucher",
@@ -24,6 +23,7 @@ const resourceAC = {
   PAYMENT: "payment",
   CUSTOMER: "customer",
   ROOMTYPE: "roomtype",
+  USER: "user",
 };
 
 const roomStatus = {

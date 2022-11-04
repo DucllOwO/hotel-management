@@ -16,7 +16,7 @@ const vouchersRoutes = require("./routes/vouchersRoutes");
 const roomsRoutes = require("./routes/roomsRoutes");
 const roomFeaturesRoutes = require("./routes/roomFeaturesRoutes");
 //const customersRoutes = require("./routes/customersRoutes");
-const employeesRoutes = require("./routes/employeesRoutes");
+const usersRoutes = require("./routes/usersRoutes");
 const positionsRoutes = require("./routes/positionsRoutes");
 <<<<<<< HEAD
 const customersRoutes = require("./routes/customersRoutes");
@@ -44,7 +44,7 @@ app.use("/api/bookings", bookingsRoutes);
 app.use("/api/vouchers", vouchersRoutes);
 app.use("/api/rooms", roomsRoutes);
 app.use("/api/room_features", roomFeaturesRoutes);
-app.use("/api/employees", employeesRoutes);
+app.use("/api/users", usersRoutes);
 app.use("/api/positions", positionsRoutes);
 app.use("/api/customers", customersRoutes);
 app.use("/api/payment", paymentsRoutes)
