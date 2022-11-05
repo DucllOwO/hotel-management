@@ -7,7 +7,17 @@ async function getAllInventories()
     .select()
     return {data, error};
 }
+async function createNewRecord(newRecord)
+{
+    const{data, error} = await supabase
+    .from('inventory')
+    .insert({
+        ...newRecord
+    });
+    return {data, error};
+}
 
 module.exports = {
-    getAllInventories
+    getAllInventories,
+    createNewRecord
 }

@@ -22,10 +22,6 @@ const createRecord = async (req, res, next) => {
 
     if (!importing || !item || !employee) return next(BadRequestError());
 
-    const { data: employeeTemp, error: employeeTempError } = await employeeDAL.getEmployeeByID(employee?.id);
-
-    if (employeeTempError) return next(employeeTempError);
-
     const { error: insertImportingError } = await importingDAL.createNewRecord({
         employee_id: employee?.id,
         ...importing,
