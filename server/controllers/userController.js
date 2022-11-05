@@ -86,7 +86,7 @@ const updateUser = async (req, res, next) => {
   if (!type || !userInfo) return next(BadRequestError());
 
   //to ensure that don't update primary key
-  const { idTemp, ...userWithoutID } = userInfo;
+  const { id: idTemp, ...userWithoutID } = userInfo;
 
   switch (type) {
     case "customer":

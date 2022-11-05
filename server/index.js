@@ -10,7 +10,6 @@ const {
 const { initAccessControl } = require("./middlewares/roleAccessControl");
 
 const authRoute = require("./routes/authRoute");
-const reportsRoutes = require("./routes/reportsRoutes");
 const bookingsRoutes = require("./routes/bookingsRoutes");
 const vouchersRoutes = require("./routes/vouchersRoutes");
 const roomsRoutes = require("./routes/roomsRoutes");
@@ -33,7 +32,6 @@ initAccessControl();
 //position vs permission route
 
 app.use("/api/auth", authRoute);
-app.use("/api/reports", reportsRoutes);
 app.use("/api/bookings", bookingsRoutes);
 app.use("/api/vouchers", vouchersRoutes);
 app.use("/api/rooms", roomsRoutes);
