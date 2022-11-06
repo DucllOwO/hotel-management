@@ -25,6 +25,7 @@ const resourceAC = {
   ROOMTYPE: "roomtype",
   USER: "user",
   INVENTORY: "inventory",
+  SERVICE: "service",
 };
 
 const roomStatus = {
