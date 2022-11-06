@@ -6,6 +6,7 @@ const {
 } = require("../controllers/positionController");
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
 const { tryCatch } = require("../middlewares/errorHandler");
+const pagination = require("../middlewares/pagination");
 const { hasPermission } = require("../middlewares/roleAccessControl");
 const { actionAC, resourceAC } = require("../utils/constants");
 const permissionsRoutes = require("./permissionsRotues.js");
@@ -19,6 +20,7 @@ router.get(
   "/",
   authorizeAccessToken,
   hasPermission(actionAC.GET, resourceAC.POSITION),
+  pagination,
   tryCatch(getAllPosition)
 );
 //router.get("/:id");
