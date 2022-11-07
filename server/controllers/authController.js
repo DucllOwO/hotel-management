@@ -1,40 +1,31 @@
-
 const jwt = require("jsonwebtoken");
-const accountDAL = require('../DAL/AccountDAL')
+const accountDAL = require("../DAL/AccountDAL");
+const bcrypt = require("bcrypt");
 
 const login = async (req, res, next) => {
-  console.log(jwt);
-  try {
-    const { username, password } = req.body;
-    console.log(`${username} ${password}`);
-    // Filter user from the users array by username and password
-    const {user, error} = await accountDAL.getAccountByUsername(username);
-    //console.log(`${JSON.stringify(user)} ${error}`)
-    if (user) {
-      console.log(user?.username);
+  const { username, password } = req.body;
+
+  const { user, error } = await accountDAL.getAccountByUsername(username);
+  console.log(`${JSON.stringify(user)} `);
+  if (user) {
+    const isValid = await bcrypt.compare(password, user.password);
+    if (isValid) {
       // Generate an access token
       const accessToken = jwt.sign(
         { username: user.username },
         process.env.JWT_SECRET
       );
 
-      res.json({ user,
-        accessToken
-      });
-    } else {
-      //error.status = 404;
-      console.log(error)
-      next(error);
-    }
-  } catch (error) {
-    console.log('next cuar try catch')
-    next(error)
-  }
-  
-};
+      const { password: temp, ...userWithoutPassword } = user;
 
-const register = (req, res) => {
-  res.send("register route");
+      return res.json({ userWithoutPassword, accessToken }).send();
+    } else {
+      return res.status(401).send("Password is incorrect");
+    }
+  } else {
+    error.status = 400;
+    next(error);
+  }
 };
 
 const forgotPassword = (req, res) => {
@@ -43,6 +34,5 @@ const forgotPassword = (req, res) => {
 
 module.exports = {
   login,
-  register,
   forgotPassword,
 };

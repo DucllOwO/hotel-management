@@ -1,4 +1,3 @@
-const { mode } = require("crypto-js");
 const supabase = require("../database");
 
 async function getAllPayments() {

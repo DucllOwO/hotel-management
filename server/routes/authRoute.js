@@ -1,12 +1,11 @@
-const { login, register, forgotPassword } = require('../controllers/authController')
+const { login, forgotPassword } = require("../controllers/authController");
+const { tryCatch } = require("../middlewares/errorHandler");
 const router = require("express").Router();
-
 
 //router.post('/register', register);
 
-router.post('/login', login)
+router.post("/login", tryCatch(login));
 
-router.post('/forgotpassword', forgotPassword)
+router.post("/forgotpassword", forgotPassword);
 
-module.exports = router
-
+module.exports = router;

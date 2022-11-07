@@ -14,12 +14,12 @@ const bookingsRoutes = require("./routes/bookingsRoutes");
 const vouchersRoutes = require("./routes/vouchersRoutes");
 const roomsRoutes = require("./routes/roomsRoutes");
 const roomFeaturesRoutes = require("./routes/roomFeaturesRoutes");
+const accountsRoutes = require("./routes/accountsRoutes");
 //const customersRoutes = require("./routes/customersRoutes");
 const usersRoutes = require("./routes/usersRoutes");
 const positionsRoutes = require("./routes/positionsRoutes");
 const paymentsRoutes = require("./routes/paymentsRoutes");
 const importingsRoutes = require("./routes/importingsRoutes");
-const { removePermission } = require("./DAL/permissionDAL");
 
 const app = express();
 
@@ -38,6 +38,7 @@ app.use("/api/bookings", bookingsRoutes);
 app.use("/api/vouchers", vouchersRoutes);
 app.use("/api/rooms", roomsRoutes);
 app.use("/api/room_features", roomFeaturesRoutes);
+app.use("/api/accounts", accountsRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/positions", positionsRoutes);
 app.use("/api/payment", paymentsRoutes);
