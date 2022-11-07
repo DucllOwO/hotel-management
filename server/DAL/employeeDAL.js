@@ -2,8 +2,12 @@ const supabase = require("../database");
 
 const TABLE_NAME = "employee";
 
-const getAllEmployee = () => {
-  return supabase.from(TABLE_NAME).select("*");
+const getAllEmployee = (from, to) => {
+  return supabase
+    .from(TABLE_NAME)
+    .select("*")
+    .order("start_working_date", { ascending: true })
+    .range(from, to);
 };
 
 const getEmployeeByID = (EmployeeID) => {

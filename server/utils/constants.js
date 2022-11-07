@@ -13,6 +13,7 @@ const actionAC = {
 };
 
 const resourceAC = {
+  ACCOUNT: "account",
   BOOKING: "booking",
   REPORT: "report",
   ROOM: "room",
@@ -35,7 +36,7 @@ const roomStatus = {
 };
 
 const pagination = {
-  LIMIT_DEFAULT: 3,
+  LIMIT_DEFAULT: 10,
 };
 
 module.exports = {

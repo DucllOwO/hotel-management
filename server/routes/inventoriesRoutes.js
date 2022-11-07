@@ -1,5 +1,4 @@
-const{
-} = require("../controllers/inventoryController");
+const {} = require("../controllers/inventoryController");
 
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
 const { hasPermission } = require("../middlewares/roleAccessControl");
@@ -8,8 +7,7 @@ const { route } = require("./bookingsRoutes");
 const router = require("express").Router();
 
 router.get(
-    "/",
-    authorizeAccessToken,
-    hasPermission(actionAC.GET, resourceAC.INVENTORY),
-    
-)
+  "/",
+  authorizeAccessToken,
+  hasPermission(actionAC.GET, resourceAC.INVENTORY)
+);

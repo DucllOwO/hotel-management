@@ -6,6 +6,7 @@ const {
   updateUser,
   deleteUser,
 } = require("../controllers/userController.js");
+const pagination = require("../middlewares/pagination");
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
 const { hasPermission } = require("../middlewares/roleAccessControl");
 const { actionAC, resourceAC } = require("../utils/constants");
@@ -16,6 +17,7 @@ router.get(
   "/",
   authorizeAccessToken,
   hasPermission(actionAC.GET, resourceAC.USER),
+  pagination,
   tryCatch(getAllUsers)
 );
 

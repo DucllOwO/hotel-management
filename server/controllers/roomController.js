@@ -9,16 +9,18 @@ const { BadRequestError } = require("../middlewares/errorHandler");
  */
 const getAllRoom = async (req, res, next) => {
   const { status } = req.query;
+  const { from, to } = req.paginatedResult;
+
   console.log(status);
 
   if (status) {
     const { data: roomsByStatus, error: getRoomByStatusError } =
-      await roomDAL.getRoomByStatus(status);
+      await roomDAL.getRoomByStatus(status, from, to);
     if (getRoomByStatusError) return next(getRoomByStatusError);
     return res.status(200).send({ roomsByStatus });
   }
 
-  const { data: rooms, error } = await roomDAL.getAllRooms();
+  const { data: rooms, error } = await roomDAL.getAllRooms(from, to);
   console.log(rooms);
   if (error) return next(error);
 

@@ -17,13 +17,9 @@ const roomFeaturesRoutes = require("./routes/roomFeaturesRoutes");
 //const customersRoutes = require("./routes/customersRoutes");
 const usersRoutes = require("./routes/usersRoutes");
 const positionsRoutes = require("./routes/positionsRoutes");
-<<<<<<< HEAD
-const customersRoutes = require("./routes/customersRoutes");
 const paymentsRoutes = require("./routes/paymentsRoutes");
 const importingsRoutes = require("./routes/importingsRoutes");
-=======
 const { removePermission } = require("./DAL/permissionDAL");
->>>>>>> backend
 
 const app = express();
 
@@ -44,18 +40,13 @@ app.use("/api/rooms", roomsRoutes);
 app.use("/api/room_features", roomFeaturesRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/positions", positionsRoutes);
-app.use("/api/customers", customersRoutes);
-app.use("/api/payment", paymentsRoutes)
-app.use("/api/importing", importingsRoutes)
-//app.use('/positions', positionsRoutes)
+app.use("/api/payment", paymentsRoutes);
+app.use("/api/importing", importingsRoutes);
 //app.use("/branches", branchesRoutes);
 app.use("*", handle404Error);
 
 app.use(handleOtherError);
 
 app.listen(process.env.PORT || 1205, async () => {
-  // console.log("server is running");
-  // const ent = await supabase.from("test1").select("*");
-  // console.log(ent);
   console.log("server on port 1205");
 });
