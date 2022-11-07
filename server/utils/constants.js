@@ -17,6 +17,7 @@ const resourceAC = {
   BOOKING: "booking",
   REPORT: "report",
   ROOM: "room",
+  ROOM_FEATURE: "room_feature",
   VOUCHER: "voucher",
   POSITION: "position",
   PERMISSION: "permission",

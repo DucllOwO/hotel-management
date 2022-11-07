@@ -2,8 +2,12 @@ const supabase = require("../database");
 
 const TABLE_NAME = "booking";
 
-const getAllBooking = () => {
-  return supabase.from(TABLE_NAME).select("*");
+const getAllBooking = (from, to) => {
+  return supabase
+    .from(TABLE_NAME)
+    .select("*")
+    .order("id", { ascending: true })
+    .range(from, to);
 };
 
 const getBooking = (bookingID) => {
