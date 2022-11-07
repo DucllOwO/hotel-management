@@ -34,4 +34,14 @@ const roomStatus = {
   WAITING: 2,
 };
 
-module.exports = { httpStatusCodes, actionAC, resourceAC, roomStatus };
+const pagination = {
+  LIMIT_DEFAULT: 3,
+};
+
+module.exports = {
+  httpStatusCodes,
+  actionAC,
+  resourceAC,
+  roomStatus,
+  pagination,
+};

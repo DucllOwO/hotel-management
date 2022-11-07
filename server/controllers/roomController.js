@@ -1,6 +1,5 @@
 const roomDAL = require("../DAL/roomDAL");
 const { BadRequestError } = require("../middlewares/errorHandler");
-const { roomStatus } = require("../utils/constants");
 
 /**
  *
