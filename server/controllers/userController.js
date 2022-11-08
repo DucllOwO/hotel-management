@@ -1,6 +1,5 @@
 const customerDAL = require("../DAL/customerDAL");
 const employeeDAL = require("../DAL/employeeDAL");
-const accountDAL = require("../DAL/AccountDAL");
 const { BadRequestError } = require("../middlewares/errorHandler");
 
 const getAllUsers = async (req, res, next) => {

@@ -49,5 +49,8 @@ app.use("*", handle404Error);
 app.use(handleOtherError);
 
 app.listen(process.env.PORT || 1205, async () => {
+  // const { data: users, error } = await supabase.auth.api.listUsers();
+  // console.log(error);
+  // console.log(users);
   console.log("server on port 1205");
 });
