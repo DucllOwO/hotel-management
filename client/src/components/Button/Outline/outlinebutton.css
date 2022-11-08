@@ -1,0 +1,22 @@
+.outlineButton {
+    width: 75px;
+    height: 32px;
+    background-color: transparent;
+    border: 2px solid black;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    cursor: pointer;
+}
+
+.title {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.outlineButton.active, .outlineButton:hover {
+    background-color: black;
+    color: white;
+}

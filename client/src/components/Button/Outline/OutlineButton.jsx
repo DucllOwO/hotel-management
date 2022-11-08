@@ -1,8 +1,12 @@
 import React from 'react'
 import "./outlinebutton.css"
 
-export const OutlineButton = () => {
+const OutlineButton = () => {
   return (
-    <div>OutlineButton</div>
+    <div className='outlineButton'>
+      <div className="title">Cancel</div>
+    </div>
   )
 }
+
+export default OutlineButton
