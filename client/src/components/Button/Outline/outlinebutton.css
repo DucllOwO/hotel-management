@@ -2,12 +2,12 @@
     width: 75px;
     height: 32px;
     background-color: transparent;
-    border: 2px solid black;
+    border: 2px solid var(--black);
     border-radius: 2px;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: black;
+    color: var(--black);
     cursor: pointer;
 }
 
@@ -17,6 +17,6 @@
 }
 
 .outlineButton.active, .outlineButton:hover {
-    background-color: black;
-    color: white;
+    background-color: var(--black);
+    color: var(--primary-color);
 }

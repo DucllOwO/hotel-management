@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import "./table.css"
 import {Table, Button, Modal, Form, Input} from "antd"
 import "antd/dist/antd.css"
+import { PlusOutlined } from "@ant-design/icons"
 
 const DataTable = () => {
 
@@ -119,10 +120,28 @@ const DataTable = () => {
             title:'Actions',
             render:(_,record)=>{
 
-                if(editingRow === null){
-                    return(
+                if(editingRow !== null){
+                    if(editingRow === record.id){
+                        return(
+                            <>
+                                <Button 
+                                htmlType="submit"
+                                // onClick={() => {form.submit()}}
+                                >save</Button>
+                                <Button onClick={()=>{setEditingRow(null)}}>cancel</Button>
+                            </>
+                        )
+                    }
+                    else
+                    {
+                        
+                    }
+                }
+                else {
+                    return (
                         <>
-                            <Button onClick={() => {
+                            <Button onClick={(e) => {
+                                e.preventDefault()
                                 setEditingRow(record.id)
                                 form.setFieldsValue({
                                     name:record.name,
@@ -135,45 +154,6 @@ const DataTable = () => {
                         </>
                     )
                 }
-                else {
-                    return (
-                        <>
-                            <Button 
-                            htmlType="submit"
-                            onClick={() => {form.submit()}}
-                            >save</Button>
-                            <Button onClick={()=>{setEditingRow(null)}}>cancel</Button>
-                        </>
-                    )
-                }
-
-                // if(editingRow !== null){
-                //     return(
-                //         <>
-                //             <Button 
-                //             htmlType="submit"
-                //             onClick={() => {form.submit()}}
-                //             >save</Button>
-                //             <Button onClick={()=>{setEditingRow(null)}}>cancel</Button>
-                //         </>
-                //     )
-                // }
-                // else {
-                //     return (
-                //         <>
-                //             <Button onClick={() => {
-                //                 setEditingRow(record.id)
-                //                 form.setFieldsValue({
-                //                     name:record.name,
-                //                     email:record.email,
-                //                     address:record.address
-                //                 })
-                //             }}
-                //             >edit</Button>
-                //             <Button onClick={()=>{onDeleteButton(record)}}>delete</Button>
-                //         </>
-                //     )
-                // }
             }
         },
     ];
@@ -181,7 +161,7 @@ const DataTable = () => {
     const onAddButton=()=>{
         const randomNumber = parseInt(Math.random()*1000)
         const newData = {
-            id:randomNumber,
+            id:''+parseInt(dataSource.length+1),
             name:'Name '+randomNumber,
             email:randomNumber+'@gmail.com',
             address:randomNumber+' Address',
@@ -199,23 +179,29 @@ const DataTable = () => {
             okType:'danger',
             onOk:() =>{
                 setDataSource((pre)=>{
-                    return pre.filter((data) => data.id !== record.id)
+                    return (
+                        pre.filter((data) => data.id !== record.id)
+                    )
                 });
             },
         });
     };
 
     const onFinish = (values) => {
-        console.log('co goi')
-        // const updateDataSource = [...dataSource]
-        // updateDataSource.splice(editingRow,1,{...values, id:editingRow})
-        // setDataSource(updateDataSource)
-        // setEditingRow(null)
+        console.log(editingRow)
+        const updateDataSource = [...dataSource]
+        updateDataSource.splice(editingRow-1,1,{...values, id:editingRow})
+        console.log(updateDataSource)
+        setDataSource(updateDataSource)
+        setEditingRow(null)
     }
 
   return (
     <div className='table'>
-        <Button onClick={onAddButton} type='primary'>Add</Button>
+        {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
+        <div className="buttonContainer">
+            <Button onClick={onAddButton} className='addButton' type="primary" ghost icon={<PlusOutlined />}>Add new</Button>
+        </div>
         <Form form={form} onFinish={onFinish}>
             <Table
                 columns={columns}

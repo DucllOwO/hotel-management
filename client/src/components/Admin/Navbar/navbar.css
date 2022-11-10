@@ -2,52 +2,15 @@
   width: 20%;
   height: 100vh;
   background-color: #f8f8f8;
-  position: relative;
 }
 
-.logoContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 50px;
+.menu {
+  height: 100vh;
+  background-color: var(--light-grey);
 }
 
 .logo {
-  width: 90%;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-.body-item {
-  margin-top: 10px;
-  padding: 10px 0;
-  padding-left: 10px;
-  cursor: pointer;
-}
-
-.item {
-  padding-left: 30px;
-  font-size: 24px;
-}
-
-.body-item.active,
-.body-item:hover {
-  background-color: #707070;
-  color: white;
-  font-weight: bold;
-}
-
-.footer {
-  position: absolute;
   width: 100%;
-  bottom: 0;
-  padding: 10px 0;
   cursor: pointer;
-}
-
-.footer.active,
-.footer:hover {
-  background-color: #707070;
-  color: white;
-  font-weight: bold;
+  background-color: var(--light-grey);
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import "./outlinebutton.css"
+import "../../../constant/main.css"
 
 const OutlineButton = () => {
   return (

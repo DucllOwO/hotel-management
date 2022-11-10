@@ -1,22 +1,65 @@
 import React from 'react';
-import "./navbar.css";
+import "../../../components/Admin/Navbar/navbar.css";
+import {Menu, Space} from 'antd'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faUserGroup, 
-  faUserCheck, 
-  faDoorClosed, 
-  faMoneyBillTransfer,
-  faWarehouse,
-  faChartPie,
-  faArrowRightToBracket
+  TeamOutlined,
+  FileProtectOutlined,
+  CopyOutlined,
+  DatabaseOutlined,
+  PieChartOutlined,
+  LineChartOutlined,
+  LogoutOutlined
 } 
-from "@fortawesome/free-solid-svg-icons";
+from "@ant-design/icons";
 
 
 const Navbar = () => {
   return (
     <div className='navBar'>
-        <div className="logoContainer">
+      <img src="https://1000logos.net/wp-content/uploads/2021/05/Booking.Com-logo.png" alt="" className='logo'/>
+      <Menu
+                className='menu'
+                mode='inline'
+                theme='light'
+                items={[
+                    {label: "HR", key: "hr", icon: <TeamOutlined></TeamOutlined>},
+                    {label: "Account", key: "account", icon: <FileProtectOutlined></FileProtectOutlined>},
+                    {
+                      label: "Room", 
+                      key: "booking", 
+                      icon: <CopyOutlined></CopyOutlined>,
+                      children: [
+                        {label: "Room Type", key:"roomType"},
+                        {label: "Rooms", key:"rooms"},
+                        {label: "Utilities", key:"utilities"},
+                      ]
+                    },
+                    {
+                      label: "Depot", 
+                      key: "depot", 
+                      icon: <DatabaseOutlined></DatabaseOutlined>,
+                      children: [
+                        {label: "Inventory", key:"inventory"},
+                        {label: "Importing", key:"importing"},
+                        {label: "Items", key:"items"},
+                      ]
+                    },
+                    {
+                      label: "Turnover", 
+                      key: "turnover", 
+                      icon: <PieChartOutlined></PieChartOutlined>,
+                      children: [
+                        {label: "Reciepts", key:"reciepts"},
+                        {label: "Payments", key:"payments"},
+                      ]
+                    },
+                    {label: "Report", key: "report", icon: <LineChartOutlined></LineChartOutlined>},
+                    {label: "Log out", key: "logout", icon: <LogoutOutlined></LogoutOutlined>},
+                ]}
+            >
+            </Menu>
+        {/* <div className="logoContainer">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Booking.com_logo.svg/2560px-Booking.com_logo.svg.png" alt="" className="logo"/>
         </div>
         <div className="body">
@@ -48,7 +91,7 @@ const Navbar = () => {
         <div className="footer">
           <FontAwesomeIcon icon={faArrowRightToBracket} className="icon"></FontAwesomeIcon>
           <span className='item'>Log out</span>
-        </div>
+        </div> */}
     </div>
   )
 }
