@@ -2,7 +2,7 @@
     width: 75px;
     height: 32px;
     background-color: transparent;
-    border: 2px solid var(--black);
+    border: 1px solid var(--black);
     border-radius: 2px;
     display: flex;
     justify-content: center;
@@ -13,10 +13,4 @@
 
 .title {
     font-size: 14px;
-    font-weight: bold;
-}
-
-.outlineButton.active, .outlineButton:hover {
-    background-color: var(--black);
-    color: var(--primary-color);
 }

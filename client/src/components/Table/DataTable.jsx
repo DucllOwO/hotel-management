@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
-import "./table.css"
+import "./datatable.css"
 import {Table, Button, Modal, Form, Input} from "antd"
-import "antd/dist/antd.css"
-import { PlusOutlined } from "@ant-design/icons"
+import "antd/dist/antd.less"
+import {PlusOutlined} from "@ant-design/icons"
 
 const DataTable = () => {
 
     const [editingRow, setEditingRow] = useState(null)
 
     const [form] = Form.useForm()
+
+    const [searchedText, setSearchedText] = useState("")
 
     const [dataSource, setDataSource] = useState([
         {
@@ -46,6 +48,15 @@ const DataTable = () => {
         {
             key:'2',
             title:'Name',
+            filteredValue: [searchedText],
+            onFilter: (value, record) => {
+                return (
+                    String(record.name).toLocaleLowerCase().includes(value.toLocaleLowerCase()) ||
+                    String(record.email).toLocaleLowerCase().includes(value.toLocaleLowerCase()) ||
+                    String(record.address).toLocaleLowerCase().includes(value.toLocaleLowerCase())
+                    
+                )
+            },
             dataIndex:'name',
             render:(text, record)=>{ 
                 if(editingRow === record.id){
@@ -200,9 +211,18 @@ const DataTable = () => {
     <div className='table'>
         {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
         <div className="buttonContainer">
+            <Input.Search onSearch={(value)=>{
+                setSearchedText(value)
+            }}
+            onChange={(e) => {
+                setSearchedText(e.target.value)
+            }}
+            placeholder="input search text" 
+            className='searchInput' 
+            style={{width:264}}/>
             <Button onClick={onAddButton} className='addButton' type="primary" ghost icon={<PlusOutlined />}>Add new</Button>
         </div>
-        <Form form={form} onFinish={onFinish}>
+        <Form form={form} onFinish={onFinish} className="form">
             <Table
                 columns={columns}
                 dataSource={dataSource}
