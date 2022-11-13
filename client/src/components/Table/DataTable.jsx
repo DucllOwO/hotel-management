@@ -226,6 +226,7 @@ const DataTable = () => {
             <Table
                 columns={columns}
                 dataSource={dataSource}
+                scroll={{y: 410}}
             >
             </Table>
         </Form>
