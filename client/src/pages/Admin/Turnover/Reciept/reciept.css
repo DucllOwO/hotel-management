@@ -3,10 +3,6 @@
     overflow: hidden;
 }
 
-.navbar {
-    flex: 1;
-}
-
 .recieptContainer {
     width: 100%;
     flex: 4;

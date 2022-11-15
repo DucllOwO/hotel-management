@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import "../../../components/Admin/Navbar/navbar.css";
 import {Menu, Space} from 'antd'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,21 +17,37 @@ from "@ant-design/icons";
 
 const Navbar = () => {
   const navigate = useNavigate()
+
+  const [current, setCurrent] = useState('/admin');
+
+  const onClickHandler = (e) => {
+    if(e.key === "logout"){
+      
+    } 
+    else {
+      setCurrent(e.key);
+      navigate(e.key)
+    }
+  };
+
   return (
     <div className='navBar'>
       <img src="https://1000logos.net/wp-content/uploads/2021/05/Booking.Com-logo.png" alt="" className='logo'/>
       <Menu
-        onClick={({key}) => {
-          if(key==="logout"){
+        // onClick={({key}) => {
+        //   if(key==="logout"){
 
-          }
-          else {
-            navigate(key)
-          }
-        }}
+        //   }
+        //   else {
+        //     navigate(key)
+        //   }
+        // }}
         className='menu'
         mode='inline'
         theme='light'
+        defaultSelectedKeys={['/admin']}
+        selectedKeys={[current]}
+        onClick={onClickHandler}
         items={[
           {label: "Dashboard", key: "/admin", icon: <LineChartOutlined></LineChartOutlined>,},
           {label: "HR", key: "/admin/hr", icon: <TeamOutlined></TeamOutlined>},

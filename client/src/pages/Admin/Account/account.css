@@ -3,10 +3,6 @@
     overflow: hidden;
 }
 
-.navbar {
-    flex: 1;
-}
-
 .accountContainer {
     width: 100%;
     flex: 4;

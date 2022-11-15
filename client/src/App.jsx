@@ -22,7 +22,8 @@ const App = () => {
   return (
     <div className="App">
       <BrowserRouter>
-        <Routes>
+        <Admin/>
+        {/* <Routes>
           <Route path='/'>
             <Route index element={<Staff/>} />
           </Route>
@@ -39,7 +40,7 @@ const App = () => {
             <Route path="payment" element={<Payment/>} />
             <Route path="reciept" element={<Reciept/>} />
           </Route>
-        </Routes>
+        </Routes> */}
       </BrowserRouter>
     </div>
   )
