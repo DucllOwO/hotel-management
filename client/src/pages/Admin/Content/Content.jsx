@@ -15,10 +15,12 @@ import RoomType from "../Room/RoomType/RoomType";
 import Utilities from "../Room/Utilities/Utilities";
 import Payment from "../Turnover/Payment/Payment";
 import Reciept from "../Turnover/Reciept/Reciept";
+import Login from '../../Login/Login';
 
 const Content = () => {
   return (
     <Routes>
+        <Route path='/login' element={<Login></Login>}/>
         <Route path='admin/' element={<Dashboard/>} />
         <Route path="/admin/hr" element={<HR/>} />
         <Route path="/admin/account" element={<Account/>} />

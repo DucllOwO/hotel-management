@@ -17,19 +17,21 @@ import RoomType from "./pages/Admin/Room/RoomType/RoomType";
 import Utilities from "./pages/Admin/Room/Utilities/Utilities";
 import Payment from "./pages/Admin/Turnover/Payment/Payment";
 import Reciept from "./pages/Admin/Turnover/Reciept/Reciept";
+import Login from "./pages/Login/Login";
 
 const App = () => {
   return (
     <div className="App">
+      {/* <Login></Login> */}
       <BrowserRouter>
         <Admin/>
-        {/* <Routes>
+        <Routes>
           <Route path='/'>
             <Route index element={<Staff/>} />
           </Route>
           <Route path='/admin'>
-            <Route index element={<Dashboard/>} />
-            <Route path="hr" element={<HR/>} />
+            {/* <Route index element={<Dashboard/>} /> */}
+            {/* <Route path="hr" element={<HR/>} />
             <Route path="account" element={<Account/>} />
             <Route path="importing" element={<Importing/>} />
             <Route path="inventory" element={<Inventory/>} />
@@ -38,9 +40,9 @@ const App = () => {
             <Route path="roomtype" element={<RoomType/>} />
             <Route path="utilities" element={<Utilities/>} />
             <Route path="payment" element={<Payment/>} />
-            <Route path="reciept" element={<Reciept/>} />
+            <Route path="reciept" element={<Reciept/>} /> */}
           </Route>
-        </Routes> */}
+        </Routes>
       </BrowserRouter>
     </div>
   )
