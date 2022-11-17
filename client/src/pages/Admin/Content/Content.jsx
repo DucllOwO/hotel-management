@@ -20,10 +20,7 @@ import Login from '../../Login/Login';
 const Content = () => {
   return (
     <Routes>
-        <Route path='/login' element={<Login></Login>}/>
-        <Route path='admin/' element={<Dashboard/>} />
-        <Route path="/admin/hr" element={<HR/>} />
-        <Route path="/admin/account" element={<Account/>} />
+        <Route exact path="/account" element={<Account/>} />
         <Route path="/admin/importing" element={<Importing/>} />
         <Route path="/admin/inventory" element={<Inventory/>} />
         <Route path="/admin/item" element={<Item/>} />

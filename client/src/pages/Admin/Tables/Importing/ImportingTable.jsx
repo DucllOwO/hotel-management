@@ -4,7 +4,7 @@ import {Table, Button, Modal, Form, Input} from "antd"
 import "antd/dist/antd.less"
 import {PlusOutlined} from "@ant-design/icons"
 
-const InventoryTable = () => {
+const ImportingTable = () => {
 
     const [editingRow, setEditingRow] = useState(null)
 
@@ -202,4 +202,4 @@ const InventoryTable = () => {
   )
 }
 
-export default InventoryTable
+export default ImportingTable

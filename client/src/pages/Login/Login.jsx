@@ -32,7 +32,7 @@ const Login = () => {
             </div>
             <div className="type" onClick={typeHandler}>
               {
-                type !== 'password' ? <EyeOutlined className='icon'></EyeOutlined> : <EyeInvisibleOutlined className='icon'></EyeInvisibleOutlined>
+                type !== 'password' ? <EyeInvisibleOutlined className='icon'></EyeInvisibleOutlined> : <EyeOutlined className='icon'></EyeOutlined>
               }
             </div>
           </div>

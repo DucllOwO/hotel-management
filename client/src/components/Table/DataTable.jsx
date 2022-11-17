@@ -16,26 +16,26 @@ const DataTable = () => {
         {
             id:1,
             name:'John',
-            email:'John@gmail.com',
-            address:'john Address',
+            amount:'John@gmail.com',
+            price:'john price',
         },
         {
             id:2,
             name:'David',
-            email:'David@gmail.com',
-            address:'david Address',
+            amount:'David@gmail.com',
+            price:'david price',
         },
         {
             id:3,
             name:'James',
-            email:'James@gmail.com',
-            address:'james Address',
+            amount:'James@gmail.com',
+            price:'james price',
         },
         {
             id:4,
             name:'Sam',
-            email:'Sam@gmail.com',
-            address:'sam Address',
+            amount:'Sam@gmail.com',
+            price:'sam price',
         },
     ])
 
@@ -52,8 +52,8 @@ const DataTable = () => {
             onFilter: (value, record) => {
                 return (
                     String(record.name).toLocaleLowerCase().includes(value.toLocaleLowerCase()) ||
-                    String(record.email).toLocaleLowerCase().includes(value.toLocaleLowerCase()) ||
-                    String(record.address).toLocaleLowerCase().includes(value.toLocaleLowerCase())
+                    String(record.amount).toLocaleLowerCase().includes(value.toLocaleLowerCase()) ||
+                    String(record.price).toLocaleLowerCase().includes(value.toLocaleLowerCase())
                     
                 )
             },
@@ -80,17 +80,17 @@ const DataTable = () => {
         },
         {
             key:'3',
-            title:'Email',
-            dataIndex:'email',
+            title:'Amount',
+            dataIndex:'amount',
             render:(text, record)=>{
                 if(editingRow === record.id){
                     return (
                         <Form.Item
-                            name="email"
+                            name="amount"
                             rules={[
                             {
                                 required:true,
-                                message:'Please enter the email'
+                                message:'Please enter the amount'
                             },
                         ]}
                         >
@@ -104,17 +104,17 @@ const DataTable = () => {
         },
         {
             key:'4',
-            title:'Address',
-            dataIndex:'address',
+            title:'price',
+            dataIndex:'price',
             render:(text, record)=>{
                 if(editingRow === record.id){
                     return (
                         <Form.Item
-                            name="address"
+                            name="price"
                             rules={[
                             {
                                 required:true,
-                                message:'Please enter the address'
+                                message:'Please enter the price'
                             },
                         ]}
                         >
@@ -156,8 +156,8 @@ const DataTable = () => {
                                 setEditingRow(record.id)
                                 form.setFieldsValue({
                                     name:record.name,
-                                    email:record.email,
-                                    address:record.address
+                                    amount:record.amount,
+                                    price:record.price
                                 })
                             }}
                             >edit</Button>
@@ -174,8 +174,8 @@ const DataTable = () => {
         const newData = {
             id:''+parseInt(dataSource.length+1),
             name:'Name '+randomNumber,
-            email:randomNumber+'@gmail.com',
-            address:randomNumber+' Address',
+            amount:randomNumber+'@gmail.com',
+            price:randomNumber+' price',
         }
 
         setDataSource(pre=>{

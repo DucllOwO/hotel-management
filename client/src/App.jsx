@@ -24,14 +24,28 @@ const App = () => {
     <div className="App">
       {/* <Login></Login> */}
       <BrowserRouter>
+        {/* <Admin/> */}
+        <Routes>
+          <Route path='/login'>
+            <Route index element={<Login/>} />
+          </Route>
+          <Route path="/admin" element={<Admin/>}>
+            {/* <Route index element={<Admin/>} /> */}
+          </Route>
+          <Route path="/staff">
+            <Route index element={<Staff/>} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+      {/* <BrowserRouter>
         <Admin/>
         <Routes>
           <Route path='/'>
             <Route index element={<Staff/>} />
           </Route>
           <Route path='/admin'>
-            {/* <Route index element={<Dashboard/>} /> */}
-            {/* <Route path="hr" element={<HR/>} />
+            <Route index element={<Dashboard/>} />
+            <Route path="hr" element={<HR/>} />
             <Route path="account" element={<Account/>} />
             <Route path="importing" element={<Importing/>} />
             <Route path="inventory" element={<Inventory/>} />
@@ -40,10 +54,10 @@ const App = () => {
             <Route path="roomtype" element={<RoomType/>} />
             <Route path="utilities" element={<Utilities/>} />
             <Route path="payment" element={<Payment/>} />
-            <Route path="reciept" element={<Reciept/>} /> */}
+            <Route path="reciept" element={<Reciept/>} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter> */}
     </div>
   )
 };

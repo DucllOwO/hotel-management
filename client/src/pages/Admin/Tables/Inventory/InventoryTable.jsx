@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import "../index.css"
+import "./InventoryTable.css"
 import {Table, Button, Modal, Form, Input} from "antd"
 import "antd/dist/antd.less"
 import {PlusOutlined} from "@ant-design/icons"
@@ -14,28 +14,28 @@ const InventoryTable = () => {
 
     const [dataSource, setDataSource] = useState([
         {
-            idNum:1,
+            id:1,
             name:'John',
-            amount:'20',
-            price:'50',
+            email:'John@gmail.com',
+            address:'john Address',
         },
         {
-            idNum:2,
+            id:2,
             name:'David',
-            amount:'20',
-            price:'50',
+            email:'David@gmail.com',
+            address:'david Address',
         },
         {
-            idNum:3,
+            id:3,
             name:'James',
-            amount:'J20',
-            price:'50',
+            email:'James@gmail.com',
+            address:'james Address',
         },
         {
-            idNum:4,
+            id:4,
             name:'Sam',
-            amount:'20',
-            price:'50',
+            email:'Sam@gmail.com',
+            address:'sam Address',
         },
     ])
 
@@ -43,7 +43,7 @@ const InventoryTable = () => {
         {
             key:'1',
             title:'ID',
-            dataIndex:'idNum',
+            dataIndex:'id',
         },
         {
             key:'2',
@@ -51,12 +51,15 @@ const InventoryTable = () => {
             filteredValue: [searchedText],
             onFilter: (value, record) => {
                 return (
-                    String(record.name).toLocaleLowerCase().includes(value.toLocaleLowerCase())
+                    String(record.name).toLocaleLowerCase().includes(value.toLocaleLowerCase()) ||
+                    String(record.email).toLocaleLowerCase().includes(value.toLocaleLowerCase()) ||
+                    String(record.address).toLocaleLowerCase().includes(value.toLocaleLowerCase())
+                    
                 )
             },
             dataIndex:'name',
             render:(text, record)=>{ 
-                if(editingRow === record.idNum){
+                if(editingRow === record.id){
                     return (
                         <Form.Item
                             name="name"
@@ -77,17 +80,17 @@ const InventoryTable = () => {
         },
         {
             key:'3',
-            title:'Amount',
-            dataIndex:'amount',
+            title:'Email',
+            dataIndex:'email',
             render:(text, record)=>{
-                if(editingRow === record.idNum){
+                if(editingRow === record.id){
                     return (
                         <Form.Item
-                            name="amount"
+                            name="email"
                             rules={[
                             {
                                 required:true,
-                                message:'Please enter the amount'
+                                message:'Please enter the email'
                             },
                         ]}
                         >
@@ -101,17 +104,17 @@ const InventoryTable = () => {
         },
         {
             key:'4',
-            title:'Price',
-            dataIndex:'price',
+            title:'Address',
+            dataIndex:'address',
             render:(text, record)=>{
-                if(editingRow === record.idNum){
+                if(editingRow === record.id){
                     return (
                         <Form.Item
-                            name="price"
+                            name="address"
                             rules={[
                             {
                                 required:true,
-                                message:'Please enter the price'
+                                message:'Please enter the address'
                             },
                         ]}
                         >
@@ -129,7 +132,7 @@ const InventoryTable = () => {
             render:(_,record)=>{
 
                 if(editingRow !== null){
-                    if(editingRow === record.idNum){
+                    if(editingRow === record.id){
                         return(
                             <>
                                 <Button 
@@ -150,11 +153,11 @@ const InventoryTable = () => {
                         <>
                             <Button onClick={(e) => {
                                 e.preventDefault()
-                                setEditingRow(record.idNum)
+                                setEditingRow(record.id)
                                 form.setFieldsValue({
                                     name:record.name,
-                                    amount:record.amount,
-                                    price:record.price,
+                                    email:record.email,
+                                    address:record.address
                                 })
                             }}
                             >edit</Button>
@@ -169,10 +172,10 @@ const InventoryTable = () => {
     const onAddButton=()=>{
         const randomNumber = parseInt(Math.random()*1000)
         const newData = {
-            idNum:''+parseInt(dataSource.length+1),
+            id:''+parseInt(dataSource.length+1),
             name:'Name '+randomNumber,
-            amount:'20',
-            price: randomNumber + ' price'
+            email:randomNumber+'@gmail.com',
+            address:randomNumber+' Address',
         }
 
         setDataSource(pre=>{
@@ -188,7 +191,7 @@ const InventoryTable = () => {
             onOk:() =>{
                 setDataSource((pre)=>{
                     return (
-                        pre.filter((data) => data.idNum !== record.idNum)
+                        pre.filter((data) => data.id !== record.id)
                     )
                 });
             },
@@ -198,7 +201,7 @@ const InventoryTable = () => {
     const onFinish = (values) => {
         console.log(editingRow)
         const updateDataSource = [...dataSource]
-        updateDataSource.splice(editingRow-1,1,{...values, idNum:editingRow})
+        updateDataSource.splice(editingRow-1,1,{...values, id:editingRow})
         console.log(updateDataSource)
         setDataSource(updateDataSource)
         setEditingRow(null)
@@ -223,7 +226,7 @@ const InventoryTable = () => {
             <Table
                 columns={columns}
                 dataSource={dataSource}
-                scroll={{y: 350}}
+                scroll={{y: 410}}
             >
             </Table>
         </Form>

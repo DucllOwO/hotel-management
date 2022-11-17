@@ -37,6 +37,7 @@
     color: var(--primary-color);
     margin-top: 80px;
     margin-bottom: 50px;
+    user-select: none;
 }
 
 .loginButton {
@@ -48,17 +49,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 .buttonText {
     color: var(--black);
     font-size: var(--fs-24);
     font-weight: var(--fw-bold);
+    user-select: none;
 }
 
 .label {
     font-size: var(--fs-14);
     color: var(--primary-color);
+    user-select: none;
 }
 
 .input {
@@ -68,6 +72,7 @@
     font-size: var(--fs-24);
     font-weight: var(--fw-bold);
     color: var(--primary-color);
+    user-select: none;
 }
 
 ::placeholder{
@@ -85,6 +90,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    user-select: none;
 }
 
 .icon {
