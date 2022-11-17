@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import "../../../components/Admin/Navbar/navbar.css";
-import {Menu, Space} from 'antd'
+import { Menu, Space } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import {
   TeamOutlined,
   FileProtectOutlined,
@@ -10,29 +10,29 @@ import {
   DatabaseOutlined,
   PieChartOutlined,
   LineChartOutlined,
-  LogoutOutlined
-} 
-from "@ant-design/icons";
-
+  LogoutOutlined,
+} from "@ant-design/icons";
 
 const Navbar = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [current, setCurrent] = useState('/admin');
+  const [current, setCurrent] = useState("/admin");
 
   const onClickHandler = (e) => {
-    if(e.key === "logout"){
-      
-    } 
-    else {
+    if (e.key === "logout") {
+    } else {
       setCurrent(e.key);
-      navigate(e.key)
+      navigate(e.key);
     }
   };
 
   return (
-    <div className='navBar'>
-      <img src="https://1000logos.net/wp-content/uploads/2021/05/Booking.Com-logo.png" alt="" className='logo'/>
+    <div className="navBar">
+      <img
+        src="https://1000logos.net/wp-content/uploads/2021/05/Booking.Com-logo.png"
+        alt=""
+        className="logo"
+      />
       <Menu
         // onClick={({key}) => {
         //   if(key==="logout"){
@@ -42,50 +42,65 @@ const Navbar = () => {
         //     navigate(key)
         //   }
         // }}
-        className='menu'
-        mode='inline'
-        theme='light'
-        defaultSelectedKeys={['/admin']}
+        className="menu"
+        mode="inline"
+        theme="light"
+        defaultSelectedKeys={["/admin"]}
         selectedKeys={[current]}
         onClick={onClickHandler}
         items={[
-          {label: "Dashboard", key: "/admin", icon: <LineChartOutlined></LineChartOutlined>,},
-          {label: "HR", key: "/admin/hr", icon: <TeamOutlined></TeamOutlined>},
-          {label: "Account", key: "/admin/account", icon: <FileProtectOutlined></FileProtectOutlined>},
           {
-            label: "Room", 
-            key: "/admin/rooms", 
+            label: "Dashboard",
+            key: "/admin",
+            icon: <LineChartOutlined></LineChartOutlined>,
+          },
+          {
+            label: "HR",
+            key: "/admin/hr",
+            icon: <TeamOutlined></TeamOutlined>,
+          },
+          {
+            label: "Account",
+            key: "/admin/account",
+            icon: <FileProtectOutlined></FileProtectOutlined>,
+          },
+          {
+            label: "Room",
+            key: "/admin/rooms",
             icon: <CopyOutlined></CopyOutlined>,
             children: [
-              {label: "Room Type", key:"/admin/roomType"},
-              {label: "Rooms", key:"/admin/rooms"},
-              {label: "Utilities", key:"/admin/utilities"},
-            ]
+              { label: "Room Type", key: "/admin/roomType" },
+              { label: "Rooms", key: "/admin/rooms" },
+              { label: "Utilities", key: "/admin/utilities" },
+            ],
           },
           {
-            label: "Depot", 
-            key: "/admin/inventory", 
+            label: "Depot",
+            key: "/admin/inventory",
             icon: <DatabaseOutlined></DatabaseOutlined>,
             children: [
-              {label: "Inventory", key:"/admin/inventory"},
-              {label: "Importing", key:"/admin/importing"},
-              {label: "Item", key:"/admin/item"},
-            ]
+              { label: "Inventory", key: "/admin/inventory" },
+              { label: "Importing", key: "/admin/importing" },
+              { label: "Item", key: "/admin/item" },
+            ],
           },
           {
-            label: "Turnover", 
-            key: "/admin/reciept", 
+            label: "Turnover",
+            key: "/admin/reciept",
             icon: <PieChartOutlined></PieChartOutlined>,
             children: [
-              {label: "Reciept", key:"/admin/reciept"},
-              {label: "Payment", key:"/admin/payment"},
-            ]
+              { label: "Reciept", key: "/admin/reciept" },
+              { label: "Payment", key: "/admin/payment" },
+            ],
           },
-          {label: "Log out", key: "logout", icon: <LogoutOutlined></LogoutOutlined>},
+          {
+            label: "Log out",
+            key: "logout",
+            icon: <LogoutOutlined></LogoutOutlined>,
+          },
         ]}
-      >
-      </Menu>
-        {/* <div className="logoContainer">
+      ></Menu>
+      {/* <div className="logoContainer">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Booking.com_logo.svg/2560px-Booking.com_logo.svg.png" alt="" className="logo"/>
         </div>
         <div className="body">
@@ -119,7 +134,7 @@ const Navbar = () => {
           <span className='item'>Log out</span>
         </div> */}
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

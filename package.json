@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@craco/craco": "^7.0.0",
-    "react-icon": "^1.0.0"
-  }
-}

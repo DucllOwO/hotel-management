@@ -1,10 +1,6 @@
 import React from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route
-} from 'react-router-dom';
-import Admin from './pages/Admin/Admin';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Admin from "./pages/Admin/Admin";
 import Staff from "./pages/Staff/Staff";
 import HR from "./pages/Admin/HR/HR";
 import Dashboard from "./pages/Admin/Dashboard/Dashboard";
@@ -20,24 +16,32 @@ import Reciept from "./pages/Admin/Turnover/Reciept/Reciept";
 import Login from "./pages/Login/Login";
 
 const App = () => {
+  const isAdmin = true;
   return (
-    <div className="App">
-      {/* <Login></Login> */}
-      <BrowserRouter>
-        {/* <Admin/> */}
+    <BrowserRouter>
+      <div className="App">
+        {/* <Login></Login> */}
         <Routes>
-          <Route path='/login'>
-            <Route index element={<Login/>} />
-          </Route>
-          <Route path="/admin" element={<Admin/>}>
-            {/* <Route index element={<Admin/>} /> */}
-          </Route>
-          <Route path="/staff">
-            <Route index element={<Staff/>} />
-          </Route>
+          <Route path="/login" element={<Login />}></Route>
+          {isAdmin ? (
+            <Route path="/admin" element={<Admin />}>
+              <Route path="account" element={<Account />} />
+              <Route path="importing" element={<Importing />} />
+              <Route path="inventory" element={<Inventory />} />
+              <Route path="item" element={<Item />} />
+              <Route path="rooms" element={<Rooms />} />
+              <Route path="roomtype" element={<RoomType />} />
+              <Route path="utilities" element={<Utilities />} />
+              <Route path="payment" element={<Payment />} />
+              <Route path="reciept" element={<Reciept />} />
+            </Route>
+          ) : (
+            <Route path="/staff" element={<Staff />} />
+          )}
+          {/* <Route path="/admin/account" element={<Account />} /> */}
         </Routes>
-      </BrowserRouter>
-      {/* <BrowserRouter>
+
+        {/* <BrowserRouter>
         <Admin/>
         <Routes>
           <Route path='/'>
@@ -58,8 +62,9 @@ const App = () => {
           </Route>
         </Routes>
       </BrowserRouter> */}
-    </div>
-  )
+      </div>
+    </BrowserRouter>
+  );
 };
 
 export default App;
