@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, redirect } from "react-router-dom";
 import Admin from "./pages/Admin/Admin";
 import Staff from "./pages/Staff/Staff";
 import HR from "./pages/Admin/HR/HR";
@@ -25,8 +25,11 @@ const App = () => {
           <Route path="/login" element={<Login />}></Route>
           {isAdmin ? (
             <Route path="/admin" element={<Admin />}>
+              
+              <Route index path="dashboard" element={<Dashboard/>}/>
               <Route path="account" element={<Account />} />
               <Route path="importing" element={<Importing />} />
+              <Route path="hr" element={<HR />} />
               <Route path="inventory" element={<Inventory />} />
               <Route path="item" element={<Item />} />
               <Route path="rooms" element={<Rooms />} />

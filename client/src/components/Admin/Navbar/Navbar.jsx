@@ -51,7 +51,7 @@ const Navbar = () => {
         items={[
           {
             label: "Dashboard",
-            key: "/admin",
+            key: "/admin/dashboard",
             icon: <LineChartOutlined></LineChartOutlined>,
           },
           {
