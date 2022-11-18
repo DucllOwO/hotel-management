@@ -1,5 +1,11 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate, redirect } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  redirect,
+} from "react-router-dom";
 import Admin from "./pages/Admin/Admin";
 import Staff from "./pages/Staff/Staff";
 import HR from "./pages/Admin/HR/HR";
@@ -22,11 +28,10 @@ const App = () => {
       <div className="App">
         {/* <Login></Login> */}
         <Routes>
-          <Route path="/login" element={<Login />}></Route>
+          <Route path="/" element={<Login />}></Route>
           {isAdmin ? (
             <Route path="/admin" element={<Admin />}>
-              
-              <Route index path="dashboard" element={<Dashboard/>}/>
+              <Route index path="dashboard" element={<Dashboard />} />
               <Route path="account" element={<Account />} />
               <Route path="importing" element={<Importing />} />
               <Route path="hr" element={<HR />} />
