@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../../../components/Admin/Navbar/navbar.css";
 import { Menu, Space } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,14 +12,19 @@ import {
   LineChartOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
+import LocalStorage from "../../../Utils/localStorage";
+import { AppContext } from "../../../context/AppContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
-
+  const { setUser } = useContext(AppContext);
   const [current, setCurrent] = useState("/admin");
 
   const onClickHandler = (e) => {
     if (e.key === "logout") {
+      LocalStorage.deleteItem("user");
+      setUser(null);
+      navigate("/");
     } else {
       setCurrent(e.key);
       navigate(e.key);

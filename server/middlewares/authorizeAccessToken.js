@@ -18,44 +18,4 @@ const authorizeAccessToken = (req, res, next) => {
   }
 };
 
-// const verifyAdmin = (req, res, next) => {
-//   verifyToken(req, res, () => {
-//     if (req.user.role === 'admin') {
-//       next();
-//     } else {
-//       res.status(403).json("You are not allowed to do that!");
-//     }
-//   });
-// };
-
-// const verifyManager = (req, res, next) => {
-//   verifyToken(req, res, () => {
-//     if (req.user.role === "manager") {
-//       next();
-//     } else {
-//       res.status(403).json("You are not allowed to do that!");
-//     }
-//   });
-// };
-
-// const verifyAdminAndManager = (req, res, next) => {
-//   verifyToken(req, res, () => {
-//     if (req.user.role === "admin" || req.user.role === "manager") {
-//       next();
-//     } else {
-//       res.status(403).json("You are not allowed to do that!");
-//     }
-//   });
-// };
-
-// const verifyEmployee = (req, res, next) => {
-//   verifyToken(req, res, () => {
-//     if (req.user.role === "employee") {
-//       next();
-//     } else {
-//       res.status(403).json("You are not allowed to do that!");
-//     }
-//   });
-// };
-
 module.exports = authorizeAccessToken;

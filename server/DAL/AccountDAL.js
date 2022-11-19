@@ -7,7 +7,6 @@ async function getAccountByUsername(username) {
     .from(TABLE_NAME)
     .select("*")
     .eq("username", username);
-  console.log(`${data} + ${error}`);
   return { user: data[0], error };
 }
 async function getAccountByEmail(email) {

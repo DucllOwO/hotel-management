@@ -34,7 +34,9 @@ const initAccessControl = async () => {
 const hasPermission = (action, resource) => {
   return (req, res, next) => {
     try {
-      const { user } = req.body;
+      //axios method GET don't support send body data so use with query instead;
+      const { user } =
+        Object.keys(req.body).length !== 0 ? req.body : req.query;
       const userPosition = user?.position;
       switch (action) {
         case "get":

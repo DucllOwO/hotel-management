@@ -10,6 +10,28 @@ const getAllEmployee = (from, to) => {
     .range(from, to);
 };
 
+const getEmployeePositionByUsername = (username) => {
+  return supabase
+    .from(TABLE_NAME)
+    .select(
+      `position_id:position(
+    name
+  )`
+    )
+    .eq("username", username);
+};
+
+const getEmployeePositionByEmail = (email) => {
+  return supabase
+    .from(TABLE_NAME)
+    .select(
+      `position_id:position(
+    name
+  )`
+    )
+    .eq("email", email);
+};
+
 const getEmployeeByID = (EmployeeID) => {
   return supabase.from(TABLE_NAME).select().eq("id", EmployeeID);
 };
@@ -37,4 +59,6 @@ module.exports = {
   getEmployeeByID,
   updateEmployee,
   deleteEmployee,
+  getEmployeePositionByUsername,
+  getEmployeePositionByEmail,
 };

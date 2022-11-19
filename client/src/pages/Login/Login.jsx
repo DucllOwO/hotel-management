@@ -1,17 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./login.css";
 import logo from "../../assets/images/logo.png";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { publicRequest } from "../../api/api";
+import LocalStorage from "../../Utils/localStorage";
+import { AppContext } from "../../context/AppContext";
+import { Spin } from "antd";
 
 const Login = () => {
+  const { setUser } = useContext(AppContext);
+  const userLocal = LocalStorage.getItem("user");
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState({});
   const [type, setType] = useState("password");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const handleUsername = (e) => setUsername(e.target.value);
+  const handlePassword = (e) => setPassword(e.target.value);
 
   return (
     <div className="login">
+      {userLocal && <Navigate to="/admin/dashboard" replace={true} />}
       <div className="logo">
         <img src={logo} alt="logo" className="logoImg" />
       </div>
@@ -22,9 +34,12 @@ const Login = () => {
           <div className="label">Username</div>
           <div className="input">
             <input
+              id=""
               type="text"
               placeholder="Please enter username"
               className="input"
+              value={username}
+              onChange={handleUsername}
             />
           </div>
         </div>
@@ -37,6 +52,8 @@ const Login = () => {
                 type={type}
                 placeholder="Please enter password"
                 className="input"
+                value={password}
+                onChange={handlePassword}
               />
             </div>
             <div className="type" onClick={typeHandler}>
@@ -49,9 +66,21 @@ const Login = () => {
           </div>
         </div>
 
-        <div className="loginButton" onClick={login}>
-          <div className="buttonText">Login</div>
-        </div>
+        {error ? (
+          <h2 style={{ color: "red" }}>
+            Có lỗi khi đăng nhập vui lòng thử lại
+          </h2>
+        ) : null}
+
+        {isLoading ? (
+          <div className="loginButton">
+            <Spin tip="Loading..."></Spin>
+          </div>
+        ) : (
+          <div className="loginButton" onClick={login}>
+            <div className="buttonText">Login</div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -64,9 +93,35 @@ const Login = () => {
     }
   }
 
-  async function login() {
+  async function login(e) {
+    e.preventDefault();
+
     if (!isLoading) {
-      const data = await publicRequest.post("");
+      try {
+        setIsLoading(true);
+        const { data } = await publicRequest.post("/auth/login", {
+          username,
+          password,
+        });
+        console.log(data);
+        if (data) {
+          const user = {
+            account: data?.user,
+            token: data?.accessToken,
+            position: data?.position,
+          };
+
+          // save token for axios
+          LocalStorage.setItem("user", user);
+          // save user to app context
+          setUser(user);
+          setIsLoading(false);
+          navigate("/admin/dashboard");
+        }
+      } catch (error) {
+        setError(error);
+        setIsLoading(false);
+      }
     }
     // useNavigate('/admin')
   }

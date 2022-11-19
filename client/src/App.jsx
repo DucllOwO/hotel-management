@@ -1,11 +1,5 @@
-import React from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  redirect,
-} from "react-router-dom";
+import React, { useContext } from "react";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import Admin from "./pages/Admin/Admin";
 import Staff from "./pages/Staff/Staff";
 import HR from "./pages/Admin/HR/HR";
@@ -20,16 +14,18 @@ import Utilities from "./pages/Admin/Room/Utilities/Utilities";
 import Payment from "./pages/Admin/Turnover/Payment/Payment";
 import Reciept from "./pages/Admin/Turnover/Reciept/Reciept";
 import Login from "./pages/Login/Login";
+import { AppContext } from "./context/AppContext";
+import LocalStorage from "./Utils/localStorage";
 
 const App = () => {
-  const isAdmin = true;
+  const user = LocalStorage.getItem("user");
   return (
     <BrowserRouter>
       <div className="App">
-        {/* <Login></Login> */}
         <Routes>
           <Route path="/" element={<Login />}></Route>
-          {isAdmin ? (
+
+          {true ? (
             <Route path="/admin" element={<Admin />}>
               <Route index path="dashboard" element={<Dashboard />} />
               <Route path="account" element={<Account />} />
