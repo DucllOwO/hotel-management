@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import "./login.css"
 import logo from "../../assets/images/logo.png"
 import {EyeOutlined, EyeInvisibleOutlined} from "@ant-design/icons";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
 
@@ -38,9 +38,11 @@ const Login = () => {
           </div>
         </div>
   
-        <div className="loginButton" onClick={Navigate}>
-          <div className='buttonText'>Login</div>
-        </div>
+        <Link to="/admin">
+          <div className="loginButton" onClick={Navigate}>
+            <div className='buttonText'>Login</div>
+          </div>
+        </Link>
       </div>
     </div>
   )

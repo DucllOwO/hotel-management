@@ -1,5 +1,11 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate, redirect } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  redirect,
+} from "react-router-dom";
 import Admin from "./pages/Admin/Admin";
 import Staff from "./pages/Staff/Staff";
 import HR from "./pages/Admin/HR/HR";
@@ -14,19 +20,22 @@ import Utilities from "./pages/Admin/Room/Utilities/Utilities";
 import Payment from "./pages/Admin/Turnover/Payment/Payment";
 import Reciept from "./pages/Admin/Turnover/Reciept/Reciept";
 import Login from "./pages/Login/Login";
+import Customer from "./pages/Staff/Customer/Customer";
+import Booking from "./pages/Staff/Booking/Booking";
+import StaffReciept from "./pages/Staff/Receipt/Receipt";
 
 const App = () => {
-  const isAdmin = true;
+  const isAdmin = false;
   return (
     <BrowserRouter>
       <div className="App">
         {/* <Login></Login> */}
         <Routes>
+          <Route index element={<Login />}></Route>
           <Route path="/login" element={<Login />}></Route>
           {isAdmin ? (
             <Route path="/admin" element={<Admin />}>
-              
-              <Route index path="dashboard" element={<Dashboard/>}/>
+              <Route index path="dashboard" element={<Dashboard />} />
               <Route path="account" element={<Account />} />
               <Route path="importing" element={<Importing />} />
               <Route path="hr" element={<HR />} />
@@ -39,7 +48,11 @@ const App = () => {
               <Route path="reciept" element={<Reciept />} />
             </Route>
           ) : (
-            <Route path="/staff" element={<Staff />} />
+            <Route path="/staff" element={<Staff />}>
+              <Route index path="customer" element={<Customer />} />
+              <Route path="booking" element={<Booking />} />
+              <Route path="receipt" element={<StaffReciept />} />
+            </Route>
           )}
           {/* <Route path="/admin/account" element={<Account />} /> */}
         </Routes>

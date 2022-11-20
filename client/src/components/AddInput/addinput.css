@@ -1,0 +1,10 @@
+.addInput{
+    width: 215px;
+    margin-bottom: 20px;
+}
+
+.label {
+    color: black;
+    margin-bottom: 3px;
+    font-weight: var(--fw-bold);
+}
