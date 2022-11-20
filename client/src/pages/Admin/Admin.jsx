@@ -1,12 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import "./admin.css";
 import Navbar from "../../components/Admin/Navbar/Navbar";
 import Topbar from "../../components/Topbar/Topbar";
-import DataTable from "../../components/Table/DataTable";
-import OutlineButton from "../../components/Button/Outline/OutlineButton";
-import StaffNavbar from "../../components/Staff/Navbar/Navbar";
 import { Navigate, Outlet } from "react-router-dom";
-import { AppContext } from "../../context/AppContext";
 import LocalStorage from "../../Utils/localStorage";
 
 const Admin = () => {
