@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import "./admin.css";
 import Navbar from "../../components/Admin/Navbar/Navbar";
-import HR from "./HR/HR";
 import Topbar from "../../components/Topbar/Topbar";
 import DataTable from "../../components/Table/DataTable";
 import OutlineButton from "../../components/Button/Outline/OutlineButton";
@@ -17,10 +16,13 @@ const Admin = () => {
       {!user && <Navigate to="/" replace={true} />}
       <Navbar className="navbar"></Navbar>
       <div className="homeContainer">
+        <Topbar
+          name="Huỳnh Thế Vĩ"
+          img="https://12ax7web.s3.amazonaws.com/accounts/1/products/1986199880924/Boba-Stitch_800x800_SEPS-1000x1000.jpg"
+          position="Manager"
+        ></Topbar>
         <Outlet />
       </div>
-      {/* <OutlineButton></OutlineButton> */}
-      {/* <StaffNavbar></StaffNavbar> */}
     </div>
   );
 };

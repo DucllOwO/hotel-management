@@ -1,0 +1,17 @@
+.filterBtn:hover {
+    background-color: var(--black);
+    color: var(--primary-color);
+}
+
+.filterBtn {
+    margin-left: 30px;
+}
+
+.headerButtons {
+    display: flex;
+    gap: 10px;
+}
+
+.headerBtn:hover {
+    background-color: var(--light-grey);
+}

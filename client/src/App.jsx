@@ -1,5 +1,11 @@
-import React, { useContext } from "react";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import React from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  redirect,
+} from "react-router-dom";
 import Admin from "./pages/Admin/Admin";
 import Staff from "./pages/Staff/Staff";
 import HR from "./pages/Admin/HR/HR";
@@ -14,9 +20,6 @@ import Utilities from "./pages/Admin/Room/Utilities/Utilities";
 import Payment from "./pages/Admin/Turnover/Payment/Payment";
 import Reciept from "./pages/Admin/Turnover/Reciept/Reciept";
 import Login from "./pages/Login/Login";
-import { AppContext } from "./context/AppContext";
-import LocalStorage from "./Utils/localStorage";
-import Position from "./pages/Admin/Position/Position";
 
 const App = () => {
   const user = LocalStorage.getItem("user");
@@ -24,9 +27,9 @@ const App = () => {
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Login />}></Route>
-
-          {true ? (
+          <Route index element={<Login />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          {isAdmin ? (
             <Route path="/admin" element={<Admin />}>
               <Route index path="dashboard" element={<Dashboard />} />
               <Route path="account" element={<Account />} />
@@ -42,7 +45,11 @@ const App = () => {
               <Route path="position" element={<Position />} />
             </Route>
           ) : (
-            <Route path="/staff" element={<Staff />} />
+            <Route path="/staff" element={<Staff />}>
+              <Route index path="customer" element={<Customer />} />
+              <Route path="booking" element={<Booking />} />
+              <Route path="receipt" element={<StaffReciept />} />
+            </Route>
           )}
           {/* <Route path="/admin/account" element={<Account />} /> */}
         </Routes>

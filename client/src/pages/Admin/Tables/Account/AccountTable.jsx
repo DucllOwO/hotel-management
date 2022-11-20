@@ -18,7 +18,7 @@ const AccountTable = () => {
             name:'John',
             birthday:'23/03/2002',
             username:'huynhthevi',
-            password:''
+            password:'',  
         },
         {
             idNum:2,
@@ -48,6 +48,7 @@ const AccountTable = () => {
             key:'1',
             title:'ID',
             dataIndex:'idNum',
+            width: 70
         },
         {
             key:'2',
@@ -86,6 +87,7 @@ const AccountTable = () => {
             key:'3',
             title:'Birthday',
             dataIndex:'birthday',
+            width: 150,
             render:(text, record)=>{
                 if(editingRow === record.idNum){
                     return (

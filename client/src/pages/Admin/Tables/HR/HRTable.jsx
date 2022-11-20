@@ -56,6 +56,7 @@ const HRTable = () => {
             key:'1',
             title:'ID',
             dataIndex:'idNum',
+            width: 70
         },
         {
             key:'2',
