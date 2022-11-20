@@ -1,8 +1,7 @@
 import React, { useState, useContext } from "react";
 import "../../../components/Admin/Navbar/navbar.css";
-import { Menu, Space } from "antd";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, useNavigate } from "react-router-dom";
+import { Menu } from "antd";
+import { useNavigate } from "react-router-dom";
 import {
   TeamOutlined,
   FileProtectOutlined,
@@ -11,6 +10,7 @@ import {
   PieChartOutlined,
   LineChartOutlined,
   LogoutOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import LocalStorage from "../../../Utils/localStorage";
 import { AppContext } from "../../../context/AppContext";
@@ -39,14 +39,6 @@ const Navbar = () => {
         className="logo"
       />
       <Menu
-        // onClick={({key}) => {
-        //   if(key==="logout"){
-
-        //   }
-        //   else {
-        //     navigate(key)
-        //   }
-        // }}
         className="menu"
         mode="inline"
         theme="light"
@@ -91,12 +83,17 @@ const Navbar = () => {
           },
           {
             label: "Turnover",
-            key: "/admin/reciept",
+            key: "/admin/receipt",
             icon: <PieChartOutlined></PieChartOutlined>,
             children: [
-              { label: "Reciept", key: "/admin/reciept" },
+              { label: "Receipt", key: "/admin/receipt" },
               { label: "Payment", key: "/admin/payment" },
             ],
+          },
+          {
+            label: "Position",
+            key: "/admin/position",
+            icon: <UserOutlined />,
           },
           {
             label: "Log out",

@@ -16,6 +16,7 @@ import Reciept from "./pages/Admin/Turnover/Reciept/Reciept";
 import Login from "./pages/Login/Login";
 import { AppContext } from "./context/AppContext";
 import LocalStorage from "./Utils/localStorage";
+import Position from "./pages/Admin/Position/Position";
 
 const App = () => {
   const user = LocalStorage.getItem("user");
@@ -37,7 +38,8 @@ const App = () => {
               <Route path="roomtype" element={<RoomType />} />
               <Route path="utilities" element={<Utilities />} />
               <Route path="payment" element={<Payment />} />
-              <Route path="reciept" element={<Reciept />} />
+              <Route path="receipt" element={<Reciept />} />
+              <Route path="position" element={<Position />} />
             </Route>
           ) : (
             <Route path="/staff" element={<Staff />} />
