@@ -1,33 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
+import PositionModal from "../../Modals/Position/PositionModal";
+import { userRequest } from "../../../../api/api";
+import { useContext } from "react";
+import { AppContext } from "../../../../context/AppContext";
 
-const PositionTable = () => {
+const PositionTable = ({ positions, setPositions }) => {
   const [editingRow, setEditingRow] = useState(null);
+  const { user } = useContext(AppContext);
+  const [features, setFeatures] = useState([]);
 
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
 
-  const [dataSource, setDataSource] = useState([
-    {
-      idNum: 1,
-      name: "admin",
-    },
-    {
-      idNum: 2,
-      name: "staff",
-    },
-  ]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+  const handle = () => {
+    setIsModalVisible(false);
+  };
+
+  useEffect(() => {
+    const fetchFeatures = async () => {
+      const { data } = await userRequest.get("/features", {
+        params: { user: { position: user?.position } },
+      });
+      setFeatures(data.features);
+    };
+
+    fetchFeatures();
+  }, [user?.position]);
 
   const columns = [
     {
       key: "1",
       title: "ID",
       colSpan: 1,
-      dataIndex: "idNum",
+      dataIndex: "id",
       width: "10%",
     },
     {
@@ -49,25 +63,6 @@ const PositionTable = () => {
         );
       },
       dataIndex: "name",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the name",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
     },
     {
       key: "3",
@@ -126,47 +121,44 @@ const PositionTable = () => {
     },
   ];
 
-  const onAddButton = () => {
-    const randomNumber = parseInt(Math.random() * 1000);
-    const newData = {
-      idNum: "" + parseInt(dataSource.length + 1),
-      name: "Name " + randomNumber,
-      birthday: "23/03/2002",
-      username: randomNumber + " username",
-    };
-
-    setDataSource((pre) => {
-      return [...pre, newData];
-    });
-  };
-
   const onDeleteButton = (record) => {
     Modal.confirm({
       title: "Are you sure, you want to delete this record?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        setDataSource((pre) => {
+        setPositions((pre) => {
           return pre.filter((data) => data.idNum !== record.idNum);
         });
       },
     });
   };
 
-  const onFinish = (values) => {
-    console.log(editingRow);
-    const updateDataSource = [...dataSource];
-    updateDataSource.splice(editingRow - 1, 1, {
-      ...values,
-      idNum: editingRow,
-    });
-    console.log(updateDataSource);
-    setDataSource(updateDataSource);
-    setEditingRow(null);
-  };
+  // const onFinish = (values) => {
+  //   console.log(editingRow);
+  //   const updateDataSource = [...positions];
+  //   updateDataSource.splice(editingRow - 1, 1, {
+  //     ...values,
+  //     idNum: editingRow,
+  //   });
+  //   console.log(updateDataSource);
+  //   setPositions(updateDataSource);
+  //   setEditingRow(null);
+  // };
 
   return (
     <div className="table">
+      <>
+        <Modal
+          title="Position Information"
+          visible={isModalVisible}
+          onOk={handle}
+          onCancel={handle}
+          width="60%"
+        >
+          <PositionModal features={features}></PositionModal>
+        </Modal>
+      </>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <Input.Search
@@ -181,7 +173,7 @@ const PositionTable = () => {
           style={{ width: 264 }}
         />
         <Button
-          onClick={onAddButton}
+          onClick={showModal}
           className="addButton"
           type="primary"
           ghost
@@ -190,13 +182,12 @@ const PositionTable = () => {
           Add new
         </Button>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={dataSource}
-          scroll={{ y: 350 }}
-        ></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={positions}
+        scroll={{ y: 350 }}
+        rowKey={(record) => record.id}
+      ></Table>
     </div>
   );
 };

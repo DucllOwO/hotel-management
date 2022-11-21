@@ -1,20 +1,32 @@
 import "./position.css";
-import React, { useState } from "react";
-import Topbar from "../../../components/Topbar/Topbar";
+import React, { useState, useEffect, useContext } from "react";
 import PositionTable from "../Tables/Position/PositionTable";
+import { userRequest } from "../../../api/api";
+import { AppContext } from "../../../context/AppContext";
 
 const Position = () => {
-  const [isAdding, setIsAdding] = useState(false);
+  const [positions, setPositions] = useState([]);
+  const { user } = useContext(AppContext);
+
+  useEffect(() => {
+    const fetchPosition = async () => {
+      const { data } = await userRequest.get("/positions", {
+        params: { user: { position: user?.position } },
+      });
+
+      setPositions(data.data);
+    };
+
+    fetchPosition();
+  }, [user?.position]);
   return (
     <div className="container">
       <div className="positionContainer">
-        <Topbar
-          name="Huỳnh Thế Vĩ"
-          img="https://12ax7web.s3.amazonaws.com/accounts/1/products/1986199880924/Boba-Stitch_800x800_SEPS-1000x1000.jpg"
-          position="Manager"
-        ></Topbar>
         <div>Position</div>
-        <PositionTable></PositionTable>
+        <PositionTable
+          positions={positions}
+          setPositions={setPositions}
+        ></PositionTable>
       </div>
     </div>
   );

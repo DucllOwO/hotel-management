@@ -20,6 +20,7 @@ const usersRoutes = require("./routes/usersRoutes");
 const positionsRoutes = require("./routes/positionsRoutes");
 const paymentsRoutes = require("./routes/paymentsRoutes");
 const importingsRoutes = require("./routes/importingsRoutes");
+const featuresRoutes = require("./routes/featuresRoutes");
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use("/api/users", usersRoutes);
 app.use("/api/positions", positionsRoutes);
 app.use("/api/payment", paymentsRoutes);
 app.use("/api/importing", importingsRoutes);
+app.use("/api/features", featuresRoutes);
 //app.use("/branches", branchesRoutes);
 app.use("*", handle404Error);
 
