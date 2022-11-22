@@ -10,8 +10,14 @@
 .headerButtons {
     display: flex;
     gap: 10px;
+    align-items: center;
 }
 
 .headerBtn:hover {
     background-color: var(--light-grey);
+}
+
+.icon {
+    margin-left: 10px;
+    cursor: pointer;
 }

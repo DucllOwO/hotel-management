@@ -1,10 +1,10 @@
 import React from "react";
 import AddInput from "../../../../components/AddInput/AddInput";
-import "./customermodal.css";
+import "./bookingmodal.css";
 
-const CustomerModal = () => {
+const BookingModal = () => {
   return (
-    <div className="modal">
+    <div className="cusModal">
       <div className="left">
         <AddInput label="ID Number"></AddInput>
         <AddInput label="Full Name"></AddInput>
@@ -19,4 +19,4 @@ const CustomerModal = () => {
   );
 };
 
-export default CustomerModal;
+export default BookingModal;

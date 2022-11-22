@@ -6,7 +6,6 @@ const Receipt = () => {
   return (
     <div className="container">
       <div className="customerContainer">
-        <div>Receipt</div>
         <ReceiptTable></ReceiptTable>
       </div>
     </div>

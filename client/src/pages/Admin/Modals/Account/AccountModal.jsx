@@ -1,22 +1,20 @@
 import React from "react";
 import AddInput from "../../../../components/AddInput/AddInput";
-import "./customermodal.css";
+import "../index.css";
 
-const CustomerModal = () => {
+const AccountModal = () => {
   return (
     <div className="modal">
       <div className="left">
-        <AddInput label="ID Number"></AddInput>
         <AddInput label="Full Name"></AddInput>
         <AddInput label="Birthday"></AddInput>
       </div>
       <div className="right">
-        <AddInput label="Phone Number"></AddInput>
-        <AddInput label="Address"></AddInput>
-        <AddInput label="Email"></AddInput>
+        <AddInput label="Username"></AddInput>
+        <AddInput label="Password"></AddInput>
       </div>
     </div>
   );
 };
 
-export default CustomerModal;
+export default AccountModal;

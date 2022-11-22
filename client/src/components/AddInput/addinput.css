@@ -4,7 +4,7 @@
 }
 
 .label {
-    color: black;
+    color: var(--black);
     margin-bottom: 3px;
     font-weight: var(--fw-bold);
 }
