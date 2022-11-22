@@ -6,7 +6,10 @@ const AddInput = (props) => {
   return (
     <div className="addInput">
       <p className="label">{props.label}</p>
-      <Input></Input>
+      <Input
+        value={props.value}
+        onChange={(e) => props.setName(e.target.value)}
+      />
     </div>
   );
 };

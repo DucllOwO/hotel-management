@@ -1,40 +1,50 @@
 import React, { useState, useEffect } from "react";
 import "../index.css";
-import { Table, Button, Modal, Form, Input } from "antd";
+import { Table, Button, Modal, Input } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import PositionModal from "../../Modals/Position/PositionModal";
 import { userRequest } from "../../../../api/api";
 import { useContext } from "react";
 import { AppContext } from "../../../../context/AppContext";
+import { FEATURES } from "../../../../Utils/constants";
 
 const PositionTable = ({ positions, setPositions }) => {
-  const [editingRow, setEditingRow] = useState(null);
-  const { user } = useContext(AppContext);
-  const [features, setFeatures] = useState([]);
-
-  const [form] = Form.useForm();
+  //const { user } = useContext(AppContext);
+  //const [features, setFeatures] = useState([]);
+  const [modal, setModal] = useState(null);
+  const [checkboxs, setCheckboxs] = useState([]);
 
   const [searchedText, setSearchedText] = useState("");
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
+    //setIsAdd(true);
+    setModal(modalAddPosition());
   };
-  const handle = () => {
-    setIsModalVisible(false);
+  const handleOKModalAdd = () => {
+    console.log("handleOKModalAdd");
+    setModal(null);
+  };
+  const handleOKModalEdit = () => {
+    console.log("handleOKModalEdit");
+    setModal(null);
   };
 
-  useEffect(() => {
-    const fetchFeatures = async () => {
-      const { data } = await userRequest.get("/features", {
-        params: { user: { position: user?.position } },
-      });
-      setFeatures(data.features);
-    };
+  const handleCancelModal = () => {
+    setModal(null);
+  };
 
-    fetchFeatures();
-  }, [user?.position]);
+  // useEffect(() => {
+  //   const fetchFeatures = async () => {
+  //     const { data } = await userRequest.get("/features", {
+  //       params: { user: { position: user?.position } },
+  //     });
+  //     setFeatures(data.features);
+  //   };
+  //   fetchFeatures();
+  // }, [user?.position]);
 
   const columns = [
     {
@@ -69,54 +79,27 @@ const PositionTable = ({ positions, setPositions }) => {
       title: "Actions",
       width: "30%",
       render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  save
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  cancel
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setEditingRow(record.idNum);
-                  form.setFieldsValue({
-                    name: record.name,
-                    birthday: record.birthday,
-                    username: record.username,
-                    password: record.password,
-                  });
-                }}
-              >
-                edit
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                delete
-              </Button>
-            </>
-          );
-        }
+        return (
+          <>
+            <Button
+              onClick={(e) => {
+                e.preventDefault();
+                setIsModalVisible(true);
+                //setIsAdd(false);
+                setModal(modalEditPosition(record.name));
+              }}
+            >
+              edit
+            </Button>
+            <Button
+              onClick={() => {
+                onDeleteButton(record);
+              }}
+            >
+              delete
+            </Button>
+          </>
+        );
       },
     },
   ];
@@ -128,37 +111,39 @@ const PositionTable = ({ positions, setPositions }) => {
       okType: "danger",
       onOk: () => {
         setPositions((pre) => {
-          return pre.filter((data) => data.idNum !== record.idNum);
+          return pre.filter((data) => data.id !== record.id);
         });
       },
     });
   };
 
-  // const onFinish = (values) => {
-  //   console.log(editingRow);
-  //   const updateDataSource = [...positions];
-  //   updateDataSource.splice(editingRow - 1, 1, {
-  //     ...values,
-  //     idNum: editingRow,
-  //   });
-  //   console.log(updateDataSource);
-  //   setPositions(updateDataSource);
-  //   setEditingRow(null);
-  // };
+  const modalAddPosition = () => (
+    <Modal
+      title="Position Information"
+      open={true}
+      onOk={handleOKModalAdd}
+      onCancel={handleCancelModal}
+      width="60%"
+    >
+      <PositionModal features={FEATURES}></PositionModal>
+    </Modal>
+  );
+
+  const modalEditPosition = (name) => (
+    <Modal
+      title="Position Information"
+      open={true}
+      onOk={handleOKModalEdit}
+      onCancel={handleCancelModal}
+      width="60%"
+    >
+      <PositionModal name={name} features={FEATURES}></PositionModal>
+    </Modal>
+  );
 
   return (
     <div className="table">
-      <>
-        <Modal
-          title="Position Information"
-          visible={isModalVisible}
-          onOk={handle}
-          onCancel={handle}
-          width="60%"
-        >
-          <PositionModal features={features}></PositionModal>
-        </Modal>
-      </>
+      <>{modal}</>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <Input.Search

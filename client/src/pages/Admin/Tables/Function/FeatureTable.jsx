@@ -7,18 +7,18 @@ import Checkbox from "antd/lib/checkbox/Checkbox";
 const { Column, ColumnGroup } = Table;
 
 const FeatureTable = ({ features }) => {
-  console.log(features);
   return (
-    <div className="table">
+    <div style={{ height: "20vh" }}>
       <Table
         dataSource={features}
         scroll={{ y: 350 }}
         mobileBreakPoint={800}
         align="center"
-        size="middle"
+        size="small"
         style={{ width: "100%" }}
-        rowKey={(record) => record.id}
-        pagination={false}
+        rowKey={(record) => record.name}
+        pagination={{ defaultPageSize: 6 }}
+        bordered={true}
       >
         <Column title="Name" dataIndex="name" key="name" />
         <ColumnGroup title="Action" showOnResponse={true} showOnDesktop={true}>

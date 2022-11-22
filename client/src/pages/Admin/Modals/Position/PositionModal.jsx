@@ -1,15 +1,14 @@
 import React from "react";
-import AddInput from "../../../../components/AddInput/AddInput";
 import FeatureTable from "../../Tables/Function/FeatureTable";
 import "./positionmodal.css";
 
-const PositionModal = ({ features }) => {
+const PositionModal = ({ features, name }) => {
   return (
     <div className="positionModal">
       <div>
-        <AddInput label="Name"></AddInput>
+        <h2>{name}</h2>
       </div>
-      <div>
+      <div style={{ height: "50vh" }}>
         <FeatureTable features={features}></FeatureTable>
       </div>
     </div>
