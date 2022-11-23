@@ -24,28 +24,24 @@ const AccountTable = () => {
     {
       idNum: 1,
       name: "John",
-      birthday: "23/03/2002",
       username: "huynhthevi",
       password: "",
     },
     {
       idNum: 2,
       name: "David",
-      birthday: "23/03/2002",
       username: "huynhthevi",
       password: "",
     },
     {
       idNum: 3,
       name: "James",
-      birthday: "J23/03/2002",
       username: "huynhthevi",
       password: "",
     },
     {
       idNum: 4,
       name: "Sam",
-      birthday: "23/03/2002",
       username: "huynhthevi",
       password: "",
     },
@@ -54,12 +50,6 @@ const AccountTable = () => {
   const columns = [
     {
       key: "1",
-      title: "ID",
-      dataIndex: "idNum",
-      width: 70,
-    },
-    {
-      key: "2",
       title: "Name",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
@@ -67,7 +57,7 @@ const AccountTable = () => {
           String(record.name)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
-          String(record.birthday)
+          String(record.idNumber)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
           String(record.phone)
@@ -76,53 +66,14 @@ const AccountTable = () => {
         );
       },
       dataIndex: "name",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the name",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
+    },
+    {
+      key: "2",
+      title: "ID Number",
+      dataIndex: "idNum",
     },
     {
       key: "3",
-      title: "Birthday",
-      dataIndex: "birthday",
-      width: 150,
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="birthday"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the birthday",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-    },
-    {
-      key: "4",
       title: "Username",
       dataIndex: "username",
       render: (text, record) => {
@@ -146,7 +97,7 @@ const AccountTable = () => {
       },
     },
     {
-      key: "5",
+      key: "4",
       title: "Password",
       dataIndex: "password",
       render: (text, record) => {
@@ -170,7 +121,7 @@ const AccountTable = () => {
       },
     },
     {
-      key: "6",
+      key: "5",
       title: "Actions",
       render: (_, record) => {
         if (editingRow !== null) {
@@ -203,7 +154,7 @@ const AccountTable = () => {
                   setEditingRow(record.idNum);
                   form.setFieldsValue({
                     name: record.name,
-                    birthday: record.birthday,
+                    idNumber: record.idNumber,
                     username: record.username,
                     password: record.password,
                   });
@@ -224,20 +175,6 @@ const AccountTable = () => {
       },
     },
   ];
-
-  const onAddButton = () => {
-    const randomNumber = parseInt(Math.random() * 1000);
-    const newData = {
-      idNum: "" + parseInt(dataSource.length + 1),
-      name: "Name " + randomNumber,
-      birthday: "23/03/2002",
-      username: randomNumber + " username",
-    };
-
-    setDataSource((pre) => {
-      return [...pre, newData];
-    });
-  };
 
   const onDeleteButton = (record) => {
     Modal.confirm({
@@ -278,26 +215,29 @@ const AccountTable = () => {
       </>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
-        <Input.Search
-          onSearch={(value) => {
-            setSearchedText(value);
-          }}
-          onChange={(e) => {
-            setSearchedText(e.target.value);
-          }}
-          placeholder="input search text"
-          className="searchInput"
-          style={{ width: 264 }}
-        />
-        <Button
-          onClick={showModal}
-          className="addButton"
-          type="primary"
-          ghost
-          icon={<PlusOutlined />}
-        >
-          Add new
-        </Button>
+        <div></div>
+        <div>
+          <Input.Search
+            onSearch={(value) => {
+              setSearchedText(value);
+            }}
+            onChange={(e) => {
+              setSearchedText(e.target.value);
+            }}
+            placeholder="input search text"
+            className="searchInput"
+            style={{ width: 264 }}
+          />
+          <Button
+            onClick={showModal}
+            className="addButton"
+            type="primary"
+            ghost
+            icon={<PlusOutlined />}
+          >
+            Add new
+          </Button>
+        </div>
       </div>
       <Form form={form} onFinish={onFinish} className="form">
         <Table

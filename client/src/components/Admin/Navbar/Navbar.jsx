@@ -19,6 +19,7 @@ const Navbar = () => {
 
   const onClickHandler = (e) => {
     if (e.key === "logout") {
+      navigate(e.key);
     } else {
       setCurrent(e.key);
       navigate(e.key);
@@ -88,13 +89,13 @@ const Navbar = () => {
             key: "/admin/reciept",
             icon: <PieChartOutlined></PieChartOutlined>,
             children: [
-              { label: "Reciept", key: "/admin/reciept" },
+              { label: "Receipt", key: "/admin/reciept" },
               { label: "Payment", key: "/admin/payment" },
             ],
           },
           {
             label: "Log out",
-            key: "logout",
+            key: "/login",
             icon: <LogoutOutlined></LogoutOutlined>,
           },
         ]}

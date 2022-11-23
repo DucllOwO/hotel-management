@@ -192,6 +192,15 @@ const BookingTable = () => {
             className="searchInput"
             style={{ width: 264 }}
           />
+          <Button
+            onClick={() => {}}
+            className="addButton"
+            type="primary"
+            ghost
+            icon={<PlusOutlined />}
+          >
+            Add new
+          </Button>
         </div>
       </div>
       <Form form={form} onFinish={onFinish} className="form">

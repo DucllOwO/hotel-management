@@ -8,7 +8,7 @@
 .buttonContainer{
     display: flex;
     width: 100%;
-    justify-content:flex-end;
+    justify-content:space-between;
     margin-bottom: 16px;
 }
 

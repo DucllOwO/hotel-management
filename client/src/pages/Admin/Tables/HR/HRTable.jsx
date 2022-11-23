@@ -340,26 +340,29 @@ const HRTable = () => {
       </>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
-        <Input.Search
-          onSearch={(value) => {
-            setSearchedText(value);
-          }}
-          onChange={(e) => {
-            setSearchedText(e.target.value);
-          }}
-          placeholder="input search text"
-          className="searchInput"
-          style={{ width: 264 }}
-        />
-        <Button
-          onClick={showModal}
-          className="addButton"
-          type="primary"
-          ghost
-          icon={<PlusOutlined />}
-        >
-          Add new
-        </Button>
+        <div></div>
+        <div>
+          <Input.Search
+            onSearch={(value) => {
+              setSearchedText(value);
+            }}
+            onChange={(e) => {
+              setSearchedText(e.target.value);
+            }}
+            placeholder="input search text"
+            className="searchInput"
+            style={{ width: 264 }}
+          />
+          <Button
+            onClick={showModal}
+            className="addButton"
+            type="primary"
+            ghost
+            icon={<PlusOutlined />}
+          >
+            Add new
+          </Button>
+        </div>
       </div>
       <Form form={form} onFinish={onFinish} className="form">
         <Table

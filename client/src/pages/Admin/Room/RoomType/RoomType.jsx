@@ -1,5 +1,4 @@
 import React from "react";
-import Topbar from "../../../../components/Topbar/Topbar";
 import RoomTypeTable from "../../Tables/RoomType/RoomTypeTable";
 import "./roomtype.css";
 
