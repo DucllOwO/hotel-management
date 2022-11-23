@@ -3,6 +3,10 @@ import React, { useState, useEffect, useContext } from "react";
 import PositionTable from "../Tables/Position/PositionTable";
 import { userRequest } from "../../../api/api";
 import { AppContext } from "../../../context/AppContext";
+import {
+  PositionContext,
+  PositionProvider,
+} from "../../../context/PositionContext";
 
 const Position = () => {
   const [positions, setPositions] = useState([]);
@@ -20,15 +24,17 @@ const Position = () => {
     fetchPosition();
   }, [user?.position]);
   return (
-    <div className="container">
-      <div className="positionContainer">
-        <div>Position</div>
-        <PositionTable
-          positions={positions}
-          setPositions={setPositions}
-        ></PositionTable>
+    <PositionProvider>
+      <div className="container">
+        <div className="positionContainer">
+          <div>Position</div>
+          <PositionTable
+            positions={positions}
+            setPositions={setPositions}
+          ></PositionTable>
+        </div>
       </div>
-    </div>
+    </PositionProvider>
   );
 };
 
