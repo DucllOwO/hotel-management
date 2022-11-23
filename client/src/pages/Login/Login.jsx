@@ -109,6 +109,7 @@ const Login = () => {
             account: data?.user,
             token: data?.accessToken,
             position: data?.position,
+            permission: data?.permission,
           };
 
           // save token for axios
