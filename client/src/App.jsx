@@ -20,6 +20,7 @@ import Utilities from "./pages/Admin/Room/Utilities/Utilities";
 import Payment from "./pages/Admin/Turnover/Payment/Payment";
 import Reciept from "./pages/Admin/Turnover/Reciept/Reciept";
 import Login from "./pages/Login/Login";
+import AuthErrorBoundary from "./components/ErrorBoundary/AuthErrorBoundary";
 import Customer from "./pages/Staff/Customer/Customer";
 import Booking from "./pages/Staff/Booking/Booking";
 import StaffReciept from "./pages/Staff/Receipt/Receipt";
@@ -39,22 +40,21 @@ const App = () => {
   
   return (
     <BrowserRouter>
-      <div className="App">
-        <Routes>
-          <Route index element={<Login />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/admin" element={<Admin />}>
-            {console.log(listFeature)}
-            {listFeature ? listRoute.map((item) => {
-              console.log(item.key);
-              if(listFeature.includes(item.key))
+        <div className="App">
+          <Routes>
+            <Route index element={<Login />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+              <Route exact path="*" element={<AuthErrorBoundary/>}/>
+            <Route path="/admin" element={<Admin />}>
+              {listFeature ? listRoute.map((item) => {
+                if(listFeature.includes(item.key))
                 return item.value;
-              return null;
-            }) : null}  
-          </Route>
-        </Routes>
-      </div>
-    </BrowserRouter>
+                return null;
+              }) : null}  
+            </Route>
+          </Routes>
+        </div>
+      </BrowserRouter>
   );
 };
 
@@ -62,7 +62,7 @@ const listRoute = [
   {key: "Dashboard",  value:<Route index path="dashboard" element={<Dashboard />} /> },
   {key: "Account",  value:<Route index path="account" element={<Account />} />},
   {key: "Import",  value:<Route index path="importing" element={<Importing />} />},
-  {key: "Employee",  value:<Route index path="hr" element={<HR />} />},
+  {key: "HR",  value:<Route index path="hr" element={<HR />} />},
   {key: "Inventory",  value:<Route index path="inventory" element={<Inventory />} />},
   {key: "Item",  value:<Route index path="item" element={<Item />} />},
   {key: "Room",  value:<Route index path="rooms" element={<Rooms />} />},
