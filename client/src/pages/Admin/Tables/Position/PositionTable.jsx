@@ -8,18 +8,14 @@ import { userRequest } from "../../../../api/api";
 import { useContext } from "react";
 import { AppContext } from "../../../../context/AppContext";
 
+const ERROR_MESSAGE = "Please input position name";
+
 const PositionTable = ({ positions, setPositions }) => {
   const { user } = useContext(AppContext);
-  // const [featuresForAddPermissions, setFeaturesForAddPermissions] = useState(
-  //   []
-  // );
-  const [features, setFeatures] = useState([]);
-  // useEffect(() => {
-  //   console.log(features);
-  // }, [features]);
+  const [features, setFeatures] = useState({ features: [], error: null });
   const [modal, setModal] = useState("");
   const [positionName, setPositionName] = useState("");
-  const [isPosNameError, setIsPosNameError] = useState(false);
+  const [isPosNameError, setIsPosNameError] = useState(null);
   const [searchedText, setSearchedText] = useState("");
 
   const showModalAdd = (e) => {
@@ -32,7 +28,7 @@ const PositionTable = ({ positions, setPositions }) => {
       addPosition(positionName, createFeaturesCheckedArray(features));
       setPositionName("");
     } else {
-      //setIsError("");
+      setIsPosNameError(ERROR_MESSAGE);
     }
   };
   // const handleOKModalEdit = () => {
@@ -172,7 +168,13 @@ const PositionTable = ({ positions, setPositions }) => {
     <Modal
       title="Position Information"
       open={true}
-      onOk={handleOKModalAdd}
+      onOk={() => {
+        console.log(isPosNameError);
+        if (isPosNameError == null || isPosNameError === "")
+          return setIsPosNameError(ERROR_MESSAGE);
+        setIsPosNameError(null);
+        handleOKModalAdd();
+      }}
       onCancel={handleCancelModal}
       width="60%"
     >
@@ -181,6 +183,8 @@ const PositionTable = ({ positions, setPositions }) => {
         setPositionName={setPositionName}
         features={features}
         setFeatures={setFeatures}
+        error={isPosNameError ? isPosNameError : null}
+        setError={setIsPosNameError}
       ></PositionModal>
     </Modal>
   );

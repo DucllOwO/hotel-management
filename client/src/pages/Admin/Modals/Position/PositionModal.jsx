@@ -9,27 +9,18 @@ const PositionModal = ({
   setPositionName,
   features,
   setFeatures,
+  error,
+  setError,
 }) => {
   return (
     <div className="positionModal">
-      <Form autoComplete="off">
-        <Form.Item
-          label="positionName"
-          name="positionName"
-          rules={[
-            {
-              required: true,
-              message: "Please input position name!",
-            },
-          ]}
-        >
-          <AddInput
-            label="Position name"
-            positionName={positionName}
-            setPositionName={setPositionName}
-          />
-        </Form.Item>
-      </Form>
+      <AddInput
+        label="Position name"
+        value={positionName}
+        setInput={setPositionName}
+        error={error}
+        setError={setError}
+      />
       <div style={{ height: "50vh" }}>
         <FeatureTable
           features={features}
