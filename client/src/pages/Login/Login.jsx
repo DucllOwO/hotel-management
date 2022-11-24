@@ -117,7 +117,7 @@ const Login = () => {
           // save user to app context
           setUser(user);
           setIsLoading(false);
-          navigate("/admin/dashboard");
+          navigate("/admin");
         }
       } catch (error) {
         setError(error);

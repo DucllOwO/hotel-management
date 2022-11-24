@@ -2,8 +2,6 @@ import React from "react";
 import FeatureTable from "../../Tables/Function/FeatureTable";
 import "./positionmodal.css";
 import AddInput from "../../../../components/AddInput/AddInput";
-import { useState, useContext } from "react";
-import { PositionContext } from "../../../../context/PositionContext";
 import { Form } from "antd";
 
 const PositionModal = ({

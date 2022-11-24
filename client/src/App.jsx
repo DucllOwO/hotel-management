@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Admin from "./pages/Admin/Admin";
-import Staff from "./pages/Staff/Staff";
 import HR from "./pages/Admin/HR/HR";
 import Dashboard from "./pages/Admin/Dashboard/Dashboard";
 import Account from "./pages/Admin/Account/Account";

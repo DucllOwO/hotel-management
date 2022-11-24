@@ -11,6 +11,9 @@ import {
   LineChartOutlined,
   LogoutOutlined,
   UserOutlined,
+  UserSwitchOutlined,
+  AuditOutlined,
+  DiffOutlined,
 } from "@ant-design/icons";
 import LocalStorage from "../../../Utils/localStorage";
 import { AppContext } from "../../../context/AppContext";
@@ -130,6 +133,20 @@ const Navbar = () => {
                 label: "Position",
                 key: "/admin/position",
                 icon: <UserOutlined />,
+              }
+            : null,
+          permission.includes("Customer")
+            ? {
+                label: "Customer",
+                key: "/admin/customer",
+                icon: <UserSwitchOutlined></UserSwitchOutlined>,
+              }
+            : null,
+          permission.includes("Booking")
+            ? {
+                label: "Booking",
+                key: "/admin/booking",
+                icon: <DiffOutlined></DiffOutlined>,
               }
             : null,
           {
