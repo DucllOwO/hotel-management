@@ -20,7 +20,7 @@ import Utilities from "./pages/Admin/Room/Utilities/Utilities";
 import Payment from "./pages/Admin/Turnover/Payment/Payment";
 import Reciept from "./pages/Admin/Turnover/Reciept/Reciept";
 import Login from "./pages/Login/Login";
-import AuthErrorBoundary from "./components/ErrorBoundary/AuthErrorBoundary";
+import _404ErrorBoundary from "./components/ErrorBoundary/_404ErrorBoundary";
 import Customer from "./pages/Staff/Customer/Customer";
 import Booking from "./pages/Staff/Booking/Booking";
 import StaffReciept from "./pages/Staff/Receipt/Receipt";
@@ -44,7 +44,7 @@ const App = () => {
           <Routes>
             <Route index element={<Login />}></Route>
             <Route path="/login" element={<Login />}></Route>
-              <Route exact path="*" element={<AuthErrorBoundary/>}/>
+              <Route exact path="*" element={<_404ErrorBoundary/>}/>
             <Route path="/admin" element={<Admin />}>
               {listFeature ? listRoute.map((item) => {
                 if(listFeature.includes(item.key))
