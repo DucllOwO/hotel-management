@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import "../index.css";
 import { Table } from "antd";
 import "antd/dist/antd.less";
 import Checkbox from "antd/lib/checkbox/Checkbox";
+import { AppContext } from "../../../../context/AppContext";
 
 const { Column, ColumnGroup } = Table;
 
-const FeatureTable = ({ features }) => {
+const FeatureTable = ({ features, setFeatures }) => {
+  //console.log("feature table is rerender");
   return (
     <div style={{ height: "20vh" }}>
       <Table
@@ -27,7 +29,27 @@ const FeatureTable = ({ features }) => {
             dataIndex="read"
             key="read"
             align="center"
-            render={(_, record) => <Checkbox></Checkbox>}
+            render={(_, record) => (
+              <Checkbox
+                onChange={(e) => {
+                  //console.log(e.target.checked, record);
+                  setFeatures((prev) =>
+                    prev.map((feature) => {
+                      if (feature.name === record.name) {
+                        return {
+                          ...feature,
+                          read: {
+                            ...feature.read,
+                            isCheck: e.target.checked,
+                          },
+                        };
+                      }
+                      return feature;
+                    })
+                  );
+                }}
+              />
+            )}
             showOnResponse={true}
             showOnDesktop={true}
           />
@@ -36,7 +58,26 @@ const FeatureTable = ({ features }) => {
             dataIndex="create"
             key="create"
             align="center"
-            render={(_, record) => <Checkbox></Checkbox>}
+            render={(_, record) => (
+              <Checkbox
+                onChange={(e) => {
+                  setFeatures((prev) =>
+                    prev.map((feature, index) => {
+                      if (feature.name === record.name) {
+                        return {
+                          ...feature,
+                          create: {
+                            ...feature.create,
+                            isCheck: e.target.checked,
+                          },
+                        };
+                      }
+                      return feature;
+                    })
+                  );
+                }}
+              />
+            )}
             showOnResponse={true}
             showOnDesktop={true}
           />
@@ -45,7 +86,26 @@ const FeatureTable = ({ features }) => {
             dataIndex="update"
             key="update"
             align="center"
-            render={(_, record) => <Checkbox></Checkbox>}
+            render={(_, record) => (
+              <Checkbox
+                onChange={(e) => {
+                  setFeatures((prev) =>
+                    prev.map((feature, index) => {
+                      if (feature.name === record.name) {
+                        return {
+                          ...feature,
+                          update: {
+                            ...feature.update,
+                            isCheck: e.target.checked,
+                          },
+                        };
+                      }
+                      return feature;
+                    })
+                  );
+                }}
+              />
+            )}
             showOnResponse={true}
             showOnDesktop={true}
           />
@@ -54,7 +114,26 @@ const FeatureTable = ({ features }) => {
             dataIndex="delete"
             key="delete"
             align="center"
-            render={(_, record) => <Checkbox></Checkbox>}
+            render={(_, record) => (
+              <Checkbox
+                onChange={(e) => {
+                  setFeatures((prev) =>
+                    prev.map((feature, index) => {
+                      if (feature.name === record.name) {
+                        return {
+                          ...feature,
+                          delete: {
+                            ...feature.delete,
+                            isCheck: e.target.checked,
+                          },
+                        };
+                      }
+                      return feature;
+                    })
+                  );
+                }}
+              />
+            )}
             showOnResponse={true}
             showOnDesktop={true}
           />

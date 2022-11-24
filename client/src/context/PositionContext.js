@@ -1,24 +1,20 @@
 import { createContext, useState } from "react";
-import LocalStorage from "../Utils/localStorage";
 
-export const AppContext = createContext({});
+export const PositionContext = createContext({});
 
-export const AppProvider = ({ children }) => {
-  const [user, setUser] = useState(LocalStorage.getItem("user"));
-
+export const PositionProvider = ({ children }) => {
   const [features, setFeatures] = useState([]);
 
   const [posName, setPosName] = useState("");
 
   const setOnChangePosName = (name) => {
     setPosName(name);
+    console.log(posName);
   };
 
   return (
-    <AppContext.Provider
+    <PositionContext.Provider
       value={{
-        user,
-        setUser,
         features,
         setFeatures,
         setOnChangePosName,
@@ -26,6 +22,6 @@ export const AppProvider = ({ children }) => {
       }}
     >
       {children}
-    </AppContext.Provider>
+    </PositionContext.Provider>
   );
 };

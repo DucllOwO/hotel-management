@@ -1,50 +1,101 @@
 import React, { useState, useEffect } from "react";
 import "../index.css";
-import { Table, Button, Modal, Input } from "antd";
+import { Table, Button, Modal, Input, Checkbox } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import PositionModal from "../../Modals/Position/PositionModal";
 import { userRequest } from "../../../../api/api";
 import { useContext } from "react";
 import { AppContext } from "../../../../context/AppContext";
-import { FEATURES } from "../../../../Utils/constants";
 
 const PositionTable = ({ positions, setPositions }) => {
-  //const { user } = useContext(AppContext);
-  //const [features, setFeatures] = useState([]);
-  const [modal, setModal] = useState(null);
-  const [checkboxs, setCheckboxs] = useState([]);
-
+  const { user } = useContext(AppContext);
+  // const [featuresForAddPermissions, setFeaturesForAddPermissions] = useState(
+  //   []
+  // );
+  const [features, setFeatures] = useState([]);
+  // useEffect(() => {
+  //   console.log(features);
+  // }, [features]);
+  const [modal, setModal] = useState("");
+  const [positionName, setPositionName] = useState("");
+  const [isPosNameError, setIsPosNameError] = useState(false);
   const [searchedText, setSearchedText] = useState("");
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const showModal = () => {
-    setIsModalVisible(true);
-    //setIsAdd(true);
-    setModal(modalAddPosition());
+  const showModalAdd = (e) => {
+    e.preventDefault();
+    setModal("add");
   };
   const handleOKModalAdd = () => {
-    console.log("handleOKModalAdd");
     setModal(null);
+    if (positionName) {
+      addPosition(positionName, createFeaturesCheckedArray(features));
+      setPositionName("");
+    } else {
+      //setIsError("");
+    }
   };
-  const handleOKModalEdit = () => {
-    console.log("handleOKModalEdit");
-    setModal(null);
-  };
+  // const handleOKModalEdit = () => {
+  //   console.log("handleOKModalEdit");
+  //   setModal(null);
+
+  //   const featuresForAddPermissions =
+  //     createFeaturesCheckedArray(featureCheckboxs);
+
+  //   addPosition(positionName, featuresForAddPermissions);
+  // };
 
   const handleCancelModal = () => {
     setModal(null);
+    setPositionName("");
   };
 
-  // useEffect(() => {
-  //   const fetchFeatures = async () => {
-  //     const { data } = await userRequest.get("/features", {
-  //       params: { user: { position: user?.position } },
-  //     });
-  //     setFeatures(data.features);
-  //   };
-  //   fetchFeatures();
-  // }, [user?.position]);
+  const createFeaturesCheckedArray = (featureCheckboxs) => {
+    let tempArr = [];
+    console.log(featureCheckboxs);
+    featureCheckboxs.forEach((feature, index) => {
+      if (feature?.read?.isCheck) tempArr.push(feature.read);
+
+      if (feature?.create?.isCheck) tempArr.push(feature.create);
+
+      if (feature?.update?.isCheck) tempArr.push(feature.update);
+
+      if (feature?.delete?.isCheck) tempArr.push(feature.delete);
+    });
+    return tempArr;
+  };
+
+  const addPosition = async (name, featuresForAddPermissions) => {
+    // const { data } = await userRequest.post(`/positions`, {
+    //   user: {
+    //     position: user?.position,
+    //   },
+    //   position: {
+    //     name: name,
+    //   },
+    //   featuresForAddPermissions: featuresForAddPermissions,
+    // });
+    console.log({
+      user: {
+        position: user?.position,
+      },
+      position: {
+        name: name,
+      },
+      featuresForAddPermissions: featuresForAddPermissions,
+    });
+  };
+
+  useEffect(() => {
+    const fetchFeatures = async () => {
+      const { data } = await userRequest.get("/features", {
+        params: { user: { position: user?.position } },
+      });
+      setFeatures(data.features);
+    };
+
+    fetchFeatures();
+  }, [user?.position]);
 
   const columns = [
     {
@@ -84,9 +135,9 @@ const PositionTable = ({ positions, setPositions }) => {
             <Button
               onClick={(e) => {
                 e.preventDefault();
-                setIsModalVisible(true);
                 //setIsAdd(false);
-                setModal(modalEditPosition(record.name));
+                //setModal(modalEditPosition(record.name));
+                setPositionName(record.name);
               }}
             >
               edit
@@ -125,26 +176,33 @@ const PositionTable = ({ positions, setPositions }) => {
       onCancel={handleCancelModal}
       width="60%"
     >
-      <PositionModal features={FEATURES}></PositionModal>
+      <PositionModal
+        positionName={positionName}
+        setPositionName={setPositionName}
+        features={features}
+        setFeatures={setFeatures}
+      ></PositionModal>
     </Modal>
   );
 
-  const modalEditPosition = (name) => (
-    <Modal
-      title="Position Information"
-      open={true}
-      onOk={handleOKModalEdit}
-      onCancel={handleCancelModal}
-      width="60%"
-    >
-      <PositionModal name={name} features={FEATURES}></PositionModal>
-    </Modal>
-  );
-
+  // const modalEditPosition = (name) => (
+  //   <Modal
+  //     title="Position Information"
+  //     open={true}
+  //     onOk={handleOKModalEdit}
+  //     onCancel={handleCancelModal}
+  //     width="60%"
+  //   >
+  //     <PositionModal
+  //       name={name}
+  //       features={featureCheckboxs}
+  //       setFeatureCheckboxs={setFeatureCheckboxs}
+  //     ></PositionModal>
+  //   </Modal>
+  // );
   return (
     <div className="table">
-      <>{modal}</>
-      {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
+      <>{modal === "add" ? modalAddPosition() : null}</>
       <div className="buttonContainer">
         <Input.Search
           onSearch={(value) => {
@@ -158,7 +216,7 @@ const PositionTable = ({ positions, setPositions }) => {
           style={{ width: 264 }}
         />
         <Button
-          onClick={showModal}
+          onClick={showModalAdd}
           className="addButton"
           type="primary"
           ghost
