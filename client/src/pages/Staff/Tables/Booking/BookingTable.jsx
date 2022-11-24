@@ -4,6 +4,8 @@ import { Table, Button, Modal, Form, Input } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import "./bookingtable.css";
+import { faSort } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const BookingTable = () => {
   const [editingRow, setEditingRow] = useState(null);
@@ -137,83 +139,23 @@ const BookingTable = () => {
       key: "5",
       title: "Actions",
       render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  save
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  cancel
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setEditingRow(record.idNum);
-                  form.setFieldsValue({
-                    roomType: record.roomType,
-                    area: record.area,
-                    price: record.price,
-                    email: record.email,
-                  });
-                }}
-              >
-                edit
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                delete
-              </Button>
-            </>
-          );
-        }
+        return (
+          <>
+            <Button
+              onClick={() => {
+                onBooking(record);
+              }}
+            >
+              book
+            </Button>
+          </>
+        );
       },
     },
   ];
 
-  const onAddButton = () => {
-    const randomNumber = parseInt(Math.random() * 1000);
-    const newData = {
-      idNum: "" + parseInt(dataSource.length + 1),
-      roomType: "Room Type " + randomNumber,
-      area: "23/03/2002",
-      price: randomNumber + " price",
-    };
-
-    setDataSource((pre) => {
-      return [...pre, newData];
-    });
-  };
-
-  const onDeleteButton = (record) => {
-    Modal.confirm({
-      title: "Are you sure, you want to delete this record?",
-      okText: "Yes",
-      okType: "danger",
-      onOk: () => {
-        setDataSource((pre) => {
-          return pre.filter((data) => data.idNum !== record.idNum);
-        });
-      },
-    });
+  const onBooking = (value) => {
+    console.log(value.idNum);
   };
 
   const onFinish = (values) => {
@@ -233,10 +175,10 @@ const BookingTable = () => {
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div className="headerButtons">
+          <FontAwesomeIcon icon={faSort} className="icon"></FontAwesomeIcon>
           <Button className="headerBtn">Available</Button>
           <Button className="headerBtn">Booked</Button>
           <Button className="headerBtn">Waiting</Button>
-          <Button className="filterBtn">Sort</Button>
         </div>
         <div>
           <Input.Search
@@ -251,7 +193,7 @@ const BookingTable = () => {
             style={{ width: 264 }}
           />
           <Button
-            onClick={onAddButton}
+            onClick={() => {}}
             className="addButton"
             type="primary"
             ghost

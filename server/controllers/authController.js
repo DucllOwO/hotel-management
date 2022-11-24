@@ -2,13 +2,14 @@ const jwt = require("jsonwebtoken");
 const accountDAL = require("../DAL/AccountDAL");
 const employeeDAL = require("../DAL/employeeDAL");
 const bcrypt = require("bcrypt");
+const permissionDAL = require("../DAL/permissionDAL");
 
 const login = async (req, res, next) => {
   const { username, password } = req.body;
 
   if (username) {
     const { user, error } = await accountDAL.getAccountByUsername(username);
-    console.log(`${JSON.stringify(user)} `);
+    //console.log(`${JSON.stringify(user)} `);
     if (user) {
       const isValid = await bcrypt.compare(password, user.password);
       if (isValid) {
@@ -20,17 +21,22 @@ const login = async (req, res, next) => {
 
         const { password: temp, ...userWithoutPassword } = user;
 
-        const { data, error } = await employeeDAL.getEmployeePositionByUsername(
+        const {data: employeePosition,error: getPositionError } = await employeeDAL.getEmployeePositionByUsername(
           username
         );
-        console.log(data);
-        if (error) return next(error);
+        console.log(employeePosition[0]);
+        const {data, error} = await permissionDAL.getPermissionByPositionID(
+          employeePosition[0].position_id.id
+        );
+        const tempPermission = [...new Set(data.map((item) => item?.feature_id.name))];
+        if (getPositionError) return next(getPositionError);
 
         return res
           .json({
             user: userWithoutPassword,
             accessToken,
-            position: data[0].position_id.name,
+            position: employeePosition[0].position_id.name,
+            permission: tempPermission,
           })
           .send();
       } else {

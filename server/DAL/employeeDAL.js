@@ -15,7 +15,7 @@ const getEmployeePositionByUsername = (username) => {
     .from(TABLE_NAME)
     .select(
       `position_id:position(
-    name
+    name, id
   )`
     )
     .eq("username", username);

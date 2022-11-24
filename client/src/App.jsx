@@ -14,70 +14,60 @@ import Utilities from "./pages/Admin/Room/Utilities/Utilities";
 import Payment from "./pages/Admin/Turnover/Payment/Payment";
 import Reciept from "./pages/Admin/Turnover/Reciept/Reciept";
 import Login from "./pages/Login/Login";
+import _404ErrorBoundary from "./components/ErrorBoundary/_404ErrorBoundary";
 import Customer from "./pages/Staff/Customer/Customer";
 import Booking from "./pages/Staff/Booking/Booking";
 import StaffReciept from "./pages/Staff/Receipt/Receipt";
 import { AppContext } from "./context/AppContext";
 import LocalStorage from "./Utils/localStorage";
 import Position from "./pages/Admin/Position/Position";
+import { useState } from "react";
+import { useEffect } from "react";
+import { useContext } from "react";
 
 const App = () => {
-  const user = LocalStorage.getItem("user");
+  const { user } = useContext(AppContext)
+  const [listFeature, setList] = useState([]);
+  useEffect(() => {
+    setList(LocalStorage.getItem("user")?.permission);
+  }, [user])
+  
   return (
     <BrowserRouter>
-      <div className="App">
-        <Routes>
-          <Route index element={<Login />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-          {true ? (
+        <div className="App">
+          <Routes>
+            <Route index element={<Login />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+              <Route exact path="*" element={<_404ErrorBoundary/>}/>
             <Route path="/admin" element={<Admin />}>
-              <Route index path="dashboard" element={<Dashboard />} />
-              <Route path="account" element={<Account />} />
-              <Route path="importing" element={<Importing />} />
-              <Route path="hr" element={<HR />} />
-              <Route path="inventory" element={<Inventory />} />
-              <Route path="item" element={<Item />} />
-              <Route path="rooms" element={<Rooms />} />
-              <Route path="roomtype" element={<RoomType />} />
-              <Route path="utilities" element={<Utilities />} />
-              <Route path="payment" element={<Payment />} />
-              <Route path="receipt" element={<Reciept />} />
-              <Route path="position" element={<Position />} />
+              {listFeature ? listRoute.map((item) => {
+                if(listFeature.includes(item.key))
+                return item.value;
+                return null;
+              }) : null}  
             </Route>
-          ) : (
-            <Route path="/staff" element={<Staff />}>
-              <Route index path="customer" element={<Customer />} />
-              <Route path="booking" element={<Booking />} />
-              <Route path="receipt" element={<StaffReciept />} />
-            </Route>
-          )}
-          {/* <Route path="/admin/account" element={<Account />} /> */}
-        </Routes>
-
-        {/* <BrowserRouter>
-        <Admin/>
-        <Routes>
-          <Route path='/'>
-            <Route index element={<Staff/>} />
-          </Route>
-          <Route path='/admin'>
-            <Route index element={<Dashboard/>} />
-            <Route path="hr" element={<HR/>} />
-            <Route path="account" element={<Account/>} />
-            <Route path="importing" element={<Importing/>} />
-            <Route path="inventory" element={<Inventory/>} />
-            <Route path="item" element={<Item/>} />
-            <Route path="rooms" element={<Rooms/>} />
-            <Route path="roomtype" element={<RoomType/>} />
-            <Route path="utilities" element={<Utilities/>} />
-            <Route path="payment" element={<Payment/>} />
-            <Route path="reciept" element={<Reciept/>} />
-          </Route>
-        </Routes>
-      </BrowserRouter> */}
-      </div>
-    </BrowserRouter>
+          </Routes>
+        </div>
+      </BrowserRouter>
   );
 };
+
+const listRoute = [
+  {key: "Dashboard",  value:<Route index path="dashboard" element={<Dashboard />} /> },
+  {key: "Account",  value:<Route index path="account" element={<Account />} />},
+  {key: "Import",  value:<Route index path="importing" element={<Importing />} />},
+  {key: "HR",  value:<Route index path="hr" element={<HR />} />},
+  {key: "Inventory",  value:<Route index path="inventory" element={<Inventory />} />},
+  {key: "Item",  value:<Route index path="item" element={<Item />} />},
+  {key: "Room",  value:<Route index path="rooms" element={<Rooms />} />},
+  {key: "Room type",  value:<Route index path="roomtype" element={<RoomType />} />},
+  {key: "Utilities",  value:<Route index path="utilities" element={<Utilities />} />},
+  {key: "Payment",  value:<Route index path="payment" element={<Payment />} />},
+  {key: "Receipt",  value:<Route index path="receipt" element={<Reciept />} />},
+  {key: "Position",  value:<Route index path="position" element={<Position />} />},
+  {key: "Customer",  value:<Route index path="customer" element={<Customer />} />},
+  {key: "Booking",  value:<Route index path="booking" element={<Booking />} />},
+  {key: "Dashboard",  value:<Route index path="receipt" element={<StaffReciept />} />},
+];
 
 export default App;

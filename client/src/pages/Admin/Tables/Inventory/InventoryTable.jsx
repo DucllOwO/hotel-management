@@ -13,27 +13,27 @@ const InventoryTable = () => {
   const [dataSource, setDataSource] = useState([
     {
       id: 1,
-      name: "John",
-      email: "John@gmail.com",
-      address: "john Address",
+      name: "Teeth Brush",
+      amount: "10",
+      price: "20000",
     },
     {
       id: 2,
-      name: "David",
-      email: "David@gmail.com",
-      address: "david Address",
+      name: "Glass",
+      amount: "1",
+      price: "20000",
     },
     {
       id: 3,
-      name: "James",
-      email: "James@gmail.com",
-      address: "james Address",
+      name: "Bed",
+      amount: "1",
+      price: "20000",
     },
     {
       id: 4,
-      name: "Sam",
-      email: "Sam@gmail.com",
-      address: "sam Address",
+      name: "Something",
+      amount: "1",
+      price: "20000",
     },
   ]);
 
@@ -52,10 +52,10 @@ const InventoryTable = () => {
           String(record.name)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
-          String(record.email)
+          String(record.amount)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
-          String(record.address)
+          String(record.price)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase())
         );
@@ -83,17 +83,17 @@ const InventoryTable = () => {
     },
     {
       key: "3",
-      title: "Email",
-      dataIndex: "email",
+      title: "Amount",
+      dataIndex: "amount",
       render: (text, record) => {
         if (editingRow === record.id) {
           return (
             <Form.Item
-              name="email"
+              name="amount"
               rules={[
                 {
                   required: true,
-                  message: "Please enter the email",
+                  message: "Please enter the amount",
                 },
               ]}
             >
@@ -107,17 +107,17 @@ const InventoryTable = () => {
     },
     {
       key: "4",
-      title: "Address",
-      dataIndex: "address",
+      title: "Price",
+      dataIndex: "price",
       render: (text, record) => {
         if (editingRow === record.id) {
           return (
             <Form.Item
-              name="address"
+              name="price"
               rules={[
                 {
                   required: true,
-                  message: "Please enter the address",
+                  message: "Please enter the price",
                 },
               ]}
             >
@@ -157,19 +157,19 @@ const InventoryTable = () => {
         } else {
           return (
             <>
-              <Button
+              {/* <Button
                 onClick={(e) => {
                   e.preventDefault();
                   setEditingRow(record.id);
                   form.setFieldsValue({
                     name: record.name,
-                    email: record.email,
-                    address: record.address,
+                    amount: record.amount,
+                    price: record.price,
                   });
                 }}
               >
                 edit
-              </Button>
+              </Button> */}
               <Button
                 onClick={() => {
                   onDeleteButton(record);
@@ -183,20 +183,6 @@ const InventoryTable = () => {
       },
     },
   ];
-
-  const onAddButton = () => {
-    const randomNumber = parseInt(Math.random() * 1000);
-    const newData = {
-      id: "" + parseInt(dataSource.length + 1),
-      name: "Name " + randomNumber,
-      email: randomNumber + "@gmail.com",
-      address: randomNumber + " Address",
-    };
-
-    setDataSource((pre) => {
-      return [...pre, newData];
-    });
-  };
 
   const onDeleteButton = (record) => {
     Modal.confirm({
@@ -224,26 +210,20 @@ const InventoryTable = () => {
     <div className="table">
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
-        <Input.Search
-          onSearch={(value) => {
-            setSearchedText(value);
-          }}
-          onChange={(e) => {
-            setSearchedText(e.target.value);
-          }}
-          placeholder="input search text"
-          className="searchInput"
-          style={{ width: 264 }}
-        />
-        <Button
-          onClick={onAddButton}
-          className="addButton"
-          type="primary"
-          ghost
-          icon={<PlusOutlined />}
-        >
-          Add new
-        </Button>
+        <div></div>
+        <div>
+          <Input.Search
+            onSearch={(value) => {
+              setSearchedText(value);
+            }}
+            onChange={(e) => {
+              setSearchedText(e.target.value);
+            }}
+            placeholder="input search text"
+            className="searchInput"
+            style={{ width: 264 }}
+          />
+        </div>
       </div>
       <Form form={form} onFinish={onFinish} className="form">
         <Table

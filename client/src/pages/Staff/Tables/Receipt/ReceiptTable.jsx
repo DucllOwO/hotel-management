@@ -258,15 +258,6 @@ const ReceiptTable = () => {
             className="searchInput"
             style={{ width: 264 }}
           />
-          {/* <Button
-            onClick={onAddButton}
-            className="addButton"
-            type="primary"
-            ghost
-            icon={<PlusOutlined />}
-          >
-            Add new
-          </Button> */}
         </div>
       </div>
       <Form form={form} onFinish={onFinish} className="form">

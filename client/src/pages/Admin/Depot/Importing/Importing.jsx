@@ -6,7 +6,6 @@ const Importing = () => {
   return (
     <div className="container">
       <div className="importingContainer">
-        <div>Importing</div>
         <ImportingTable></ImportingTable>
       </div>
     </div>

@@ -31,7 +31,7 @@ const Login = () => {
       <div className="welcome">Welcome, let's enjoy your life</div>
       <div className="form">
         <div className="inputContainer">
-          <div className="label">Username</div>
+          <div className="labelInput">Username</div>
           <div className="input">
             <input
               id=""
@@ -109,6 +109,7 @@ const Login = () => {
             account: data?.user,
             token: data?.accessToken,
             position: data?.position,
+            permission: data?.permission,
           };
 
           // save token for axios

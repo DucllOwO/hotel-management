@@ -59,7 +59,7 @@
     user-select: none;
 }
 
-.label {
+.labelInput {
     font-size: var(--fs-14);
     color: var(--primary-color);
     user-select: none;
