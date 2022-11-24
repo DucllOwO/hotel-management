@@ -3,7 +3,6 @@ import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
-import AddInput from "../../../../components/AddInput/AddInput";
 import "./customertable.css";
 import CustomerModal from "../../Modals/Customer/CustomerModal";
 

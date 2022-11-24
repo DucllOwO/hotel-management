@@ -99,7 +99,7 @@ const Navbar = () => {
           } : null,
           {
             label: "Log out",
-            key: "logout",
+            key: "/login",
             icon: <LogoutOutlined></LogoutOutlined>,
           },
         ]}

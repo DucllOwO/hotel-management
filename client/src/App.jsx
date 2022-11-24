@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  redirect,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Admin from "./pages/Admin/Admin";
 import Staff from "./pages/Staff/Staff";
 import HR from "./pages/Admin/HR/HR";
