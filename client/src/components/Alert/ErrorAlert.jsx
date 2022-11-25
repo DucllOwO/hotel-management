@@ -7,6 +7,7 @@ const ErrorAlert = (description = "Something wrong!!") => {
     message: "Error !!",
     description: description,
     icon: <CloseCircleTwoTone twoToneColor="#ff0000" />,
+    duration: 5,
   });
 };
 
