@@ -1,6 +1,5 @@
 import { Button, Result } from "antd";
 import React from "react";
-import { Link, Navigate } from "react-router-dom";
 import { withRouter } from "../withRouter";
 
 class ErrorBoundary extends React.Component {
