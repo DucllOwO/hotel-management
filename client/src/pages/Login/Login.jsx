@@ -22,7 +22,10 @@ const Login = () => {
   const handlePassword = (e) => setPassword(e.target.value);
 
   return (
-    <div className="login">
+    <div
+      className="login"
+      onKeyDownCapture={(e) => e.key === "Enter" && login(e)}
+    >
       {userLocal && <Navigate to="/admin/dashboard" replace={true} />}
       <div className="logo">
         <img src={logo} alt="logo" className="logoImg" />
