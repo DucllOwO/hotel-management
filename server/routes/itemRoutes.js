@@ -1,7 +1,7 @@
 const {
-    getAllRecord,
+    getAllItem,
     getByID,
-    createRecord,
+    createItem,
   } = require("../controllers/itemController");
   
   const pagination = require("../middlewares/pagination");

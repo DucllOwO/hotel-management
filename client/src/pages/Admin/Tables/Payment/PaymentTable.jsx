@@ -4,41 +4,19 @@ import { Table, Button, Modal, Form, Input } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 
-const PaymentTable = () => {
+const PaymentTable = ({payment, setPayment}) => {
   const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
 
-  const [dataSource, setDataSource] = useState([
-    {
-      idNum: 1,
-      date: "15/11/2022",
-      total: "20",
-    },
-    {
-      idNum: 2,
-      date: "15/11/2022",
-      total: "20",
-    },
-    {
-      idNum: 3,
-      date: "15/11/2022",
-      total: "J20",
-    },
-    {
-      idNum: 4,
-      date: "15/11/2022",
-      total: "20",
-    },
-  ]);
 
   const columns = [
     {
       key: "1",
       title: "ID",
-      dataIndex: "idNum",
+      dataIndex: "id",
     },
     {
       key: "2",
@@ -49,7 +27,7 @@ const PaymentTable = () => {
           .toLocaleLowerCase()
           .includes(value.toLocaleLowerCase());
       },
-      dataIndex: "date",
+      dataIndex: "established_date",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -151,13 +129,13 @@ const PaymentTable = () => {
   const onAddButton = () => {
     const randomNumber = parseInt(Math.random() * 1000);
     const newData = {
-      idNum: "" + parseInt(dataSource.length + 1),
+      idNum: "" + parseInt(payment.length + 1),
       date: "Date " + randomNumber,
       amount: "20",
       price: randomNumber + " price",
     };
 
-    setDataSource((pre) => {
+    setPayment((pre) => {
       return [...pre, newData];
     });
   };
@@ -168,7 +146,7 @@ const PaymentTable = () => {
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        setDataSource((pre) => {
+        setPayment((pre) => {
           return pre.filter((data) => data.idNum !== record.idNum);
         });
       },
@@ -177,13 +155,13 @@ const PaymentTable = () => {
 
   const onFinish = (values) => {
     console.log(editingRow);
-    const updateDataSource = [...dataSource];
+    const updateDataSource = [...payment];
     updateDataSource.splice(editingRow - 1, 1, {
       ...values,
       idNum: editingRow,
     });
     console.log(updateDataSource);
-    setDataSource(updateDataSource);
+    setPayment(updateDataSource);
     setEditingRow(null);
   };
 
@@ -218,7 +196,7 @@ const PaymentTable = () => {
       <Form form={form} onFinish={onFinish} className="form">
         <Table
           columns={columns}
-          dataSource={dataSource}
+          dataSource={payment}
           scroll={{ y: 350 }}
         ></Table>
       </Form>

@@ -30,6 +30,7 @@ const resourceAC = {
   SERVICE: "service",
   ITEM: "item",
   FEATURE: "feature",
+  RECEIPT: "invoice",
 };
 
 const roomStatus = {

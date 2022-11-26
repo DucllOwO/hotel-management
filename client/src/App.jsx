@@ -11,7 +11,7 @@ import Rooms from "./pages/Admin/Room/Rooms/Rooms";
 import RoomType from "./pages/Admin/Room/RoomType/RoomType";
 import Utilities from "./pages/Admin/Room/Utilities/Utilities";
 import Payment from "./pages/Admin/Turnover/Payment/Payment";
-import Reciept from "./pages/Admin/Turnover/Reciept/Reciept";
+import Receipt from "./pages/Admin/Turnover/Reciept/Receipt";
 import Login from "./pages/Login/Login";
 import _404ErrorBoundary from "./components/ErrorBoundary/_404ErrorBoundary";
 import Customer from "./pages/Staff/Customer/Customer";
@@ -96,7 +96,7 @@ const listRoute = [
   },
   {
     key: "Receipt",
-    value: <Route index path="receipt" element={<Reciept />} />,
+    value: <Route index path="receipt" element={<Receipt />} />,
   },
   {
     key: "Position",

@@ -1,12 +1,11 @@
 const supabase = require("../database");
 
-async function getAllPayments() {
-  const { data, error } = await supabase
+function getAllPayments(from, to) {
+  return supabase
     .from("payment")
     .select()
     .order("id", { ascending: true })
     .range(from, to);
-  return { data, error };
 }
 
 async function getPaymentByID(id) {

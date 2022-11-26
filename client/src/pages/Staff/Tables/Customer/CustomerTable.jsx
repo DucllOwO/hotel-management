@@ -6,7 +6,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import "./customertable.css";
 import CustomerModal from "../../Modals/Customer/CustomerModal";
 
-const CustomerTable = () => {
+const CustomerTable = ({customer, setCustomer}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -21,42 +21,13 @@ const CustomerTable = () => {
 
   const [searchedText, setSearchedText] = useState("");
 
-  const [dataSource, setDataSource] = useState([
-    {
-      idNum: 1,
-      name: "John",
-      birthday: "23/03/2002",
-      address: "Linh Trung, Thủ Đức",
-      email: "20520857@gm.uit.edu.vn",
-    },
-    {
-      idNum: 2,
-      name: "David",
-      birthday: "23/03/2002",
-      address: "Linh Trung, Thủ Đức",
-      email: "20520857@gm.uit.edu.vn",
-    },
-    {
-      idNum: 3,
-      name: "James",
-      birthday: "J23/03/2002",
-      address: "Linh Trung, Thủ Đức",
-      email: "20520857@gm.uit.edu.vn",
-    },
-    {
-      idNum: 4,
-      name: "Sam",
-      birthday: "23/03/2002",
-      address: "Linh Trung, Thủ Đức",
-      email: "20520857@gm.uit.edu.vn",
-    },
-  ]);
+  
 
   const columns = [
     {
       key: "1",
       title: "ID",
-      dataIndex: "idNum",
+      dataIndex: "id",
     },
     {
       key: "2",
@@ -75,7 +46,7 @@ const CustomerTable = () => {
             .includes(value.toLocaleLowerCase())
         );
       },
-      dataIndex: "name",
+      dataIndex: "firstname",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -99,7 +70,7 @@ const CustomerTable = () => {
     {
       key: "3",
       title: "Birthday",
-      dataIndex: "birthday",
+      dataIndex: "date_of_birth",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -227,13 +198,13 @@ const CustomerTable = () => {
   const onAddButton = () => {
     const randomNumber = parseInt(Math.random() * 1000);
     const newData = {
-      idNum: "" + parseInt(dataSource.length + 1),
+      idNum: "" + parseInt(customer.length + 1),
       name: "Name " + randomNumber,
       birthday: "23/03/2002",
       address: randomNumber + " address",
     };
 
-    setDataSource((pre) => {
+    setCustomer((pre) => {
       return [...pre, newData];
     });
   };
@@ -244,7 +215,7 @@ const CustomerTable = () => {
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        setDataSource((pre) => {
+        setCustomer((pre) => {
           return pre.filter((data) => data.idNum !== record.idNum);
         });
       },
@@ -253,13 +224,13 @@ const CustomerTable = () => {
 
   const onFinish = (values) => {
     console.log(editingRow);
-    const updateDataSource = [...dataSource];
+    const updateDataSource = [...customer];
     updateDataSource.splice(editingRow - 1, 1, {
       ...values,
       idNum: editingRow,
     });
     console.log(updateDataSource);
-    setDataSource(updateDataSource);
+    setCustomer(updateDataSource);
     setEditingRow(null);
   };
 
@@ -304,7 +275,7 @@ const CustomerTable = () => {
       <Form form={form} onFinish={onFinish} className="form">
         <Table
           columns={columns}
-          dataSource={dataSource}
+          dataSource={customer}
           scroll={{ x: true, y: 350 }}
         ></Table>
       </Form>

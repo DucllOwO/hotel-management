@@ -5,7 +5,7 @@ import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import ItemModal from "../../Modals/Item/ItemModal";
 
-const PaymentTable = () => {
+const ItemTable = ({items, setItems}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -20,38 +20,12 @@ const PaymentTable = () => {
 
   const [searchedText, setSearchedText] = useState("");
 
-  const [dataSource, setDataSource] = useState([
-    {
-      idNum: 1,
-      name: "Teeth Brush",
-      minimum: "20",
-      price: "200000",
-    },
-    {
-      idNum: 2,
-      name: "Glass",
-      minimum: "20",
-      price: "200000",
-    },
-    {
-      idNum: 3,
-      name: "Bed",
-      minimum: "J20",
-      price: "200000",
-    },
-    {
-      idNum: 4,
-      name: "Something",
-      minimum: "20",
-      price: "200000",
-    },
-  ]);
-
+  
   const columns = [
     {
       key: "1",
       title: "ID",
-      dataIndex: "idNum",
+      dataIndex: "id",
     },
     {
       key: "2",
@@ -110,7 +84,7 @@ const PaymentTable = () => {
     {
       key: "4",
       title: "Price",
-      dataIndex: "price",
+      dataIndex: "sell_price",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -192,7 +166,7 @@ const PaymentTable = () => {
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        setDataSource((pre) => {
+        setItems((pre) => {
           return pre.filter((data) => data.idNum !== record.idNum);
         });
       },
@@ -201,13 +175,13 @@ const PaymentTable = () => {
 
   const onFinish = (values) => {
     console.log(editingRow);
-    const upnameDataSource = [...dataSource];
+    const upnameDataSource = [...items];
     upnameDataSource.splice(editingRow - 1, 1, {
       ...values,
       idNum: editingRow,
     });
     console.log(upnameDataSource);
-    setDataSource(upnameDataSource);
+    setItems(upnameDataSource);
     setEditingRow(null);
   };
 
@@ -252,7 +226,7 @@ const PaymentTable = () => {
       <Form form={form} onFinish={onFinish} className="form">
         <Table
           columns={columns}
-          dataSource={dataSource}
+          dataSource={items}
           scroll={{ y: 350 }}
         ></Table>
       </Form>
@@ -260,4 +234,4 @@ const PaymentTable = () => {
   );
 };
 
-export default PaymentTable;
+export default ItemTable;

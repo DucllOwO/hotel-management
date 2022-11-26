@@ -22,6 +22,7 @@ async function createNewRecord(newRecord) {
     total_cost: newRecord.total_cost,
     employee_id: newRecord.employee_id,
   });
+  return {data, error};
 }
 
 module.exports = {

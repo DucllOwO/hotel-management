@@ -1,12 +1,11 @@
 const paymentDAL = require("../DAL/paymentDAL");
 
-const getAllPayment = (req, res, next) => {
+const getAllPayment = async (req, res, next) => {
   const { from, to } = req.paginatedResult;
 
-  const { data, error } = paymentDAL.getAllPayments(from, to);
+  const { data, error } = await paymentDAL.getAllPayments(from, to);
   if (error) return next(error);
-
-  res.status(200).send({ data });
+  res.status(200).send(data);
 };
 const getByID = (req, res) => {
   const { id: paymentID } = req.params;

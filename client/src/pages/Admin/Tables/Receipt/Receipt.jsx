@@ -4,41 +4,20 @@ import { Table, Button, Modal, Form, Input } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 
-const ReceiptTable = () => {
+const ReceiptTable = ({receipt, setReceipt}) => {
   const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
 
-  const [dataSource, setDataSource] = useState([
-    {
-      idNum: 1,
-      date: "15/11/2022",
-      total: "20",
-    },
-    {
-      idNum: 2,
-      date: "15/11/2022",
-      total: "20",
-    },
-    {
-      idNum: 3,
-      date: "15/11/2022",
-      total: "J20",
-    },
-    {
-      idNum: 4,
-      date: "15/11/2022",
-      total: "20",
-    },
-  ]);
+  
 
   const columns = [
     {
       key: "1",
       title: "ID",
-      dataIndex: "idNum",
+      dataIndex: "id",
     },
     {
       key: "2",
@@ -49,7 +28,7 @@ const ReceiptTable = () => {
           .toLocaleLowerCase()
           .includes(value.toLocaleLowerCase());
       },
-      dataIndex: "date",
+      dataIndex: "established_date",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -73,7 +52,7 @@ const ReceiptTable = () => {
     {
       key: "3",
       title: "Total",
-      dataIndex: "total",
+      dataIndex: "total_cost",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -151,13 +130,13 @@ const ReceiptTable = () => {
   const onAddButton = () => {
     const randomNumber = parseInt(Math.random() * 1000);
     const newData = {
-      idNum: "" + parseInt(dataSource.length + 1),
+      idNum: "" + parseInt(receipt.length + 1),
       date: "Date " + randomNumber,
       amount: "20",
       price: randomNumber + " price",
     };
 
-    setDataSource((pre) => {
+    setReceipt((pre) => {
       return [...pre, newData];
     });
   };
@@ -168,7 +147,7 @@ const ReceiptTable = () => {
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        setDataSource((pre) => {
+        setReceipt((pre) => {
           return pre.filter((data) => data.idNum !== record.idNum);
         });
       },
@@ -177,13 +156,13 @@ const ReceiptTable = () => {
 
   const onFinish = (values) => {
     console.log(editingRow);
-    const updateDataSource = [...dataSource];
+    const updateDataSource = [...receipt];
     updateDataSource.splice(editingRow - 1, 1, {
       ...values,
       idNum: editingRow,
     });
     console.log(updateDataSource);
-    setDataSource(updateDataSource);
+    setReceipt(updateDataSource);
     setEditingRow(null);
   };
 
@@ -221,7 +200,7 @@ const ReceiptTable = () => {
       <Form form={form} onFinish={onFinish} className="form">
         <Table
           columns={columns}
-          dataSource={dataSource}
+          dataSource={receipt}
           scroll={{ y: 350 }}
         ></Table>
       </Form>
