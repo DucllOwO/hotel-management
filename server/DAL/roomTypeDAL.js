@@ -4,8 +4,7 @@ async function getAllTypes() {
   const { data, error } = await supabase
     .from("roomtype")
     .select("*")
-    .order("id", { ascending: true })
-    .range(from, to);
+    .order("id", { ascending: true });
   return { data, error };
 }
 async function getTypeByID(id) {

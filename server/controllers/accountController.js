@@ -7,8 +7,7 @@ const { BadRequestError } = require("../middlewares/errorHandler");
 const BCRYPT_SALT = 10;
 
 const getAllAccounts = async (req, res, next) => {
-  const { from, to } = req.paginatedResult;
-  const { data, error } = await AccountDAL.getAllAccount(from, to);
+  const { data, error } = await AccountDAL.getAllAccount();
 
   if (error) return next(error);
 

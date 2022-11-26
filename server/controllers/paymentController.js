@@ -1,9 +1,7 @@
 const paymentDAL = require("../DAL/paymentDAL");
 
 const getAllPayment = (req, res, next) => {
-  const { from, to } = req.paginatedResult;
-
-  const { data, error } = paymentDAL.getAllPayments(from, to);
+  const { data, error } = paymentDAL.getAllPayments();
   if (error) return next(error);
 
   res.status(200).send({ data });

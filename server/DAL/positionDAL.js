@@ -2,12 +2,11 @@ const supabase = require("../database");
 
 const TABLE_NAME = "position";
 
-const loadAllPosition = async (from, to) => {
+const loadAllPosition = async () => {
   const { data, error } = await supabase
     .from(TABLE_NAME)
     .select("*")
-    .order("id", { ascending: true })
-    .range(from, to);
+    .order("id", { ascending: true });
   //console.log("fetch all Position data " + JSON.stringify(data));
   return { data, error };
 };

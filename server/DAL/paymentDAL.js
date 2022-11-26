@@ -4,8 +4,7 @@ async function getAllPayments() {
   const { data, error } = await supabase
     .from("payment")
     .select()
-    .order("id", { ascending: true })
-    .range(from, to);
+    .order("id", { ascending: true });
   return { data, error };
 }
 

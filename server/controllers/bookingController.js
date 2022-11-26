@@ -3,8 +3,7 @@ const customerDAL = require("../DAL/customerDAL");
 const { BadRequestError } = require("../middlewares/errorHandler");
 
 const getAllBookings = async (req, res, next) => {
-  const { from, to } = req.paginatedResult;
-  const { data, error } = await bookingDAL.getAllBooking(from, to);
+  const { data, error } = await bookingDAL.getAllBooking();
   if (error) return next(error);
 
   res.status(200).send({ data });

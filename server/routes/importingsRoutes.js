@@ -4,7 +4,6 @@ const {
   createRecord,
 } = require("../controllers/importingController");
 
-const pagination = require("../middlewares/pagination");
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
 const { hasPermission } = require("../middlewares/roleAccessControl");
 const { actionAC, resourceAC } = require("../utils/constants");
@@ -14,7 +13,6 @@ router.get(
   "/",
   authorizeAccessToken,
   hasPermission(actionAC.GET, resourceAC.PURCHASE),
-  pagination,
   getAllRecord
 );
 router.get(

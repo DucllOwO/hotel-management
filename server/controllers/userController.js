@@ -4,19 +4,18 @@ const { BadRequestError } = require("../middlewares/errorHandler");
 
 const getAllUsers = async (req, res, next) => {
   const { type } = req.query;
-  const { from, to } = req.paginatedResult;
 
   if (!type) return next(BadRequestError());
 
   switch (type) {
     case "customer":
       const { data: customers, error: getCustomerError } =
-        await customerDAL.getAllCustomer(from, to);
+        await customerDAL.getAllCustomer();
       if (getCustomerError) return next(getCustomerError);
       return res.status(200).send({ customers });
     case "employee":
       const { data: employees, error: getEmployeesError } =
-        await employeeDAL.getAllEmployee(from, to);
+        await employeeDAL.getAllEmployee();
       if (getEmployeesError) return next(getEmployeesError);
       return res.status(200).send({ employees });
     default:

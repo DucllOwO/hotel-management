@@ -3,9 +3,8 @@ const employeeDAL = require("../DAL/employeeDAL");
 const { BadRequestError } = require("../middlewares/errorHandler");
 
 const getAllRecord = (req, res, next) => {
-  const { from, to } = req.paginatedResult;
   const { data: importing, error: getImportingError } =
-    importingDAL.getAllRecords(from, to);
+    importingDAL.getAllRecords();
   if (getImportingError) return next(getImportingError);
   else res.status(200).send(importing);
 };

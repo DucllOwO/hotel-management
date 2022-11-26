@@ -22,12 +22,11 @@ async function getAccountByEmail(email) {
   }
 }
 
-const getAllAccount = (from, to) => {
+const getAllAccount = () => {
   return supabase
     .from(TABLE_NAME)
     .select("*")
-    .order("username", { ascending: true })
-    .range(from, to);
+    .order("username", { ascending: true });
 };
 
 const getAccount = (username) => {

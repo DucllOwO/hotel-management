@@ -7,7 +7,6 @@ const {
   deleteAccount,
 } = require("../controllers/accountController");
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
-const pagination = require("../middlewares/pagination");
 const { hasPermission } = require("../middlewares/roleAccessControl");
 const { actionAC, resourceAC } = require("../utils/constants");
 const { tryCatch } = require("../middlewares/errorHandler");
@@ -17,7 +16,6 @@ router.get(
   "/",
   authorizeAccessToken,
   hasPermission(actionAC.GET, resourceAC.ACCOUNT),
-  pagination,
   tryCatch(getAllAccounts)
 );
 

@@ -3,8 +3,7 @@ const permissionDAL = require("../DAL/permissionDAL");
 const { initAccessControl } = require("../middlewares/roleAccessControl");
 
 const getAllPosition = async (req, res, next) => {
-  const { from, to } = req.paginatedResult;
-  const { data, error } = await positionDAL.loadAllPosition(from, to);
+  const { data, error } = await positionDAL.loadAllPosition();
   if (error) next(error);
   res.send({ data });
 };

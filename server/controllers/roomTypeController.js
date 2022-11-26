@@ -1,11 +1,8 @@
 const roomTypeDAL = require("../DAL/roomTypeDAL");
 
 const getAll = (req, res, next) => {
-  const { from, to } = req.paginatedResult;
-  const { data: roomTypes, error: getRoomTypesError } = roomTypeDAL.getAllTypes(
-    from,
-    to
-  );
+  const { data: roomTypes, error: getRoomTypesError } =
+    roomTypeDAL.getAllTypes();
   if (getRoomTypesError) return next(getRoomTypesError);
   else res.status(200).send(roomTypes);
 };
