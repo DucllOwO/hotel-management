@@ -28,6 +28,7 @@ const resourceAC = {
   USER: "user",
   INVENTORY: "inventory",
   SERVICE: "service",
+  ITEM: "item",
   FEATURE: "feature",
 };
 

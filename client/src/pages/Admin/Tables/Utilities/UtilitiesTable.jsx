@@ -5,7 +5,7 @@ import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import UtilitiesModal from "../../Modals/Utilities/UtilitiesModal";
 
-const UtilitiesTable = () => {
+const UtilitiesTable = ({utilities, setUtilities}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -22,30 +22,12 @@ const UtilitiesTable = () => {
 
   const [searchedText, setSearchedText] = useState("");
 
-  const [dataSource, setDataSource] = useState([
-    {
-      idNum: 1,
-      name: "John",
-    },
-    {
-      idNum: 2,
-      name: "David",
-    },
-    {
-      idNum: 3,
-      name: "James",
-    },
-    {
-      idNum: 4,
-      name: "Sam",
-    },
-  ]);
-
+  
   const columns = [
     {
       key: "1",
       title: "ID",
-      dataIndex: "idNum",
+      dataIndex: "id",
     },
     {
       key: "2",
@@ -141,7 +123,7 @@ const UtilitiesTable = () => {
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        setDataSource((pre) => {
+        setUtilities((pre) => {
           return pre.filter((data) => data.idNum !== record.idNum);
         });
       },
@@ -150,13 +132,13 @@ const UtilitiesTable = () => {
 
   const onFinish = (values) => {
     console.log(editingRow);
-    const updateDataSource = [...dataSource];
+    const updateDataSource = [...utilities];
     updateDataSource.splice(editingRow - 1, 1, {
       ...values,
       idNum: editingRow,
     });
     console.log(updateDataSource);
-    setDataSource(updateDataSource);
+    setUtilities(updateDataSource);
     setEditingRow(null);
   };
 
@@ -201,7 +183,7 @@ const UtilitiesTable = () => {
       <Form form={form} onFinish={onFinish} className="form">
         <Table
           columns={columns}
-          dataSource={dataSource}
+          dataSource={utilities}
           scroll={{ y: 350 }}
         ></Table>
       </Form>

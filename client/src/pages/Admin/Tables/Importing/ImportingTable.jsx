@@ -4,41 +4,19 @@ import { Table, Button, Modal, Form, Input } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 
-const ImportingTable = () => {
+const ImportingTable = ({importingRecord, setRecord}) => {
   const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
 
-  const [dataSource, setDataSource] = useState([
-    {
-      idNum: 1,
-      date: "24/11/2022",
-      total: "20",
-    },
-    {
-      idNum: 2,
-      date: "24/11/2022",
-      total: "20",
-    },
-    {
-      idNum: 3,
-      date: "24/11/2022",
-      total: "20",
-    },
-    {
-      idNum: 4,
-      date: "24/11/2022",
-      total: "20",
-    },
-  ]);
 
   const columns = [
     {
       key: "1",
       title: "ID",
-      dataIndex: "idNum",
+      dataIndex: "id",
     },
     {
       key: "2",
@@ -151,13 +129,13 @@ const ImportingTable = () => {
   const onAddButton = () => {
     const randomNumber = parseInt(Math.random() * 1000);
     const newData = {
-      idNum: "" + parseInt(dataSource.length + 1),
+      idNum: "" + parseInt(importingRecord.length + 1),
       name: "Name " + randomNumber,
       amount: "20",
       price: randomNumber + " price",
     };
 
-    setDataSource((pre) => {
+    setRecord((pre) => {
       return [...pre, newData];
     });
   };
@@ -168,7 +146,7 @@ const ImportingTable = () => {
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        setDataSource((pre) => {
+        setRecord((pre) => {
           return pre.filter((data) => data.idNum !== record.idNum);
         });
       },
@@ -177,13 +155,13 @@ const ImportingTable = () => {
 
   const onFinish = (values) => {
     console.log(editingRow);
-    const updateDataSource = [...dataSource];
+    const updateDataSource = [...importingRecord];
     updateDataSource.splice(editingRow - 1, 1, {
       ...values,
       idNum: editingRow,
     });
     console.log(updateDataSource);
-    setDataSource(updateDataSource);
+    setRecord(updateDataSource);
     setEditingRow(null);
   };
 
@@ -218,7 +196,7 @@ const ImportingTable = () => {
       <Form form={form} onFinish={onFinish} className="form">
         <Table
           columns={columns}
-          dataSource={dataSource}
+          dataSource={importingRecord}
           scroll={{ y: 350 }}
         ></Table>
       </Form>

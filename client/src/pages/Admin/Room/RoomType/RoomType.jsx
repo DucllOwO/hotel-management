@@ -13,7 +13,6 @@ const RoomType = () => {
       const { data } = await userRequest.get("/roomtypes", {
         params: { user: { position: user?.position } },
       });
-      console.log(data)
       setTypes(data);
     };
     fetchRoomType();
@@ -22,7 +21,7 @@ const RoomType = () => {
     <div className="container">
       <div className="roomTypeContainer">
         <RoomTypeTable
-        roomtype = {types}
+        roomTypes = {types}
         ></RoomTypeTable>
       </div>
     </div>
