@@ -41,3 +41,5 @@ router.put(
   hasPermission(actionAC.UPDATE, resourceAC.ROOMTYPE),
   tryCatch(updateInformation)
 );
+
+module.exports = router;

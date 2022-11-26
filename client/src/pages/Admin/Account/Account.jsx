@@ -14,7 +14,7 @@ const Account = () => {
       const { data } = await userRequest.get("/accounts", {
         params: { user: { position: user?.position } },
       });
-      setAccounts(data);
+      setAccounts(data.data);
     };
     getAccounts();
   }, []);

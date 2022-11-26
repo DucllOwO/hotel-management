@@ -17,7 +17,7 @@ const Position = () => {
       const { data } = await userRequest.get("/positions", {
         params: { user: { position: user?.position } },
       });
-
+      console.log(data.data)
       setPositions(data.data);
     };
 

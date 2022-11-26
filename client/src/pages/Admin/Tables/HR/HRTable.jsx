@@ -5,7 +5,7 @@ import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import HRModal from "../../Modals/HR/HRModal";
 
-const HRTable = () => {
+const HRTable = ({ employees, setEmployees }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -22,50 +22,12 @@ const HRTable = () => {
 
   const [searchedText, setSearchedText] = useState("");
 
-  const [dataSource, setDataSource] = useState([
-    {
-      idNum: 1,
-      name: "John",
-      birthday: "23/03/2002",
-      phone: "john phone",
-      address: "john address",
-      startingDate: "1/1/2022",
-      salary: "10000000",
-    },
-    {
-      idNum: 2,
-      name: "David",
-      birthday: "23/03/2002",
-      phone: "david phone",
-      address: "david address",
-      startingDate: "1/1/2022",
-      salary: "10000000",
-    },
-    {
-      idNum: 3,
-      name: "James",
-      birthday: "J23/03/2002",
-      phone: "james phone",
-      address: "james address",
-      startingDate: "1/1/2022",
-      salary: "10000000",
-    },
-    {
-      idNum: 4,
-      name: "Sam",
-      birthday: "23/03/2002",
-      phone: "sam phone",
-      address: "sam address",
-      startingDate: "1/1/2022",
-      salary: "10000000",
-    },
-  ]);
 
   const columns = [
     {
       key: "1",
       title: "ID",
-      dataIndex: "idNum",
+      dataIndex: "id",
       width: 70,
     },
     {
@@ -85,7 +47,7 @@ const HRTable = () => {
             .includes(value.toLocaleLowerCase())
         );
       },
-      dataIndex: "name",
+      dataIndex: "firstname",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -109,7 +71,7 @@ const HRTable = () => {
     {
       key: "3",
       title: "Birthday",
-      dataIndex: "birthday",
+      dataIndex: "date_of_birth",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -133,7 +95,7 @@ const HRTable = () => {
     {
       key: "4",
       title: "Phone",
-      dataIndex: "phone",
+      dataIndex: "phone_number",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -181,7 +143,7 @@ const HRTable = () => {
     {
       key: "6",
       title: "Starting Date",
-      dataIndex: "startingDate",
+      dataIndex: "start_working_date",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -287,7 +249,6 @@ const HRTable = () => {
   const onAddButton = () => {
     const randomNumber = parseInt(Math.random() * 1000);
     const newData = {
-      idNum: "" + parseInt(dataSource.length + 1),
       name: "Name " + randomNumber,
       birthday: "23/03/2002",
       phone: randomNumber + " phone",
@@ -296,7 +257,7 @@ const HRTable = () => {
       salary: "15000000",
     };
 
-    setDataSource((pre) => {
+    setEmployees((pre) => {
       return [...pre, newData];
     });
   };
@@ -307,7 +268,7 @@ const HRTable = () => {
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        setDataSource((pre) => {
+        setEmployees((pre) => {
           return pre.filter((data) => data.idNum !== record.idNum);
         });
       },
@@ -316,13 +277,13 @@ const HRTable = () => {
 
   const onFinish = (values) => {
     console.log(editingRow);
-    const updateDataSource = [...dataSource];
+    const updateDataSource = [...employees];
     updateDataSource.splice(editingRow - 1, 1, {
       ...values,
       idNum: editingRow,
     });
     console.log(updateDataSource);
-    setDataSource(updateDataSource);
+    setEmployees(updateDataSource);
     setEditingRow(null);
   };
 
@@ -367,8 +328,9 @@ const HRTable = () => {
       <Form form={form} onFinish={onFinish} className="form">
         <Table
           columns={columns}
-          dataSource={dataSource}
+          dataSource={employees}
           scroll={{ y: 350 }}
+          rowKey={(record) => record.id}
         ></Table>
       </Form>
     </div>

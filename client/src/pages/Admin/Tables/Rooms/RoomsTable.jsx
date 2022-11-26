@@ -4,49 +4,20 @@ import { Table, Button, Modal, Form, Input } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 
-const RoomsTable = () => {
+const RoomsTable = ({ rooms, setRoom }) => {
   const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
 
-  const [dataSource, setDataSource] = useState([
-    {
-      idNum: 1,
-      name: "John",
-      roomType: "23/03/2002",
-      area: "50",
-      price: "10.000.000",
-    },
-    {
-      idNum: 2,
-      name: "David",
-      roomType: "23/03/2002",
-      area: "50",
-      price: "10.000.000",
-    },
-    {
-      idNum: 3,
-      name: "James",
-      roomType: "J23/03/2002",
-      area: "50",
-      price: "10.000.000",
-    },
-    {
-      idNum: 4,
-      name: "Sam",
-      roomType: "23/03/2002",
-      area: "50",
-      price: "10.000.000",
-    },
-  ]);
+  
 
   const columns = [
     {
       key: "1",
       title: "ID",
-      dataIndex: "idNum",
+      dataIndex: "id",
     },
     {
       key: "2",
@@ -65,7 +36,7 @@ const RoomsTable = () => {
             .includes(value.toLocaleLowerCase())
         );
       },
-      dataIndex: "name",
+      dataIndex: "room_name",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -89,7 +60,7 @@ const RoomsTable = () => {
     {
       key: "3",
       title: "Room Type",
-      dataIndex: "roomType",
+      dataIndex: "room_type",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -113,7 +84,7 @@ const RoomsTable = () => {
     {
       key: "4",
       title: "Area (m2)",
-      dataIndex: "area",
+      dataIndex: "size",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -217,13 +188,13 @@ const RoomsTable = () => {
   const onAddButton = () => {
     const randomNumber = parseInt(Math.random() * 1000);
     const newData = {
-      idNum: "" + parseInt(dataSource.length + 1),
+      idNum: "" + parseInt(rooms.length + 1),
       name: "Name " + randomNumber,
       roomType: "23/03/2002",
       area: randomNumber + " area",
     };
 
-    setDataSource((pre) => {
+    setRoom((pre) => {
       return [...pre, newData];
     });
   };
@@ -234,7 +205,7 @@ const RoomsTable = () => {
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        setDataSource((pre) => {
+        setRoom((pre) => {
           return pre.filter((data) => data.idNum !== record.idNum);
         });
       },
@@ -243,13 +214,13 @@ const RoomsTable = () => {
 
   const onFinish = (values) => {
     console.log(editingRow);
-    const updateDataSource = [...dataSource];
+    const updateDataSource = [...rooms];
     updateDataSource.splice(editingRow - 1, 1, {
       ...values,
       idNum: editingRow,
     });
     console.log(updateDataSource);
-    setDataSource(updateDataSource);
+    setRoom(updateDataSource);
     setEditingRow(null);
   };
 
@@ -284,7 +255,7 @@ const RoomsTable = () => {
       <Form form={form} onFinish={onFinish} className="form">
         <Table
           columns={columns}
-          dataSource={dataSource}
+          dataSource={rooms}
           scroll={{ y: 350 }}
         ></Table>
       </Form>

@@ -24,7 +24,7 @@ const resourceAC = {
   PURCHASE: "purchase",
   PAYMENT: "payment",
   CUSTOMER: "customer",
-  ROOMTYPE: "roomtype",
+  ROOMTYPE: "room_type",
   USER: "user",
   INVENTORY: "inventory",
   SERVICE: "service",

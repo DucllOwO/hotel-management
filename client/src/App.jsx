@@ -23,6 +23,7 @@ import Position from "./pages/Admin/Position/Position";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
+import AuthErrorBoundary from "./components/ErrorBoundary/AuthErrorBoundary";
 
 const App = () => {
   const { user } = useContext(AppContext);
@@ -37,7 +38,6 @@ const App = () => {
         <Routes>
           <Route index element={<Login />}></Route>
           <Route path="/login" element={<Login />}></Route>
-          <Route exact path="*" element={<_404ErrorBoundary />} />
           <Route path="/admin" element={<Admin />}>
             {listFeature
               ? listRoute.map((item) => {
@@ -46,6 +46,7 @@ const App = () => {
                 })
               : null}
           </Route>
+          <Route exact path="*" element={ user ? <_404ErrorBoundary /> : <AuthErrorBoundary/>} />
         </Routes>
       </div>
     </BrowserRouter>
@@ -65,13 +66,22 @@ const listRoute = [
     key: "Import",
     value: <Route index path="importing" element={<Importing />} />,
   },
-  { key: "HR", value: <Route index path="hr" element={<HR />} /> },
+  { 
+    key: "Employee", 
+    value: <Route index path="hr" element={<HR />} /> 
+  },
   {
     key: "Inventory",
     value: <Route index path="inventory" element={<Inventory />} />,
   },
-  { key: "Item", value: <Route index path="item" element={<Item />} /> },
-  { key: "Room", value: <Route index path="rooms" element={<Rooms />} /> },
+  { 
+    key: "Item", 
+    value: <Route index path="item" element={<Item />} /> 
+  },
+  { 
+    key: "Room", 
+    value: <Route index path="rooms" element={<Rooms />} /> 
+  },
   {
     key: "Room type",
     value: <Route index path="roomtype" element={<RoomType />} />,

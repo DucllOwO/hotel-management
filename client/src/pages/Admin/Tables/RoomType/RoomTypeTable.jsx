@@ -5,7 +5,7 @@ import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import RoomTypeModal from "../../Modals/RoomType/RoomTypeModal";
 
-const RoomTypeTable = () => {
+const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -22,30 +22,12 @@ const RoomTypeTable = () => {
 
   const [searchedText, setSearchedText] = useState("");
 
-  const [dataSource, setDataSource] = useState([
-    {
-      idNum: 1,
-      name: "John",
-    },
-    {
-      idNum: 2,
-      name: "David",
-    },
-    {
-      idNum: 3,
-      name: "James",
-    },
-    {
-      idNum: 4,
-      name: "Sam",
-    },
-  ]);
 
   const columns = [
     {
       key: "1",
       title: "ID",
-      dataIndex: "idNum",
+      dataIndex: "id",
     },
     {
       key: "2",
@@ -144,7 +126,7 @@ const RoomTypeTable = () => {
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        setDataSource((pre) => {
+        setRoomTypes((pre) => {
           return pre.filter((data) => data.idNum !== record.idNum);
         });
       },
@@ -153,13 +135,13 @@ const RoomTypeTable = () => {
 
   const onFinish = (values) => {
     console.log(editingRow);
-    const updateDataSource = [...dataSource];
+    const updateDataSource = [...roomTypes];
     updateDataSource.splice(editingRow - 1, 1, {
       ...values,
       idNum: editingRow,
     });
     console.log(updateDataSource);
-    setDataSource(updateDataSource);
+    setRoomTypes(updateDataSource);
     setEditingRow(null);
   };
 
@@ -204,7 +186,7 @@ const RoomTypeTable = () => {
       <Form form={form} onFinish={onFinish} className="form">
         <Table
           columns={columns}
-          dataSource={dataSource}
+          dataSource={roomTypes}
           scroll={{ y: 350 }}
         ></Table>
       </Form>

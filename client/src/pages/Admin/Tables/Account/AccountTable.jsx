@@ -5,7 +5,7 @@ import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import AccountModal from "../../Modals/Account/AccountModal";
 
-const AccountTable = () => {
+const AccountTable = ({ accounts, setAccount }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -20,37 +20,11 @@ const AccountTable = () => {
 
   const [searchedText, setSearchedText] = useState("");
 
-  const [dataSource, setDataSource] = useState([
-    {
-      idNum: 1,
-      name: "John",
-      username: "huynhthevi",
-      password: "",
-    },
-    {
-      idNum: 2,
-      name: "David",
-      username: "huynhthevi",
-      password: "",
-    },
-    {
-      idNum: 3,
-      name: "James",
-      username: "huynhthevi",
-      password: "",
-    },
-    {
-      idNum: 4,
-      name: "Sam",
-      username: "huynhthevi",
-      password: "",
-    },
-  ]);
 
   const columns = [
     {
       key: "1",
-      title: "Name",
+      title: "Username",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
@@ -99,7 +73,7 @@ const AccountTable = () => {
     {
       key: "4",
       title: "Password",
-      dataIndex: "password",
+      dataIndex: "none",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -182,7 +156,7 @@ const AccountTable = () => {
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        setDataSource((pre) => {
+        setAccount((pre) => {
           return pre.filter((data) => data.idNum !== record.idNum);
         });
       },
@@ -191,13 +165,13 @@ const AccountTable = () => {
 
   const onFinish = (values) => {
     console.log(editingRow);
-    const updateDataSource = [...dataSource];
+    const updateDataSource = [...accounts];
     updateDataSource.splice(editingRow - 1, 1, {
       ...values,
       idNum: editingRow,
     });
     console.log(updateDataSource);
-    setDataSource(updateDataSource);
+    setAccount(updateDataSource);
     setEditingRow(null);
   };
 
@@ -242,7 +216,7 @@ const AccountTable = () => {
       <Form form={form} onFinish={onFinish} className="form">
         <Table
           columns={columns}
-          dataSource={dataSource}
+          dataSource={accounts}
           scroll={{ y: 350 }}
         ></Table>
       </Form>

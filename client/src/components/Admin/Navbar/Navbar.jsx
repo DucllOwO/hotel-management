@@ -35,7 +35,7 @@ const Navbar = () => {
       navigate(e.key);
     }
   };
-  const permission = LocalStorage.getItem("user").permission;
+  const permission = LocalStorage.getItem("user")?.permission;
 
   return (
     <div className="navBar">
@@ -51,7 +51,7 @@ const Navbar = () => {
         defaultSelectedKeys={["/admin"]}
         selectedKeys={[current]}
         onClick={onClickHandler}
-        items={[
+        items={permission ? [
           permission.includes("Dashboard")
             ? {
                 label: "Dashboard",
@@ -154,7 +154,7 @@ const Navbar = () => {
             key: "/login",
             icon: <LogoutOutlined></LogoutOutlined>,
           },
-        ]}
+        ] : null}
       ></Menu>
     </div>
   );

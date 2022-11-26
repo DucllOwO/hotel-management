@@ -1,22 +1,21 @@
 const supabase = require("../database");
 
-async function getAllTypes() {
-  const { data, error } = await supabase
-    .from("roomtype")
+function getAllTypes(from, to) {
+  return supabase
+    .from("room_type")
     .select("*")
     .order("id", { ascending: true })
     .range(from, to);
-  return { data, error };
 }
 async function getTypeByID(id) {
   const { data, error } = await supabase
-    .from("roomtype")
+    .from("room_type")
     .select("*")
     .eq("id", id);
   return { data, error };
 }
 async function createRoomType(newRoomType) {
-  const { data, error } = await supabase.from("roomtype").insert({
+  const { data, error } = await supabase.from("room_type").insert({
     name: newRoomType.name,
     max_customer: newRoomType.max_customer,
     bed_amount: newRoomType.bed_amount,
@@ -25,7 +24,7 @@ async function createRoomType(newRoomType) {
 }
 async function updateRoomType(id, newInfo) {
   const { data, error } = await supabase
-    .from("roomtype")
+    .from("room_type")
     .update({ ...newInfo })
     .eq("id", id);
   return { data, error };
