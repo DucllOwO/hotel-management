@@ -51,11 +51,14 @@ const getPermissionByPositionID = (positionID) => {
     .from(TABLE_NAME)
     .select(
       `position_id:position(
-    name
-  ),
-  feature_id:feature(
-    name
-  )`,
+        id,
+        name
+      ),
+      feature_id:feature(
+        id,
+        name, 
+        action
+      )`,
       true
     )
     .eq("position_id", positionID);

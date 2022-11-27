@@ -1,6 +1,6 @@
 import { Button, Result } from "antd";
 import React from "react";
-import { withRouter } from "../withRouter";
+import { withRouter } from "../../withRouter";
 
 class ErrorBoundary extends React.Component {
   state = { hasError: false, click: false };

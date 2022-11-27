@@ -1,5 +1,6 @@
 const {
   getAllPosition,
+  getPosition,
   createPosition,
   updatePosition,
   deletePosition,
@@ -21,7 +22,14 @@ router.get(
   hasPermission(actionAC.GET, resourceAC.POSITION),
   tryCatch(getAllPosition)
 );
-//router.get("/:id");
+
+router.get(
+  "/:id",
+  authorizeAccessToken,
+  hasPermission(actionAC.GET, resourceAC.POSITION),
+  tryCatch(getPosition)
+);
+
 //test ok
 router.post(
   "/",

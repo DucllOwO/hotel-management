@@ -1,14 +1,12 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import "../index.css";
 import { Table } from "antd";
 import "antd/dist/antd.less";
 import Checkbox from "antd/lib/checkbox/Checkbox";
-import { AppContext } from "../../../../context/AppContext";
 
 const { Column, ColumnGroup } = Table;
 
 const FeatureTable = ({ features, setFeatures }) => {
-  //console.log("feature table is rerender");
   return (
     <div style={{ height: "20vh" }}>
       <Table
@@ -31,6 +29,8 @@ const FeatureTable = ({ features, setFeatures }) => {
             align="center"
             render={(_, record) => (
               <Checkbox
+                checked={record?.read?.isCheck ? true : false}
+                disabled={record?.read ? false : true}
                 onChange={(e) => {
                   //console.log(e.target.checked, record);
                   setFeatures((prev) =>
@@ -60,6 +60,8 @@ const FeatureTable = ({ features, setFeatures }) => {
             align="center"
             render={(_, record) => (
               <Checkbox
+                checked={record?.create?.isCheck ? true : false}
+                disabled={record?.create ? false : true}
                 onChange={(e) => {
                   setFeatures((prev) =>
                     prev.map((feature, index) => {
@@ -88,6 +90,8 @@ const FeatureTable = ({ features, setFeatures }) => {
             align="center"
             render={(_, record) => (
               <Checkbox
+                checked={record?.update?.isCheck ? true : false}
+                disabled={record?.update ? false : true}
                 onChange={(e) => {
                   setFeatures((prev) =>
                     prev.map((feature, index) => {
@@ -116,6 +120,8 @@ const FeatureTable = ({ features, setFeatures }) => {
             align="center"
             render={(_, record) => (
               <Checkbox
+                checked={record?.delete?.isCheck ? true : false}
+                disabled={record?.delete ? false : true}
                 onChange={(e) => {
                   setFeatures((prev) =>
                     prev.map((feature, index) => {

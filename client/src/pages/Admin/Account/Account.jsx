@@ -1,3 +1,4 @@
+import { Alert } from "antd";
 import React, { useEffect, useState, useContext } from "react";
 import { userRequest } from "../../../api/api";
 import Topbar from "../../../components/Topbar/Topbar";
@@ -17,7 +18,7 @@ const Account = () => {
       setAccounts(data);
     };
     getAccounts();
-  }, []);
+  }, [user?.position]);
 
   return (
     <div className="container">

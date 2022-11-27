@@ -5,20 +5,15 @@ export const PositionContext = createContext({});
 export const PositionProvider = ({ children }) => {
   const [features, setFeatures] = useState([]);
 
-  const [posName, setPosName] = useState("");
-
-  const setOnChangePosName = (name) => {
-    setPosName(name);
-    console.log(posName);
-  };
+  const [isFeaturesError, setIsFeaturesError] = useState(null);
 
   return (
     <PositionContext.Provider
       value={{
         features,
         setFeatures,
-        setOnChangePosName,
-        posName,
+        isFeaturesError,
+        setIsFeaturesError,
       }}
     >
       {children}

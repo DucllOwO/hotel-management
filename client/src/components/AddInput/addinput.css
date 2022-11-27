@@ -6,4 +6,5 @@
 .label {
     color: var(--black);
     margin-bottom: 3px;
+    font-weight: bold;
 }

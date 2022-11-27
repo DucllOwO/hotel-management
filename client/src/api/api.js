@@ -9,4 +9,5 @@ export const publicRequest = axios.create({
 
 export const userRequest = axios.create({
   baseURL: BASE_URL,
+  headers: { Authorization: `Bearer ${LocalStorage.getItem("user")?.token}` },
 });

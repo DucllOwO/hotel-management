@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./admin.css";
 import Navbar from "../../components/Admin/Navbar/Navbar";
 import Topbar from "../../components/Topbar/Topbar";
 import { Navigate, Outlet } from "react-router-dom";
 import LocalStorage from "../../Utils/localStorage";
-import ErrorBoundary from "../../components/ErrorBoundary/ErrorBoundary";
+import { userRequest } from "../../api/api";
+import ErrorBoundary from "../../components/Error/ErrorBoundary/ErrorBoundary";
 
 const Admin = () => {
   const user = LocalStorage.getItem("user");
+  useEffect(() => {
+    userRequest.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${user?.token}`;
+  }, [user?.token]);
+
   return (
     <ErrorBoundary>
       <div className="container">
