@@ -16,8 +16,15 @@ const getRoomByStatus = (status) => {
 const getAllRooms = () => {
   return supabase
     .from(TABLE_NAME)
-    .select("*")
-    .order("room_name", { ascending: true });
+    .select(`
+      room_name,
+      size,
+      price,
+      status,
+      room_type(name)
+    `)
+    .order("room_name", { ascending: true })
+    .range(from, to);
 };
 
 const updateRoom = (room, roomName) => {

@@ -27,7 +27,7 @@ const ImportingTable = ({importingRecord, setRecord}) => {
           .toLocaleLowerCase()
           .includes(value.toLocaleLowerCase());
       },
-      dataIndex: "date",
+      dataIndex: "established_date",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -50,8 +50,8 @@ const ImportingTable = ({importingRecord, setRecord}) => {
     },
     {
       key: "3",
-      title: "Total",
-      dataIndex: "total",
+      title: "Item",
+      dataIndex: "item",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -74,6 +74,16 @@ const ImportingTable = ({importingRecord, setRecord}) => {
     },
     {
       key: "4",
+      title: "Quatity",
+      dataIndex: "amount",
+    },
+    {
+      key: "5",
+      title: "Total cost",
+      dataIndex: "total_cost",
+    },
+    {
+      key: "6",
       title: "Actions",
       render: (_, record) => {
         if (editingRow !== null) {

@@ -55,9 +55,9 @@ const RoomsTable = ({ rooms, setRoom }) => {
     {
       key: "2",
       title: "Room Type",
-      dataIndex: "room_type",
+      dataIndex: "roomType",
       render: (text, record) => {
-        if (editingRow === record.idNum) {
+        if (editingRow === record.id) {
           return (
             <Form.Item
               name="roomType"

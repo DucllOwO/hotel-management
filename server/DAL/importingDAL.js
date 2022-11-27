@@ -3,9 +3,15 @@ const supabase = require("../database");
 async function getAllRecords() {
   const { data, error } = await supabase
     .from("purchase")
-    .select("*")
-    .order("id", { ascending: true });
-  return { data, error };
+    .select(`
+      id, 
+      amount,
+      item_id(name),
+      total_cost,
+      established_date
+    `)
+    .order("id", { ascending: true })
+    .range(from, to);
 }
 async function getRecordByID(filter) {
   const { data, error } = await supabase
