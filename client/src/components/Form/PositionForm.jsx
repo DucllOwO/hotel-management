@@ -23,7 +23,7 @@ const PositionForm = ({ form, positionID = null, setOldFeaturesState }) => {
         );
         console.log(data.data);
         setFeatures(data.data);
-        setOldFeaturesState(data.data);
+        setOldFeaturesState && setOldFeaturesState(data.data);
       } catch (error) {
         console.error(error);
         ErrorAlert("Fetch features data error!!");

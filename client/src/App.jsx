@@ -21,6 +21,7 @@ import LocalStorage from "./Utils/localStorage";
 import Position from "./pages/Admin/Position/Position";
 
 import _404ErrorBoundary from "./components/Error/ErrorBoundary/_404ErrorBoundary";
+import AuthErrorBoundary from "./components/Error/ErrorBoundary/AuthErrorBoundary";
 
 const App = () => {
   const { user } = useContext(AppContext);
