@@ -1,11 +1,10 @@
 const supabase = require("../database");
 
-function getAllTypes(from, to) {
+function getAllTypes() {
   return supabase
     .from("room_type")
     .select("*")
-    .order("id", { ascending: true })
-    .range(from, to);
+    .order("id", { ascending: true });
 }
 async function getTypeByID(id) {
   const { data, error } = await supabase

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Admin from "./pages/Admin/Admin";
 import HR from "./pages/Admin/HR/HR";
@@ -13,17 +13,14 @@ import Utilities from "./pages/Admin/Room/Utilities/Utilities";
 import Payment from "./pages/Admin/Turnover/Payment/Payment";
 import Receipt from "./pages/Admin/Turnover/Reciept/Receipt";
 import Login from "./pages/Login/Login";
-import _404ErrorBoundary from "./components/ErrorBoundary/_404ErrorBoundary";
 import Customer from "./pages/Staff/Customer/Customer";
 import Booking from "./pages/Staff/Booking/Booking";
 import StaffReciept from "./pages/Staff/Receipt/Receipt";
 import { AppContext } from "./context/AppContext";
 import LocalStorage from "./Utils/localStorage";
 import Position from "./pages/Admin/Position/Position";
-import { useState } from "react";
-import { useEffect } from "react";
-import { useContext } from "react";
-import AuthErrorBoundary from "./components/ErrorBoundary/AuthErrorBoundary";
+
+import _404ErrorBoundary from "./components/Error/ErrorBoundary/_404ErrorBoundary";
 
 const App = () => {
   const { user } = useContext(AppContext);
@@ -46,7 +43,11 @@ const App = () => {
                 })
               : null}
           </Route>
-          <Route exact path="*" element={ user ? <_404ErrorBoundary /> : <AuthErrorBoundary/>} />
+          <Route
+            exact
+            path="*"
+            element={user ? <_404ErrorBoundary /> : <AuthErrorBoundary />}
+          />
         </Routes>
       </div>
     </BrowserRouter>
@@ -66,21 +67,21 @@ const listRoute = [
     key: "Import",
     value: <Route index path="importing" element={<Importing />} />,
   },
-  { 
-    key: "Employee", 
-    value: <Route index path="hr" element={<HR />} /> 
+  {
+    key: "Employee",
+    value: <Route index path="hr" element={<HR />} />,
   },
   {
     key: "Inventory",
     value: <Route index path="inventory" element={<Inventory />} />,
   },
-  { 
-    key: "Item", 
-    value: <Route index path="item" element={<Item />} /> 
+  {
+    key: "Item",
+    value: <Route index path="item" element={<Item />} />,
   },
-  { 
-    key: "Room", 
-    value: <Route index path="rooms" element={<Rooms />} /> 
+  {
+    key: "Room",
+    value: <Route index path="rooms" element={<Rooms />} />,
   },
   {
     key: "Room type",

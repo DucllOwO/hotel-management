@@ -2,13 +2,11 @@ const importingDAL = require("../DAL/importingDAL");
 const employeeDAL = require("../DAL/employeeDAL");
 const { BadRequestError } = require("../middlewares/errorHandler");
 
-const getAllRecord = async (req, res, next) => {
-  const { from, to } = req.paginatedResult;
-  const { data, error } =
-    await importingDAL.getAllRecords(from, to);
-    console.log(data)
-  if (error) return next(error);
-  else res.status(200).send(data);
+const getAllRecord = (req, res, next) => {
+  const { data: importing, error: getImportingError } =
+    importingDAL.getAllRecords();
+  if (getImportingError) return next(getImportingError);
+  else res.status(200).send(importing);
 };
 const getByID = (req, res, next) => {
   const { id: importingID } = req.params;

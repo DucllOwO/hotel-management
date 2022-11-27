@@ -3,7 +3,7 @@ import "./login.css";
 import logo from "../../assets/images/logo.png";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import { useNavigate, Navigate } from "react-router-dom";
-import { publicRequest } from "../../api/api";
+import { publicRequest, userRequest } from "../../api/api";
 import LocalStorage from "../../Utils/localStorage";
 import { AppContext } from "../../context/AppContext";
 import { Spin } from "antd";
@@ -22,7 +22,10 @@ const Login = () => {
   const handlePassword = (e) => setPassword(e.target.value);
 
   return (
-    <div className="login">
+    <div
+      className="login"
+      onKeyDownCapture={(e) => e.key === "Enter" && login(e)}
+    >
       {userLocal && <Navigate to="/admin/dashboard" replace={true} />}
       <div className="logo">
         <img src={logo} alt="logo" className="logoImg" />
@@ -117,6 +120,11 @@ const Login = () => {
           // save user to app context
           setUser(user);
           setIsLoading(false);
+
+          userRequest.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${data?.accessToken}`;
+
           navigate("/admin");
         }
       } catch (error) {

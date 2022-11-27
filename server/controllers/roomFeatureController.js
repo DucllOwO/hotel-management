@@ -2,8 +2,7 @@ const RoomFeatureDAL = require("../DAL/roomFeatureDAL");
 const { BadRequestError } = require("../middlewares/errorHandler");
 
 const getAllRoomFeatures = async (req, res, next) => {
-  const { from, to } = req.paginatedResult;
-  const { data, error } = await RoomFeatureDAL.getAllRoomFeature(from, to);
+  const { data, error } = await RoomFeatureDAL.getAllRoomFeature();
 
   if (error) return next(error);
 

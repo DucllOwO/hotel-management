@@ -1,11 +1,11 @@
 const supabase = require("../database");
 
-function getAllRecords(from, to) {
-  return supabase
+async function getAllRecords() {
+  const { data, error } = await supabase
     .from("purchase")
     .select("*")
-    .order("id", { ascending: true })
-    .range(from, to);
+    .order("id", { ascending: true });
+  return { data, error };
 }
 async function getRecordByID(filter) {
   const { data, error } = await supabase
@@ -22,7 +22,7 @@ async function createNewRecord(newRecord) {
     total_cost: newRecord.total_cost,
     employee_id: newRecord.employee_id,
   });
-  return {data, error};
+  return { data, error };
 }
 
 module.exports = {

@@ -5,7 +5,6 @@ const {
   updateRoom,
   getRoom,
 } = require("../controllers/roomController");
-const pagination = require("../middlewares/pagination");
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
 const { hasPermission } = require("../middlewares/roleAccessControl");
 const { actionAC, resourceAC } = require("../utils/constants");
@@ -17,7 +16,6 @@ router.get(
   "/",
   authorizeAccessToken,
   hasPermission(actionAC.GET, resourceAC.ROOM),
-  pagination,
   tryCatch(getAllRoom)
 );
 router.get(

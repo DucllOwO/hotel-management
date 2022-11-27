@@ -218,6 +218,7 @@ const AccountTable = ({ accounts, setAccount }) => {
           columns={columns}
           dataSource={accounts}
           scroll={{ y: 350 }}
+          rowKey={(row) => row.idNum}
         ></Table>
       </Form>
     </div>

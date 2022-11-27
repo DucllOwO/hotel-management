@@ -2,12 +2,8 @@ const supabase = require("../database");
 
 const TABLE_NAME = "room_feature";
 
-const getAllRoomFeature = (from, to) => {
-  return supabase
-    .from(TABLE_NAME)
-    .select("*")
-    .order("id", { ascending: true })
-    .range(from, to);
+const getAllRoomFeature = () => {
+  return supabase.from(TABLE_NAME).select("*").order("id", { ascending: true });
 };
 
 const getRoomFeature = (id) => {

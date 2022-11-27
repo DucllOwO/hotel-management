@@ -6,8 +6,7 @@ const getAllEmployee = (from, to) => {
   return supabase
     .from(TABLE_NAME)
     .select("*")
-    .order("start_working_date", { ascending: true })
-    .range(from, to);
+    .order("start_working_date", { ascending: true });
 };
 
 const getEmployeePositionByUsername = (username) => {

@@ -3,12 +3,6 @@ const featureDAL = require("../DAL/featureDAL");
 const getAllFeatures = async (req, res, next) => {
   const { data, error } = await featureDAL.loadAllFeature();
   if (error) return next(error);
-  //console.log(data);
-  // const temp = [...new Set(data.map((item) => item?.name))];
-
-  // const tempWithName = temp.map((feature) => {
-  //   return { name: feature };
-  // });
 
   // {
   //     name: feature.name,
@@ -18,9 +12,20 @@ const getAllFeatures = async (req, res, next) => {
   //     delete: { id: "", isCheck: false },
   //   };
   // }
+
+  res.send({ data: createFeatureCheckList(data) });
+};
+
+const createFeatureCheckList = (features) => {
+  // result:
+  // "name": "Room",
+  //   "read": {
+  //     "id": 5,
+  //     "isCheck": false
+  //   }
   let tempArr = [];
 
-  data.forEach((feature, index) => {
+  features.forEach((feature, index) => {
     /** feature
      * {
         id: 6,
@@ -30,8 +35,9 @@ const getAllFeatures = async (req, res, next) => {
         description: null
       },
      */
+
     const indexOfTemp = isFeatureExist(feature, tempArr);
-    if (indexOfTemp === 0 || indexOfTemp) {
+    if (indexOfTemp >= 0) {
       tempArr[indexOfTemp] = {
         ...tempArr[indexOfTemp],
         [feature.action.split(":")[0]]: {
@@ -47,14 +53,14 @@ const getAllFeatures = async (req, res, next) => {
     }
   });
 
-  res.send({ features: tempArr });
+  return tempArr;
 };
 
 const isFeatureExist = (feature, arr) => {
   const index = arr.findIndex((item) => item.name === feature.name);
   //console.log(index);
 
-  return index !== -1 ? index : null;
+  return index;
 };
 
-module.exports = { getAllFeatures };
+module.exports = { getAllFeatures, createFeatureCheckList };

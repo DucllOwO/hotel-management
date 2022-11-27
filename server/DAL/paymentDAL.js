@@ -1,11 +1,7 @@
 const supabase = require("../database");
 
-function getAllPayments(from, to) {
-  return supabase
-    .from("payment")
-    .select()
-    .order("id", { ascending: true })
-    .range(from, to);
+function getAllPayments() {
+  return supabase.from("payment").select().order("id", { ascending: true });
 }
 
 async function getPaymentByID(id) {

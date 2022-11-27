@@ -3,7 +3,6 @@ const {
   getByID,
   createPayment,
 } = require("../controllers/paymentController");
-const pagination = require("../middlewares/pagination");
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
 const { tryCatch } = require("../middlewares/errorHandler");
 const { hasPermission } = require("../middlewares/roleAccessControl");
@@ -15,7 +14,6 @@ router.get(
   "/",
   authorizeAccessToken,
   hasPermission(actionAC.GET, resourceAC.PAYMENT),
-  pagination,
   tryCatch(getAllPayment)
 );
 router.get(

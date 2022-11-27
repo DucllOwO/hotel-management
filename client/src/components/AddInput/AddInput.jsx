@@ -1,19 +1,18 @@
-import { Input } from "antd";
-import ErrorList from "antd/lib/form/ErrorList";
+import { Form, Input } from "antd";
 import React from "react";
 import "./addinput.css";
 
-const AddInput = ({ label, positionName, setPositionName, error }) => {
-  //const [input, setInput] = useState("");
+const AddInput = ({ label, value, setInput, error, setError }) => {
   return (
     <div className="addInput">
       <p className="label">{label}</p>
       <Input
-        value={positionName}
-        onChange={(e) => setPositionName(e.target.value)}
+        value={value}
+        onChange={(e) => {
+          //if (e.target.value !== "") setError(null);
+          setInput(e.target.value);
+        }}
       />
-      {/* <span style={{ color }}>{error}</span>
-      <ErrorList */}
     </div>
   );
 };

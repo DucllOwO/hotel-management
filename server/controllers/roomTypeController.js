@@ -1,14 +1,10 @@
 const roomTypeDAL = require("../DAL/roomTypeDAL");
 
-const getAll = async (req, res, next) => {
-  const { from, to } = req.paginatedResult;
-  const { data, error } = await roomTypeDAL.getAllTypes(
-    from,
-    to
-  );
-  console.log(data);
-  if (error) return next(error);
-  else res.status(200).send(data);
+const getAll = (req, res, next) => {
+  const { data: roomTypes, error: getRoomTypesError } =
+    roomTypeDAL.getAllTypes();
+  if (getRoomTypesError) return next(getRoomTypesError);
+  else res.status(200).send(roomTypes);
 };
 const getByID = (req, res, next) => {
   const { id: typeID } = req.params;

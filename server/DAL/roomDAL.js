@@ -5,21 +5,19 @@ const TABLE_NAME = "room";
 const getRoomByName = (roomName) => {
   return supabase.from(TABLE_NAME).select().eq("room_name", roomName);
 };
-const getRoomByStatus = (status, from, to) => {
+const getRoomByStatus = (status) => {
   return supabase
     .from(TABLE_NAME)
     .select()
     .eq("status", status)
-    .order("room_name", { ascending: true })
-    .range(from, to);
+    .order("room_name", { ascending: true });
 };
 
-const getAllRooms = (from, to) => {
+const getAllRooms = () => {
   return supabase
     .from(TABLE_NAME)
     .select("*")
-    .order("room_name", { ascending: true })
-    .range(from, to);
+    .order("room_name", { ascending: true });
 };
 
 const updateRoom = (room, roomName) => {
