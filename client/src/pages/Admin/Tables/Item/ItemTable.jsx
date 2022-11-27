@@ -59,8 +59,8 @@ const ItemTable = ({items, setItems}) => {
     },
     {
       key: "3",
-      title: "Minimum",
-      dataIndex: "minimum",
+      title: "Remaining",
+      dataIndex: "reserve_amount",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (

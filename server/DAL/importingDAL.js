@@ -3,7 +3,13 @@ const supabase = require("../database");
 function getAllRecords(from, to) {
   return supabase
     .from("purchase")
-    .select("*")
+    .select(`
+      id, 
+      amount,
+      item_id(name),
+      total_cost,
+      established_date
+    `)
     .order("id", { ascending: true })
     .range(from, to);
 }

@@ -20,7 +20,13 @@ const getAllRoom = async (req, res, next) => {
     return res.status(200).send({ roomsByStatus });
   }
 
-  const { data: rooms, error } = await roomDAL.getAllRooms(from, to);
+  const { data: tempRooms, error } = await roomDAL.getAllRooms(from, to);
+  const rooms = tempRooms.map((item)=>{
+    return {
+      roomType: item.room_type.name,
+      ...item
+    }
+  })
   console.log(rooms);
   if (error) return next(error);
 

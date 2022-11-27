@@ -6,9 +6,14 @@ const getAllRecord = async (req, res, next) => {
   const { from, to } = req.paginatedResult;
   const { data, error } =
     await importingDAL.getAllRecords(from, to);
-    console.log(data)
+  const record = data.map((item) => {
+    return {
+      item: item.item_id.name,
+      ...item
+    }
+  });
   if (error) return next(error);
-  else res.status(200).send(data);
+  else res.status(200).send(record);
 };
 const getByID = (req, res, next) => {
   const { id: importingID } = req.params;
