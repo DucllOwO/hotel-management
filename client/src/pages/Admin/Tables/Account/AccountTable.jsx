@@ -25,30 +25,6 @@ const AccountTable = ({ accounts, setAccount }) => {
     {
       key: "1",
       title: "Username",
-      filteredValue: [searchedText],
-      onFilter: (value, record) => {
-        return (
-          String(record.name)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.idNumber)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.phone)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase())
-        );
-      },
-      dataIndex: "name",
-    },
-    {
-      key: "2",
-      title: "ID Number",
-      dataIndex: "idNum",
-    },
-    {
-      key: "3",
-      title: "Username",
       dataIndex: "username",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -71,7 +47,31 @@ const AccountTable = ({ accounts, setAccount }) => {
       },
     },
     {
-      key: "4",
+      key: "2",
+      title: "Email",
+      dataIndex: "email",
+      render: (text, record) => {
+        if (editingRow === record.idNum) {
+          return (
+            <Form.Item
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter the email",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          );
+        } else {
+          return <p>{text}</p>;
+        }
+      },
+    },
+    {
+      key: "3",
       title: "Password",
       dataIndex: "none",
       render: (text, record) => {
@@ -95,7 +95,7 @@ const AccountTable = ({ accounts, setAccount }) => {
       },
     },
     {
-      key: "5",
+      key: "4",
       title: "Actions",
       render: (_, record) => {
         if (editingRow !== null) {

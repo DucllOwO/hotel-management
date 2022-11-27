@@ -69,6 +69,82 @@ const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
     },
     {
       key: "3",
+      title: "Customer quatity",
+      filteredValue: [searchedText],
+      onFilter: (value, record) => {
+        return (
+          String(record.name)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.birthday)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.phone)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase())
+        );
+      },
+      dataIndex: "max_customers",
+      render: (text, record) => {
+        if (editingRow === record.idNum) {
+          return (
+            <Form.Item
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter the amount",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          );
+        } else {
+          return <p>{text}</p>;
+        }
+      },
+    },
+    {
+      key: "4",
+      title: "Bed quantity",
+      filteredValue: [searchedText],
+      onFilter: (value, record) => {
+        return (
+          String(record.name)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.birthday)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.phone)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase())
+        );
+      },
+      dataIndex: "bed_amount",
+      render: (text, record) => {
+        if (editingRow === record.idNum) {
+          return (
+            <Form.Item
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter the amount",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          );
+        } else {
+          return <p>{text}</p>;
+        }
+      },
+    },
+    {
+      key: "5",
       title: "Actions",
       render: (_, record) => {
         if (editingRow !== null) {

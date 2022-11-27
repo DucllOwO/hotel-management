@@ -28,7 +28,7 @@ const HRTable = ({ employees, setEmployees }) => {
       key: "1",
       title: "ID",
       dataIndex: "id",
-      width: 70,
+      width: 145,
     },
     {
       key: "2",
@@ -118,30 +118,6 @@ const HRTable = ({ employees, setEmployees }) => {
     },
     {
       key: "5",
-      title: "Address",
-      dataIndex: "address",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="address"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the phone",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-    },
-    {
-      key: "6",
       title: "Starting Date",
       dataIndex: "start_working_date",
       render: (text, record) => {
@@ -165,7 +141,7 @@ const HRTable = ({ employees, setEmployees }) => {
       },
     },
     {
-      key: "7",
+      key: "6",
       title: "Salary",
       dataIndex: "salary",
       render: (text, record) => {
@@ -189,7 +165,7 @@ const HRTable = ({ employees, setEmployees }) => {
       },
     },
     {
-      key: "8",
+      key: "7",
       title: "Actions",
       render: (_, record) => {
         if (editingRow !== null) {
@@ -252,7 +228,6 @@ const HRTable = ({ employees, setEmployees }) => {
       name: "Name " + randomNumber,
       birthday: "23/03/2002",
       phone: randomNumber + " phone",
-      address: randomNumber + " address",
       startingDate: "1/1/2022",
       salary: "15000000",
     };

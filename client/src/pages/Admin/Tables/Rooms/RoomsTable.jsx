@@ -16,11 +16,6 @@ const RoomsTable = ({ rooms, setRoom }) => {
   const columns = [
     {
       key: "1",
-      title: "ID",
-      dataIndex: "id",
-    },
-    {
-      key: "2",
       title: "Name",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
@@ -58,7 +53,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
       },
     },
     {
-      key: "3",
+      key: "2",
       title: "Room Type",
       dataIndex: "room_type",
       render: (text, record) => {
@@ -82,7 +77,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
       },
     },
     {
-      key: "4",
+      key: "3",
       title: "Area (m2)",
       dataIndex: "size",
       render: (text, record) => {
@@ -106,7 +101,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
       },
     },
     {
-      key: "5",
+      key: "4",
       title: "Price",
       dataIndex: "price",
       render: (text, record) => {
@@ -130,7 +125,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
       },
     },
     {
-      key: "6",
+      key: "5",
       title: "Actions",
       render: (_, record) => {
         if (editingRow !== null) {
