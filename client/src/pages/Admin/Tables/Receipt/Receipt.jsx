@@ -75,6 +75,30 @@ const ReceiptTable = ({receipt, setReceipt}) => {
     },
     {
       key: "4",
+      title: "Method",
+      dataIndex: "payment_method",
+      render: (text, record) => {
+        if (editingRow === record.idNum) {
+          return (
+            <Form.Item
+              name="total"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter the method",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          );
+        } else {
+          return <p>{text}</p>;
+        }
+      },
+    },
+    {
+      key: "5",
       title: "Actions",
       render: (_, record) => {
         if (editingRow !== null) {

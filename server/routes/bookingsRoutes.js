@@ -3,6 +3,7 @@ const {
   getBooking,
   createBooking,
   deleteBooking,
+  getRooms
 } = require("../controllers/bookingController");
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
 
@@ -12,19 +13,24 @@ const { tryCatch } = require("../middlewares/errorHandler");
 const router = require("express").Router();
 
 router.get(
-  "/",
+  "/list",
   authorizeAccessToken,
   hasPermission(actionAC.GET, resourceAC.BOOKING),
   tryCatch(getAllBookings)
 );
 
 router.get(
-  "/:id",
+  "/list/:id",
   authorizeAccessToken,
   hasPermission(actionAC.GET, resourceAC.BOOKING),
   tryCatch(getBooking)
 );
-
+router.get(
+  "/",
+  authorizeAccessToken,
+  hasPermission(actionAC.GET, resourceAC.BOOKING),
+  tryCatch(getRooms)
+)
 router.post(
   "/",
   authorizeAccessToken,
@@ -33,7 +39,7 @@ router.post(
 );
 
 router.delete(
-  "/:id",
+  "/list/:id",
   authorizeAccessToken,
   hasPermission(actionAC.DELETE, resourceAC.BOOKING),
   tryCatch(deleteBooking)

@@ -8,7 +8,12 @@ const getRoomByName = (roomName) => {
 const getRoomByStatus = (status) => {
   return supabase
     .from(TABLE_NAME)
-    .select()
+    .select(`
+      room_name,
+      size,
+      price,
+      room_type_id(name)
+    `)
     .eq("status", status)
     .order("room_name", { ascending: true });
 };
@@ -23,8 +28,7 @@ const getAllRooms = () => {
       status,
       room_type(name)
     `)
-    .order("room_name", { ascending: true })
-    .range(from, to);
+    .order("room_name", { ascending: true });
 };
 
 const updateRoom = (room, roomName) => {

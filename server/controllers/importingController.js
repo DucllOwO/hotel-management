@@ -2,10 +2,10 @@ const importingDAL = require("../DAL/importingDAL");
 const employeeDAL = require("../DAL/employeeDAL");
 const { BadRequestError } = require("../middlewares/errorHandler");
 
-const getAllRecord = (req, res, next) => {
+const getAllRecord = async (req, res, next) => {
   const { data: importing, error: getImportingError } =
-    importingDAL.getAllRecords();
-    const record = importing.map((item) => {
+    await importingDAL.getAllRecords();
+    const record = importing?.map((item) => {
       return {
         item: item.item_id.name,
         ...item

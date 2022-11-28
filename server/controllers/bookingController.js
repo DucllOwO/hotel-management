@@ -1,6 +1,8 @@
 const bookingDAL = require("../DAL/bookingDAL");
+const roomDAL = require("../DAL/roomDAL");
 const customerDAL = require("../DAL/customerDAL");
 const { BadRequestError } = require("../middlewares/errorHandler");
+const supabase = require("../database");
 
 const getAllBookings = async (req, res, next) => {
   const { data, error } = await bookingDAL.getAllBooking();
@@ -8,7 +10,19 @@ const getAllBookings = async (req, res, next) => {
 
   res.status(200).send({ data });
 };
-
+const getRooms = async (req, res, next) => {
+  console.log("called")
+  const { status: roomStatus } = req.query;
+  const {data, error} = await roomDAL.getRoomByStatus(roomStatus);
+  const listRoom = data.map((item) => {
+    return {
+      roomType: item.room_type_id.name,
+      ...item
+    }
+  })
+  if(error) return next(error);
+  res.status(200).send({listRoom});
+}
 const getBooking = async (req, res, next) => {
   const { id: bookingID } = req.params;
   const { data, error } = await bookingDAL.getBooking(bookingID);
@@ -65,6 +79,7 @@ const throwErrorDataUnavailable = () => {
 
 module.exports = {
   getAllBookings,
+  getRooms,
   getBooking,
   createBooking,
   deleteBooking,

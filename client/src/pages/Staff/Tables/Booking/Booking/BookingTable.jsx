@@ -1,42 +1,60 @@
 import React, { useState } from "react";
-import "../index.css";
+import "../../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
+import "./bookingtable.css";
+import { faSort } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const PaymentTable = ({payment, setPayment}) => {
+const BookingTable = ({rooms, setRooms, setStatus}) => {
   const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
 
-
   const columns = [
     {
       key: "1",
-      title: "ID",
-      dataIndex: "id",
+      title: "Name",
+      filteredValue: [searchedText],
+      onFilter: (value, record) => {
+        return (
+          String(record.room_name)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.roomType)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase())
+        );
+      },
+      dataIndex: "room_name",
     },
     {
       key: "2",
-      title: "Date",
+      title: "roomType",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
-        return String(record.date)
-          .toLocaleLowerCase()
-          .includes(value.toLocaleLowerCase());
+        return (
+          String(record.room_name)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.roomType)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase())
+        );
       },
-      dataIndex: "established_date",
+      dataIndex: "roomType",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
             <Form.Item
-              name="date"
+              name="roomType"
               rules={[
                 {
                   required: true,
-                  message: "Please enter the date",
+                  message: "Please enter the roomType",
                 },
               ]}
             >
@@ -50,23 +68,18 @@ const PaymentTable = ({payment, setPayment}) => {
     },
     {
       key: "3",
-      title: "Purpose",
-      filteredValue: [searchedText],
-      onFilter: (value, record) => {
-        return String(record.date)
-          .toLocaleLowerCase()
-          .includes(value.toLocaleLowerCase());
-      },
-      dataIndex: "name",
+      title: "Area (m2)",
+      dataIndex: "size",
+      width: 150,
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
             <Form.Item
-              name="date"
+              name="area"
               rules={[
                 {
                   required: true,
-                  message: "Please enter the purpose",
+                  message: "Please enter the area",
                 },
               ]}
             >
@@ -80,17 +93,17 @@ const PaymentTable = ({payment, setPayment}) => {
     },
     {
       key: "4",
-      title: "Total",
-      dataIndex: "cost",
+      title: "Price",
+      dataIndex: "price",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
             <Form.Item
-              name="total"
+              name="price"
               rules={[
                 {
                   required: true,
-                  message: "Please enter the total",
+                  message: "Please enter the price",
                 },
               ]}
             >
@@ -106,92 +119,34 @@ const PaymentTable = ({payment, setPayment}) => {
       key: "5",
       title: "Actions",
       render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  save
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  cancel
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setEditingRow(record.idNum);
-                  form.setFieldsValue({
-                    date: record.date,
-                    total: record.total,
-                  });
-                }}
-              >
-                edit
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                delete
-              </Button>
-            </>
-          );
-        }
+        return (
+          <>
+            <Button
+              onClick={() => {
+                onBooking(record);
+              }}
+            >
+              book
+            </Button>
+          </>
+        );
       },
     },
   ];
 
-  const onAddButton = () => {
-    const randomNumber = parseInt(Math.random() * 1000);
-    const newData = {
-      idNum: "" + parseInt(payment.length + 1),
-      date: "Date " + randomNumber,
-      amount: "20",
-      price: randomNumber + " price",
-    };
-
-    setPayment((pre) => {
-      return [...pre, newData];
-    });
-  };
-
-  const onDeleteButton = (record) => {
-    Modal.confirm({
-      title: "Are you sure, you want to delete this record?",
-      okText: "Yes",
-      okType: "danger",
-      onOk: () => {
-        setPayment((pre) => {
-          return pre.filter((data) => data.idNum !== record.idNum);
-        });
-      },
-    });
+  const onBooking = (value) => {
+    console.log(value.idNum);
   };
 
   const onFinish = (values) => {
     console.log(editingRow);
-    const updateDataSource = [...payment];
+    const updateDataSource = [...rooms];
     updateDataSource.splice(editingRow - 1, 1, {
       ...values,
       idNum: editingRow,
     });
     console.log(updateDataSource);
-    setPayment(updateDataSource);
+    setRooms(updateDataSource);
     setEditingRow(null);
   };
 
@@ -199,7 +154,12 @@ const PaymentTable = ({payment, setPayment}) => {
     <div className="table">
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
-        <div></div>
+        <div className="headerButtons">
+          <FontAwesomeIcon icon={faSort} className="icon"></FontAwesomeIcon>
+          <Button className="headerBtn" onClick={()=>{setStatus(0)}}>Available</Button>
+          <Button className="headerBtn" onClick={()=>{setStatus(1)}}>Booked</Button>
+          <Button className="headerBtn" onClick={()=>{setStatus(2)}}>Waiting</Button>
+        </div>
         <div>
           <Input.Search
             onSearch={(value) => {
@@ -213,7 +173,7 @@ const PaymentTable = ({payment, setPayment}) => {
             style={{ width: 264 }}
           />
           <Button
-            onClick={onAddButton}
+            onClick={() => {}}
             className="addButton"
             type="primary"
             ghost
@@ -226,7 +186,7 @@ const PaymentTable = ({payment, setPayment}) => {
       <Form form={form} onFinish={onFinish} className="form">
         <Table
           columns={columns}
-          dataSource={payment}
+          dataSource={rooms}
           scroll={{ y: 350 }}
         ></Table>
       </Form>
@@ -234,4 +194,4 @@ const PaymentTable = ({payment, setPayment}) => {
   );
 };
 
-export default PaymentTable;
+export default BookingTable;

@@ -1,7 +1,7 @@
 const supabase = require("../database");
 
 async function getAllRecords() {
-  const { data, error } = await supabase
+  return supabase
     .from("purchase")
     .select(`
       id, 
@@ -10,8 +10,7 @@ async function getAllRecords() {
       total_cost,
       established_date
     `)
-    .order("id", { ascending: true })
-    .range(from, to);
+    .order("id", { ascending: true });
 }
 async function getRecordByID(filter) {
   const { data, error } = await supabase

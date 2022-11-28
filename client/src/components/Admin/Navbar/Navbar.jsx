@@ -145,8 +145,12 @@ const Navbar = () => {
           permission.includes("Booking")
             ? {
                 label: "Booking",
-                key: "/admin/booking",
+                key: "/admin/bookings",
                 icon: <DiffOutlined></DiffOutlined>,
+                children: [
+                    { label: "Booking", key: "/admin/bookings/" },
+                    { label: "Booking List", key: "/admin/bookings/list" }
+                ],
               }
             : null,
           {

@@ -1,56 +1,28 @@
 import React, { useState } from "react";
-import "../index.css";
+import "../../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
-import "./bookingtable.css";
+import "./bookingListtable.css";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const BookingTable = () => {
+const BookingListTable = ({booking, setBooking}) => {
   const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
 
-  const [dataSource, setDataSource] = useState([
-    {
-      idNum: 1,
-      roomType: "President",
-      area: "50",
-      price: "200000",
-    },
-    {
-      idNum: 2,
-      roomType: "Luxury",
-      area: "50",
-      price: "200000",
-    },
-    {
-      idNum: 3,
-      roomType: "World-class",
-      area: "J50",
-      price: "200000",
-    },
-    {
-      idNum: 4,
-      roomType: "Standard",
-      area: "50",
-      price: "200000",
-    },
-  ]);
-
   const columns = [
     {
       key: "1",
       title: "ID",
-      dataIndex: "idNum",
-      width: 70,
+      dataIndex: "id",
     },
     {
       key: "2",
-      title: "roomType",
+      title: "Customer",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
@@ -65,16 +37,16 @@ const BookingTable = () => {
             .includes(value.toLocaleLowerCase())
         );
       },
-      dataIndex: "roomType",
+      dataIndex: "customer_id",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
             <Form.Item
-              name="roomType"
+              name="customer"
               rules={[
                 {
                   required: true,
-                  message: "Please enter the roomType",
+                  message: "Please enter the customer",
                 },
               ]}
             >
@@ -88,9 +60,18 @@ const BookingTable = () => {
     },
     {
       key: "3",
-      title: "Area (m2)",
-      dataIndex: "area",
-      width: 150,
+      title: "From",
+      dataIndex: "book_from",
+    },
+    {
+      key: "4",
+      title: "To",
+      dataIndex: "book_to",
+    },
+    {
+      key: "5",
+      title: "Room",
+      dataIndex: "size",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -100,30 +81,6 @@ const BookingTable = () => {
                 {
                   required: true,
                   message: "Please enter the area",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-    },
-    {
-      key: "4",
-      title: "Price",
-      dataIndex: "price",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="price"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the price",
                 },
               ]}
             >
@@ -146,7 +103,14 @@ const BookingTable = () => {
                 onBooking(record);
               }}
             >
-              book
+              check in
+            </Button>
+            <Button
+              onClick={() => {
+                onBooking(record);
+              }}
+            >
+              cancel
             </Button>
           </>
         );
@@ -160,13 +124,13 @@ const BookingTable = () => {
 
   const onFinish = (values) => {
     console.log(editingRow);
-    const updateDataSource = [...dataSource];
+    const updateDataSource = [...booking];
     updateDataSource.splice(editingRow - 1, 1, {
       ...values,
       idNum: editingRow,
     });
     console.log(updateDataSource);
-    setDataSource(updateDataSource);
+    setBooking(updateDataSource);
     setEditingRow(null);
   };
 
@@ -176,9 +140,10 @@ const BookingTable = () => {
       <div className="buttonContainer">
         <div className="headerButtons">
           <FontAwesomeIcon icon={faSort} className="icon"></FontAwesomeIcon>
-          <Button className="headerBtn">Available</Button>
-          <Button className="headerBtn">Booked</Button>
           <Button className="headerBtn">Waiting</Button>
+          <Button className="headerBtn">Serving</Button>
+          <Button className="headerBtn">Finished</Button>
+          <Button className="headerBtn">Canceled</Button>
         </div>
         <div>
           <Input.Search
@@ -206,7 +171,7 @@ const BookingTable = () => {
       <Form form={form} onFinish={onFinish} className="form">
         <Table
           columns={columns}
-          dataSource={dataSource}
+          dataSource={booking}
           scroll={{ y: 350 }}
         ></Table>
       </Form>
@@ -214,4 +179,4 @@ const BookingTable = () => {
   );
 };
 
-export default BookingTable;
+export default BookingListTable;

@@ -1,11 +1,10 @@
 const supabase = require("../database");
 
-function getAllItem(from, to) {
+function getAllItem() {
   return supabase
     .from("item")
     .select("*")
-    .order("id", { ascending: true })
-    .range(from, to);
+    .order("id", { ascending: true });
 }
 async function getItemByID(filter) {
   const { data, error } = await supabase
