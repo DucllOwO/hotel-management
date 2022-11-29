@@ -131,7 +131,7 @@ const listRoute = [
   {
     key: "Promotion",
     value: (
-      <Route key="Promotion" index path="receipt" element={<Promotion />} />
+      <Route key="Promotion" index path="promotion" element={<Promotion />} />
     ),
   },
 ];

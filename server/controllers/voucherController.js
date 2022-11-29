@@ -6,7 +6,7 @@ const getAllVoucher = async (req, res, next) => {
 
   if (error) return next(error);
 
-  res.status(200).send({ data });
+  res.status(200).send(data);
 };
 
 const getVoucher = async (req, res, next) => {
@@ -16,18 +16,18 @@ const getVoucher = async (req, res, next) => {
 
   if (error) return next(error);
 
-  res.status(200).send({ data });
+  res.status(200).send(data);
 };
 
 const createVoucher = async (req, res, next) => {
   const { voucher } = req.body;
   if (!voucher) return next(BadRequestError());
 
-  const { error } = await voucherDAL.insertVoucher(voucher);
+  const { data, error } = await voucherDAL.insertVoucher(voucher);
 
   if (error) return next(error);
 
-  res.status(201).send("Created");
+  res.status(201).send(data);
 };
 
 const hideVoucher = async (req, res, next) => {
