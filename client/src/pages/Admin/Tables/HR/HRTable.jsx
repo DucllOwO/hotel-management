@@ -10,11 +10,9 @@ import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/Succe
 import {
   createEmployee,
   deleteEmployee,
-  fetchEmployeeByID,
   updateEmployee,
 } from "../../../../api/EmployeeAPI";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
-import { resolveOnChange } from "antd/lib/input/Input";
 import { formatDate, formatterInt } from "../../../../Utils/formatter";
 
 const HRTable = ({ employees, setEmployees }) => {

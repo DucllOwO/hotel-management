@@ -22,6 +22,7 @@ import Position from "./pages/Admin/Position/Position";
 
 import _404ErrorBoundary from "./components/Error/ErrorBoundary/_404ErrorBoundary";
 import AuthErrorBoundary from "./components/Error/ErrorBoundary/AuthErrorBoundary";
+import Promotion from "./pages/Admin/Promotion/Promotion";
 
 const App = () => {
   const { user } = useContext(AppContext);
@@ -34,9 +35,9 @@ const App = () => {
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route index element={<Login />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/admin" element={<Admin />}>
+          <Route key="login" index element={<Login />}></Route>
+          <Route key="login1" path="/login" element={<Login />}></Route>
+          <Route key="admin" path="/admin" element={<Admin />}>
             {listFeature
               ? listRoute.map((item) => {
                   if (listFeature.includes(item.key)) return item.value;
@@ -45,6 +46,7 @@ const App = () => {
               : null}
           </Route>
           <Route
+            key="error"
             exact
             path="*"
             element={user ? <_404ErrorBoundary /> : <AuthErrorBoundary />}
@@ -58,63 +60,79 @@ const App = () => {
 const listRoute = [
   {
     key: "Dashboard",
-    value: <Route index path="dashboard" element={<Dashboard />} />,
+    value: (
+      <Route key="Dashboard" index path="dashboard" element={<Dashboard />} />
+    ),
   },
   {
     key: "Account",
-    value: <Route index path="account" element={<Account />} />,
+    value: <Route key="Account" index path="account" element={<Account />} />,
   },
   {
     key: "Import",
-    value: <Route index path="importing" element={<Importing />} />,
+    value: (
+      <Route key="Import" index path="importing" element={<Importing />} />
+    ),
   },
   {
     key: "Employee",
-    value: <Route index path="hr" element={<HR />} />,
+    value: <Route key="Employee" index path="hr" element={<HR />} />,
   },
   {
     key: "Inventory",
-    value: <Route index path="inventory" element={<Inventory />} />,
+    value: (
+      <Route key="Inventory" index path="inventory" element={<Inventory />} />
+    ),
   },
   {
     key: "Item",
-    value: <Route index path="item" element={<Item />} />,
+    value: <Route key="Item" index path="item" element={<Item />} />,
   },
   {
     key: "Room",
-    value: <Route index path="rooms" element={<Rooms />} />,
+    value: <Route key="Room" index path="rooms" element={<Rooms />} />,
   },
   {
     key: "Room type",
-    value: <Route index path="roomtype" element={<RoomType />} />,
+    value: (
+      <Route key="Room_type" index path="roomtype" element={<RoomType />} />
+    ),
   },
   {
     key: "Utilities",
-    value: <Route index path="utilities" element={<Utilities />} />,
+    value: (
+      <Route key="Utilities" index path="utilities" element={<Utilities />} />
+    ),
   },
   {
     key: "Payment",
-    value: <Route index path="payment" element={<Payment />} />,
+    value: <Route key="Payment" index path="payment" element={<Payment />} />,
   },
   {
     key: "Receipt",
-    value: <Route index path="receipt" element={<Receipt />} />,
+    value: <Route key="Receipt" index path="receipt" element={<Receipt />} />,
   },
   {
     key: "Position",
-    value: <Route index path="position" element={<Position />} />,
+    value: (
+      <Route key="Position" index path="position" element={<Position />} />
+    ),
   },
   {
     key: "Customer",
-    value: <Route index path="customer" element={<Customer />} />,
+    value: (
+      <Route key="Customer" index path="customer" element={<Customer />} />
+    ),
   },
   {
     key: "Booking",
-    value: <Route index path="booking" element={<Booking />} />,
+    value: <Route key="Booking" index path="booking" element={<Booking />} />,
   },
   {
-    key: "Dashboard",
-    value: <Route index path="receipt" element={<StaffReciept />} />,
+    key: "Promotion",
+    value: (
+      <Route key="Promotion" index path="receipt" element={<Promotion />} />
+    ),
   },
 ];
 
