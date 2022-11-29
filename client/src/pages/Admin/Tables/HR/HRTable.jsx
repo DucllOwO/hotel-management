@@ -1,27 +1,34 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import dayjs from "dayjs";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
-import HRModal from "../../Modals/HR/HRModal";
+import HRForm from "../../../../components/Form/HRForm";
+import { AppContext } from "../../../../context/AppContext";
+import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
+import {
+  createEmployee,
+  deleteEmployee,
+  fetchEmployeeByID,
+  updateEmployee,
+} from "../../../../api/EmployeeAPI";
+import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
+import { resolveOnChange } from "antd/lib/input/Input";
+import { formatDate, formatterInt } from "../../../../Utils/formatter";
 
 const HRTable = ({ employees, setEmployees }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modal, setModal] = useState(null);
+  const { user } = useContext(AppContext);
+  const positionUser = user?.position;
 
   const showModal = () => {
-    setIsModalVisible(true);
+    setModal("add");
   };
-
-  const handle = () => {
-    setIsModalVisible(false);
-  };
-
-  const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
-
 
   const columns = [
     {
@@ -35,37 +42,13 @@ const HRTable = ({ employees, setEmployees }) => {
       title: "Name",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
-        return (
-          String(record.name)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.birthday)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.phone)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase())
-        );
+        return String(record.name)
+          .toLocaleLowerCase()
+          .includes(value.toLocaleLowerCase());
       },
       dataIndex: "firstname",
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the name",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return String(record.fullname);
       },
     },
     {
@@ -73,23 +56,7 @@ const HRTable = ({ employees, setEmployees }) => {
       title: "Birthday",
       dataIndex: "date_of_birth",
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="birthday"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the birthday",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return String(record.date_of_birth);
       },
     },
     {
@@ -97,23 +64,7 @@ const HRTable = ({ employees, setEmployees }) => {
       title: "Phone",
       dataIndex: "phone_number",
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="phone"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the phone",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return String(record.phone_number);
       },
     },
     {
@@ -121,23 +72,7 @@ const HRTable = ({ employees, setEmployees }) => {
       title: "Starting Date",
       dataIndex: "start_working_date",
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="startingDate"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the phone",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return String(record.start_working_date);
       },
     },
     {
@@ -145,134 +80,170 @@ const HRTable = ({ employees, setEmployees }) => {
       title: "Salary",
       dataIndex: "salary",
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="salary"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the phone",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return String(record.salary);
       },
     },
     {
       key: "7",
       title: "Actions",
       render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  save
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  cancel
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setEditingRow(record.idNum);
-                  form.setFieldsValue({
-                    name: record.name,
-                    birthday: record.birthday,
-                    phone: record.phone,
-                    address: record.address,
-                    startingDate: record.startingDate,
-                    salary: record.salary,
-                  });
-                }}
-              >
-                edit
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                delete
-              </Button>
-            </>
-          );
-        }
+        return (
+          <>
+            <Button
+              onClick={() => {
+                openEditModal(record);
+              }}
+            >
+              Edit
+            </Button>
+            <Button
+              onClick={() => {
+                onDeleteButton(record);
+              }}
+            >
+              Delete
+            </Button>
+          </>
+        );
       },
     },
   ];
 
-  const onAddButton = () => {
-    const randomNumber = parseInt(Math.random() * 1000);
-    const newData = {
-      name: "Name " + randomNumber,
-      birthday: "23/03/2002",
-      phone: randomNumber + " phone",
-      startingDate: "1/1/2022",
-      salary: "15000000",
-    };
+  const openEditModal = (record) => {
+    setModal("edit");
 
-    setEmployees((pre) => {
-      return [...pre, newData];
+    form.setFieldsValue({
+      ...record,
+      start_working_date: dayjs(record.start_working_date, "YYYY-MM-DD"),
+      date_of_birth: dayjs(record.date_of_birth, "YYYY-MM-DD"),
     });
   };
 
   const onDeleteButton = (record) => {
     Modal.confirm({
-      title: "Are you sure, you want to delete this record?",
+      title: "Are you sure, you want to delete this employee?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        setEmployees((pre) => {
-          return pre.filter((data) => data.idNum !== record.idNum);
-        });
+        deleteEmployee(positionUser, record?.id)
+          .then(({ data }) => {
+            setEmployees((pre) => {
+              return pre.filter((data) => data.id !== record?.id);
+            });
+            SuccessAlert("Delete employee success.");
+          })
+          .catch((err) => {
+            console.log(err);
+            ErrorAlert("Delete employee error!!");
+          });
       },
     });
   };
 
-  const onFinish = (values) => {
-    console.log(editingRow);
-    const updateDataSource = [...employees];
-    updateDataSource.splice(editingRow - 1, 1, {
-      ...values,
-      idNum: editingRow,
-    });
-    console.log(updateDataSource);
-    setEmployees(updateDataSource);
-    setEditingRow(null);
+  const handleCancelModal = () => {
+    setModal(null);
+    form.resetFields();
+  };
+
+  const modalAddEmployee = () => (
+    <Modal
+      title="Position Information"
+      open={true}
+      onOk={handleOKModalAdd}
+      onCancel={handleCancelModal}
+      width="40%"
+    >
+      <HRForm form={form} />
+    </Modal>
+  );
+
+  const handleOKModalAdd = () => {
+    form
+      .validateFields()
+      .then((values) => {
+        console.log(values);
+        onCreateEmployee(values);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const onCreateEmployee = (values) => {
+    console.log(values);
+    console.log({ ...values });
+    createEmployee(positionUser, { ...values })
+      .then(({ data }) => {
+        setEmployees((prevPos) => [...prevPos, data]);
+        SuccessAlert("Create employee success.");
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("Create employee error!!");
+      });
+    setModal(null);
+    form.resetFields();
+  };
+
+  const modalEditEmployee = () => {
+    return (
+      <Modal
+        title="Position Information"
+        open={true}
+        onOk={handleOKModalEdit}
+        onCancel={handleCancelModal}
+        width="60%"
+      >
+        <HRForm form={form} disable={true} />
+      </Modal>
+    );
+  };
+
+  const handleOKModalEdit = () => {
+    form
+      .validateFields()
+      .then((values) => {
+        onEditEmployee(positionUser, values);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const onEditEmployee = (positionUser, values) => {
+    console.log(values);
+    updateEmployee(positionUser, { ...values })
+      .then(({ data }) => {
+        SuccessAlert("Edit employee success.");
+
+        console.log();
+
+        setEmployees((prev) => {
+          return prev.map((item) => {
+            if (item.id === values.id) {
+              return {
+                ...values,
+                start_working_date: formatDate(values.start_working_date),
+                date_of_birth: formatDate(values.date_of_birth),
+                salary: formatterInt.format(values.salary),
+              };
+            }
+            return item;
+          });
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("Edit employee error!!");
+      });
+
+    setModal(null);
+    form.resetFields();
   };
 
   return (
     <div className="table">
       <>
-        <Modal
-          title="HR Infomation"
-          visible={isModalVisible}
-          onOk={handle}
-          onCancel={handle}
-        >
-          <HRModal></HRModal>
-        </Modal>
+        {modal === "add" && modalAddEmployee()}
+        {modal === "edit" && modalEditEmployee()}
       </>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
@@ -300,14 +271,14 @@ const HRTable = ({ employees, setEmployees }) => {
           </Button>
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={employees}
-          scroll={{ y: 350 }}
-          rowKey={(record) => record.id}
-        ></Table>
-      </Form>
+
+      <Table
+        loading={employees ? false : true}
+        columns={columns}
+        dataSource={employees}
+        scroll={{ y: 350 }}
+        rowKey={(record) => record.id}
+      ></Table>
     </div>
   );
 };

@@ -7,7 +7,7 @@ const { initAccessControl } = require("../middlewares/roleAccessControl");
 const getAllPosition = async (req, res, next) => {
   const { data, error } = await positionDAL.loadAllPosition();
   if (error) next(error);
-  res.send({ data });
+  res.send(data);
 };
 
 const getPosition = async (req, res, next) => {
@@ -23,7 +23,7 @@ const getPosition = async (req, res, next) => {
 
   let featuresCheckList = createFeatureCheckList(features);
 
-  res.send({ data: createPositionData(permissions, featuresCheckList) });
+  res.send(createPositionData(permissions, featuresCheckList));
 };
 
 const createPositionData = (permissions, features) => {
@@ -49,33 +49,6 @@ const createPositionData = (permissions, features) => {
   });
 
   return features;
-};
-
-const addFeatureActionCheck = (indexOfTemp, tempArr, permission, isCheck) => {
-  if (indexOfTemp >= 0)
-    tempArr[indexOfTemp] = {
-      ...tempArr[indexOfTemp],
-      [permission?.feature_id?.action.split(":")[0]]: {
-        id: permission?.feature_id?.id,
-        isCheck: isCheck,
-      },
-    };
-  else
-    tempArr.push({
-      name: permission?.feature_id?.name,
-      [permission?.feature_id?.action.split(":")[0]]: {
-        id: permission?.feature_id?.id,
-        isCheck: isCheck,
-      },
-    });
-};
-
-const isPermissionExist = (permission, arr) => {
-  const index = arr.findIndex(
-    (item) => item.name === permission.feature_id.name
-  );
-  //console.log(index);
-  return index;
 };
 
 /**
@@ -168,7 +141,7 @@ const createPosition = async (req, res, next) => {
   if (position?.name && featuresForAddPermissions.length > 0)
     await initAccessControl();
 
-  res.status(201).send({ position: positionRes });
+  res.status(201).send(positionRes);
 };
 
 module.exports = {

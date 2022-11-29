@@ -1,29 +1,24 @@
 import "./position.css";
 import React, { useState, useEffect, useContext } from "react";
 import PositionTable from "../Tables/Position/PositionTable";
-import { userRequest } from "../../../api/api";
+
 import { AppContext } from "../../../context/AppContext";
 import { PositionProvider } from "../../../context/PositionContext";
+import { fetchPosition } from "../../../api/PositionAPI";
 import ErrorAlert from "../../../components/Error/Alert/ErrorAlert";
 
 const Position = () => {
   const [positions, setPositions] = useState(null);
   const { user } = useContext(AppContext);
   useEffect(() => {
-    const fetchPosition = async () => {
-      try {
-        const { data } = await userRequest.get("/positions", {
-          params: { user: { position: user?.position } },
-        });
-
-        setPositions(data.data);
-      } catch (error) {
+    fetchPosition(user?.position)
+      .then(({ data }) => {
+        setPositions(data);
+      })
+      .catch((error) => {
         console.log(error);
-        ErrorAlert("Fetch position data error");
-      }
-    };
-
-    fetchPosition();
+        ErrorAlert("Fetch position data error!!");
+      });
   }, [user?.position]);
   return (
     <PositionProvider>
