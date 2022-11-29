@@ -3,14 +3,16 @@ import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
-const ImportingTable = ({importingRecord, setRecord}) => {
+const ImportingTable = ({ importingRecord, setRecord }) => {
+  const navigate = useNavigate();
+
   const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
-
 
   const columns = [
     {
@@ -110,6 +112,7 @@ const ImportingTable = ({importingRecord, setRecord}) => {
         } else {
           return (
             <>
+              <Button onClick={(e) => {}}>print</Button>
               <Button
                 onClick={(e) => {
                   e.preventDefault();
@@ -137,17 +140,7 @@ const ImportingTable = ({importingRecord, setRecord}) => {
   ];
 
   const onAddButton = () => {
-    const randomNumber = parseInt(Math.random() * 1000);
-    const newData = {
-      idNum: "" + parseInt(importingRecord.length + 1),
-      name: "Name " + randomNumber,
-      amount: "20",
-      price: randomNumber + " price",
-    };
-
-    setRecord((pre) => {
-      return [...pre, newData];
-    });
+    navigate("/admin/import");
   };
 
   const onDeleteButton = (record) => {

@@ -1,0 +1,16 @@
+.bottomBar {
+    height: 60px;
+    width: 100%;
+    background-color: var(--light-grey);
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 31px;
+}
+
+.createBtn {
+    margin-left: 10px;
+}

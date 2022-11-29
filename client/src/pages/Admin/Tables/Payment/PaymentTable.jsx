@@ -1,16 +1,28 @@
 import React, { useState } from "react";
 import "../index.css";
-import { Table, Button, Modal, Form, Input } from "antd";
+import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
+import dayjs from "dayjs";
 
-const PaymentTable = ({payment, setPayment}) => {
+const PaymentTable = ({ payment, setPayment }) => {
+  const [type, setType] = useState("day");
+
   const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
 
+  const dateFormat = "DD-MM-YYYY";
+  const monthFormat = "MM-YYYY";
+
+  const current = new Date();
+  const date = `${current.getDate()}-${
+    current.getMonth() + 1
+  }-${current.getFullYear()}`;
+  const month = `${current.getFullYear()}-${current.getMonth() + 1}`;
+  const year = `${current.getFullYear}`;
 
   const columns = [
     {
@@ -126,6 +138,10 @@ const PaymentTable = ({payment, setPayment}) => {
     },
   ];
 
+  const onChange = (date, dateString) => {
+    console.log(date, dateString);
+  };
+
   const onAddButton = () => {
     const randomNumber = parseInt(Math.random() * 1000);
     const newData = {
@@ -169,20 +185,51 @@ const PaymentTable = ({payment, setPayment}) => {
     <div className="table">
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
-        <div></div>
         <div>
-          <Input.Search
-            onSearch={(value) => {
-              setSearchedText(value);
-            }}
-            onChange={(e) => {
-              setSearchedText(e.target.value);
-            }}
-            placeholder="input search text"
-            className="searchInput"
-            style={{ width: 264 }}
-          />
           <Button
+            className="dateBtn"
+            type={type === "year" ? "primary" : "default"}
+            onClick={() => {
+              setType("year");
+            }}
+          >
+            Year
+          </Button>
+          <Button
+            className="dateBtn"
+            type={type === "month" ? "primary" : "default"}
+            onClick={() => {
+              setType("month");
+            }}
+          >
+            Month
+          </Button>
+          <Button
+            className="dateBtn"
+            type={type === "day" ? "primary" : "default"}
+            onClick={() => {
+              setType("day");
+            }}
+          >
+            Day
+          </Button>
+        </div>
+        <div>
+          {type === "day" && (
+            <DatePicker onChange={onChange} format={dateFormat}></DatePicker>
+          )}
+          {type === "month" && (
+            <DatePicker
+              onChange={onChange}
+              picker="month"
+              format={monthFormat}
+            ></DatePicker>
+          )}
+          {type === "year" && (
+            <DatePicker onChange={onChange} picker="year"></DatePicker>
+          )}
+          <Button
+            style={{ marginLeft: "5px" }}
             onClick={onAddButton}
             className="addButton"
             type="primary"

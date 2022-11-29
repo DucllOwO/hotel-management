@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import "../index.css";
-import { Table, Button, Modal, Form, Input } from "antd";
+import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
 import "antd/dist/antd.less";
-import { PlusOutlined } from "@ant-design/icons";
 
-const ReceiptTable = ({receipt, setReceipt}) => {
+const ReceiptTable = ({ receipt, setReceipt }) => {
+  const [type, setType] = useState("day");
+
   const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
-
-  
 
   const columns = [
     {
@@ -127,18 +126,8 @@ const ReceiptTable = ({receipt, setReceipt}) => {
     },
   ];
 
-  const onAddButton = () => {
-    const randomNumber = parseInt(Math.random() * 1000);
-    const newData = {
-      idNum: "" + parseInt(receipt.length + 1),
-      date: "Date " + randomNumber,
-      amount: "20",
-      price: randomNumber + " price",
-    };
-
-    setReceipt((pre) => {
-      return [...pre, newData];
-    });
+  const onChange = (date, dateString) => {
+    console.log(date, dateString);
   };
 
   const onDeleteButton = (record) => {
@@ -170,30 +159,45 @@ const ReceiptTable = ({receipt, setReceipt}) => {
     <div className="table">
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
-        <div></div>
+        <div>
+          <Button
+            className="dateBtn"
+            type={type === "year" ? "primary" : "default"}
+            onClick={() => {
+              setType("year");
+            }}
+          >
+            Year
+          </Button>
+          <Button
+            className="dateBtn"
+            type={type === "month" ? "primary" : "default"}
+            onClick={() => {
+              setType("month");
+            }}
+          >
+            Month
+          </Button>
+          <Button
+            className="dateBtn"
+            type={type === "day" ? "primary" : "default"}
+            onClick={() => {
+              setType("day");
+            }}
+          >
+            Day
+          </Button>
+        </div>
         <div>
           <div></div>
           <div>
-            <Input.Search
-              onSearch={(value) => {
-                setSearchedText(value);
-              }}
-              onChange={(e) => {
-                setSearchedText(e.target.value);
-              }}
-              placeholder="input search text"
-              className="searchInput"
-              style={{ width: 264 }}
-            />
-            <Button
-              onClick={onAddButton}
-              className="addButton"
-              type="primary"
-              ghost
-              icon={<PlusOutlined />}
-            >
-              Add new
-            </Button>
+            {type === "day" && <DatePicker onChange={onChange}></DatePicker>}
+            {type === "month" && (
+              <DatePicker onChange={onChange} picker="month"></DatePicker>
+            )}
+            {type === "year" && (
+              <DatePicker onChange={onChange} picker="year"></DatePicker>
+            )}
           </div>
         </div>
       </div>

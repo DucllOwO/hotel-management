@@ -1,4 +1,4 @@
-import React,{useState, useContext, useEffect} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import RoomsTable from "../../Tables/Rooms/RoomsTable";
 import Topbar from "../../../../components/Topbar/Topbar";
 import { userRequest } from "../../../../api/api";
@@ -14,7 +14,7 @@ const Rooms = () => {
       const { data } = await userRequest.get("/rooms", {
         params: { user: { position: user?.position } },
       });
-      console.log(data)
+      console.log(data);
       setRooms(data.rooms);
     };
 
@@ -23,9 +23,7 @@ const Rooms = () => {
   return (
     <div className="container">
       <div className="roomsContainer">
-        <RoomsTable
-          rooms={rooms}>
-          </RoomsTable>
+        <RoomsTable rooms={rooms}></RoomsTable>
       </div>
     </div>
   );
