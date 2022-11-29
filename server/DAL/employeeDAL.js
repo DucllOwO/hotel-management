@@ -13,7 +13,9 @@ const getEmployeePositionByUsername = (username) => {
   return supabase
     .from(TABLE_NAME)
     .select(
-      `position_id:position(
+      `
+      fullname,
+      position_id:position(
     name, id
   )`
     )

@@ -21,19 +21,24 @@ const login = async (req, res, next) => {
 
         const { password: temp, ...userWithoutPassword } = user;
 
-        const {data: employeePosition,error: getPositionError } = await employeeDAL.getEmployeePositionByUsername(
-          username
-        );
+        const { data: employeePosition, error: getPositionError } =
+          await employeeDAL.getEmployeePositionByUsername(username);
         console.log(employeePosition[0]);
-        const {data, error} = await permissionDAL.getPermissionByPositionID(
+
+        const { data, error } = await permissionDAL.getPermissionByPositionID(
           employeePosition[0].position_id.id
         );
-        const tempPermission = [...new Set(data.map((item) => item?.feature_id.name))];
+        const tempPermission = [
+          ...new Set(data.map((item) => item?.feature_id.name)),
+        ];
         if (getPositionError) return next(getPositionError);
 
         return res
           .json({
-            user: userWithoutPassword,
+            user: {
+              ...userWithoutPassword,
+              fullname: employeePosition[0].fullname,
+            },
             accessToken,
             position: employeePosition[0].position_id.name,
             permission: tempPermission,
