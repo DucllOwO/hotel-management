@@ -26,7 +26,7 @@ router.get(
   tryCatch(getBooking)
 );
 router.get(
-  "/",
+  "/room",
   authorizeAccessToken,
   hasPermission(actionAC.GET, resourceAC.BOOKING),
   tryCatch(getRooms)

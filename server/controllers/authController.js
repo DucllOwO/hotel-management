@@ -28,7 +28,10 @@ const login = async (req, res, next) => {
         const {data, error} = await permissionDAL.getPermissionByPositionID(
           employeePosition[0].position_id.id
         );
-        const tempPermission = [...new Set(data.map((item) => item?.feature_id.name))];
+        const tempPermission = [...new Set(data?.map((item) => {
+          if(item?.feature_id.action == "read:any") 
+            return item?.feature_id.name}
+        ))];
         if (getPositionError) return next(getPositionError);
 
         return res

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import "../../index.css";
-import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
+import { Table, Button, Modal, Form, Input } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
-import "./bookingTable.css";
+import "./roomtable.css";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const BookingTable = ({rooms, setRooms, setStatus}) => {
+const RoomTable = ({rooms, setRooms, setStatus}) => {
   const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
@@ -115,23 +115,23 @@ const BookingTable = ({rooms, setRooms, setStatus}) => {
         }
       },
     },
-    {
-      key: "5",
-      title: "Actions",
-      render: (_, record) => {
-        return (
-          <>
-            <Button
-              onClick={() => {
-                onBooking(record);
-              }}
-            >
-              book
-            </Button>
-          </>
-        );
-      },
-    },
+    // {
+    //   key: "5",
+    //   title: "Actions",
+    //   render: (_, record) => {
+    //     return (
+    //       <>
+    //         <Button
+    //           onClick={() => {
+    //             onBooking(record);
+    //           }}
+    //         >
+    //           book
+    //         </Button>
+    //       </>
+    //     );
+    //   },
+    // },
   ];
 
   const onBooking = (value) => {
@@ -154,9 +154,11 @@ const BookingTable = ({rooms, setRooms, setStatus}) => {
     <div className="table">
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
-        <div className="headerDatePicker">
-          <p>From: <DatePicker>From</DatePicker></p> 
-          <p>To: <DatePicker>From</DatePicker></p> 
+        <div className="headerButtons">
+          <FontAwesomeIcon icon={faSort} className="icon"></FontAwesomeIcon>
+          <Button className="headerBtn" onClick={()=>{setStatus(0)}}>Available</Button>
+          <Button className="headerBtn" onClick={()=>{setStatus(1)}}>In use</Button>
+          <Button className="headerBtn" onClick={()=>{setStatus(2)}}>Waiting</Button>
         </div>
         <div>
           <Input.Search
@@ -183,4 +185,4 @@ const BookingTable = ({rooms, setRooms, setStatus}) => {
   );
 };
 
-export default BookingTable;
+export default RoomTable;

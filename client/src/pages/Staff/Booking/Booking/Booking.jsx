@@ -5,26 +5,24 @@ import BookingTable from "../../Tables/Booking/Booking/BookingTable";
 import "./booking.css";
 
 const Booking = () => {
-  const [rooms, setRooms] = useState([]);
-  const [status, setStatus] = useState("0")
+  const [booking, setBooking] = useState([]);
   const { user } = useContext(AppContext);
 
   useEffect(() => {
-    const fetchRoom = async () => {
-      const { data } = await userRequest.get("/bookings", {
-        params: { user: { position: user?.position }, status: status }
+    const fetchBooking = async () => {
+      const { data } = await userRequest.get("/bookings/list", {
+        params: { user: { position: user?.position }, type: "customer" }
       });
-      console.log(data);  
-      setRooms(data.listRoom);
+      console.log(data);
+      setBooking(data.data);
     };
-    fetchRoom();
-  }, [status]);
+    fetchBooking();
+  }, []);
   return (
     <div className="container">
       <div className="bookingContainer">
         <BookingTable
-        rooms ={rooms}
-        setStatus = {setStatus}></BookingTable>
+        booking = {booking}></BookingTable>
       </div>
     </div>
   );

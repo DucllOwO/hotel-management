@@ -4,7 +4,7 @@ import { AppContext } from "../../../../context/AppContext";
 import BookingTable from "../../Tables/Booking/BookingList/BookingListTable";
 import "./bookingList.css";
 
-const Booking = () => {
+const BookingList = () => {
   const [booking, setBooking] = useState([]);
   const { user } = useContext(AppContext);
 
@@ -28,4 +28,4 @@ const Booking = () => {
   );
 };
 
-export default Booking;
+export default BookingList;
