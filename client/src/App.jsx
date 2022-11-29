@@ -15,7 +15,6 @@ import Payment from "./pages/Admin/Turnover/Payment/Payment";
 import Receipt from "./pages/Admin/Turnover/Reciept/Receipt";
 import Login from "./pages/Login/Login";
 import Customer from "./pages/Staff/Customer/Customer";
-import AvailableRoom from "./pages/Staff/Booking/Room/Room";
 import BookingList from "./pages/Staff/Booking/BookingList/BookingList"
 import { AppContext } from "./context/AppContext";
 import LocalStorage from "./Utils/localStorage";
@@ -108,10 +107,6 @@ const listRoute = [
   {
     key: "Customer",
     value: <Route index path="customer" element={<Customer />} />,
-  },
-  {
-    key: "Booking",
-    value: <Route index path="bookings/room" element={<AvailableRoom />} />,
   },
   {
     key: "Booking",

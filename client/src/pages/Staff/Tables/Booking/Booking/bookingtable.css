@@ -2,15 +2,18 @@
     background-color: var(--black);
     color: var(--primary-color);
 }
-
+.header{
+    display: block;
+}
 .filterBtn {
     margin-left: 30px;
 }
 
-.headerDatePicker {
+.headerButton {
     display: flex;
     gap: 10px;
     align-items: center;
+    padding-top: 10px;
 }
 
 .headerBtn:hover {

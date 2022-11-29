@@ -10,6 +10,10 @@ const getBooking = (bookingID) => {
   return supabase.from(TABLE_NAME).select().eq("id", bookingID);
 };
 
+const getBookingByDate = (from, to) => {
+  return supabase.from(TABLE_NAME).select("id").or(`and(book_from.lt.${from},book_to.gt.${from}),and(book_to.gt.${to},book_from.lt.${to})`);
+};
+
 const insertBooking = (booking) => {
   return supabase.from(TABLE_NAME).insert(booking);
 };
@@ -20,4 +24,10 @@ const deleteBooking = (idBooking) => {
 
 //const getBooking
 
-module.exports = { getAllBooking, getBooking, insertBooking, deleteBooking };
+module.exports = { 
+  getBookingByDate, 
+  getAllBooking, 
+  getBooking, 
+  insertBooking, 
+  deleteBooking 
+};

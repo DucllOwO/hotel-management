@@ -7,10 +7,12 @@ import "./bookingTable.css";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const BookingTable = ({rooms, setRooms, setStatus}) => {
+const BookingTable = ({rooms, setRooms, setStatus, setFrom, setTo}) => {
   const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
+
+  const {RangePicker} = DatePicker;
 
   const [searchedText, setSearchedText] = useState("");
 
@@ -154,9 +156,18 @@ const BookingTable = ({rooms, setRooms, setStatus}) => {
     <div className="table">
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
-        <div className="headerDatePicker">
-          <p>From: <DatePicker>From</DatePicker></p> 
-          <p>To: <DatePicker>From</DatePicker></p> 
+        <div className="header">
+          <div>
+            <RangePicker format={"DD/MM/YYYY"} onChange={(value)=>{
+              setFrom(value[0]?._d);
+              setTo(value[1]?._d);
+            }}/>
+          </div>
+          <div className="headerButton">
+            <Button className="headerBtn" onClick={()=>{setStatus(0)}}>Available</Button>
+            <Button className="headerBtn" onClick={()=>{setStatus(1)}}>In use</Button>
+            <Button className="headerBtn" onClick={()=>{setStatus(2)}}>Waiting</Button>
+          </div>
         </div>
         <div>
           <Input.Search

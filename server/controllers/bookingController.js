@@ -11,16 +11,37 @@ const getAllBookings = async (req, res, next) => {
   res.status(200).send({ data });
 };
 const getRooms = async (req, res, next) => {
-  console.log("called")
-  const { status: roomStatus } = req.query;
-  const {data, error} = await roomDAL.getRoomByStatus(roomStatus);
-  const listRoom = data.map((item) => {
+  const {from: from, to: to } = req.query;
+  console.log(from)
+  console.log(to)
+  if(!from || !to)
+    return next(BadRequestError());
+
+  const {data: booking, error: getBookingError} = await bookingDAL.getBookingByDate(from, to);
+
+  if(getBookingError)
+    return next(getBookingError);
+
+  const listBookingID = booking?.map((item)=>item.id)
+
+  const {data: unavailableRoomID, getAvailableRoomIDError} = await roomDAL.getUnavailableRoomID(listBookingID);
+
+  if(getAvailableRoomIDError)
+    return next(getAvailableRoomIDError)
+  
+  const listRoomName = unavailableRoomID?.map((item)=>item.room_name)
+
+  const {data, error} = await roomDAL.getRoomAvailable(listRoomName);
+
+  if(error) return next(error);
+  console.log(data);
+  
+  const listRoom = data?.map((item) => {
     return {
       roomType: item.room_type_id.name,
       ...item
     }
   })
-  if(error) return next(error);
   res.status(200).send({listRoom});
 }
 const getBooking = async (req, res, next) => {

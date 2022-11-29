@@ -113,7 +113,8 @@ const Navbar = () => {
                 ],
               }
             : null,
-          permission.includes("Receipt") || permission.includes("Payment")
+          permission.includes("Receipt") || 
+          permission.includes("Payment")
             ? {
                 label: "Turnover",
                 key: "/admin/receipt",
@@ -148,7 +149,6 @@ const Navbar = () => {
                 key: "/admin/bookings",
                 icon: <DiffOutlined></DiffOutlined>,
                 children: [
-                    { label: "Available rooms", key: "/admin/bookings/room" },
                     { label: "Booking", key: "/admin/bookings/" },
                     { label: "Booking List", key: "/admin/bookings/list" }
                 ],
