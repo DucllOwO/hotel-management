@@ -3,9 +3,10 @@ import FeatureTable from "../../pages/Admin/Tables/Function/FeatureTable";
 import { Form, Input } from "antd";
 import { PositionContext } from "../../context/PositionContext";
 import ErrorMessage from "../Error/ErrorMessage/ErrorMessage";
-import { userRequest } from "../../api/api";
 import { AppContext } from "../../context/AppContext";
 import ErrorAlert from "../Error/Alert/ErrorAlert";
+import { fetchPositionByID } from "../../api/PositionAPI";
+import { fetchFeatures } from "../../api/FeatureAPI";
 
 const PositionForm = ({ form, positionID = null, setOldFeaturesState }) => {
   const { features, setFeatures, isFeaturesError } =
@@ -13,24 +14,25 @@ const PositionForm = ({ form, positionID = null, setOldFeaturesState }) => {
   const { user } = useContext(AppContext);
 
   useEffect(() => {
-    const fetchFeatures = async () => {
-      try {
-        const { data } = await userRequest.get(
-          positionID ? `/positions/${positionID}` : `/features`,
-          {
-            params: { user: { position: user?.position } },
-          }
-        );
-        console.log(data.data);
-        setFeatures(data.data);
-        setOldFeaturesState && setOldFeaturesState(data.data);
-      } catch (error) {
-        console.error(error);
-        ErrorAlert("Fetch features data error!!");
-      }
-    };
-
-    fetchFeatures();
+    if (positionID)
+      fetchPositionByID(user?.position, positionID)
+        .then(({ data }) => {
+          setOldFeaturesState(data);
+          setFeatures(data);
+        })
+        .catch((err) => {
+          console.log(err);
+          ErrorAlert("Fetch features of position error!!");
+        });
+    else
+      fetchFeatures(user?.position)
+        .then(({ data }) => {
+          setFeatures(data);
+        })
+        .catch((err) => {
+          console.log(err);
+          ErrorAlert("Fetch features error!!");
+        });
   }, [user?.position]);
 
   return (

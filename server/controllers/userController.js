@@ -12,12 +12,12 @@ const getAllUsers = async (req, res, next) => {
       const { data: customers, error: getCustomerError } =
         await customerDAL.getAllCustomer();
       if (getCustomerError) return next(getCustomerError);
-      return res.status(200).send({ customers });
+      return res.status(200).send(customers);
     case "employee":
       const { data: employees, error: getEmployeesError } =
         await employeeDAL.getAllEmployee();
       if (getEmployeesError) return next(getEmployeesError);
-      return res.status(200).send({ employees });
+      return res.status(200).send(employees);
     default:
       console.log("getAllUsers switch case default call");
       break;
@@ -37,14 +37,14 @@ const getUser = async (req, res, next) => {
 
       if (getCustomerError) return next(getCustomerError);
 
-      return res.status(200).send({ customer });
+      return res.status(200).send(customer[0]);
     case "employee":
       const { data: employee, error: getEmployeeError } =
-        await employeeDAL.getEmployeeByID();
+        await employeeDAL.getEmployeeByID(id);
 
       if (getEmployeeError) return next(getEmployeeError);
-
-      return res.status(200).send({ employee });
+      console.log(employee[0]);
+      return res.status(200).send(employee[0]);
     default:
       console.log("getUser switch case default call");
       break;
@@ -59,18 +59,16 @@ const createUser = async (req, res, next) => {
 
   switch (type) {
     case "customer":
-      const { error: insertCustomerError } = await customerDAL.insertCustomer(
-        userInfo
-      );
+      const { data: customer, error: insertCustomerError } =
+        await customerDAL.insertCustomer(userInfo);
       if (insertCustomerError) return next(insertCustomerError);
-      return res.status(201).send();
+      return res.status(201).send(customer[0]);
     case "employee":
-      const { error: insertEmployeesError } = await employeeDAL.insertEmployee(
-        userInfo
-      );
+      const { data: employee, error: insertEmployeesError } =
+        await employeeDAL.insertEmployee(userInfo);
       if (insertEmployeesError) return next(insertEmployeesError);
 
-      return res.status(201).send();
+      return res.status(201).send(employee[0]);
     default:
       console.log("createUser switch case default call");
       break;

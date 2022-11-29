@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Input, Form } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
-import { userRequest } from "../../../../api/api";
 import { useContext } from "react";
 import { AppContext } from "../../../../context/AppContext";
 import { PositionContext } from "../../../../context/PositionContext";
 import PositionForm from "../../../../components/Form/PositionForm";
+import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
+import {
+  addPosition,
+  deletePosition,
+  updatePosition,
+} from "../../../../api/PositionAPI";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
-
-const ERROR_MESSAGE = "Please input position name";
 
 const PositionTable = ({ positions, setPositions }) => {
   const { user } = useContext(AppContext);
@@ -53,44 +56,39 @@ const PositionTable = ({ positions, setPositions }) => {
   const onUpdatePosition = (values, featuresChecked, featuresUnCheck) => {
     setIsFeaturesError(null);
     updatePosition(
+      user?.position,
       values.posName,
       currentPosition.id,
       featuresChecked,
       featuresUnCheck
-    );
+    )
+      .then(({ data }) => {
+        SuccessAlert("Update position success.");
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("Update position error!!");
+      });
     setModal(null);
     form.resetFields();
-  };
-
-  const updatePosition = async (
-    name,
-    id,
-    featuresForAddPermissions,
-    featuresForRemovePermissions
-  ) => {
-    try {
-      const { data } = await userRequest.put(`/positions/${id}`, {
-        user: {
-          position: user?.position,
-        },
-        position: {
-          editedName: name,
-        },
-        featuresForAddPermissions,
-        featuresForRemovePermissions,
-      });
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-      ErrorAlert("Update position error !!");
-    }
   };
 
   const onCreatePosition = (posName, features) => {
     setIsFeaturesError(null);
-    addPosition(posName, features);
+
+    addPosition(user?.position, posName, features)
+      .then(({ data }) => {
+        setPositions((prevPos) => [...prevPos, data]);
+        SuccessAlert("Create position success.");
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("Create position error!!");
+      });
+
     setModal(null);
     form.resetFields();
+    SuccessAlert("Create position success.");
   };
 
   const handleCancelModal = () => {
@@ -99,110 +97,21 @@ const PositionTable = ({ positions, setPositions }) => {
     form.resetFields();
   };
 
-  const addPosition = async (name, featuresForAddPermissions) => {
-    try {
-      const { data } = await userRequest.post(`/positions`, {
-        user: {
-          position: user?.position,
-        },
-        position: {
-          name: name,
-        },
-        featuresForAddPermissions: featuresForAddPermissions,
-      });
-      console.log(data);
-      // trigger position page to fetch new position data
-      setPositions((prevPos) => [...prevPos, data?.position]);
-    } catch (error) {
-      console.log(error);
-      ErrorAlert("Create position error !!");
-    }
-  };
-
-  const columns = [
-    {
-      key: "1",
-      title: "ID",
-      colSpan: 1,
-      dataIndex: "id",
-      width: "10%",
-    },
-    {
-      key: "2",
-      title: "Name",
-      width: "60%",
-      filteredValue: [searchedText],
-      onFilter: (value, record) => {
-        return (
-          String(record.name)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.birthday)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.phone)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase())
-        );
-      },
-      dataIndex: "name",
-    },
-    {
-      key: "3",
-      title: "Actions",
-      width: "30%",
-      render: (_, record) => {
-        return (
-          <>
-            <Button
-              onClick={(e) => {
-                e.preventDefault();
-                setModal("edit");
-                form.setFieldValue("posName", record.name);
-                setCurrentPosition(record);
-              }}
-            >
-              edit
-            </Button>
-            <Button
-              onClick={() => {
-                onDeleteButton(record);
-              }}
-            >
-              delete
-            </Button>
-          </>
-        );
-      },
-    },
-  ];
-
-  const deletePosition = async (posID) => {
-    try {
-      const { data } = await userRequest.delete(`/positions/${posID}`, {
-        params: {
-          user: {
-            position: user?.position,
-          },
-        },
-      });
-      console.log(data);
-      setPositions((pre) => {
-        return pre.filter((data) => data.id !== posID);
-      });
-    } catch (error) {
-      console.log(error);
-      ErrorAlert("Delete position error !!");
-    }
-  };
-
   const onDeleteButton = (record) => {
     Modal.confirm({
       title: "Are you sure, you want to delete this record?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        deletePosition(record?.id);
+        deletePosition(user?.position, record?.id).then(({ data }) => {
+          SuccessAlert("Delete position success.");
+          setPositions((pre) => {
+            return pre.filter((data) => data.id !== record?.id);
+          }).catch((err) => {
+            console.log(err);
+            ErrorAlert("Delete position fail.");
+          });
+        });
       },
     });
   };
@@ -236,6 +145,56 @@ const PositionTable = ({ positions, setPositions }) => {
       </Modal>
     );
   };
+
+  const columns = [
+    {
+      key: "1",
+      title: "ID",
+      colSpan: 1,
+      dataIndex: "id",
+      width: "10%",
+    },
+    {
+      key: "2",
+      title: "Name",
+      width: "60%",
+      filteredValue: [searchedText],
+      onFilter: (value, record) => {
+        return String(record.name)
+          .toLocaleLowerCase()
+          .includes(value.toLocaleLowerCase());
+      },
+      dataIndex: "name",
+    },
+    {
+      key: "3",
+      title: "Actions",
+      width: "30%",
+      render: (_, record) => {
+        return (
+          <>
+            <Button
+              onClick={(e) => {
+                e.preventDefault();
+                setModal("edit");
+                form.setFieldValue("posName", record.name);
+                setCurrentPosition(record);
+              }}
+            >
+              edit
+            </Button>
+            <Button
+              onClick={() => {
+                onDeleteButton(record);
+              }}
+            >
+              delete
+            </Button>
+          </>
+        );
+      },
+    },
+  ];
   return (
     <div className="table">
       <>
@@ -264,6 +223,7 @@ const PositionTable = ({ positions, setPositions }) => {
           Add new
         </Button>
       </div>
+      {console.log(positions)}
       <Table
         columns={columns}
         dataSource={positions}

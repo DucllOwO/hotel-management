@@ -36,7 +36,7 @@ const getEmployeeByID = (EmployeeID) => {
 };
 
 const insertEmployee = (Employee) => {
-  return supabase.from(TABLE_NAME).insert(Employee);
+  return supabase.from(TABLE_NAME).insert({ ...Employee });
 };
 
 const updateEmployee = (Employee, id) => {

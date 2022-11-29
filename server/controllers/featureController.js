@@ -13,7 +13,7 @@ const getAllFeatures = async (req, res, next) => {
   //   };
   // }
 
-  res.send({ data: createFeatureCheckList(data) });
+  res.send(createFeatureCheckList(data));
 };
 
 const createFeatureCheckList = (features) => {
