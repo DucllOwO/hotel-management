@@ -1,0 +1,27 @@
+:root {
+    /* Color */
+    --primary-color: white;
+    --black: black;
+    --grey: #C0C0C0;
+    --dark-grey: #707070;
+    --light-black: #101010;
+    --light-grey: #F8F8F8;
+    --red: red;
+
+    /* Font Weight */
+    --fw-bold: bold;
+    --fw-regular: 400;
+    --fw-medium: 500 ;
+
+    /* Font Size */
+    --fs-12: 12px;
+    --fs-14: 14px;
+    --fs-18: 18px;
+    --fs-24: 24px;
+    --fs-32: 32px;
+    --fs-40: 40px;
+    --fs-60: 60px;
+
+    /* Space */
+    --space-65: 65px;
+}

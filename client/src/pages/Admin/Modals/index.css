@@ -1,0 +1,13 @@
+.modal {
+    display: flex;
+    justify-content: space-between;
+}
+
+.label {
+    margin-bottom: 3px;
+}
+
+.select {
+    margin-bottom: 20px;
+    width: 215px;
+}
