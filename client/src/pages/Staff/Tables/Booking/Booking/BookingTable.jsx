@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
-import "./bookingTable.css";
+import "./bookingtable.css";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -34,6 +34,7 @@ const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
     },
     {
       key: "2",
+
       title: "Loại phòng",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
@@ -166,9 +167,30 @@ const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
             />
           </div>
           <div className="headerButton">
-            <Button className="headerBtn" onClick={()=>{setStatus(0)}}>Đang trống</Button>
-            <Button className="headerBtn" onClick={()=>{setStatus(1)}}>Đang sử dụng</Button>
-            <Button className="headerBtn" onClick={()=>{setStatus(2)}}>Đang đợi</Button>
+            <Button
+              className="headerBtn"
+              onClick={() => {
+                setStatus(0);
+              }}
+            >
+              Đang trống
+            </Button>
+            <Button
+              className="headerBtn"
+              onClick={() => {
+                setStatus(1);
+              }}
+            >
+              Đang sử dụng
+            </Button>
+            <Button
+              className="headerBtn"
+              onClick={() => {
+                setStatus(2);
+              }}
+            >
+              Đang đợi
+            </Button>
           </div>
         </div>
         <div>

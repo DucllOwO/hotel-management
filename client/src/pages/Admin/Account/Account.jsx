@@ -23,7 +23,6 @@ const Account = () => {
   return (
     <div className="container">
       <div className="accountContainer">
-        <div>Account</div>
         <AccountTable accounts={accounts}></AccountTable>
       </div>
     </div>
