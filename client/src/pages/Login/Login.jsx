@@ -48,7 +48,7 @@ const Login = () => {
         </div>
 
         <div className="inputContainer">
-          <div className="label">Password</div>
+          <div className="labelInput">Password</div>
           <div className="passwordLine">
             <div className="input">
               <input

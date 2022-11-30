@@ -19,10 +19,12 @@ import StaffReciept from "./pages/Staff/Receipt/Receipt";
 import { AppContext } from "./context/AppContext";
 import LocalStorage from "./Utils/localStorage";
 import Position from "./pages/Admin/Position/Position";
+import AddRoom from "./components/Admin/AddRoom/AddRoom";
 
 import _404ErrorBoundary from "./components/Error/ErrorBoundary/_404ErrorBoundary";
 import AuthErrorBoundary from "./components/Error/ErrorBoundary/AuthErrorBoundary";
 import Promotion from "./pages/Admin/Promotion/Promotion";
+import Import from "./components/Admin/Import/Import";
 
 const App = () => {
   const { user } = useContext(AppContext);
@@ -45,6 +47,10 @@ const App = () => {
                 })
               : null}
           </Route>
+
+          <Route path="/admin/addroom" element={<AddRoom />}></Route>
+          <Route path="/admin/import" element={<Import />}></Route>
+
           <Route
             key="error"
             exact

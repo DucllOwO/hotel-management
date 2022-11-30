@@ -3,15 +3,16 @@ import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const RoomsTable = ({ rooms, setRoom }) => {
+  const navigate = useNavigate();
+
   const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
-
-  
 
   const columns = [
     {
@@ -181,17 +182,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
   ];
 
   const onAddButton = () => {
-    const randomNumber = parseInt(Math.random() * 1000);
-    const newData = {
-      idNum: "" + parseInt(rooms.length + 1),
-      name: "Name " + randomNumber,
-      roomType: "23/03/2002",
-      area: randomNumber + " area",
-    };
-
-    setRoom((pre) => {
-      return [...pre, newData];
-    });
+    navigate("/admin/addroom");
   };
 
   const onDeleteButton = (record) => {
@@ -248,11 +239,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
         </div>
       </div>
       <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={rooms}
-          scroll={{ y: 350 }}
-        ></Table>
+        <Table columns={columns} dataSource={rooms} scroll={{ y: 350 }}></Table>
       </Form>
     </div>
   );
