@@ -53,7 +53,7 @@ const Import = () => {
     },
     {
       key: "2",
-      title: "Name",
+      title: "Sản phẩm",
       dataIndex: "name",
       align: "center",
       render: (text, record) => {
@@ -61,7 +61,7 @@ const Import = () => {
           <div className="inputCon">
             <Select
               showSearch
-              placeholder="Select a person"
+              placeholder="Chọn một sản phẩm"
               onChange={onChangeSelect}
               onSearch={onSearch}
               filterOption={(input, option) =>
@@ -86,7 +86,7 @@ const Import = () => {
     },
     {
       key: "3",
-      title: "Amount",
+      title: "Số lượng",
       dataIndex: "amount",
       align: "center",
       render: (_, record) => {
@@ -103,24 +103,24 @@ const Import = () => {
     },
     {
       key: "4",
-      title: "Unit Price",
+      title: "Đơn giá",
       dataIndex: "unitPrice",
       align: "center",
     },
     {
       key: "5",
-      title: "Total",
+      title: "Thành tiền",
       dataIndex: "total",
       align: "center",
     },
     {
       key: "6",
-      title: "Actions",
+      title: "Thao tác",
       align: "center",
       render: (_, record) => {
         return (
           <>
-            <Button onClick={() => {}}>delete</Button>
+            <Button onClick={() => {}}>Xoá</Button>
           </>
         );
       },

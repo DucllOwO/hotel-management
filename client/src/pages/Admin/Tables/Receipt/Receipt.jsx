@@ -196,7 +196,7 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
               setType("year");
             }}
           >
-            Year
+            Năm
           </Button>
           <Button
             className="dateBtn"
@@ -205,7 +205,7 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
               setType("month");
             }}
           >
-            Month
+            Tháng
           </Button>
           <Button
             className="dateBtn"
@@ -214,7 +214,7 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
               setType("day");
             }}
           >
-            Day
+            Ngày
           </Button>
         </div>
         <div>

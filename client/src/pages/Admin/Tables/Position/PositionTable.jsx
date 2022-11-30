@@ -33,7 +33,7 @@ const PositionTable = ({ positions, setPositions }) => {
       console.log(featuresChecked);
       if (featuresChecked.length > 0)
         onCreatePosition(values.posName, featuresChecked);
-      else setIsFeaturesError("Please choose at least 1 feature!!");
+      else setIsFeaturesError("Vui lòng chọn ít nhất 1 chức năng!!");
     });
   };
   const handleOKModalEdit = () => {
@@ -63,11 +63,11 @@ const PositionTable = ({ positions, setPositions }) => {
       featuresUnCheck
     )
       .then(({ data }) => {
-        SuccessAlert("Update position success.");
+        SuccessAlert("Thay đổi chức vụ thành công.");
       })
       .catch((err) => {
         console.log(err);
-        ErrorAlert("Update position error!!");
+        ErrorAlert("Thay đổi chức vụ không thành công!!");
       });
     setModal(null);
     form.resetFields();
@@ -79,16 +79,16 @@ const PositionTable = ({ positions, setPositions }) => {
     addPosition(user?.position, posName, features)
       .then(({ data }) => {
         setPositions((prevPos) => [...prevPos, data]);
-        SuccessAlert("Create position success.");
+        SuccessAlert("Tạo chức vụ thành công.");
       })
       .catch((err) => {
         console.log(err);
-        ErrorAlert("Create position error!!");
+        ErrorAlert("Tạo chức vụ không thành công!!");
       });
 
     setModal(null);
     form.resetFields();
-    SuccessAlert("Create position success.");
+    SuccessAlert("Tạo chức vụ thành công.");
   };
 
   const handleCancelModal = () => {
@@ -99,17 +99,17 @@ const PositionTable = ({ positions, setPositions }) => {
 
   const onDeleteButton = (record) => {
     Modal.confirm({
-      title: "Are you sure, you want to delete this record?",
+      title: "Bạn có chắc muốn xoá dữ liệu?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
         deletePosition(user?.position, record?.id).then(({ data }) => {
-          SuccessAlert("Delete position success.");
+          SuccessAlert("Xoá chức vụ thành công.");
           setPositions((pre) => {
             return pre.filter((data) => data.id !== record?.id);
           }).catch((err) => {
             console.log(err);
-            ErrorAlert("Delete position fail.");
+            ErrorAlert("Xoá chức vụ không thành công.");
           });
         });
       },
@@ -118,7 +118,7 @@ const PositionTable = ({ positions, setPositions }) => {
 
   const modalAddPosition = () => (
     <Modal
-      title="Position Information"
+      title="Thông tin chức vụ"
       open={true}
       onOk={handleOKModalAdd}
       onCancel={handleCancelModal}
@@ -131,7 +131,7 @@ const PositionTable = ({ positions, setPositions }) => {
   const modalEditPosition = (position) => {
     return (
       <Modal
-        title="Position Information"
+        title="Thông tin chức vụ"
         open={true}
         onOk={handleOKModalEdit}
         onCancel={handleCancelModal}
@@ -156,7 +156,7 @@ const PositionTable = ({ positions, setPositions }) => {
     },
     {
       key: "2",
-      title: "Name",
+      title: "Tên chức vụ",
       width: "60%",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
@@ -168,7 +168,7 @@ const PositionTable = ({ positions, setPositions }) => {
     },
     {
       key: "3",
-      title: "Actions",
+      title: "Thao tác",
       width: "30%",
       render: (_, record) => {
         return (
@@ -181,14 +181,14 @@ const PositionTable = ({ positions, setPositions }) => {
                 setCurrentPosition(record);
               }}
             >
-              edit
+              Chỉnh sửa
             </Button>
             <Button
               onClick={() => {
                 onDeleteButton(record);
               }}
             >
-              delete
+              Xoá
             </Button>
           </>
         );

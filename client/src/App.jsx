@@ -132,7 +132,7 @@ const listRoute = [
   },
   {
     key: "Booking",
-    value: <Route index path="booking" element={<Booking />} />,
+    value: <Route index path="bookings" element={<Booking />} />,
   },
   {
     key: "Promotion",

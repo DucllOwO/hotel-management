@@ -92,14 +92,14 @@ const HRTable = ({ employees, setEmployees }) => {
                 openEditModal(record);
               }}
             >
-              Edit
+              Chỉnh sửa
             </Button>
             <Button
               onClick={() => {
                 onDeleteButton(record);
               }}
             >
-              Delete
+              Xoá
             </Button>
           </>
         );

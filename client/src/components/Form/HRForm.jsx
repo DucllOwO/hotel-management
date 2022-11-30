@@ -28,16 +28,16 @@ const HRForm = ({ form, disable = false }) => {
       <div className="modal">
         <div className="left">
           <Form.Item
-            label="ID"
+            label="CCCD"
             name="id"
             rules={[
               {
                 required: true,
-                message: "Please input ID!",
+                message: "Vui lòng nhập CCCD!",
               },
               {
                 max: 12,
-                message: "ID cannot longer than 10 characters",
+                message: "CCCD không được dài quá 12 kí tự",
               },
             ]}
             tooltip="Identity card"
@@ -45,24 +45,24 @@ const HRForm = ({ form, disable = false }) => {
             <Input size="large" disabled={disable} />
           </Form.Item>
           <Form.Item
-            label="Full Name"
+            label="Họ và tên"
             name="fullname"
             rules={[
               {
                 required: true,
-                message: "Please input full name!",
+                message: "Vui lòng nhập họ và tên!",
               },
             ]}
           >
             <Input size="large" />
           </Form.Item>
           <Form.Item
-            label="Birthday"
+            label="Ngày sinh"
             name="date_of_birth"
             rules={[
               {
                 required: true,
-                message: "Please input birthday!",
+                message: "Vui lòng nhập ngày sinh!",
               },
               {
                 type: "date",
@@ -72,12 +72,12 @@ const HRForm = ({ form, disable = false }) => {
             <DatePicker size="large" format={DATE_FORMAT} />
           </Form.Item>
           <Form.Item
-            label="Phone"
+            label="Số điện thoại"
             name="phone_number"
             rules={[
               {
                 required: true,
-                message: "Please input phone!",
+                message: "Vui lòng nhập số điện thoại!",
               },
               {
                 min: 10,
@@ -92,18 +92,18 @@ const HRForm = ({ form, disable = false }) => {
         </div>
         <div className="right">
           <Form.Item
-            label="Position"
+            label="Chức vụ"
             name="position_id"
             rules={[
               {
                 required: true,
-                message: "Please choose position!",
+                message: "Vui lòng chọn chức vụ!",
               },
             ]}
           >
             <Select
               showSearch
-              placeholder="Select a position"
+              placeholder="Chọn một chức vụ"
               optionFilterProp="children"
               filterOption={(input, option) =>
                 (option?.name ?? "").toLowerCase().includes(input.toLowerCase())
@@ -129,12 +129,12 @@ const HRForm = ({ form, disable = false }) => {
             <Input size="large" />
           </Form.Item> */}
           <Form.Item
-            label="Starting Date"
+            label="Ngày vào làm"
             name="start_working_date"
             rules={[
               {
                 required: true,
-                message: "Please input starting date!",
+                message: "Vui lòng nhập ngày vào làm!",
               },
               {
                 type: "date",
@@ -144,12 +144,12 @@ const HRForm = ({ form, disable = false }) => {
             <DatePicker size="large" format={DATE_FORMAT} showToday />
           </Form.Item>
           <Form.Item
-            label="Salary"
+            label="Lương"
             name="salary"
             rules={[
               {
                 required: true,
-                message: "Please input salary!",
+                message: "Vui lòng nhập lương!",
               },
               {
                 type: "number",
