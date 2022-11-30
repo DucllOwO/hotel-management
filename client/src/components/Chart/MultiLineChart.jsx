@@ -66,6 +66,8 @@ const MultiLineChart = () => {
           `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`),
       },
     },
+    width: "100%",
+    height: "100%",
   };
 
   return (

@@ -24,7 +24,6 @@ const Position = () => {
     <PositionProvider>
       <div className="container">
         <div className="positionContainer">
-          <div>Position</div>
           <PositionTable
             positions={positions}
             setPositions={setPositions}

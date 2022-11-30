@@ -137,14 +137,14 @@ const PaymentTable = ({ payment, setPayment }) => {
           return (
             <>
               <Button
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   setEditingRow(record.idNum);
-                //   form.setFieldsValue({
-                //     date: record.date,
-                //     total: record.total,
-                //   });
-                // }}
+              // onClick={(e) => {
+              //   e.preventDefault();
+              //   setEditingRow(record.idNum);
+              //   form.setFieldsValue({
+              //     date: record.date,
+              //     total: record.total,
+              //   });
+              // }}
               >
                 Chỉnh sửa
               </Button>
@@ -217,7 +217,7 @@ const PaymentTable = ({ payment, setPayment }) => {
               setType("year");
             }}
           >
-            Year
+            Năm
           </Button>
           <Button
             className="dateBtn"
@@ -226,7 +226,7 @@ const PaymentTable = ({ payment, setPayment }) => {
               setType("month");
             }}
           >
-            Month
+            Tháng
           </Button>
           <Button
             className="dateBtn"
@@ -235,7 +235,7 @@ const PaymentTable = ({ payment, setPayment }) => {
               setType("day");
             }}
           >
-            Day
+            Ngày
           </Button>
         </div>
         <div>

@@ -77,7 +77,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div style={{ margin: "0 0 20px 0" }}>
+        <div>
           <Row gutter={16}>
             <Col span={8}>
               <Card title="Tổng doanh thu">100.000.000</Card>
