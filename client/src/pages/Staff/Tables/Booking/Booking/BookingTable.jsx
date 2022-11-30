@@ -1,18 +1,17 @@
 import React, { useState } from "react";
-import "../../index.css";
 import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
-import "./bookingTable.css";
+import "./bookingtable.css";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const BookingTable = ({rooms, setRooms, setStatus, setFrom, setTo}) => {
+const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
   const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
 
-  const {RangePicker} = DatePicker;
+  const { RangePicker } = DatePicker;
 
   const [searchedText, setSearchedText] = useState("");
 
@@ -158,15 +157,39 @@ const BookingTable = ({rooms, setRooms, setStatus, setFrom, setTo}) => {
       <div className="buttonContainer">
         <div className="header">
           <div>
-            <RangePicker format={"DD/MM/YYYY"} onChange={(value)=>{
-              setFrom(value[0]?._d);
-              setTo(value[1]?._d);
-            }}/>
+            <RangePicker
+              format={"DD/MM/YYYY"}
+              onChange={(value) => {
+                setFrom(value[0]?._d);
+                setTo(value[1]?._d);
+              }}
+            />
           </div>
           <div className="headerButton">
-            <Button className="headerBtn" onClick={()=>{setStatus(0)}}>Available</Button>
-            <Button className="headerBtn" onClick={()=>{setStatus(1)}}>In use</Button>
-            <Button className="headerBtn" onClick={()=>{setStatus(2)}}>Waiting</Button>
+            <Button
+              className="headerBtn"
+              onClick={() => {
+                setStatus(0);
+              }}
+            >
+              Available
+            </Button>
+            <Button
+              className="headerBtn"
+              onClick={() => {
+                setStatus(1);
+              }}
+            >
+              In use
+            </Button>
+            <Button
+              className="headerBtn"
+              onClick={() => {
+                setStatus(2);
+              }}
+            >
+              Waiting
+            </Button>
           </div>
         </div>
         <div>
@@ -184,11 +207,7 @@ const BookingTable = ({rooms, setRooms, setStatus, setFrom, setTo}) => {
         </div>
       </div>
       <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={rooms}
-          scroll={{ y: 350 }}
-        ></Table>
+        <Table columns={columns} dataSource={rooms} scroll={{ y: 350 }}></Table>
       </Form>
     </div>
   );
