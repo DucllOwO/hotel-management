@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
 import "antd/dist/antd.less";
+import dayjs from "dayjs";
+import moment from "moment";
 
 const ReceiptTable = ({ receipt, setReceipt }) => {
   const [type, setType] = useState("day");
@@ -11,6 +13,9 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
+
+  const dateFormat = "DD-MM-YYYY";
+  const monthFormat = "MM-YYYY";
 
   const columns = [
     {
@@ -191,12 +196,28 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
         <div>
           <div></div>
           <div>
-            {type === "day" && <DatePicker onChange={onChange}></DatePicker>}
+            {type === "day" && (
+              <DatePicker
+                onChange={onChange}
+                defaultValue={moment()}
+                picker="date"
+                format={dateFormat}
+              ></DatePicker>
+            )}
             {type === "month" && (
-              <DatePicker onChange={onChange} picker="month"></DatePicker>
+              <DatePicker
+                onChange={onChange}
+                defaultValue={dayjs(Date.now())}
+                picker="month"
+                format={monthFormat}
+              ></DatePicker>
             )}
             {type === "year" && (
-              <DatePicker onChange={onChange} picker="year"></DatePicker>
+              <DatePicker
+                onChange={onChange}
+                picker="year"
+                defaultValue={dayjs(Date.now())}
+              ></DatePicker>
             )}
           </div>
         </div>
