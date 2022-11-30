@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../../index.css";
 import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";

@@ -1,4 +1,4 @@
-import React,{useState, useContext, useEffect} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { userRequest } from "../../../../api/api";
 import { AppContext } from "../../../../context/AppContext";
 import BookingTable from "../../Tables/Booking/Booking/BookingTable";
@@ -14,9 +14,9 @@ const Booking = () => {
   useEffect(() => {
     const fetchBooking = async () => {
       const { data } = await userRequest.get("/bookings/room", {
-        params: { user: { position: user?.position }, from: from, to: to }
+        params: { user: { position: user?.position }, from: from, to: to },
       });
-      console.log(from)
+      console.log(from);
       setRoom(data.listRoom);
     };
     fetchBooking();
@@ -25,10 +25,11 @@ const Booking = () => {
     <div className="container">
       <div className="bookingContainer">
         <BookingTable
-        rooms = {room}
-        setStatus = {setStatus}
-        setFrom = {setFrom}
-        setTo = {setTo}></BookingTable>
+          rooms={room}
+          setStatus={setStatus}
+          setFrom={setFrom}
+          setTo={setTo}
+        ></BookingTable>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Topbar from "../../Topbar/Topbar";
-import { Input, Button, Table, Select, InputNumber } from "antd";
+import { Input, Button, Table, Select, InputNumber, Modal } from "antd";
 import BottomBar from "../BottomBar/BottomBar";
 import "./import.css";
 
@@ -13,36 +13,7 @@ const Import = () => {
     console.log("search:", value);
   };
 
-  const [dataSource, setDataSource] = useState([
-    {
-      id: 1,
-      name: "Teeth Brush",
-      amount: "10",
-      unitPrice: "20000",
-      total: "200000",
-    },
-    {
-      id: 2,
-      name: "Glass",
-      amount: "1",
-      unitPrice: "20000",
-      total: "200000",
-    },
-    {
-      id: 3,
-      name: "Bed",
-      amount: "1",
-      unitPrice: "20000",
-      total: "200000",
-    },
-    {
-      id: 4,
-      name: "Something",
-      amount: "1",
-      unitPrice: "20000",
-      total: "200000",
-    },
-  ]);
+  const [dataSource, setDataSource] = useState([]);
 
   const columns = [
     {
@@ -120,12 +91,49 @@ const Import = () => {
       render: (_, record) => {
         return (
           <>
-            <Button onClick={() => {}}>delete</Button>
+            <Button
+              onClick={() => {
+                onDeleteButton(record);
+              }}
+            >
+              delete
+            </Button>
           </>
         );
       },
     },
   ];
+
+  const onAddProduct = () => {
+    setDataSource((pre) => {
+      return [
+        ...pre,
+        {
+          id: pre.length + 1,
+          name: "",
+          amount: "1",
+          unitPrice: "",
+          total: "",
+        },
+      ];
+    });
+  };
+
+  const onDeleteButton = (record) => {
+    Modal.confirm({
+      title: "Are you sure, you want to delete this record?",
+      okText: "Yes",
+      okType: "danger",
+      onOk: () => {
+        setDataSource((pre) => {
+          const temp = pre.filter((data) => data.id !== record.id);
+          return temp.map((item, index) => {
+            return { ...item, id: index + 1 };
+          });
+        });
+      },
+    });
+  };
 
   return (
     <div className="import">
@@ -140,6 +148,7 @@ const Import = () => {
           <div className="label">ID: </div>
           <Input placeholder="ID" disabled="true"></Input>
         </div>
+
         <div>
           <Table
             size="small"
@@ -151,7 +160,8 @@ const Import = () => {
           ></Table>
         </div>
       </div>
-      <BottomBar button="true"></BottomBar>
+
+      <BottomBar add="true" onAddProduct={onAddProduct}></BottomBar>
     </div>
   );
 };

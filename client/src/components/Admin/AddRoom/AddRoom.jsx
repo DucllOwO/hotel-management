@@ -116,7 +116,6 @@ const AddRoom = () => {
           <Input suffix="vnd" placeholder="Enter price"></Input>
         </div>
       </div>
-
       <BottomBar></BottomBar>
     </div>
   );

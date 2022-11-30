@@ -145,11 +145,11 @@ const HRTable = ({ employees, setEmployees }) => {
 
   const modalAddEmployee = () => (
     <Modal
-      title="Position Information"
+      title="HR Information"
       open={true}
       onOk={handleOKModalAdd}
       onCancel={handleCancelModal}
-      width="40%"
+      width="50%"
     >
       <HRForm form={form} />
     </Modal>
