@@ -45,7 +45,7 @@ const InventoryTable = () => {
     },
     {
       key: "2",
-      title: "Name",
+      title: "Tên sản phẩm",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
@@ -83,7 +83,7 @@ const InventoryTable = () => {
     },
     {
       key: "3",
-      title: "Amount",
+      title: "Số lượng",
       dataIndex: "amount",
       render: (text, record) => {
         if (editingRow === record.id) {
@@ -107,7 +107,7 @@ const InventoryTable = () => {
     },
     {
       key: "4",
-      title: "Price",
+      title: "Giá",
       dataIndex: "price",
       render: (text, record) => {
         if (editingRow === record.id) {
@@ -129,59 +129,59 @@ const InventoryTable = () => {
         }
       },
     },
-    {
-      key: "5",
-      title: "Actions",
-      render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.id) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  save
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  cancel
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              {/* <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setEditingRow(record.id);
-                  form.setFieldsValue({
-                    name: record.name,
-                    amount: record.amount,
-                    price: record.price,
-                  });
-                }}
-              >
-                edit
-              </Button> */}
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                delete
-              </Button>
-            </>
-          );
-        }
-      },
-    },
+    // {
+    //   key: "5",
+    //   title: "Thao tác",
+    //   render: (_, record) => {
+    //     if (editingRow !== null) {
+    //       if (editingRow === record.id) {
+    //         return (
+    //           <>
+    //             <Button
+    //               htmlType="submit"
+    //               // onClick={() => {form.submit()}}
+    //             >
+    //               Lưu
+    //             </Button>
+    //             <Button
+    //               onClick={() => {
+    //                 setEditingRow(null);
+    //               }}
+    //             >
+    //               Huỷ
+    //             </Button>
+    //           </>
+    //         );
+    //       } else {
+    //       }
+    //     } else {
+    //       return (
+    //         <>
+    //           {/* <Button
+    //             onClick={(e) => {
+    //               e.preventDefault();
+    //               setEditingRow(record.id);
+    //               form.setFieldsValue({
+    //                 name: record.name,
+    //                 amount: record.amount,
+    //                 price: record.price,
+    //               });
+    //             }}
+    //           >
+    //             edit
+    //           </Button> */}
+    //           <Button
+    //             onClick={() => {
+    //               onDeleteButton(record);
+    //             }}
+    //           >
+    //             Xoá
+    //           </Button>
+    //         </>
+    //       );
+    //     }
+    //   },
+    // },
   ];
 
   const onDeleteButton = (record) => {
@@ -219,7 +219,7 @@ const InventoryTable = () => {
             onChange={(e) => {
               setSearchedText(e.target.value);
             }}
-            placeholder="input search text"
+            placeholder="Tìm kiếm"
             className="searchInput"
             style={{ width: 264 }}
           />

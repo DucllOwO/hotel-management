@@ -209,7 +209,7 @@ const PositionTable = ({ positions, setPositions }) => {
           onChange={(e) => {
             setSearchedText(e.target.value);
           }}
-          placeholder="input search text"
+          placeholder="Tìm kiếm"
           className="searchInput"
           style={{ width: 264 }}
         />
@@ -220,7 +220,7 @@ const PositionTable = ({ positions, setPositions }) => {
           ghost
           icon={<PlusOutlined />}
         >
-          Add new
+          Tạo mới
         </Button>
       </div>
       {console.log(positions)}

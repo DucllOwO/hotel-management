@@ -6,11 +6,11 @@ const ItemModal = () => {
   return (
     <div className="modal">
       <div className="left">
-        <AddInput label="Name"></AddInput>
-        <AddInput label="Minimum"></AddInput>
+        <AddInput label="Tên sản phẩm"></AddInput>
+        <AddInput label="Số lượng"></AddInput>
       </div>
       <div className="right">
-        <AddInput label="Price"></AddInput>
+        <AddInput label="Giá"></AddInput>
       </div>
     </div>
   );

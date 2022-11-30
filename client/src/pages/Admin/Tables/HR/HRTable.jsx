@@ -31,27 +31,27 @@ const HRTable = ({ employees, setEmployees }) => {
   const columns = [
     {
       key: "1",
-      title: "ID",
+      title: "CCCD",
       dataIndex: "id",
       width: 145,
     },
     {
       key: "2",
-      title: "Name",
+      title: "Tên",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return String(record.name)
           .toLocaleLowerCase()
           .includes(value.toLocaleLowerCase());
       },
-      dataIndex: "firstname",
+      dataIndex: "fullname",
       render: (text, record) => {
         return String(record.fullname);
       },
     },
     {
       key: "3",
-      title: "Birthday",
+      title: "Ngày sinh",
       dataIndex: "date_of_birth",
       render: (text, record) => {
         return String(record.date_of_birth);
@@ -59,7 +59,7 @@ const HRTable = ({ employees, setEmployees }) => {
     },
     {
       key: "4",
-      title: "Phone",
+      title: "SĐT",
       dataIndex: "phone_number",
       render: (text, record) => {
         return String(record.phone_number);
@@ -67,7 +67,7 @@ const HRTable = ({ employees, setEmployees }) => {
     },
     {
       key: "5",
-      title: "Starting Date",
+      title: "Ngày vào làm",
       dataIndex: "start_working_date",
       render: (text, record) => {
         return String(record.start_working_date);
@@ -75,7 +75,7 @@ const HRTable = ({ employees, setEmployees }) => {
     },
     {
       key: "6",
-      title: "Salary",
+      title: "Lương",
       dataIndex: "salary",
       render: (text, record) => {
         return String(record.salary);
@@ -83,7 +83,7 @@ const HRTable = ({ employees, setEmployees }) => {
     },
     {
       key: "7",
-      title: "Actions",
+      title: "Thao tác",
       render: (_, record) => {
         return (
           <>
@@ -119,7 +119,7 @@ const HRTable = ({ employees, setEmployees }) => {
 
   const onDeleteButton = (record) => {
     Modal.confirm({
-      title: "Are you sure, you want to delete this employee?",
+      title: "Bạn có chắc muốn xoá dữ liệu?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
@@ -254,7 +254,7 @@ const HRTable = ({ employees, setEmployees }) => {
             onChange={(e) => {
               setSearchedText(e.target.value);
             }}
-            placeholder="input search text"
+            placeholder="Tìm kiếm"
             className="searchInput"
             style={{ width: 264 }}
           />
@@ -265,7 +265,7 @@ const HRTable = ({ employees, setEmployees }) => {
             ghost
             icon={<PlusOutlined />}
           >
-            Add new
+            Tạo mới
           </Button>
         </div>
       </div>

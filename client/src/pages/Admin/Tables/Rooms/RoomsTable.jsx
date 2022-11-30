@@ -17,7 +17,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
   const columns = [
     {
       key: "1",
-      title: "Name",
+      title: "Tên phòng",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
@@ -41,7 +41,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter the name",
+                  message: "Vui lòng nhập tên phòng",
                 },
               ]}
             >
@@ -55,7 +55,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
     },
     {
       key: "2",
-      title: "Room Type",
+      title: "Loại phòng",
       dataIndex: "roomType",
       render: (text, record) => {
         if (editingRow === record.id) {
@@ -65,7 +65,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter the roomType",
+                  message: "Vui lòng nhập loại phòng",
                 },
               ]}
             >
@@ -79,7 +79,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
     },
     {
       key: "3",
-      title: "Area (m2)",
+      title: "Diện tích",
       dataIndex: "size",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -89,7 +89,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter the area",
+                  message: "Vui lòng nhập diện tích",
                 },
               ]}
             >
@@ -103,7 +103,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
     },
     {
       key: "4",
-      title: "Price",
+      title: "Giá",
       dataIndex: "price",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -113,7 +113,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter the price",
+                  message: "Vui lòng nhập giá",
                 },
               ]}
             >
@@ -127,7 +127,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
     },
     {
       key: "5",
-      title: "Actions",
+      title: "Thao tác",
       render: (_, record) => {
         if (editingRow !== null) {
           if (editingRow === record.idNum) {
@@ -137,14 +137,14 @@ const RoomsTable = ({ rooms, setRoom }) => {
                   htmlType="submit"
                   // onClick={() => {form.submit()}}
                 >
-                  save
+                  Lưu
                 </Button>
                 <Button
                   onClick={() => {
                     setEditingRow(null);
                   }}
                 >
-                  cancel
+                  Huỷ
                 </Button>
               </>
             );
@@ -154,25 +154,25 @@ const RoomsTable = ({ rooms, setRoom }) => {
           return (
             <>
               <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setEditingRow(record.idNum);
-                  form.setFieldsValue({
-                    name: record.name,
-                    roomType: record.roomType,
-                    area: record.area,
-                    price: record.price,
-                  });
-                }}
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   setEditingRow(record.idNum);
+                //   form.setFieldsValue({
+                //     name: record.name,
+                //     roomType: record.roomType,
+                //     area: record.area,
+                //     price: record.price,
+                //   });
+                // }}
               >
-                edit
+                Chỉnh sửa
               </Button>
               <Button
                 onClick={() => {
                   onDeleteButton(record);
                 }}
               >
-                delete
+                Xoá
               </Button>
             </>
           );
@@ -187,7 +187,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
 
   const onDeleteButton = (record) => {
     Modal.confirm({
-      title: "Are you sure, you want to delete this record?",
+      title: "Bạn có chắc muốn xoá dữ liệu?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
@@ -223,7 +223,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
             onChange={(e) => {
               setSearchedText(e.target.value);
             }}
-            placeholder="input search text"
+            placeholder="Tìm kiếm"
             className="searchInput"
             style={{ width: 264 }}
           />
@@ -234,7 +234,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
             ghost
             icon={<PlusOutlined />}
           >
-            Add new
+            Tạo mới
           </Button>
         </div>
       </div>

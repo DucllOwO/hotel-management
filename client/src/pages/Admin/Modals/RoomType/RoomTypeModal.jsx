@@ -6,7 +6,7 @@ const RoomTypeModal = () => {
   return (
     <div className="modal">
       <div className="left">
-        <AddInput label="Name"></AddInput>
+        <AddInput label="Tên loại phòng"></AddInput>
       </div>
     </div>
   );

@@ -24,7 +24,7 @@ const AccountTable = ({ accounts, setAccount }) => {
   const columns = [
     {
       key: "1",
-      title: "Username",
+      title: "Tên đăng nhập",
       dataIndex: "username",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -34,7 +34,7 @@ const AccountTable = ({ accounts, setAccount }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter the username",
+                  message: "Vui lòng nhập tên đăng nhập",
                 },
               ]}
             >
@@ -58,7 +58,7 @@ const AccountTable = ({ accounts, setAccount }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter the email",
+                  message: "Vui lòng nhập email",
                 },
               ]}
             >
@@ -72,7 +72,7 @@ const AccountTable = ({ accounts, setAccount }) => {
     },
     {
       key: "3",
-      title: "Password",
+      title: "Mật khẩu",
       dataIndex: "none",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -82,7 +82,7 @@ const AccountTable = ({ accounts, setAccount }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter the password",
+                  message: "Vui lòng nhập mật khẩu",
                 },
               ]}
             >
@@ -96,7 +96,7 @@ const AccountTable = ({ accounts, setAccount }) => {
     },
     {
       key: "4",
-      title: "Actions",
+      title: "Thao tác",
       render: (_, record) => {
         if (editingRow !== null) {
           if (editingRow === record.idNum) {
@@ -106,14 +106,14 @@ const AccountTable = ({ accounts, setAccount }) => {
                   htmlType="submit"
                   // onClick={() => {form.submit()}}
                 >
-                  save
+                  Lưu
                 </Button>
                 <Button
                   onClick={() => {
                     setEditingRow(null);
                   }}
                 >
-                  cancel
+                  Huỷ
                 </Button>
               </>
             );
@@ -123,25 +123,25 @@ const AccountTable = ({ accounts, setAccount }) => {
           return (
             <>
               <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setEditingRow(record.idNum);
-                  form.setFieldsValue({
-                    name: record.name,
-                    idNumber: record.idNumber,
-                    username: record.username,
-                    password: record.password,
-                  });
-                }}
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   setEditingRow(record.idNum);
+                //   form.setFieldsValue({
+                //     name: record.name,
+                //     idNumber: record.idNumber,
+                //     username: record.username,
+                //     password: record.password,
+                //   });
+                // }}
               >
-                edit
+                Chỉnh sửa
               </Button>
               <Button
                 onClick={() => {
                   onDeleteButton(record);
                 }}
               >
-                delete
+                Xoá
               </Button>
             </>
           );
@@ -152,7 +152,7 @@ const AccountTable = ({ accounts, setAccount }) => {
 
   const onDeleteButton = (record) => {
     Modal.confirm({
-      title: "Are you sure, you want to delete this record?",
+      title: "Bạn có chắc muốn xoá dữ liệu?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
@@ -179,7 +179,7 @@ const AccountTable = ({ accounts, setAccount }) => {
     <div className="table">
       <>
         <Modal
-          title="Account Infomation"
+          title="Thông tin tài khoản"
           visible={isModalVisible}
           onOk={handle}
           onCancel={handle}
@@ -198,7 +198,7 @@ const AccountTable = ({ accounts, setAccount }) => {
             onChange={(e) => {
               setSearchedText(e.target.value);
             }}
-            placeholder="input search text"
+            placeholder="Tìm kiếm"
             className="searchInput"
             style={{ width: 264 }}
           />
@@ -209,7 +209,7 @@ const AccountTable = ({ accounts, setAccount }) => {
             ghost
             icon={<PlusOutlined />}
           >
-            Add new
+            Tạo mới
           </Button>
         </div>
       </div>

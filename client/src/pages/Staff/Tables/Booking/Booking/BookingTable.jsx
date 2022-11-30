@@ -18,7 +18,7 @@ const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
   const columns = [
     {
       key: "1",
-      title: "Name",
+      title: "Phòng",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
@@ -34,7 +34,7 @@ const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
     },
     {
       key: "2",
-      title: "roomType",
+      title: "Loại phòng",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
@@ -69,7 +69,7 @@ const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
     },
     {
       key: "3",
-      title: "Area (m2)",
+      title: "Diện tích",
       dataIndex: "size",
       width: 150,
       render: (text, record) => {
@@ -94,7 +94,7 @@ const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
     },
     {
       key: "4",
-      title: "Price",
+      title: "Giá",
       dataIndex: "price",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -118,7 +118,7 @@ const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
     },
     {
       key: "5",
-      title: "Actions",
+      title: "Thao tác",
       render: (_, record) => {
         return (
           <>
@@ -127,7 +127,7 @@ const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
                 onBooking(record);
               }}
             >
-              book
+              Đặt
             </Button>
           </>
         );
@@ -166,30 +166,9 @@ const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
             />
           </div>
           <div className="headerButton">
-            <Button
-              className="headerBtn"
-              onClick={() => {
-                setStatus(0);
-              }}
-            >
-              Available
-            </Button>
-            <Button
-              className="headerBtn"
-              onClick={() => {
-                setStatus(1);
-              }}
-            >
-              In use
-            </Button>
-            <Button
-              className="headerBtn"
-              onClick={() => {
-                setStatus(2);
-              }}
-            >
-              Waiting
-            </Button>
+            <Button className="headerBtn" onClick={()=>{setStatus(0)}}>Đang trống</Button>
+            <Button className="headerBtn" onClick={()=>{setStatus(1)}}>Đang sử dụng</Button>
+            <Button className="headerBtn" onClick={()=>{setStatus(2)}}>Đang đợi</Button>
           </div>
         </div>
         <div>
@@ -200,7 +179,7 @@ const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
             onChange={(e) => {
               setSearchedText(e.target.value);
             }}
-            placeholder="input search text"
+            placeholder="Tìm kiếm"
             className="searchInput"
             style={{ width: 264 }}
           />

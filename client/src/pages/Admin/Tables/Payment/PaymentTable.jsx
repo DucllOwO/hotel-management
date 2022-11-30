@@ -26,7 +26,7 @@ const PaymentTable = ({ payment, setPayment }) => {
     },
     {
       key: "2",
-      title: "Date",
+      title: "Ngày lập",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return String(record.date)
@@ -56,7 +56,7 @@ const PaymentTable = ({ payment, setPayment }) => {
     },
     {
       key: "3",
-      title: "Purpose",
+      title: "Lí do",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return String(record.date)
@@ -86,7 +86,7 @@ const PaymentTable = ({ payment, setPayment }) => {
     },
     {
       key: "4",
-      title: "Total",
+      title: "Thành tiền",
       dataIndex: "cost",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -110,7 +110,7 @@ const PaymentTable = ({ payment, setPayment }) => {
     },
     {
       key: "5",
-      title: "Actions",
+      title: "Thao tác",
       render: (_, record) => {
         if (editingRow !== null) {
           if (editingRow === record.idNum) {
@@ -120,14 +120,14 @@ const PaymentTable = ({ payment, setPayment }) => {
                   htmlType="submit"
                   // onClick={() => {form.submit()}}
                 >
-                  save
+                  Lưu
                 </Button>
                 <Button
                   onClick={() => {
                     setEditingRow(null);
                   }}
                 >
-                  cancel
+                  Huỷ
                 </Button>
               </>
             );
@@ -137,23 +137,23 @@ const PaymentTable = ({ payment, setPayment }) => {
           return (
             <>
               <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setEditingRow(record.idNum);
-                  form.setFieldsValue({
-                    date: record.date,
-                    total: record.total,
-                  });
-                }}
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   setEditingRow(record.idNum);
+                //   form.setFieldsValue({
+                //     date: record.date,
+                //     total: record.total,
+                //   });
+                // }}
               >
-                edit
+                Chỉnh sửa
               </Button>
               <Button
                 onClick={() => {
                   onDeleteButton(record);
                 }}
               >
-                delete
+                Xoá
               </Button>
             </>
           );
@@ -182,7 +182,7 @@ const PaymentTable = ({ payment, setPayment }) => {
 
   const onDeleteButton = (record) => {
     Modal.confirm({
-      title: "Are you sure, you want to delete this record?",
+      title: "Bạn có chắc muốn xoá dữ liệu?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
@@ -270,7 +270,7 @@ const PaymentTable = ({ payment, setPayment }) => {
             ghost
             icon={<PlusOutlined />}
           >
-            Add new
+            Tạo mới
           </Button>
         </div>
       </div>

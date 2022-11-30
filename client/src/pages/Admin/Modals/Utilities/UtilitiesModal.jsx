@@ -6,7 +6,7 @@ const UtilitiesModal = () => {
   return (
     <div className="modal">
       <div className="left">
-        <AddInput label="Name"></AddInput>
+        <AddInput label="Tên tiện ích"></AddInput>
       </div>
     </div>
   );
