@@ -54,21 +54,21 @@ const Navbar = () => {
         items={permission ? [
           permission.includes("Dashboard")
             ? {
-                label: "Dashboard",
+                label: "Thống kê",
                 key: "/admin/dashboard",
                 icon: <LineChartOutlined></LineChartOutlined>,
               }
             : null,
           permission.includes("Employee")
             ? {
-                label: "HR",
+                label: "Nhân sự",
                 key: "/admin/hr",
                 icon: <TeamOutlined></TeamOutlined>,
               }
             : null,
           permission.includes("Account")
             ? {
-                label: "Account",
+                label: "Tài khoản",
                 key: "/admin/account",
                 icon: <FileProtectOutlined></FileProtectOutlined>,
               }
@@ -77,18 +77,18 @@ const Navbar = () => {
           permission.includes("Room type") ||
           permission.includes("Utilities")
             ? {
-                label: "Room",
+                label: "Phòng",
                 key: "/admin/rooms",
                 icon: <CopyOutlined></CopyOutlined>,
                 children: [
                   permission.includes("Room type")
-                    ? { label: "Room Type", key: "/admin/roomType" }
+                    ? { label: "Loại phòng", key: "/admin/roomType" }
                     : null,
                   permission.includes("Room")
-                    ? { label: "Rooms", key: "/admin/rooms" }
+                    ? { label: "Danh mục phòng", key: "/admin/rooms" }
                     : null,
                   permission.includes("Utilities")
-                    ? { label: "Utilities", key: "/admin/utilities" }
+                    ? { label: "Tiện ích", key: "/admin/utilities" }
                     : null,
                 ],
               }
@@ -97,18 +97,18 @@ const Navbar = () => {
           permission.includes("Import") ||
           permission.includes("Item")
             ? {
-                label: "Depot",
+                label: "Kho",
                 key: "/admin/inventory",
                 icon: <DatabaseOutlined></DatabaseOutlined>,
                 children: [
                   permission.includes("Inventory")
-                    ? { label: "Inventory", key: "/admin/inventory" }
+                    ? { label: "Kiểm tra phòng", key: "/admin/inventory" }
                     : null,
                   permission.includes("Import")
-                    ? { label: "Importing", key: "/admin/importing" }
+                    ? { label: "Nhập sản phẩm", key: "/admin/importing" }
                     : null,
                   permission.includes("Item")
-                    ? { label: "Item", key: "/admin/item" }
+                    ? { label: "Quản lý sản phẩm", key: "/admin/item" }
                     : null,
                 ],
               }
@@ -116,46 +116,46 @@ const Navbar = () => {
           permission.includes("Receipt") || 
           permission.includes("Payment")
             ? {
-                label: "Turnover",
+                label: "Doanh số",
                 key: "/admin/receipt",
                 icon: <PieChartOutlined></PieChartOutlined>,
                 children: [
                   permission.includes("Receipt")
-                    ? { label: "Receipt", key: "/admin/receipt" }
+                    ? { label: "Hoá đơn", key: "/admin/receipt" }
                     : null,
                   permission.includes("Payment")
-                    ? { label: "Payment", key: "/admin/payment" }
+                    ? { label: "Phiếu chi", key: "/admin/payment" }
                     : null,
                 ],
               }
             : null,
           permission.includes("Position")
             ? {
-                label: "Position",
+                label: "Chức vụ",
                 key: "/admin/position",
                 icon: <UserOutlined />,
               }
             : null,
           permission.includes("Customer")
             ? {
-                label: "Customer",
+                label: "Khách hàng",
                 key: "/admin/customer",
                 icon: <UserSwitchOutlined></UserSwitchOutlined>,
               }
             : null,
           permission.includes("Booking")
             ? {
-                label: "Booking",
+                label: "Đặt phòng",
                 key: "/admin/bookings",
                 icon: <DiffOutlined></DiffOutlined>,
                 children: [
-                    { label: "Booking", key: "/admin/bookings/" },
-                    { label: "Booking List", key: "/admin/bookings/list" }
+                    { label: "Đặt phòng", key: "/admin/bookings/" },
+                    { label: "Danh sách phiếu đặt phòng", key: "/admin/bookings/list" }
                 ],
               }
             : null,
           {
-            label: "Log out",
+            label: "Đăng xuất",
             key: "/login",
             icon: <LogoutOutlined></LogoutOutlined>,
           },

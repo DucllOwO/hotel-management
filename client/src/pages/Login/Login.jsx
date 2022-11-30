@@ -34,12 +34,12 @@ const Login = () => {
       <div className="welcome">Welcome, let's enjoy your life</div>
       <div className="form">
         <div className="inputContainer">
-          <div className="labelInput">Username</div>
+          <div className="labelInput">Tên đăng nhập</div>
           <div className="input">
             <input
               id=""
               type="text"
-              placeholder="Please enter username"
+              placeholder="Vui lòng nhập tên đăng nhập"
               className="input"
               value={username}
               onChange={handleUsername}
@@ -48,12 +48,12 @@ const Login = () => {
         </div>
 
         <div className="inputContainer">
-          <div className="label">Password</div>
+          <div className="labelInput">Mật khẩu</div>
           <div className="passwordLine">
             <div className="input">
               <input
                 type={type}
-                placeholder="Please enter password"
+                placeholder="Vui lòng nhập mật khẩu"
                 className="input"
                 value={password}
                 onChange={handlePassword}
@@ -81,7 +81,7 @@ const Login = () => {
           </div>
         ) : (
           <div className="loginButton" onClick={login}>
-            <div className="buttonText">Login</div>
+            <div className="buttonText">Đăng nhập</div>
           </div>
         )}
       </div>

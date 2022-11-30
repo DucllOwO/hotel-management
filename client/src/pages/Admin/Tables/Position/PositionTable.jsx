@@ -129,7 +129,7 @@ const PositionTable = ({ positions, setPositions }) => {
     },
     {
       key: "2",
-      title: "Name",
+      title: "Chức vụ",
       width: "60%",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
@@ -149,7 +149,7 @@ const PositionTable = ({ positions, setPositions }) => {
     },
     {
       key: "3",
-      title: "Actions",
+      title: "Thao tác",
       width: "30%",
       render: (_, record) => {
         return (
@@ -162,14 +162,14 @@ const PositionTable = ({ positions, setPositions }) => {
                 setCurrentPosition(record);
               }}
             >
-              edit
+              Chỉnh sửa
             </Button>
             <Button
               onClick={() => {
                 onDeleteButton(record);
               }}
             >
-              delete
+              Xoá
             </Button>
           </>
         );
@@ -250,7 +250,7 @@ const PositionTable = ({ positions, setPositions }) => {
           onChange={(e) => {
             setSearchedText(e.target.value);
           }}
-          placeholder="input search text"
+          placeholder="Tìm kiếm"
           className="searchInput"
           style={{ width: 264 }}
         />
@@ -261,7 +261,7 @@ const PositionTable = ({ positions, setPositions }) => {
           ghost
           icon={<PlusOutlined />}
         >
-          Add new
+          Tạo mới
         </Button>
       </div>
       <Table

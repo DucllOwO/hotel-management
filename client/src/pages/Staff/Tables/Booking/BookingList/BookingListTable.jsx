@@ -22,7 +22,7 @@ const BookingListTable = ({booking, setBooking}) => {
     },
     {
       key: "2",
-      title: "Customer",
+      title: "Khách hàng",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
@@ -60,17 +60,17 @@ const BookingListTable = ({booking, setBooking}) => {
     },
     {
       key: "3",
-      title: "From",
+      title: "Từ ngày",
       dataIndex: "book_from",
     },
     {
       key: "4",
-      title: "To",
+      title: "Đến ngày",
       dataIndex: "book_to",
     },
     {
       key: "5",
-      title: "Room",
+      title: "Phòng",
       dataIndex: "size",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -94,7 +94,7 @@ const BookingListTable = ({booking, setBooking}) => {
     },
     {
       key: "5",
-      title: "Actions",
+      title: "Thao tác",
       render: (_, record) => {
         return (
           <>
@@ -103,14 +103,14 @@ const BookingListTable = ({booking, setBooking}) => {
                 onBooking(record);
               }}
             >
-              check in
+              Nhận phòng
             </Button>
             <Button
               onClick={() => {
                 onBooking(record);
               }}
             >
-              cancel
+              Huỷ
             </Button>
           </>
         );
@@ -140,10 +140,10 @@ const BookingListTable = ({booking, setBooking}) => {
       <div className="buttonContainer">
         <div className="headerButtons">
           <FontAwesomeIcon icon={faSort} className="icon"></FontAwesomeIcon>
-          <Button className="headerBtn">Waiting</Button>
-          <Button className="headerBtn">Serving</Button>
-          <Button className="headerBtn">Finished</Button>
-          <Button className="headerBtn">Canceled</Button>
+          <Button className="headerBtn">Đang đợi</Button>
+          <Button className="headerBtn">Đang phục vụ</Button>
+          <Button className="headerBtn">Hoàn thành</Button>
+          <Button className="headerBtn">Đã huỷ</Button>
         </div>
         <div>
           <Input.Search
@@ -153,19 +153,19 @@ const BookingListTable = ({booking, setBooking}) => {
             onChange={(e) => {
               setSearchedText(e.target.value);
             }}
-            placeholder="input search text"
+            placeholder="Tìm kiếm"
             className="searchInput"
             style={{ width: 264 }}
           />
-          <Button
+          {/* <Button
             onClick={() => {}}
             className="addButton"
             type="primary"
             ghost
             icon={<PlusOutlined />}
           >
-            Add new
-          </Button>
+            Tạo mới
+          </Button> */}
         </div>
       </div>
       <Form form={form} onFinish={onFinish} className="form">

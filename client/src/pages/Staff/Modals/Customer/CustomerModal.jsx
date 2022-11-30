@@ -6,13 +6,12 @@ const CustomerModal = () => {
   return (
     <div className="modal">
       <div className="left">
-        <AddInput label="ID Number"></AddInput>
-        <AddInput label="Full Name"></AddInput>
-        <AddInput label="Birthday"></AddInput>
+        <AddInput label="Số CCCD"></AddInput>
+        <AddInput label="Họ và tên"></AddInput>
+        <AddInput label="Ngày sinh"></AddInput>
       </div>
       <div className="right">
-        <AddInput label="Phone Number"></AddInput>
-        <AddInput label="Address"></AddInput>
+        <AddInput label="Số điện thoại"></AddInput>
         <AddInput label="Email"></AddInput>
       </div>
     </div>

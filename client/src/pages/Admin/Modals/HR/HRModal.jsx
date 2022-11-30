@@ -6,14 +6,14 @@ const HRModal = () => {
   return (
     <div className="modal">
       <div className="left">
-        <AddInput label="Full Name"></AddInput>
-        <AddInput label="Birthday"></AddInput>
-        <AddInput label="Phone"></AddInput>
+        <AddInput label="Họ và tên"></AddInput>
+        <AddInput label="Ngày sinh"></AddInput>
+        <AddInput label="Số điện thoại"></AddInput>
       </div>
       <div className="right">
-        <AddInput label="Address"></AddInput>
-        <AddInput label="Starting Date"></AddInput>
-        <AddInput label="Salary"></AddInput>
+        <AddInput label="Địa chỉ"></AddInput>
+        <AddInput label="Ngày vào làm"></AddInput>
+        <AddInput label="Lương"></AddInput>
       </div>
     </div>
   );

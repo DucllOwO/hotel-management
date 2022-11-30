@@ -17,11 +17,11 @@ const AccountModal = () => {
   return (
     <div className="modal">
       <div className="left">
-        <div className="label">Full Name</div>
+        <div className="label">Họ và tên</div>
         <Select
           className="select"
           showSearch
-          placeholder="Select a person"
+          placeholder="Chọn một người"
           onChange={onChange}
           onSearch={onSearch}
           filterOption={(input, option) =>
@@ -43,11 +43,11 @@ const AccountModal = () => {
           ]}
         />
 
-        <AddInput label="ID Number" isDisable="true"></AddInput>
+        <AddInput label="CCCD" isDisable="true"></AddInput>
       </div>
       <div className="right">
-        <AddInput label="Username"></AddInput>
-        <AddInput label="Password"></AddInput>
+        <AddInput label="Tên đăng nhập"></AddInput>
+        <AddInput label="Mật khẩu"></AddInput>
       </div>
     </div>
   );

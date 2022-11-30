@@ -21,7 +21,7 @@ const ReceiptTable = ({receipt, setReceipt}) => {
     },
     {
       key: "2",
-      title: "Date",
+      title: "Ngày lập",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return String(record.date)
@@ -51,7 +51,7 @@ const ReceiptTable = ({receipt, setReceipt}) => {
     },
     {
       key: "3",
-      title: "Total",
+      title: "Tổng tiền",
       dataIndex: "total_cost",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -75,7 +75,7 @@ const ReceiptTable = ({receipt, setReceipt}) => {
     },
     {
       key: "4",
-      title: "Method",
+      title: "Phương thức",
       dataIndex: "payment_method",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -99,7 +99,7 @@ const ReceiptTable = ({receipt, setReceipt}) => {
     },
     {
       key: "5",
-      title: "Actions",
+      title: "Thao tác",
       render: (_, record) => {
         if (editingRow !== null) {
           if (editingRow === record.idNum) {
@@ -109,14 +109,14 @@ const ReceiptTable = ({receipt, setReceipt}) => {
                   htmlType="submit"
                   // onClick={() => {form.submit()}}
                 >
-                  save
+                  Lưu
                 </Button>
                 <Button
                   onClick={() => {
                     setEditingRow(null);
                   }}
                 >
-                  cancel
+                  Huỷ
                 </Button>
               </>
             );
@@ -126,23 +126,23 @@ const ReceiptTable = ({receipt, setReceipt}) => {
           return (
             <>
               <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setEditingRow(record.idNum);
-                  form.setFieldsValue({
-                    date: record.date,
-                    total: record.total,
-                  });
-                }}
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   setEditingRow(record.idNum);
+                //   form.setFieldsValue({
+                //     date: record.date,
+                //     total: record.total,
+                //   });
+                // }}
               >
-                edit
+                Chỉnh sửa
               </Button>
               <Button
                 onClick={() => {
                   onDeleteButton(record);
                 }}
               >
-                delete
+                Xoá
               </Button>
             </>
           );
@@ -167,7 +167,7 @@ const ReceiptTable = ({receipt, setReceipt}) => {
 
   const onDeleteButton = (record) => {
     Modal.confirm({
-      title: "Are you sure, you want to delete this record?",
+      title: "Bạn có chắc muốn xoá dữ liệu?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
@@ -205,7 +205,7 @@ const ReceiptTable = ({receipt, setReceipt}) => {
               onChange={(e) => {
                 setSearchedText(e.target.value);
               }}
-              placeholder="input search text"
+              placeholder="Tìm kiếm"
               className="searchInput"
               style={{ width: 264 }}
             />
@@ -216,7 +216,7 @@ const ReceiptTable = ({receipt, setReceipt}) => {
               ghost
               icon={<PlusOutlined />}
             >
-              Add new
+              Tạo mới
             </Button>
           </div>
         </div>

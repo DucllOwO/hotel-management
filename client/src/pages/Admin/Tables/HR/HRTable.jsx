@@ -26,13 +26,13 @@ const HRTable = ({ employees, setEmployees }) => {
   const columns = [
     {
       key: "1",
-      title: "ID",
+      title: "CCCD",
       dataIndex: "id",
       width: 145,
     },
     {
       key: "2",
-      title: "Name",
+      title: "Tên",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
@@ -47,7 +47,7 @@ const HRTable = ({ employees, setEmployees }) => {
             .includes(value.toLocaleLowerCase())
         );
       },
-      dataIndex: "firstname",
+      dataIndex: "fullname",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -56,7 +56,7 @@ const HRTable = ({ employees, setEmployees }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter the name",
+                  message: "Vui lòng nhập họ và tên",
                 },
               ]}
             >
@@ -70,7 +70,7 @@ const HRTable = ({ employees, setEmployees }) => {
     },
     {
       key: "3",
-      title: "Birthday",
+      title: "Ngày sinh",
       dataIndex: "date_of_birth",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -80,7 +80,7 @@ const HRTable = ({ employees, setEmployees }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter the birthday",
+                  message: "Vui lòng nhập ngày sinh",
                 },
               ]}
             >
@@ -94,7 +94,7 @@ const HRTable = ({ employees, setEmployees }) => {
     },
     {
       key: "4",
-      title: "Phone",
+      title: "SĐT",
       dataIndex: "phone_number",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -104,7 +104,7 @@ const HRTable = ({ employees, setEmployees }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter the phone",
+                  message: "Vui lòng nhập số điện thoại",
                 },
               ]}
             >
@@ -118,7 +118,7 @@ const HRTable = ({ employees, setEmployees }) => {
     },
     {
       key: "5",
-      title: "Starting Date",
+      title: "Ngày vào làm",
       dataIndex: "start_working_date",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -128,7 +128,7 @@ const HRTable = ({ employees, setEmployees }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter the phone",
+                  message: "Vui lòng nhập ngày vào làm",
                 },
               ]}
             >
@@ -142,7 +142,7 @@ const HRTable = ({ employees, setEmployees }) => {
     },
     {
       key: "6",
-      title: "Salary",
+      title: "Lương",
       dataIndex: "salary",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -152,7 +152,7 @@ const HRTable = ({ employees, setEmployees }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter the phone",
+                  message: "Vui lòng nhập lương",
                 },
               ]}
             >
@@ -166,7 +166,7 @@ const HRTable = ({ employees, setEmployees }) => {
     },
     {
       key: "7",
-      title: "Actions",
+      title: "Thao tác",
       render: (_, record) => {
         if (editingRow !== null) {
           if (editingRow === record.idNum) {
@@ -176,14 +176,14 @@ const HRTable = ({ employees, setEmployees }) => {
                   htmlType="submit"
                   // onClick={() => {form.submit()}}
                 >
-                  save
+                  Lưu
                 </Button>
                 <Button
                   onClick={() => {
                     setEditingRow(null);
                   }}
                 >
-                  cancel
+                  Huỷ
                 </Button>
               </>
             );
@@ -193,27 +193,27 @@ const HRTable = ({ employees, setEmployees }) => {
           return (
             <>
               <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setEditingRow(record.idNum);
-                  form.setFieldsValue({
-                    name: record.name,
-                    birthday: record.birthday,
-                    phone: record.phone,
-                    address: record.address,
-                    startingDate: record.startingDate,
-                    salary: record.salary,
-                  });
-                }}
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   setEditingRow(record.idNum);
+                //   form.setFieldsValue({
+                //     name: record.name,
+                //     birthday: record.birthday,
+                //     phone: record.phone,
+                //     address: record.address,
+                //     startingDate: record.startingDate,
+                //     salary: record.salary,
+                //   });
+                // }}
               >
-                edit
+                Chỉnh sửa
               </Button>
               <Button
                 onClick={() => {
                   onDeleteButton(record);
                 }}
               >
-                delete
+                Xoá
               </Button>
             </>
           );
@@ -239,7 +239,7 @@ const HRTable = ({ employees, setEmployees }) => {
 
   const onDeleteButton = (record) => {
     Modal.confirm({
-      title: "Are you sure, you want to delete this record?",
+      title: "Bạn có chắc muốn xoá dữ liệu?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
@@ -266,7 +266,7 @@ const HRTable = ({ employees, setEmployees }) => {
     <div className="table">
       <>
         <Modal
-          title="HR Infomation"
+          title="Thông tin nhân sự"
           visible={isModalVisible}
           onOk={handle}
           onCancel={handle}
@@ -285,7 +285,7 @@ const HRTable = ({ employees, setEmployees }) => {
             onChange={(e) => {
               setSearchedText(e.target.value);
             }}
-            placeholder="input search text"
+            placeholder="Tìm kiếm"
             className="searchInput"
             style={{ width: 264 }}
           />
@@ -296,7 +296,7 @@ const HRTable = ({ employees, setEmployees }) => {
             ghost
             icon={<PlusOutlined />}
           >
-            Add new
+            Tạo mới
           </Button>
         </div>
       </div>
