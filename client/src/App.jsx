@@ -8,14 +8,14 @@ import Importing from "./pages/Admin/Depot/Importing/Importing";
 import Inventory from "./pages/Admin/Depot/Inventory/Inventory";
 import Item from "./pages/Admin/Depot/Item/Item";
 import Rooms from "./pages/Admin/Room/Rooms/Rooms";
+import Booking from "./pages/Staff/Booking/Booking/Booking";
 import RoomType from "./pages/Admin/Room/RoomType/RoomType";
 import Utilities from "./pages/Admin/Room/Utilities/Utilities";
 import Payment from "./pages/Admin/Turnover/Payment/Payment";
 import Receipt from "./pages/Admin/Turnover/Reciept/Receipt";
 import Login from "./pages/Login/Login";
 import Customer from "./pages/Staff/Customer/Customer";
-import Booking from "./pages/Staff/Booking/Booking";
-import StaffReciept from "./pages/Staff/Receipt/Receipt";
+import BookingList from "./pages/Staff/Booking/BookingList/BookingList";
 import { AppContext } from "./context/AppContext";
 import LocalStorage from "./Utils/localStorage";
 import Position from "./pages/Admin/Position/Position";
@@ -132,13 +132,15 @@ const listRoute = [
   },
   {
     key: "Booking",
-    value: <Route key="Booking" index path="booking" element={<Booking />} />,
+    value: <Route index path="booking" element={<Booking />} />,
   },
   {
     key: "Promotion",
     value: (
       <Route key="Promotion" index path="promotion" element={<Promotion />} />
     ),
+    key: "Booking",
+    value: <Route index path="bookings/list" element={<BookingList />} />,
   },
 ];
 

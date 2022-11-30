@@ -13,6 +13,7 @@ const RoomType = () => {
       const { data } = await userRequest.get("/roomtypes", {
         params: { user: { position: user?.position } },
       });
+      console.log(data)
       setTypes(data);
     };
     fetchRoomType();

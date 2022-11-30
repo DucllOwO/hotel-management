@@ -56,8 +56,38 @@ const PaymentTable = ({ payment, setPayment }) => {
     },
     {
       key: "3",
+      title: "Purpose",
+      filteredValue: [searchedText],
+      onFilter: (value, record) => {
+        return String(record.date)
+          .toLocaleLowerCase()
+          .includes(value.toLocaleLowerCase());
+      },
+      dataIndex: "name",
+      render: (text, record) => {
+        if (editingRow === record.idNum) {
+          return (
+            <Form.Item
+              name="date"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter the purpose",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          );
+        } else {
+          return <p>{text}</p>;
+        }
+      },
+    },
+    {
+      key: "4",
       title: "Total",
-      dataIndex: "total",
+      dataIndex: "cost",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -79,7 +109,7 @@ const PaymentTable = ({ payment, setPayment }) => {
       },
     },
     {
-      key: "4",
+      key: "5",
       title: "Actions",
       render: (_, record) => {
         if (editingRow !== null) {

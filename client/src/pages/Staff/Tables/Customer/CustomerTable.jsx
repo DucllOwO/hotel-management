@@ -93,30 +93,6 @@ const CustomerTable = ({customer, setCustomer}) => {
     },
     {
       key: "4",
-      title: "Address",
-      dataIndex: "address",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="address"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the address",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-    },
-    {
-      key: "5",
       title: "Email",
       dataIndex: "email",
       render: (text, record) => {
@@ -140,7 +116,7 @@ const CustomerTable = ({customer, setCustomer}) => {
       },
     },
     {
-      key: "6",
+      key: "5",
       title: "Actions",
       render: (_, record) => {
         if (editingRow !== null) {

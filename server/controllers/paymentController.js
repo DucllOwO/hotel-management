@@ -1,7 +1,7 @@
 const paymentDAL = require("../DAL/paymentDAL");
 
-const getAllPayment = (req, res, next) => {
-  const { data, error } = paymentDAL.getAllPayments();
+const getAllPayment = async (req, res, next) => {
+  const { data, error } = await paymentDAL.getAllPayments();
   if (error) return next(error);
   res.status(200).send(data);
 };
