@@ -4,6 +4,7 @@ import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
+import moment from "moment";
 
 const PaymentTable = ({ payment, setPayment }) => {
   const [type, setType] = useState("day");
@@ -139,7 +140,7 @@ const PaymentTable = ({ payment, setPayment }) => {
   ];
 
   const onChange = (date, dateString) => {
-    console.log(date, dateString);
+    //console.log(date, dateString);
   };
 
   const onAddButton = () => {
@@ -216,17 +217,27 @@ const PaymentTable = ({ payment, setPayment }) => {
         </div>
         <div>
           {type === "day" && (
-            <DatePicker onChange={onChange} format={dateFormat}></DatePicker>
+            <DatePicker
+              onChange={onChange}
+              defaultValue={moment()}
+              picker="date"
+              format={dateFormat}
+            ></DatePicker>
           )}
           {type === "month" && (
             <DatePicker
               onChange={onChange}
+              defaultValue={dayjs(Date.now())}
               picker="month"
               format={monthFormat}
             ></DatePicker>
           )}
           {type === "year" && (
-            <DatePicker onChange={onChange} picker="year"></DatePicker>
+            <DatePicker
+              onChange={onChange}
+              defaultValue={dayjs(Date.now())}
+              picker="year"
+            ></DatePicker>
           )}
           <Button
             style={{ marginLeft: "5px" }}
