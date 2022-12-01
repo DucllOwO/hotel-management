@@ -7,7 +7,7 @@ import "./bookingListtable.css";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const BookingListTable = ({booking, setBooking}) => {
+const BookingListTable = ({ booking, setBooking }) => {
   const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
@@ -26,13 +26,13 @@ const BookingListTable = ({booking, setBooking}) => {
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
-          String(record.roomType)
+          String(record.customer_id)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
-          String(record.area)
+          String(record.book_from)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
-          String(record.phone)
+          String(record.book_to)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase())
         );

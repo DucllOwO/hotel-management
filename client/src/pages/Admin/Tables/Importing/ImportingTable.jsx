@@ -25,9 +25,14 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
       title: "Ngày lập",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
-        return String(record.date)
-          .toLocaleLowerCase()
-          .includes(value.toLocaleLowerCase());
+        return (
+          String(record.established_date)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.item)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase())
+        );
       },
       dataIndex: "established_date",
       render: (text, record) => {
@@ -191,7 +196,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
             ghost
             icon={<PlusOutlined />}
           >
-            Thêm mới 
+            Thêm mới
           </Button>
         </div>
       </div>

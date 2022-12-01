@@ -20,12 +20,22 @@ const AccountTable = ({ accounts, setAccount }) => {
 
   const [searchedText, setSearchedText] = useState("");
 
-
   const columns = [
     {
       key: "1",
       title: "Tên đăng nhập",
       dataIndex: "username",
+      filteredValue: [searchedText],
+      onFilter: (value, record) => {
+        return (
+          String(record.username)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.email)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase())
+        );
+      },
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -123,16 +133,16 @@ const AccountTable = ({ accounts, setAccount }) => {
           return (
             <>
               <Button
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   setEditingRow(record.idNum);
-                //   form.setFieldsValue({
-                //     name: record.name,
-                //     idNumber: record.idNumber,
-                //     username: record.username,
-                //     password: record.password,
-                //   });
-                // }}
+              // onClick={(e) => {
+              //   e.preventDefault();
+              //   setEditingRow(record.idNum);
+              //   form.setFieldsValue({
+              //     name: record.name,
+              //     idNumber: record.idNumber,
+              //     username: record.username,
+              //     password: record.password,
+              //   });
+              // }}
               >
                 Chỉnh sửa
               </Button>

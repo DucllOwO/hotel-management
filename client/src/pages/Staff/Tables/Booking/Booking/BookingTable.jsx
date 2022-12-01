@@ -27,6 +27,9 @@ const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
             .includes(value.toLocaleLowerCase()) ||
           String(record.roomType)
             .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.size)
+            .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase())
         );
       },
@@ -36,17 +39,6 @@ const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
       key: "2",
 
       title: "Loại phòng",
-      filteredValue: [searchedText],
-      onFilter: (value, record) => {
-        return (
-          String(record.room_name)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.roomType)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase())
-        );
-      },
       dataIndex: "roomType",
       render: (text, record) => {
         if (editingRow === record.idNum) {

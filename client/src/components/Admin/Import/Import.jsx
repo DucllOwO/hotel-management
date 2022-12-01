@@ -151,7 +151,7 @@ const Import = () => {
           ></Table>
         </div>
       </div>
-      <BottomBar button="true"></BottomBar>
+      <BottomBar add="true"></BottomBar>
     </div>
   );
 };

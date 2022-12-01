@@ -27,7 +27,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
           String(record.roomType)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
-          String(record.phone)
+          String(record.size)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase())
         );
@@ -154,16 +154,16 @@ const RoomsTable = ({ rooms, setRoom }) => {
           return (
             <>
               <Button
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   setEditingRow(record.idNum);
-                //   form.setFieldsValue({
-                //     name: record.name,
-                //     roomType: record.roomType,
-                //     area: record.area,
-                //     price: record.price,
-                //   });
-                // }}
+              // onClick={(e) => {
+              //   e.preventDefault();
+              //   setEditingRow(record.idNum);
+              //   form.setFieldsValue({
+              //     name: record.name,
+              //     roomType: record.roomType,
+              //     area: record.area,
+              //     price: record.price,
+              //   });
+              // }}
               >
                 Chỉnh sửa
               </Button>

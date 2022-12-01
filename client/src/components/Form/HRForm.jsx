@@ -102,6 +102,7 @@ const HRForm = ({ form, disable = false }) => {
             ]}
           >
             <Select
+              size="large"
               showSearch
               placeholder="Chọn một chức vụ"
               optionFilterProp="children"

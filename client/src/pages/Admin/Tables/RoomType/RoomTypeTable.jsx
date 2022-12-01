@@ -5,7 +5,7 @@ import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import RoomTypeModal from "../../Modals/RoomType/RoomTypeModal";
 
-const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
+const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -22,7 +22,6 @@ const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
 
   const [searchedText, setSearchedText] = useState("");
 
-
   const columns = [
     {
       key: "1",
@@ -38,10 +37,10 @@ const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
           String(record.name)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
-          String(record.birthday)
+          String(record.max_customers)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
-          String(record.phone)
+          String(record.bed_amount)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase())
         );
@@ -70,20 +69,6 @@ const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
     {
       key: "3",
       title: "Số lượng khách",
-      filteredValue: [searchedText],
-      onFilter: (value, record) => {
-        return (
-          String(record.name)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.birthday)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.phone)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase())
-        );
-      },
       dataIndex: "max_customers",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -108,20 +93,6 @@ const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
     {
       key: "4",
       title: "Số giường",
-      filteredValue: [searchedText],
-      onFilter: (value, record) => {
-        return (
-          String(record.name)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.birthday)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.phone)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase())
-        );
-      },
       dataIndex: "bed_amount",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -172,13 +143,13 @@ const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
           return (
             <>
               <Button
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   setEditingRow(record.idNum);
-                //   form.setFieldsValue({
-                //     name: record.name,
-                //   });
-                // }}
+              // onClick={(e) => {
+              //   e.preventDefault();
+              //   setEditingRow(record.idNum);
+              //   form.setFieldsValue({
+              //     name: record.name,
+              //   });
+              // }}
               >
                 Chỉnh sửa
               </Button>

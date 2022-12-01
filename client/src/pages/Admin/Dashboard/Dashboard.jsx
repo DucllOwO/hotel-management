@@ -50,8 +50,6 @@ const Dashboard = () => {
             <div>
               {type === "day" && (
                 <DatePicker
-                  disabled={true}
-                  suffixIcon={false}
                   defaultValue={moment()}
                   picker="date"
                   format={dateFormat}
@@ -59,8 +57,6 @@ const Dashboard = () => {
               )}
               {type === "month" && (
                 <DatePicker
-                  disabled={true}
-                  suffixIcon={false}
                   defaultValue={dayjs(Date.now())}
                   picker="month"
                   format={monthFormat}
@@ -68,8 +64,6 @@ const Dashboard = () => {
               )}
               {type === "year" && (
                 <DatePicker
-                  disabled={true}
-                  suffixIcon={false}
                   picker="year"
                   defaultValue={dayjs(Date.now())}
                 ></DatePicker>
@@ -80,13 +74,13 @@ const Dashboard = () => {
         <div>
           <Row gutter={16}>
             <Col span={8}>
-              <Card title="Tổng doanh thu">100.000.000</Card>
+              <Card title="Tổng doanh thu">đ 100.000.000</Card>
             </Col>
             <Col span={8}>
-              <Card title="Tổng chi phí">30.000.000</Card>
+              <Card title="Tổng chi phí">đ 30.000.000</Card>
             </Col>
             <Col span={8}>
-              <Card title="Tổng lợi nhuận">70.000.000</Card>
+              <Card title="Tổng lợi nhuận">đ 70.000.000</Card>
             </Col>
           </Row>
         </div>

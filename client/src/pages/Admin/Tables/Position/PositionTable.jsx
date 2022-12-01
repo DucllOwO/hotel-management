@@ -202,26 +202,29 @@ const PositionTable = ({ positions, setPositions }) => {
         {modal === "edit" && modalEditPosition(currentPosition)}
       </>
       <div className="buttonContainer">
-        <Input.Search
-          onSearch={(value) => {
-            setSearchedText(value);
-          }}
-          onChange={(e) => {
-            setSearchedText(e.target.value);
-          }}
-          placeholder="Tìm kiếm"
-          className="searchInput"
-          style={{ width: 264 }}
-        />
-        <Button
-          onClick={showModalAdd}
-          className="addButton"
-          type="primary"
-          ghost
-          icon={<PlusOutlined />}
-        >
-          Tạo mới
-        </Button>
+        <div></div>
+        <div>
+          <Input.Search
+            onSearch={(value) => {
+              setSearchedText(value);
+            }}
+            onChange={(e) => {
+              setSearchedText(e.target.value);
+            }}
+            placeholder="Tìm kiếm"
+            className="searchInput"
+            style={{ width: 264 }}
+          />
+          <Button
+            onClick={showModalAdd}
+            className="addButton"
+            type="primary"
+            ghost
+            icon={<PlusOutlined />}
+          >
+            Tạo mới
+          </Button>
+        </div>
       </div>
       {console.log(positions)}
       <Table

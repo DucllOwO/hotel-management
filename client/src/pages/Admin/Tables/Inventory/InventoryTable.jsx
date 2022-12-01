@@ -13,25 +13,19 @@ const InventoryTable = () => {
   const [dataSource, setDataSource] = useState([
     {
       id: 1,
-      name: "Teeth Brush",
+      name: "Bàn chải đánh răng",
       amount: "10",
       price: "20000",
     },
     {
       id: 2,
-      name: "Glass",
+      name: "Ly",
       amount: "1",
       price: "20000",
     },
     {
       id: 3,
-      name: "Bed",
-      amount: "1",
-      price: "20000",
-    },
-    {
-      id: 4,
-      name: "Something",
+      name: "Giường",
       amount: "1",
       price: "20000",
     },

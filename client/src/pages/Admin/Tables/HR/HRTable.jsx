@@ -40,9 +40,17 @@ const HRTable = ({ employees, setEmployees }) => {
       title: "Tên",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
-        return String(record.name)
-          .toLocaleLowerCase()
-          .includes(value.toLocaleLowerCase());
+        return (
+          String(record.fullname)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.id)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.phone_number)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase())
+        );
       },
       dataIndex: "fullname",
       render: (text, record) => {
@@ -59,7 +67,7 @@ const HRTable = ({ employees, setEmployees }) => {
     },
     {
       key: "4",
-      title: "SĐT",
+      title: "Số điện thoại",
       dataIndex: "phone_number",
       render: (text, record) => {
         return String(record.phone_number);
@@ -83,7 +91,7 @@ const HRTable = ({ employees, setEmployees }) => {
     },
     {
       key: "7",
-      title: "Thao tác",
+      title: "Hành động",
       render: (_, record) => {
         return (
           <>
@@ -99,7 +107,7 @@ const HRTable = ({ employees, setEmployees }) => {
                 onDeleteButton(record);
               }}
             >
-              Xoá
+              Xóa
             </Button>
           </>
         );
@@ -119,7 +127,7 @@ const HRTable = ({ employees, setEmployees }) => {
 
   const onDeleteButton = (record) => {
     Modal.confirm({
-      title: "Bạn có chắc muốn xoá dữ liệu?",
+      title: "Are you sure, you want to delete this employee?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
@@ -145,11 +153,11 @@ const HRTable = ({ employees, setEmployees }) => {
 
   const modalAddEmployee = () => (
     <Modal
-      title="Position Information"
+      title="Thông tin Nhân sự"
       open={true}
       onOk={handleOKModalAdd}
       onCancel={handleCancelModal}
-      width="40%"
+      width="50%"
     >
       <HRForm form={form} />
     </Modal>
@@ -184,7 +192,7 @@ const HRTable = ({ employees, setEmployees }) => {
   const modalEditEmployee = () => {
     return (
       <Modal
-        title="Position Information"
+        title="Thông tin Nhân sự"
         open={true}
         onOk={handleOKModalEdit}
         onCancel={handleCancelModal}
