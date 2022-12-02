@@ -18,7 +18,9 @@ const Login = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleUsername = (e) => setUsername(e.target.value);
+  const handleUsername = (e) => {
+    setUsername(e.target.value);
+  };
   const handlePassword = (e) => setPassword(e.target.value);
 
   return (
@@ -103,9 +105,10 @@ const Login = () => {
       try {
         setIsLoading(true);
         const { data } = await publicRequest.post("/auth/login", {
-          username,
-          password,
+          username: username.trim(),
+          password: password.trim(),
         });
+        setIsLoading(false);
         console.log(data);
         if (data) {
           const user = {
@@ -119,7 +122,6 @@ const Login = () => {
           LocalStorage.setItem("user", user);
           // save user to app context
           setUser(user);
-          setIsLoading(false);
 
           userRequest.defaults.headers.common[
             "Authorization"
