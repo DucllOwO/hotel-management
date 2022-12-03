@@ -24,6 +24,7 @@ const positionsRoutes = require("./routes/positionsRoutes");
 const paymentsRoutes = require("./routes/paymentsRoutes");
 const importingsRoutes = require("./routes/importingsRoutes");
 const featuresRoutes = require("./routes/featuresRoutes");
+const reportRoutes = require("./routes/reportRoutes");
 
 const app = express();
 
@@ -50,6 +51,7 @@ app.use("/api/payment", paymentsRoutes);
 app.use("/api/item", itemRoutes);
 app.use("/api/importing", importingsRoutes);
 app.use("/api/features", featuresRoutes);
+app.use("/api/reports", reportRoutes);
 app.use("/api/receipt", receiptRoutes);
 //app.use("/branches", branchesRoutes);
 app.use("*", handle404Error);
