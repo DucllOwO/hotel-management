@@ -8,6 +8,7 @@ import LocalStorage from "../../Utils/localStorage";
 import { AppContext } from "../../context/AppContext";
 import { Spin } from "antd";
 import ErrorAlert from "../../components/Error/Alert/ErrorAlert";
+import { loginAPI } from "../../api/AuthAPI";
 
 const Login = () => {
   const { setUser } = useContext(AppContext);
@@ -101,10 +102,9 @@ const Login = () => {
 
   async function login(e) {
     e.preventDefault();
-
     if (!isLoading) {
       setIsLoading(true);
-      login(username.trim(), password.trim())
+      loginAPI(username.trim(), password.trim())
         .then(({ data }) => {
           setIsLoading(false);
           console.log(data);

@@ -1,6 +1,6 @@
 import { publicRequest } from "./api";
 
-export const login = (username, password) => {
+export const loginAPI = (username, password) => {
   return publicRequest.post("/auth/login", {
     username,
     password,
