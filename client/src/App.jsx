@@ -78,7 +78,7 @@ const listRoute = [
     ),
   },
   {
-    key: "Nhân viên",
+    key: "Nhân sự",
     value: <Route key="Employee" index path="hr" element={<HR />} />,
   },
   {

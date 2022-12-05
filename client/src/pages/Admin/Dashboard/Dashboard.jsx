@@ -4,6 +4,7 @@ import { Button, Card, Col, Row, DatePicker, Space } from "antd";
 import dayjs from "dayjs";
 import moment from "moment";
 import "./dashboard.css";
+import { getMonth, getYear } from "../../../Utils/helpers";
 import { fetchDailyReport, fetchMonthlyReport, fetchYearlyReport } from "../../../api/DashboardAPI";
 import MultiLineChart from "../../../components/Chart/MultiLineChart";
 import DashboardTable from "../Tables/Dashboard/DashboardTable";
@@ -23,6 +24,7 @@ const Dashboard = () => {
   const {user} = useContext(AppContext)
 
   useEffect(() => {
+    
     switch (type) {
       case "day":
         console.log(semiType)
@@ -45,6 +47,7 @@ const Dashboard = () => {
         }
         break;
       case "month":
+        console.log(time);
         fetchMonthlyReport(user?.position, time)
         .then(({ data }) => {
           console.log(data);
@@ -77,6 +80,7 @@ const Dashboard = () => {
               type={type === "year" ? "primary" : "default"}
               onClick={() => {
                 setType("year");
+                setTime(Date.UTC());
               }}
             >
               Năm
@@ -86,6 +90,7 @@ const Dashboard = () => {
               type={type === "month" ? "primary" : "default"}
               onClick={() => {
                 setType("month");
+                setTime(moment.utc);
               }}
             >
               Tháng
@@ -95,6 +100,7 @@ const Dashboard = () => {
               type={type === "day" ? "primary" : "default"}
               onClick={() => {
                 setType("day");
+                setTime(moment.utc);
               }}
             >
               Ngày
@@ -105,23 +111,24 @@ const Dashboard = () => {
               {type === "day" && (
                  <DatePicker
                  defaultValue={moment()}
-                 onChange={(values)=>{console.log(values); setTime(values._d)}}
+                 onChange={(values)=>{getYear(values._d);}}
                  picker="date"
                  format={dateFormat}
                ></DatePicker>
               )}
               {type === "month" && (
                 <DatePicker
-                  defaultValue={Date.now()}
+                  defaultValue={moment()}
                   picker="month"
-                  onChange={(values)=>{console.log(values.$d)}}
+                  onChange={(values)=>{setTime(values._d)}}
                   format={monthFormat}
                 ></DatePicker>
               )}
               {type === "year" && (
                 <DatePicker
                   picker="year"
-                  defaultValue={Date.now()}
+                  defaultValue={moment()}
+                  onChange={(values)=>{setTime(values._d)}}
                 ></DatePicker>
               )}
             </div>
@@ -140,7 +147,7 @@ const Dashboard = () => {
             </Col>
           </Row>
         </div>
-        <div>
+        { type ==="day" && <div>
           <Button
             className="dateBtn"
             onClick={() => {
@@ -157,7 +164,7 @@ const Dashboard = () => {
           >
             Chi
           </Button>
-        </div>
+        </div>}
         {/* {type === "day" ? <DashboardTable /> : <MultiLineChart />} */}
         {(type === "day") 
         ? <DashboardTable

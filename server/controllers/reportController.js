@@ -5,6 +5,8 @@ const getDailyReport = async (req, res, next) => {
   console.log("controller called");
   
   const {date, type} = req.query;
+
+  console.log(type)
   
   if(!date || !type)
     return next(BadRequestError());
