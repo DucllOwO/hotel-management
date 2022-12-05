@@ -3,10 +3,11 @@ import "./login.css";
 import logo from "../../assets/images/logo.png";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import { useNavigate, Navigate } from "react-router-dom";
-import { publicRequest, userRequest } from "../../api/api";
+import { userRequest } from "../../api/api";
 import LocalStorage from "../../Utils/localStorage";
 import { AppContext } from "../../context/AppContext";
 import { Spin } from "antd";
+import ErrorAlert from "../../components/Error/Alert/ErrorAlert";
 
 const Login = () => {
   const { setUser } = useContext(AppContext);
@@ -102,39 +103,37 @@ const Login = () => {
     e.preventDefault();
 
     if (!isLoading) {
-      try {
-        setIsLoading(true);
-        const { data } = await publicRequest.post("/auth/login", {
-          username: username.trim(),
-          password: password.trim(),
+      setIsLoading(true);
+      login(username.trim(), password.trim())
+        .then(({ data }) => {
+          setIsLoading(false);
+          console.log(data);
+          if (data) {
+            const user = {
+              account: data?.user,
+              token: data?.accessToken,
+              position: data?.position,
+              permission: data?.permission,
+            };
+
+            // save token for axios
+            LocalStorage.setItem("user", user);
+            // save user to app context
+            setUser(user);
+
+            userRequest.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${data?.accessToken}`;
+
+            navigate("/admin");
+          }
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          console.log(err);
+          ErrorAlert("Đăng nhập không thành công!!");
         });
-        setIsLoading(false);
-        console.log(data);
-        if (data) {
-          const user = {
-            account: data?.user,
-            token: data?.accessToken,
-            position: data?.position,
-            permission: data?.permission,
-          };
-
-          // save token for axios
-          LocalStorage.setItem("user", user);
-          // save user to app context
-          setUser(user);
-
-          userRequest.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${data?.accessToken}`;
-
-          navigate("/admin");
-        }
-      } catch (error) {
-        setError(error);
-        setIsLoading(false);
-      }
     }
-    // useNavigate('/admin')
   }
 };
 

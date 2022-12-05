@@ -9,7 +9,6 @@ const HR = () => {
   const { user } = useContext(AppContext);
 
   useEffect(() => {
-    console.log("use Effect running");
     fetchEmployee(user?.position)
       .then(({ data }) => {
         console.log(data);
@@ -17,7 +16,7 @@ const HR = () => {
       })
       .catch((err) => {
         console.log(err);
-        ErrorAlert("Fetch employee error!!");
+        ErrorAlert("Lấy dữ liệu nhân sự thất bại!!");
       });
   }, [user?.position]);
   return (

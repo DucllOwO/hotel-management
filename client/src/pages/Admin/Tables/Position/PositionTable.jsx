@@ -37,7 +37,6 @@ const PositionTable = ({ positions, setPositions }) => {
     });
   };
   const handleOKModalEdit = () => {
-    console.log("handleOKModalEdit");
     form.validateFields().then((values) => {
       console.log(values);
       const {
@@ -48,7 +47,7 @@ const PositionTable = ({ positions, setPositions }) => {
         onUpdatePosition(values, featuresChecked, featuresUnChecked);
       } else
         setIsFeaturesError(
-          `Feature doesn't updates, please updates features!!`
+          `Bạn chưa chọn chức năng nào, vui lòng chọn ít nhất 1 chức năng!!`
         );
     });
   };
@@ -100,7 +99,7 @@ const PositionTable = ({ positions, setPositions }) => {
   const onDeleteButton = (record) => {
     Modal.confirm({
       title: "Bạn có chắc muốn xoá dữ liệu?",
-      okText: "Yes",
+      okText: "Có",
       okType: "danger",
       onOk: () => {
         deletePosition(user?.position, record?.id).then(({ data }) => {
