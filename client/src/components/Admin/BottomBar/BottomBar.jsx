@@ -22,7 +22,13 @@ const BottomBar = (props) => {
     <div className="bottomBar">
       <div>
         {props.add && (
-          <Button type="primary" icon={<PlusOutlined />}>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => {
+              props.onAddProduct();
+            }}
+          >
             {" "}
             Add{" "}
           </Button>

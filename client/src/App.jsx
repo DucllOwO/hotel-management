@@ -33,7 +33,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className="App" style={{ height: "100vh" }}>
         <Routes>
           <Route key="login" index element={<Login />}></Route>
           <Route key="login1" path="/login" element={<Login />}></Route>
