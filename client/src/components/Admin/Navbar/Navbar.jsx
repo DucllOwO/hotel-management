@@ -52,7 +52,7 @@ const Navbar = () => {
       <Menu
         className="menu"
         mode="inline"
-        theme="light"
+        theme="dark"
         defaultSelectedKeys={["/admin"]}
         selectedKeys={[current]}
         onClick={onClickHandler}

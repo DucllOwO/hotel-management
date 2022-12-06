@@ -1,7 +1,7 @@
 .navBar {
   width: 20%;
   height: 100vh;
-  /* background-color: #f8f8f8; */
+  background-color: var(--dark-blue);
   display: flex;
   flex-direction: column;
 }
@@ -12,7 +12,6 @@
 
 .menu {
   flex: 5;
-  background-color: var(--light-grey);
   overflow-y: scroll;
   overflow-x: hidden;
   -ms-overflow-style: none; /* for Internet Explorer, Edge */

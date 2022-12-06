@@ -26,6 +26,8 @@ import Promotion from "./pages/Admin/Promotion/Promotion";
 import AddRoom from "./components/Admin/AddRoom/AddRoom";
 import Import from "./components/Admin/Import/Import";
 
+import "./app.css";
+
 const App = () => {
   const { user } = useContext(AppContext);
   const [listFeature, setList] = useState([]);

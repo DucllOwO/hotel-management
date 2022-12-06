@@ -3,8 +3,12 @@ import Topbar from "../../Topbar/Topbar";
 import { Input, Button, Table, Select, InputNumber, Modal } from "antd";
 import BottomBar from "../BottomBar/BottomBar";
 import "./import.css";
+import { PlusOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const Import = () => {
+  const navigate = useNavigate();
+
   const onChangeSelect = (value) => {
     console.log(value);
   };
@@ -135,6 +139,17 @@ const Import = () => {
     });
   };
 
+  const onCancel = () => {
+    Modal.confirm({
+      title: "Are you sure, you want to discard changes?",
+      okText: "Yes",
+      okType: "danger",
+      onOk: () => {
+        navigate(-1);
+      },
+    });
+  };
+
   return (
     <div className="import">
       <Topbar
@@ -161,7 +176,24 @@ const Import = () => {
         </div>
       </div>
 
-      <BottomBar add="true" onAddProduct={onAddProduct}></BottomBar>
+      <BottomBar>
+        <div className="bottomBar">
+          <div>
+            <Button icon={<PlusOutlined />}>Thêm</Button>
+          </div>
+          <div>
+            <Button
+              onClick={() => {
+                onCancel();
+              }}
+              style={{ marginRight: "10px" }}
+            >
+              Hủy
+            </Button>
+            <Button type="primary">Xong</Button>
+          </div>
+        </div>
+      </BottomBar>
     </div>
   );
 };

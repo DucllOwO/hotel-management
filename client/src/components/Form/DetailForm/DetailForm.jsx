@@ -39,7 +39,7 @@ const DetailForm = () => {
       <hr />
       <div className="modal">
         <div className="left"></div>
-        <div className="right">
+        <div className="rightDetail">
           <Form.Item className="formItem">
             <div className="totalContainer">
               <span className="discountTitle">Discount</span>
