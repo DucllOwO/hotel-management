@@ -1,0 +1,38 @@
+.formItem {
+    font-size: var(--fs-14);
+    font-weight: var(--fw-bold);
+}
+
+.totalContainer {
+    display: flex;
+    flex-direction: column;
+    margin-left: 100px;
+    margin-top: 30px;
+}
+
+.right {
+    display: flex;
+    flex-direction: row;
+}
+
+.title {
+    font-size: var(--fs-14);
+    font-weight: var(--fw-regular);
+}
+
+.price {
+    font-size: var(--fs-24);
+    font-weight: var(--fw-bold);
+}
+
+.discountTitle {
+    font-size: var(--fs-14);
+    font-weight: var(--fw-regular);
+    color: var(--grey);
+}
+
+.discountPrice {
+    font-size: var(--fs-24);
+    font-weight: var(--fw-regular);
+    color: var(--grey);
+}

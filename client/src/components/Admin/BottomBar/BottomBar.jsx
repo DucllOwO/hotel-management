@@ -20,7 +20,9 @@ const BottomBar = (props) => {
 
   return (
     <div className="bottomBar">
-      <div>
+      <div></div>
+      <div>{props.children}</div>
+      {/* <div>
         {props.add && (
           <Button
             type="primary"
@@ -33,8 +35,8 @@ const BottomBar = (props) => {
             Add{" "}
           </Button>
         )}
-      </div>
-      <div>
+      </div> */}
+      {/* <div>
         <Button
           onClick={() => {
             onCancel();
@@ -45,7 +47,7 @@ const BottomBar = (props) => {
         <Button type="primary" className="createBtn">
           Create
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 };

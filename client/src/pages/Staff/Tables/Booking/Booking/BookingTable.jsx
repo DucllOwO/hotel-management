@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import "../../index.css";
-import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
+import { Table, Button, Modal, Form, Input, DatePicker, Checkbox } from "antd";
 import "antd/dist/antd.less";
-import { PlusOutlined } from "@ant-design/icons";
 import "./bookingtable.css";
-import { faSort } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import BottomBar from "../../../../../components/Admin/BottomBar/BottomBar";
 
 const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
   const [editingRow, setEditingRow] = useState(null);
@@ -116,13 +114,7 @@ const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
       render: (_, record) => {
         return (
           <>
-            <Button
-              onClick={() => {
-                onBooking(record);
-              }}
-            >
-              Đặt
-            </Button>
+            <Checkbox onChange={() => {}}></Checkbox>
           </>
         );
       },
@@ -203,6 +195,10 @@ const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
       <Form form={form} onFinish={onFinish} className="form">
         <Table columns={columns} dataSource={rooms} scroll={{ y: 350 }}></Table>
       </Form>
+
+      <BottomBar>
+        <Button type="primary">Đặt</Button>
+      </BottomBar>
     </div>
   );
 };
