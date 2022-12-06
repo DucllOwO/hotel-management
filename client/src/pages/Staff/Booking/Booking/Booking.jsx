@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
 import { userRequest } from "../../../../api/api";
-import React, { useState, useContext, useEffect } from "react";
 import { fetchBookingByDate } from "../../../../api/BookingAPI";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 import { AppContext } from "../../../../context/AppContext";
 import BookingTable from "../../Tables/Booking/Booking/BookingTable";
+
 import "./booking.css";
 
 const Booking = () => {
