@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Table, Button, Modal, Form, Input, DatePicker, Layout } from "antd";
+import "../../index.css";
+import { Table, Button, Modal, Form, Input, DatePicker, Checkbox } from "antd";
 import "antd/dist/antd.less";
 import "./bookingtable.css";
 import BookingForm from "../../../../../components/Form/BookingForm";
@@ -7,6 +8,7 @@ import { createBooking } from "../../../../../api/BookingAPI";
 import SuccessAlert from "../../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import ErrorAlert from "../../../../../components/Error/Alert/ErrorAlert";
 import "./bookingtable.css";
+import BottomBar from "../../../../../components/Admin/BottomBar/BottomBar";
 
 const { Footer, Content } = Layout;
 
@@ -71,14 +73,7 @@ const BookingTable = ({
       render: (_, record) => {
         return (
           <>
-            <Button
-              onClick={() => {
-                setIsModalOpen(true);
-                form.setFieldValue("room_name", record.room_name);
-              }}
-            >
-              Đặt
-            </Button>
+            <Checkbox onChange={() => {}}></Checkbox>
           </>
         );
       },
@@ -180,6 +175,11 @@ const BookingTable = ({
       <div id="bottomBar">
         <Button>Đặt</Button>
       </div>
+      <Table columns={columns} dataSource={rooms} scroll={{ y: 350 }}></Table>
+
+      <BottomBar>
+        <Button type="primary">Đặt</Button>
+      </BottomBar>
     </div>
   );
 

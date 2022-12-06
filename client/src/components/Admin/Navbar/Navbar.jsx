@@ -52,7 +52,7 @@ const Navbar = () => {
       <Menu
         className="menu"
         mode="inline"
-        theme="light"
+        theme="dark"
         defaultSelectedKeys={["/admin"]}
         selectedKeys={[current]}
         onClick={onClickHandler}
@@ -91,7 +91,7 @@ const Navbar = () => {
                         permission.includes("Loại phòng")
                           ? { label: "Loại phòng", key: "/admin/roomType" }
                           : null,
-                        permission.includes("Phòng")
+                        permission.includes("Danh mục phòng")
                           ? { label: "Danh mục phòng", key: "/admin/rooms" }
                           : null,
                         permission.includes("Tiện ích")

@@ -7,7 +7,7 @@ const getAllRecord = async (req, res, next) => {
     await importingDAL.getAllRecords();
     const record = importing?.map((item) => {
       return {
-        item: item.item_id.name,
+        item: item.item_id?.name,
         ...item
       }
     });
