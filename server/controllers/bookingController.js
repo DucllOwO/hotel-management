@@ -1,5 +1,6 @@
 const bookingDAL = require("../DAL/bookingDAL");
 const roomDAL = require("../DAL/roomDAL");
+const usedRoomDAL = require("../DAL/usedRoomDAL");
 const customerDAL = require("../DAL/customerDAL");
 const { BadRequestError } = require("../middlewares/errorHandler");
 const supabase = require("../database");
@@ -55,7 +56,7 @@ const getBooking = async (req, res, next) => {
 
 // tao booking khong can check phong trong vi chi co status available moi co nut dat phong
 const createBooking = async (req, res, next) => {
-  const { booking } = req.body;
+  const { booking, roomsID } = req.body;
 
   if (!booking) return next(BadRequestError());
 
@@ -70,13 +71,17 @@ const createBooking = async (req, res, next) => {
   //   if (insertError) return next(insertError);
   // }
 
-  const { data, error: insertBookingError } = await bookingDAL.insertBooking({
-    ...booking,
-  });
+  const { data: bookingRes, error: insertBookingError } =
+    await bookingDAL.insertBooking({
+      ...booking,
+    });
+
+  const { data: usedRoomRes, error: createUsedRoomError } =
+    await usedRoomDAL.createUsedRoom(booking[0]?.id, roomsID);
 
   if (insertBookingError) return next(insertBookingError);
 
-  res.status(201).send(data[0]);
+  res.status(201).send(bookingRes[0]);
 };
 
 const deleteBooking = async (req, res, next) => {

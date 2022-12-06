@@ -7,10 +7,7 @@ import BookingForm from "../../../../../components/Form/BookingForm";
 import { createBooking } from "../../../../../api/BookingAPI";
 import SuccessAlert from "../../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import ErrorAlert from "../../../../../components/Error/Alert/ErrorAlert";
-import "./bookingtable.css";
 import BottomBar from "../../../../../components/Admin/BottomBar/BottomBar";
-
-const { Footer, Content } = Layout;
 
 const { RangePicker } = DatePicker;
 
@@ -26,7 +23,9 @@ const BookingTable = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState({});
-  const [form] = Form.useForm();
+  const [selectedRooms, setSelectedRooms] = useState([]);
+  const [customerInfoForm] = Form.useForm();
+  const [roomForm] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
 
@@ -72,9 +71,13 @@ const BookingTable = ({
       title: "Thao tác",
       render: (_, record) => {
         return (
-          <>
-            <Checkbox onChange={() => {}}></Checkbox>
-          </>
+          <Form.Item style={{ marginBottom: 0 }}>
+            <Checkbox
+              onChange={(e) => {
+                setSelectedRooms((prev) => [...prev, record]);
+              }}
+            ></Checkbox>
+          </Form.Item>
         );
       },
     },
@@ -84,7 +87,7 @@ const BookingTable = ({
 
   const handleOKModal = async () => {
     try {
-      const values = await form.validateFields();
+      const values = await customerInfoForm.validateFields();
       const isCusObjEmpty = Object.keys(currentCustomer).length === 0;
       // isCusObjEmpty === true === customer not available
       if (isCusObjEmpty) {
@@ -118,20 +121,8 @@ const BookingTable = ({
     }
   };
 
-  const modalJSX = () => {
-    return (
-      <Modal
-        title="Nhập thông tin khách hàng"
-        open={true}
-        okText="Đặt"
-        cancelText="Hủy"
-        onOk={handleOKModal}
-        onCancel={handleCancelModal}
-        width="40%"
-      >
-        <BookingForm form={form} setCurrentCustomer={setCurrentCustomer} />
-      </Modal>
-    );
+  const openModalInfoCustomer = () => {
+    setIsModalOpen(true);
   };
 
   return (
@@ -164,27 +155,44 @@ const BookingTable = ({
             />
           </div>
         </div>
-        <Table
-          loading={isLoading}
-          columns={columns}
-          dataSource={rooms}
-          scroll={{ y: "100%" }}
-          rowKey={(row) => row.room_name}
-        ></Table>
+        <Form form={roomForm}>
+          <Table
+            loading={isLoading}
+            columns={columns}
+            dataSource={rooms}
+            scroll={{ y: "100%" }}
+            rowKey={(row) => row.room_name}
+          ></Table>
+        </Form>
       </div>
-      <div id="bottomBar">
-        <Button>Đặt</Button>
-      </div>
-      <Table columns={columns} dataSource={rooms} scroll={{ y: 350 }}></Table>
-
       <BottomBar>
-        <Button type="primary">Đặt</Button>
+        <Button type="primary" onClick={(e) => openModalInfoCustomer()}>
+          Đặt
+        </Button>
       </BottomBar>
     </div>
   );
-
+  function modalJSX() {
+    return (
+      <Modal
+        title="Nhập thông tin khách hàng"
+        open={true}
+        okText="Đặt"
+        cancelText="Hủy"
+        onOk={handleOKModal}
+        onCancel={handleCancelModal}
+        width="40%"
+      >
+        <BookingForm
+          form={customerInfoForm}
+          setCurrentCustomer={setCurrentCustomer}
+          selectedRooms={selectedRooms}
+        />
+      </Modal>
+    );
+  }
   function handleCancelModal() {
-    form.resetFields();
+    customerInfoForm.resetFields();
     setIsModalOpen(false);
   }
 };

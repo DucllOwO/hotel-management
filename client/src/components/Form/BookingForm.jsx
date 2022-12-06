@@ -1,4 +1,4 @@
-import { DatePicker, Form, Input, Typography } from "antd";
+import { Card, DatePicker, Form, Input, Select, Tag, Typography } from "antd";
 import React, { useState } from "react";
 import { useContext } from "react";
 import { fetchCustomerByID } from "../../api/CustomerAPI";
@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 const { Text, Title } = Typography;
 const { Search } = Input;
 
-const BookingForm = ({ form, setCurrentCustomer }) => {
+const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
   const { user } = useContext(AppContext);
   const [disable, setDisable] = useState(false);
   const [isCustomerExist, setIsCustomerExist] = useState(null);
@@ -49,7 +49,17 @@ const BookingForm = ({ form, setCurrentCustomer }) => {
   return (
     <Form form={form} layout="vertical">
       <Form.Item label="Phòng" name="room_name">
-        <Input size="large" disabled={true} />
+        <div>
+          {selectedRooms.map((room) => {
+            return (
+              <Tag>
+                <Title level={5} style={{ margin: "0px auto" }}>
+                  {room.room_name}
+                </Title>
+              </Tag>
+            );
+          })}
+        </div>
       </Form.Item>
       <Form.Item
         label="CCCD"
