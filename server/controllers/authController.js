@@ -9,48 +9,49 @@ const login = async (req, res, next) => {
 
   if (username) {
     const { user, error } = await accountDAL.getAccountByUsername(username);
+    if (error) return next(error);
     //console.log(`${JSON.stringify(user)} `);
-    if (user) {
-      const isValid = await bcrypt.compare(password, user.password);
-      if (isValid) {
-        // Generate an access token
-        const accessToken = jwt.sign(
-          { username: user.username },
-          process.env.JWT_SECRET
-        );
+    if (!user) return next(new Error("User not found!"));
+    const isValid = await bcrypt.compare(password, user.password);
+    if (isValid) {
+      // Generate an access token
+      const accessToken = jwt.sign(
+        { username: user.username },
+        process.env.JWT_SECRET
+      );
 
-        const { password: temp, ...userWithoutPassword } = user;
+      const { password: temp, ...userWithoutPassword } = user;
 
-        const { data: employeePosition, error: getPositionError } =
-          await employeeDAL.getEmployeePositionByUsername(username);
-        console.log(employeePosition[0]);
+      const { data: employeePosition, error: getPositionError } =
+        await employeeDAL.getEmployeePositionByUsername(username);
+      console.log(employeePosition[0]);
 
-        const { data, error } = await permissionDAL.getPermissionByPositionID(
-          employeePosition[0].position_id.id
-        );
-        const tempPermission = [...new Set(data?.map((item) => {
-          if(item?.feature_id.action == "read:any") 
-            return item?.feature_id.name}
-        ))];
-        if (getPositionError) return next(getPositionError);
-
-        return res
-          .json({
-            user: {
-              ...userWithoutPassword,
-              fullname: employeePosition[0].fullname,
-            },
-            accessToken,
-            position: employeePosition[0].position_id.name,
-            permission: tempPermission,
+      const { data, error } = await permissionDAL.getPermissionByPositionID(
+        employeePosition[0].position_id.id
+      );
+      const tempPermission = [
+        ...new Set(
+          data?.map((item) => {
+            if (item?.feature_id.action == "read:any")
+              return item?.feature_id.name;
           })
-          .send();
-      } else {
-        return res.status(401).send("Password is incorrect");
-      }
+        ),
+      ];
+      if (getPositionError) return next(getPositionError);
+
+      return res
+        .json({
+          user: {
+            ...userWithoutPassword,
+            fullname: employeePosition[0].fullname,
+          },
+          accessToken,
+          position: employeePosition[0].position_id.name,
+          permission: tempPermission,
+        })
+        .send();
     } else {
-      error.status = 400;
-      return next(error);
+      return res.status(401).send("Password is incorrect");
     }
   }
 

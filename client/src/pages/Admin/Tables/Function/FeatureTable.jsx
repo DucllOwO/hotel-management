@@ -20,10 +20,14 @@ const FeatureTable = ({ features, setFeatures }) => {
         pagination={{ defaultPageSize: 6 }}
         bordered={true}
       >
-        <Column title="Name" dataIndex="name" key="name" />
-        <ColumnGroup title="Action" showOnResponse={true} showOnDesktop={true}>
+        <Column title="Tên" dataIndex="name" key="name" />
+        <ColumnGroup
+          title="Hành động"
+          showOnResponse={true}
+          showOnDesktop={true}
+        >
           <Column
-            title="Read"
+            title="Đọc"
             dataIndex="read"
             key="read"
             align="center"
@@ -54,7 +58,7 @@ const FeatureTable = ({ features, setFeatures }) => {
             showOnDesktop={true}
           />
           <Column
-            title="Create"
+            title="Tạo"
             dataIndex="create"
             key="create"
             align="center"
@@ -84,7 +88,7 @@ const FeatureTable = ({ features, setFeatures }) => {
             showOnDesktop={true}
           />
           <Column
-            title="Update"
+            title="Chỉnh sửa"
             dataIndex="update"
             key="update"
             align="center"
@@ -114,7 +118,7 @@ const FeatureTable = ({ features, setFeatures }) => {
             showOnDesktop={true}
           />
           <Column
-            title="Delete"
+            title="Xóa"
             dataIndex="delete"
             key="delete"
             align="center"

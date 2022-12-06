@@ -11,7 +11,7 @@ const getAllAccounts = async (req, res, next) => {
 
   if (error) return next(error);
 
-  res.status(200).send({ data });
+  res.status(200).send(data);
 };
 
 const getAccount = async (req, res, next) => {
@@ -21,19 +21,19 @@ const getAccount = async (req, res, next) => {
 
   if (error) return next(error);
 
-  res.status(200).send({ data });
+  res.status(200).send(data);
 };
 
 const createAccount = async (req, res, next) => {
-  const { Account } = req.body;
+  const { account } = req.body;
 
-  if (!Account) return next(BadRequestError());
+  if (!account) return next(BadRequestError());
 
-  const hashPassword = await bcrypt.hash(Account?.password, BCRYPT_SALT);
+  const hashPassword = await bcrypt.hash(account?.password, BCRYPT_SALT);
   console.log(hashPassword);
 
-  const { error } = await AccountDAL.insertAccount({
-    ...Account,
+  const { data, error } = await AccountDAL.insertAccount({
+    ...account,
     password: hashPassword,
   });
 
@@ -42,24 +42,24 @@ const createAccount = async (req, res, next) => {
     return next(error);
   }
 
-  const { data: user, error: createUserError } = await usersAuthDAL.createUser({
-    email: Account.email,
-    password: Account.password,
-    email_confirm: true,
-  });
-  console.log(user);
-  if (createUserError) return next(createUserError);
+  // const { data: user, error: createUserError } = await usersAuthDAL.createUser({
+  //   email: account.email,
+  //   password: account.password,
+  //   email_confirm: true,
+  // });
+  // console.log(user);
+  // if (createUserError) return next(createUserError);
 
-  res.status(201).send("Created");
+  res.status(201).send(data);
 };
 
 const updateAccount = async (req, res, next) => {
   const { username } = req.params;
-  const { Account } = req.body;
+  const { account } = req.body;
 
-  if (!Account) return next(BadRequestError());
+  if (!account) return next(BadRequestError());
 
-  let { username: usernameTemp, oldEmail, ...AccountWithoutUsername } = Account;
+  let { username: usernameTemp, ...AccountWithoutUsername } = account;
 
   //hash password before update account
   if (AccountWithoutUsername?.password) {
@@ -74,23 +74,23 @@ const updateAccount = async (req, res, next) => {
     };
   }
 
-  //change email of user auth supabase
-  if (AccountWithoutUsername?.email) {
-    // can't get specific user because don't have uid
-    const { data: users, error: getAllError } = await usersAuthDAL.getAllUser();
-    if (getAllError) return next(getAllError);
+  // //change email of user auth supabase
+  // if (AccountWithoutUsername?.email) {
+  //   // can't get specific user because don't have uid
+  //   const { data: users, error: getAllError } = await usersAuthDAL.getAllUser();
+  //   if (getAllError) return next(getAllError);
 
-    const user = users.find((user) => user.email === oldEmail);
+  //   const user = users.find((user) => user.email === oldEmail);
 
-    if (user) {
-      const { error: updateError } = await usersAuthDAL.updateUserById(
-        user.id,
-        { ...AccountWithoutUsername, password: Account.password }
-      );
+  //   if (user) {
+  //     const { error: updateError } = await usersAuthDAL.updateUserById(
+  //       user.id,
+  //       { ...AccountWithoutUsername, password: account.password }
+  //     );
 
-      if (updateError) return next(updateError);
-    }
-  }
+  //     if (updateError) return next(updateError);
+  //   }
+  // }
 
   const { error } = await AccountDAL.updateAccount(
     AccountWithoutUsername,

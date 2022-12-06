@@ -19,12 +19,10 @@ import BookingList from "./pages/Staff/Booking/BookingList/BookingList";
 import { AppContext } from "./context/AppContext";
 import LocalStorage from "./Utils/localStorage";
 import Position from "./pages/Admin/Position/Position";
-import AddRoom from "./components/Admin/AddRoom/AddRoom";
 
 import _404ErrorBoundary from "./components/Error/ErrorBoundary/_404ErrorBoundary";
 import AuthErrorBoundary from "./components/Error/ErrorBoundary/AuthErrorBoundary";
 import Promotion from "./pages/Admin/Promotion/Promotion";
-import Import from "./components/Admin/Import/Import";
 
 const App = () => {
   const { user } = useContext(AppContext);
@@ -48,9 +46,6 @@ const App = () => {
               : null}
           </Route>
 
-          <Route path="/admin/addroom" element={<AddRoom />}></Route>
-          <Route path="/admin/import" element={<Import />}></Route>
-
           <Route
             key="error"
             exact
@@ -65,81 +60,83 @@ const App = () => {
 
 const listRoute = [
   {
-    key: "Dashboard",
+    key: "Thống kê",
     value: (
       <Route key="Dashboard" index path="dashboard" element={<Dashboard />} />
     ),
   },
   {
-    key: "Account",
+    key: "Tài khoản",
     value: <Route key="Account" index path="account" element={<Account />} />,
   },
   {
-    key: "Import",
+    key: "Nhập sản phẩm",
     value: (
       <Route key="Import" index path="importing" element={<Importing />} />
     ),
   },
   {
-    key: "Employee",
+    key: "Nhân sự",
     value: <Route key="Employee" index path="hr" element={<HR />} />,
   },
   {
-    key: "Inventory",
+    key: "Kiểm tra phòng",
     value: (
       <Route key="Inventory" index path="inventory" element={<Inventory />} />
     ),
   },
   {
-    key: "Item",
+    key: "Quản lý sản phẩm",
     value: <Route key="Item" index path="item" element={<Item />} />,
   },
   {
-    key: "Room",
+    key: "Danh mục phòng",
     value: <Route key="Room" index path="rooms" element={<Rooms />} />,
   },
   {
-    key: "Room type",
+    key: "Loại phòng",
     value: (
       <Route key="Room_type" index path="roomtype" element={<RoomType />} />
     ),
   },
   {
-    key: "Utilities",
+    key: "Tiện ích",
     value: (
       <Route key="Utilities" index path="utilities" element={<Utilities />} />
     ),
   },
   {
-    key: "Payment",
+    key: "Phiếu chi",
     value: <Route key="Payment" index path="payment" element={<Payment />} />,
   },
   {
-    key: "Receipt",
+    key: "Hóa đơn",
     value: <Route key="Receipt" index path="receipt" element={<Receipt />} />,
   },
   {
-    key: "Position",
+    key: "Chức vụ",
     value: (
       <Route key="Position" index path="position" element={<Position />} />
     ),
   },
   {
-    key: "Customer",
+    key: "Khách hàng",
     value: (
       <Route key="Customer" index path="customer" element={<Customer />} />
     ),
   },
   {
-    key: "Booking",
+    key: "Đặt phòng",
     value: <Route index path="bookings" element={<Booking />} />,
   },
   {
-    key: "Promotion",
+    key: "Phiếu giảm giá",
     value: (
       <Route key="Promotion" index path="promotion" element={<Promotion />} />
     ),
-    key: "Booking",
+  },
+  {
+    key: "Đặt phòng",
     value: <Route index path="bookings/list" element={<BookingList />} />,
   },
 ];
