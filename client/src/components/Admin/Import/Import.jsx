@@ -13,36 +13,7 @@ const Import = () => {
     console.log("search:", value);
   };
 
-  const [dataSource, setDataSource] = useState([
-    {
-      id: 1,
-      name: "Teeth Brush",
-      amount: "10",
-      unitPrice: "20000",
-      total: "200000",
-    },
-    {
-      id: 2,
-      name: "Glass",
-      amount: "1",
-      unitPrice: "20000",
-      total: "200000",
-    },
-    {
-      id: 3,
-      name: "Bed",
-      amount: "1",
-      unitPrice: "20000",
-      total: "200000",
-    },
-    {
-      id: 4,
-      name: "Something",
-      amount: "1",
-      unitPrice: "20000",
-      total: "200000",
-    },
-  ]);
+  const [dataSource, setDataSource] = useState([]);
 
   const columns = [
     {
