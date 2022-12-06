@@ -11,39 +11,38 @@ const getAllBookings = async (req, res, next) => {
   res.status(200).send({ data });
 };
 const getRooms = async (req, res, next) => {
-  const {from: from, to: to } = req.query;
-  console.log(from)
-  console.log(to)
-  if(!from || !to)
-    return next(BadRequestError());
+  const { from: from, to: to } = req.query;
+  console.log(from);
+  console.log(to);
+  if (!from || !to) return next(BadRequestError());
 
-  const {data: booking, error: getBookingError} = await bookingDAL.getBookingByDate(from, to);
+  const { data: booking, error: getBookingError } =
+    await bookingDAL.getBookingByDate(from, to);
 
-  if(getBookingError)
-    return next(getBookingError);
+  if (getBookingError) return next(getBookingError);
 
-  const listBookingID = booking?.map((item)=>item.id)
+  const listBookingID = booking?.map((item) => item.id);
 
-  const {data: unavailableRoomID, getAvailableRoomIDError} = await roomDAL.getUnavailableRoomID(listBookingID);
+  const { data: unavailableRoomID, getAvailableRoomIDError } =
+    await roomDAL.getUnavailableRoomID(listBookingID);
 
-  if(getAvailableRoomIDError)
-    return next(getAvailableRoomIDError)
-  
-  const listRoomName = unavailableRoomID?.map((item)=>item.room_name)
+  if (getAvailableRoomIDError) return next(getAvailableRoomIDError);
 
-  const {data, error} = await roomDAL.getRoomAvailable(listRoomName);
+  const listRoomName = unavailableRoomID?.map((item) => item.room_name);
 
-  if(error) return next(error);
+  const { data, error } = await roomDAL.getRoomAvailable(listRoomName);
+
+  if (error) return next(error);
   console.log(data);
-  
+
   const listRoom = data?.map((item) => {
     return {
       roomType: item.room_type_id.name,
-      ...item
-    }
-  })
-  res.status(200).send({listRoom});
-}
+      ...item,
+    };
+  });
+  res.status(200).send({ listRoom });
+};
 const getBooking = async (req, res, next) => {
   const { id: bookingID } = req.params;
   const { data, error } = await bookingDAL.getBooking(bookingID);
@@ -56,30 +55,28 @@ const getBooking = async (req, res, next) => {
 
 // tao booking khong can check phong trong vi chi co status available moi co nut dat phong
 const createBooking = async (req, res, next) => {
-  const { booking, customer, voucher } = req.body;
+  const { booking } = req.body;
 
-  if (!booking || !customer) return next(BadRequestError());
+  if (!booking) return next(BadRequestError());
 
-  const { data: customerTemp, error: customerTempError } =
-    await customerDAL.getCustomerByID(customer?.id);
+  // const { data: customerTemp, error: customerTempError } =
+  //   await customerDAL.getCustomerByID(customer?.id);
 
-  if (customerTempError) return next(customerTempError);
+  // if (customerTempError) return next(customerTempError);
 
-  if (!customerTemp[0]) {
-    const { error: insertError } = await customerDAL.insertCustomer(customer);
+  // if (!customerTemp[0]) {
+  //   const { error: insertError } = await customerDAL.insertCustomer(customer);
 
-    if (insertError) return next(insertError);
-  }
+  //   if (insertError) return next(insertError);
+  // }
 
-  const { error: insertBookingError } = await bookingDAL.insertBooking({
-    voucher_id: voucher?.id,
-    customer_id: customer?.id,
+  const { data, error: insertBookingError } = await bookingDAL.insertBooking({
     ...booking,
   });
 
   if (insertBookingError) return next(insertBookingError);
 
-  res.status(201).send("Created");
+  res.status(201).send(data[0]);
 };
 
 const deleteBooking = async (req, res, next) => {

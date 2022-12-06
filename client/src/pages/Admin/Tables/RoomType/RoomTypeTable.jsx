@@ -235,6 +235,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
           columns={columns}
           dataSource={roomTypes}
           scroll={{ y: 350 }}
+          rowKey={(row) => row.id}
         ></Table>
       </Form>
     </div>
