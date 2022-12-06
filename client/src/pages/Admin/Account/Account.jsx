@@ -1,30 +1,32 @@
-import { Alert } from "antd";
 import React, { useEffect, useState, useContext } from "react";
-import { userRequest } from "../../../api/api";
-import Topbar from "../../../components/Topbar/Topbar";
+import { fetchAccount } from "../../../api/AccountAPI";
+import ErrorAlert from "../../../components/Error/Alert/ErrorAlert";
 import { AppContext } from "../../../context/AppContext";
 import AccountTable from "../Tables/Account/AccountTable";
 import "./account.css";
 
 const Account = () => {
-  const [accounts, setAccounts] = useState([]);
+  const [accounts, setAccounts] = useState(null);
   const { user } = useContext(AppContext);
 
   useEffect(() => {
-    const getAccounts = async () => {
-      const { data } = await userRequest.get("/accounts", {
-        params: { user: { position: user?.position } },
+    fetchAccount(user?.position)
+      .then(({ data }) => {
+        setAccounts(data);
+      })
+      .catch((error) => {
+        console.log(error);
+        ErrorAlert("Lấy dữ liệu tài khoản thất bại!!");
       });
-      setAccounts(data.data);
-    };
-    getAccounts();
   }, [user?.position]);
 
   return (
     <div className="container">
       <div className="accountContainer">
-        <div>Account</div>
-        <AccountTable accounts={accounts}></AccountTable>
+        <AccountTable
+          accounts={accounts}
+          setAccount={setAccounts}
+        ></AccountTable>
       </div>
     </div>
   );

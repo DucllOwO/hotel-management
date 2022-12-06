@@ -51,12 +51,12 @@ const AddRoom = () => {
 
       <div className="addRoomContainer">
         <div className="inputCon">
-          <div className="label">ID: </div>
+          <div className="label">Tên phòng </div>
           <Input placeholder="ID" disabled="true"></Input>
         </div>
 
         <div className="inputCon">
-          <div className="label">Images: </div>
+          <div className="label">Hình ảnh: </div>
           <div className="imageList">
             <ImgCrop rotate>
               <Upload
@@ -73,11 +73,11 @@ const AddRoom = () => {
         </div>
 
         <div className="inputCon">
-          <div className="label">Room Type: </div>
+          <div className="label">Loại phòng: </div>
           <Select
             className="select"
             showSearch
-            placeholder="Select a person"
+            placeholder="Chọn một loại phòng"
             onChange={onChangeSelect}
             onSearch={onSearch}
             filterOption={(input, option) =>
@@ -97,12 +97,12 @@ const AddRoom = () => {
         </div>
 
         <div className="inputCon">
-          <div className="label">Area: </div>
-          <Input suffix="m2" placeholder="Enter area"></Input>
+          <div className="label">Diện tích: </div>
+          <Input suffix="m2" placeholder="Nhập diện tích"></Input>
         </div>
 
         <div className="inputCon">
-          <div className="label">Utilities: </div>
+          <div className="label">Tiện ích: </div>
           <div className="listUtilities">
             <UtilitiesButton
               icon={ArrowDownOutlined}
@@ -112,8 +112,8 @@ const AddRoom = () => {
         </div>
 
         <div className="inputCon">
-          <div className="label">Price: </div>
-          <Input suffix="vnd" placeholder="Enter price"></Input>
+          <div className="label">Giá: </div>
+          <Input suffix="vnd" placeholder="Nhập giá"></Input>
         </div>
       </div>
       <BottomBar></BottomBar>

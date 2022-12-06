@@ -22,7 +22,7 @@ const PositionForm = ({ form, positionID = null, setOldFeaturesState }) => {
         })
         .catch((err) => {
           console.log(err);
-          ErrorAlert("Fetch features of position error!!");
+          ErrorAlert("Lấy danh sách chức năng của chức vụ không thành công!!");
         });
     else
       fetchFeatures(user?.position)
@@ -31,7 +31,7 @@ const PositionForm = ({ form, positionID = null, setOldFeaturesState }) => {
         })
         .catch((err) => {
           console.log(err);
-          ErrorAlert("Fetch features error!!");
+          ErrorAlert("Lấy danh sách chức năng không thành công!!");
         });
   }, [user?.position]);
 
@@ -39,12 +39,12 @@ const PositionForm = ({ form, positionID = null, setOldFeaturesState }) => {
     <>
       <Form layout="vertical" form={form} name="positionForm">
         <Form.Item
-          label="Position name"
+          label="Tên chức vụ"
           name="posName"
           rules={[
             {
               required: true,
-              message: "Please input position name!",
+              message: "Vui lòng nhập tên chức vụ!",
             },
           ]}
         >

@@ -19,7 +19,7 @@ const HRForm = ({ form, disable = false }) => {
       })
       .catch((err) => {
         console.log(err);
-        ErrorAlert("Fetch position data for select component error!!");
+        ErrorAlert("Lấy dữ liệu chức vụ cho người dùng chọn thất bại!!");
       });
   }, [user?.position]);
 
@@ -28,62 +28,86 @@ const HRForm = ({ form, disable = false }) => {
       <div className="modal">
         <div className="left">
           <Form.Item
-            label="ID"
+            label="CCCD"
             name="id"
             rules={[
               {
                 required: true,
-                message: "Please input ID!",
+                message: "Vui lòng nhập CCCD!",
               },
               {
-                max: 12,
-                message: "ID cannot longer than 10 characters",
+                type: "number",
+                message: "CCCD chỉ bao gồm số",
               },
             ]}
-            tooltip="Identity card"
+            tooltip="Số CMND/CCCD của khách hàng"
           >
-            <Input size="large" disabled={disable} />
+            <InputNumber
+              size="large"
+              controls={false}
+              disabled={disable}
+              style={{ width: "100%" }}
+            />
           </Form.Item>
           <Form.Item
-            label="Full Name"
+            label="Họ và tên"
             name="fullname"
             rules={[
               {
                 required: true,
-                message: "Please input full name!",
+                message: "Vui lòng nhập họ và tên!",
               },
             ]}
           >
-            <Input size="large" />
+            <Input size="large" style={{ textTransform: "capitalize" }} />
           </Form.Item>
           <Form.Item
-            label="Birthday"
+            label="Ngày sinh"
             name="date_of_birth"
             rules={[
               {
                 required: true,
-                message: "Please input birthday!",
+                message: "Vui lòng chọn ngày sinh!",
               },
               {
                 type: "date",
+                message: "Ngày sinh không hợp lệ!",
               },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  const birthday = new Date(value).toJSON().slice(0, 10);
+                  let utc = new Date().toJSON().slice(0, 10);
+                  console.log(birthday, utc);
+                  //console.log(new Date(birthday) == new Date(utc));
+                  if (birthday < utc) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error(
+                      "Chọn ngày hôm nay hoặc tương lai là ngày sinh không hợp lệ!"
+                    )
+                  );
+                },
+              }),
             ]}
           >
             <DatePicker size="large" format={DATE_FORMAT} />
           </Form.Item>
           <Form.Item
-            label="Phone"
+            label="Số điện thoại"
             name="phone_number"
             rules={[
               {
                 required: true,
-                message: "Please input phone!",
+                message: "Vui lòng nhập số điện thoại!",
               },
               {
                 min: 10,
+                message: "Số điện thoại bao gồm 10 số",
               },
               {
                 max: 10,
+                message: "Số điện thoại bao gồm 10 số",
               },
             ]}
           >
@@ -92,19 +116,19 @@ const HRForm = ({ form, disable = false }) => {
         </div>
         <div className="right">
           <Form.Item
-            label="Position"
+            label="Chức vụ"
             name="position_id"
             rules={[
               {
                 required: true,
-                message: "Please choose position!",
+                message: "Vui lòng chọn chức vụ!",
               },
             ]}
           >
             <Select
               size="large"
               showSearch
-              placeholder="Select a position"
+              placeholder="Chọn một chức vụ"
               optionFilterProp="children"
               filterOption={(input, option) =>
                 (option?.name ?? "").toLowerCase().includes(input.toLowerCase())
@@ -117,47 +141,65 @@ const HRForm = ({ form, disable = false }) => {
               })}
             />
           </Form.Item>
-          {/* <Form.Item
-            label="Address"
-            name="address"
-            rules={[
-              {
-                required: true,
-                message: "Please input address!",
-              },
-            ]}
-          >
-            <Input size="large" />
-          </Form.Item> */}
           <Form.Item
-            label="Starting Date"
+            label="Ngày vào làm"
             name="start_working_date"
             rules={[
               {
                 required: true,
-                message: "Please input starting date!",
+                message: "Vui lòng nhập ngày vào làm!",
               },
               {
                 type: "date",
+                message: "Ngày vào làm không hợp lệ!",
               },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (
+                    !getFieldValue("date_of_birth") ||
+                    getFieldValue("date_of_birth") === ""
+                  )
+                    return Promise.reject(
+                      new Error(
+                        "Vui lòng chọn ngày sinh trước khi chọn ngày vào làm!"
+                      )
+                    );
+                  const birthday = new Date(getFieldValue("date_of_birth"));
+                  const startWorkingDay = new Date(value);
+                  console.log(birthday, startWorkingDay);
+                  if (
+                    !value ||
+                    startWorkingDay.getTime() > birthday.getTime()
+                  ) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error("Ngày vào làm phải sau ngày sinh!")
+                  );
+                },
+              }),
             ]}
           >
             <DatePicker size="large" format={DATE_FORMAT} showToday />
           </Form.Item>
           <Form.Item
-            label="Salary"
+            label="Lương"
             name="salary"
             rules={[
               {
                 required: true,
-                message: "Please input salary!",
+                message: "Vui lòng nhập lương!",
               },
               {
                 type: "number",
+                message: "Lương chỉ bao gồm số!",
               },
             ]}
           >
             <InputNumber
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
               size="large"
               controls={false}
               style={{ width: "100%" }}

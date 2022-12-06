@@ -31,7 +31,7 @@ const UtilitiesTable = ({utilities, setUtilities}) => {
     },
     {
       key: "2",
-      title: "Name",
+      title: "Tên tiện ích",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
@@ -65,8 +65,8 @@ const UtilitiesTable = ({utilities, setUtilities}) => {
       },
     },
     {
-      key: "4",
-      title: "Actions",
+      key: "3",
+      title: "Thao tác",
       render: (_, record) => {
         if (editingRow !== null) {
           if (editingRow === record.idNum) {
@@ -76,14 +76,14 @@ const UtilitiesTable = ({utilities, setUtilities}) => {
                   htmlType="submit"
                   // onClick={() => {form.submit()}}
                 >
-                  save
+                  Lưu
                 </Button>
                 <Button
                   onClick={() => {
                     setEditingRow(null);
                   }}
                 >
-                  cancel
+                  Huỷ
                 </Button>
               </>
             );
@@ -93,22 +93,22 @@ const UtilitiesTable = ({utilities, setUtilities}) => {
           return (
             <>
               <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setEditingRow(record.idNum);
-                  form.setFieldsValue({
-                    name: record.name,
-                  });
-                }}
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   setEditingRow(record.idNum);
+                //   form.setFieldsValue({
+                //     name: record.name,
+                //   });
+                // }}
               >
-                edit
+                Chỉnh sửa
               </Button>
               <Button
                 onClick={() => {
                   onDeleteButton(record);
                 }}
               >
-                delete
+                Xoá
               </Button>
             </>
           );
@@ -119,7 +119,7 @@ const UtilitiesTable = ({utilities, setUtilities}) => {
 
   const onDeleteButton = (record) => {
     Modal.confirm({
-      title: "Are you sure, you want to delete this record?",
+      title: "Bạn có chắc muốn xoá dữ liệu?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
@@ -146,7 +146,7 @@ const UtilitiesTable = ({utilities, setUtilities}) => {
     <div className="table">
       <>
         <Modal
-          title="Utilities Infomation"
+          title="Thông tin tiện ích"
           visible={isModalVisible}
           onOk={handle}
           onCancel={handle}
@@ -165,7 +165,7 @@ const UtilitiesTable = ({utilities, setUtilities}) => {
             onChange={(e) => {
               setSearchedText(e.target.value);
             }}
-            placeholder="input search text"
+            placeholder="Tìm kiếm"
             className="searchInput"
             style={{ width: 264 }}
           />
@@ -176,7 +176,7 @@ const UtilitiesTable = ({utilities, setUtilities}) => {
             ghost
             icon={<PlusOutlined />}
           >
-            Add new
+            Tạo mới
           </Button>
         </div>
       </div>

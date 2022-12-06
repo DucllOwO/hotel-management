@@ -3,7 +3,10 @@ const supabase = require("../database");
 const TABLE_NAME = "permission";
 
 const loadAllPermission = async () => {
-  const { data, error } = await supabase.from(TABLE_NAME).select(`
+  const { data, error } = await supabase
+    .from(TABLE_NAME)
+    .select(
+      `
   position_id:position(
     name
   ),
@@ -11,7 +14,9 @@ const loadAllPermission = async () => {
     action,
     resource
   )
-  `);
+  `
+    )
+    .order("id", { ascending: true });
   //console.log("fetch all Permission data " + JSON.stringify(data));
   //console.log("error " + JSON.stringify(error));
   return { data, error };

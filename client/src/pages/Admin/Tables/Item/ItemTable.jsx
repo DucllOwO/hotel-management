@@ -29,7 +29,7 @@ const ItemTable = ({items, setItems}) => {
     },
     {
       key: "2",
-      title: "Name",
+      title: "Tên sản phẩm",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return String(record.name)
@@ -59,7 +59,7 @@ const ItemTable = ({items, setItems}) => {
     },
     {
       key: "3",
-      title: "Remaining",
+      title: "Số lượng tồn",
       dataIndex: "reserve_amount",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -83,7 +83,7 @@ const ItemTable = ({items, setItems}) => {
     },
     {
       key: "4",
-      title: "Price",
+      title: "Giá",
       dataIndex: "sell_price",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -107,7 +107,7 @@ const ItemTable = ({items, setItems}) => {
     },
     {
       key: "5",
-      title: "Actions",
+      title: "Thao tác",
       render: (_, record) => {
         if (editingRow !== null) {
           if (editingRow === record.idNum) {
@@ -117,14 +117,14 @@ const ItemTable = ({items, setItems}) => {
                   htmlType="submit"
                   // onClick={() => {form.submit()}}
                 >
-                  save
+                  Lưu
                 </Button>
                 <Button
                   onClick={() => {
                     setEditingRow(null);
                   }}
                 >
-                  cancel
+                  Huỷ
                 </Button>
               </>
             );
@@ -134,24 +134,24 @@ const ItemTable = ({items, setItems}) => {
           return (
             <>
               <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setEditingRow(record.idNum);
-                  form.setFieldsValue({
-                    name: record.name,
-                    minimum: record.minimum,
-                    price: record.price,
-                  });
-                }}
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   setEditingRow(record.idNum);
+                //   form.setFieldsValue({
+                //     name: record.name,
+                //     minimum: record.minimum,
+                //     price: record.price,
+                //   });
+                // }}
               >
-                edit
+                Chỉnh sửa
               </Button>
               <Button
                 onClick={() => {
                   onDeleteButton(record);
                 }}
               >
-                delete
+                Xoá
               </Button>
             </>
           );
@@ -162,7 +162,7 @@ const ItemTable = ({items, setItems}) => {
 
   const onDeleteButton = (record) => {
     Modal.confirm({
-      title: "Are you sure, you want to delete this record?",
+      title: "Bạn có chắc muốn xoá dữ liệu?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
@@ -189,7 +189,7 @@ const ItemTable = ({items, setItems}) => {
     <div className="table">
       <>
         <Modal
-          title="Item Infomation"
+          title="Thông tin sản phẩm"
           visible={isModalVisible}
           onOk={handle}
           onCancel={handle}
@@ -208,7 +208,7 @@ const ItemTable = ({items, setItems}) => {
             onChange={(e) => {
               setSearchedText(e.target.value);
             }}
-            placeholder="input search text"
+            placeholder="Tìm kiếm"
             className="searchInput"
             style={{ width: 264 }}
           />
@@ -219,7 +219,7 @@ const ItemTable = ({items, setItems}) => {
             ghost
             icon={<PlusOutlined />}
           >
-            Add new
+            Tạo mới
           </Button>
         </div>
       </div>

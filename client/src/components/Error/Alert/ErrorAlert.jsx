@@ -4,7 +4,7 @@ import { CloseCircleTwoTone } from "@ant-design/icons";
 
 const ErrorAlert = (description = "Something wrong!!") => {
   return notification.open({
-    message: "Error !!",
+    message: "Lỗi !!",
     description: description,
     icon: <CloseCircleTwoTone twoToneColor="#ff0000" />,
     duration: 10,

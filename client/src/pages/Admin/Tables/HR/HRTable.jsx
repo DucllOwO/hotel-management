@@ -14,6 +14,9 @@ import {
 } from "../../../../api/EmployeeAPI";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 import { formatDate, formatterInt } from "../../../../Utils/formatter";
+import { createAccount, deleteAccount } from "../../../../api/AccountAPI";
+
+const DEFAULT_PASSWORD = "123456";
 
 const HRTable = ({ employees, setEmployees }) => {
   const [modal, setModal] = useState(null);
@@ -31,35 +34,43 @@ const HRTable = ({ employees, setEmployees }) => {
   const columns = [
     {
       key: "1",
-      title: "ID",
+      title: "CCCD",
       dataIndex: "id",
       width: 145,
     },
     {
       key: "2",
-      title: "Name",
+      title: "Tên",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
-        return String(record.name)
-          .toLocaleLowerCase()
-          .includes(value.toLocaleLowerCase());
+        return (
+          String(record.fullname)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.id)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.phone_number)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase())
+        );
       },
-      dataIndex: "firstname",
+      dataIndex: "fullname",
       render: (text, record) => {
         return String(record.fullname);
       },
     },
     {
       key: "3",
-      title: "Birthday",
+      title: "Ngày sinh",
       dataIndex: "date_of_birth",
       render: (text, record) => {
-        return String(record.date_of_birth);
+        return String(formatDate(record.date_of_birth));
       },
     },
     {
       key: "4",
-      title: "Phone",
+      title: "Số điện thoại",
       dataIndex: "phone_number",
       render: (text, record) => {
         return String(record.phone_number);
@@ -67,15 +78,15 @@ const HRTable = ({ employees, setEmployees }) => {
     },
     {
       key: "5",
-      title: "Starting Date",
+      title: "Ngày vào làm",
       dataIndex: "start_working_date",
       render: (text, record) => {
-        return String(record.start_working_date);
+        return String(formatDate(record.date_of_birth));
       },
     },
     {
       key: "6",
-      title: "Salary",
+      title: "Lương",
       dataIndex: "salary",
       render: (text, record) => {
         return String(record.salary);
@@ -83,7 +94,7 @@ const HRTable = ({ employees, setEmployees }) => {
     },
     {
       key: "7",
-      title: "Actions",
+      title: "Hành động",
       render: (_, record) => {
         return (
           <>
@@ -92,14 +103,14 @@ const HRTable = ({ employees, setEmployees }) => {
                 openEditModal(record);
               }}
             >
-              Edit
+              Chỉnh sửa
             </Button>
             <Button
               onClick={() => {
                 onDeleteButton(record);
               }}
             >
-              Delete
+              Xóa
             </Button>
           </>
         );
@@ -112,28 +123,32 @@ const HRTable = ({ employees, setEmployees }) => {
 
     form.setFieldsValue({
       ...record,
-      start_working_date: dayjs(record.start_working_date, "YYYY-MM-DD"),
-      date_of_birth: dayjs(record.date_of_birth, "YYYY-MM-DD"),
+      start_working_date: dayjs(record.start_working_date, "DD-MM-YYYY"),
+      date_of_birth: dayjs(record.date_of_birth, "DD-MM-YYYY"),
     });
   };
 
   const onDeleteButton = (record) => {
     Modal.confirm({
-      title: "Are you sure, you want to delete this employee?",
-      okText: "Yes",
+      title: "Bạn có chắc là bạn muốn xóa nhân viên này?",
+      okText: "Có",
+      cancelText: "Không",
       okType: "danger",
-      onOk: () => {
-        deleteEmployee(positionUser, record?.id)
-          .then(({ data }) => {
-            setEmployees((pre) => {
-              return pre.filter((data) => data.id !== record?.id);
-            });
-            SuccessAlert("Delete employee success.");
-          })
-          .catch((err) => {
-            console.log(err);
-            ErrorAlert("Delete employee error!!");
+      onOk: async () => {
+        try {
+          if (record?.username) {
+            const res = await deleteAccount(positionUser, record.username);
+          }
+          await deleteEmployee(positionUser, record?.id);
+
+          setEmployees((pre) => {
+            return pre.filter((data) => data.id !== record?.id);
           });
+          SuccessAlert("Xóa nhân viên thành công.");
+        } catch (error) {
+          console.log(error);
+          ErrorAlert("Xóa nhân viên thất bại!!");
+        }
       },
     });
   };
@@ -145,7 +160,7 @@ const HRTable = ({ employees, setEmployees }) => {
 
   const modalAddEmployee = () => (
     <Modal
-      title="HR Information"
+      title="Thông tin Nhân sự"
       open={true}
       onOk={handleOKModalAdd}
       onCancel={handleCancelModal}
@@ -165,18 +180,30 @@ const HRTable = ({ employees, setEmployees }) => {
       .catch((error) => console.log(error));
   };
 
-  const onCreateEmployee = (values) => {
-    console.log(values);
-    console.log({ ...values });
-    createEmployee(positionUser, { ...values })
-      .then(({ data }) => {
-        setEmployees((prevPos) => [...prevPos, data]);
-        SuccessAlert("Create employee success.");
-      })
-      .catch((err) => {
-        console.log(err);
-        ErrorAlert("Create employee error!!");
+  const onCreateEmployee = async (values) => {
+    try {
+      const { data: accountData } = await createAccount(positionUser, {
+        username: values.id,
+        email: "",
+        password: DEFAULT_PASSWORD,
       });
+      console.log(accountData);
+      const { data: employeeData } = await createEmployee(positionUser, {
+        ...values,
+        username: accountData[0].username,
+      });
+
+      SuccessAlert("Tạo nhân viên thành công.");
+      SuccessAlert(
+        "Tự động tạo tài khoản cho nhân viên thành công, vui lòng kiểm tra."
+      );
+
+      setEmployees((prevPos) => [...prevPos, employeeData]);
+    } catch (error) {
+      console.log(error);
+      ErrorAlert("Tạo nhân viên thất bại!!");
+    }
+
     setModal(null);
     form.resetFields();
   };
@@ -184,7 +211,7 @@ const HRTable = ({ employees, setEmployees }) => {
   const modalEditEmployee = () => {
     return (
       <Modal
-        title="Position Information"
+        title="Thông tin Nhân sự"
         open={true}
         onOk={handleOKModalEdit}
         onCancel={handleCancelModal}
@@ -230,7 +257,7 @@ const HRTable = ({ employees, setEmployees }) => {
       })
       .catch((err) => {
         console.log(err);
-        ErrorAlert("Edit employee error!!");
+        ErrorAlert("Cập nhật thông tin nhân viên thất bại!!");
       });
 
     setModal(null);
@@ -254,7 +281,7 @@ const HRTable = ({ employees, setEmployees }) => {
             onChange={(e) => {
               setSearchedText(e.target.value);
             }}
-            placeholder="input search text"
+            placeholder="Tìm kiếm"
             className="searchInput"
             style={{ width: 264 }}
           />
@@ -265,7 +292,7 @@ const HRTable = ({ employees, setEmployees }) => {
             ghost
             icon={<PlusOutlined />}
           >
-            Add new
+            Tạo mới
           </Button>
         </div>
       </div>
@@ -282,3 +309,32 @@ const HRTable = ({ employees, setEmployees }) => {
 };
 
 export default HRTable;
+
+//createAccount(positionUser, {
+//   username: values.id,
+//   email: "",
+//   password: DEFAULT_PASSWORD,
+// })
+//   .then(({ data: accountData }) => {
+//     console.log(accountData);
+//     createEmployee(positionUser, {
+//       ...values,
+//       username: accountData.username,
+//     })
+//       .then(({ data: employeeData }) => {
+//         setEmployees((prevPos) => [...prevPos, employeeData]);
+//         SuccessAlert("Tạo nhân viên thành công.");
+//         SuccessAlert(
+//           "Tự động tạo tài khoản cho nhân viên thành công, vui lòng kiểm tra."
+//         );
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//         ErrorAlert("Tạo nhân viên thất bại!!");
+//         deleteAccount(positionUser, accountData.username);
+//       });
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//     ErrorAlert("Tạo nhân viên thất bại!!");
+//   });

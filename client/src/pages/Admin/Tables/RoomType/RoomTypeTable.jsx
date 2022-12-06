@@ -5,7 +5,7 @@ import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import RoomTypeModal from "../../Modals/RoomType/RoomTypeModal";
 
-const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
+const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -22,7 +22,6 @@ const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
 
   const [searchedText, setSearchedText] = useState("");
 
-
   const columns = [
     {
       key: "1",
@@ -31,17 +30,17 @@ const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
     },
     {
       key: "2",
-      title: "Room Type Name",
+      title: "Tên loại phòng",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
           String(record.name)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
-          String(record.birthday)
+          String(record.max_customers)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
-          String(record.phone)
+          String(record.bed_amount)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase())
         );
@@ -69,21 +68,7 @@ const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
     },
     {
       key: "3",
-      title: "Customer quatity",
-      filteredValue: [searchedText],
-      onFilter: (value, record) => {
-        return (
-          String(record.name)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.birthday)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.phone)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase())
-        );
-      },
+      title: "Số lượng khách",
       dataIndex: "max_customers",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -107,21 +92,7 @@ const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
     },
     {
       key: "4",
-      title: "Bed quantity",
-      filteredValue: [searchedText],
-      onFilter: (value, record) => {
-        return (
-          String(record.name)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.birthday)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.phone)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase())
-        );
-      },
+      title: "Số giường",
       dataIndex: "bed_amount",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -145,7 +116,7 @@ const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
     },
     {
       key: "5",
-      title: "Actions",
+      title: "Thao tác",
       render: (_, record) => {
         if (editingRow !== null) {
           if (editingRow === record.idNum) {
@@ -155,14 +126,14 @@ const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
                   htmlType="submit"
                   // onClick={() => {form.submit()}}
                 >
-                  save
+                  Lưu
                 </Button>
                 <Button
                   onClick={() => {
                     setEditingRow(null);
                   }}
                 >
-                  cancel
+                  Huỷ
                 </Button>
               </>
             );
@@ -172,22 +143,22 @@ const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
           return (
             <>
               <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setEditingRow(record.idNum);
-                  form.setFieldsValue({
-                    name: record.name,
-                  });
-                }}
+              // onClick={(e) => {
+              //   e.preventDefault();
+              //   setEditingRow(record.idNum);
+              //   form.setFieldsValue({
+              //     name: record.name,
+              //   });
+              // }}
               >
-                edit
+                Chỉnh sửa
               </Button>
               <Button
                 onClick={() => {
                   onDeleteButton(record);
                 }}
               >
-                delete
+                Xoá
               </Button>
             </>
           );
@@ -198,7 +169,7 @@ const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
 
   const onDeleteButton = (record) => {
     Modal.confirm({
-      title: "Are you sure, you want to delete this record?",
+      title: "Bạn có chắc muốn xoá dữ liệu?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
@@ -225,7 +196,7 @@ const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
     <div className="table">
       <>
         <Modal
-          title="Room Type Infomation"
+          title="Thông tin loại phòng"
           visible={isModalVisible}
           onOk={handle}
           onCancel={handle}
@@ -244,7 +215,7 @@ const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
             onChange={(e) => {
               setSearchedText(e.target.value);
             }}
-            placeholder="input search text"
+            placeholder="Tìm kiếm"
             className="searchInput"
             style={{ width: 264 }}
           />
@@ -255,7 +226,7 @@ const RoomTypeTable = ({roomTypes, setRoomTypes}) => {
             ghost
             icon={<PlusOutlined />}
           >
-            Add new
+            Tạo mới
           </Button>
         </div>
       </div>

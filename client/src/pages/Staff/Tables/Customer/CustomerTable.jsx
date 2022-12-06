@@ -26,12 +26,14 @@ const CustomerTable = ({customer, setCustomer}) => {
   const columns = [
     {
       key: "1",
-      title: "ID",
+      title: "CCCD",
       dataIndex: "id",
+      width: 140
     },
     {
       key: "2",
-      title: "name",
+      title: "Họ và tên",
+      width: "25%",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
@@ -55,7 +57,7 @@ const CustomerTable = ({customer, setCustomer}) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter the name",
+                  message: "Vui lòng nhập họ và tên",
                 },
               ]}
             >
@@ -69,7 +71,7 @@ const CustomerTable = ({customer, setCustomer}) => {
     },
     {
       key: "3",
-      title: "Birthday",
+      title: "Ngày sinh",
       dataIndex: "date_of_birth",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -79,7 +81,7 @@ const CustomerTable = ({customer, setCustomer}) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter the birthday",
+                  message: "Vui lòng nhập ngày sinh",
                 },
               ]}
             >
@@ -95,6 +97,7 @@ const CustomerTable = ({customer, setCustomer}) => {
       key: "4",
       title: "Email",
       dataIndex: "email",
+      width:"25%",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -103,7 +106,7 @@ const CustomerTable = ({customer, setCustomer}) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter the email",
+                  message: "Vui lòng nhập email",
                 },
               ]}
             >
@@ -117,7 +120,7 @@ const CustomerTable = ({customer, setCustomer}) => {
     },
     {
       key: "5",
-      title: "Actions",
+      title: "Thao tác",
       render: (_, record) => {
         if (editingRow !== null) {
           if (editingRow === record.idNum) {
@@ -127,14 +130,14 @@ const CustomerTable = ({customer, setCustomer}) => {
                   htmlType="submit"
                   // onClick={() => {form.submit()}}
                 >
-                  save
+                  Lưu
                 </Button>
                 <Button
                   onClick={() => {
                     setEditingRow(null);
                   }}
                 >
-                  cancel
+                  Huỷ
                 </Button>
               </>
             );
@@ -144,25 +147,25 @@ const CustomerTable = ({customer, setCustomer}) => {
           return (
             <>
               <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setEditingRow(record.idNum);
-                  form.setFieldsValue({
-                    name: record.name,
-                    birthday: record.birthday,
-                    address: record.address,
-                    email: record.email,
-                  });
-                }}
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   setEditingRow(record.idNum);
+                //   form.setFieldsValue({
+                //     name: record.name,
+                //     birthday: record.birthday,
+                //     address: record.address,
+                //     email: record.email,
+                //   });
+                // }}
               >
-                edit
+                Chỉnh sửa
               </Button>
               <Button
                 onClick={() => {
                   onDeleteButton(record);
                 }}
               >
-                delete
+                Xoá
               </Button>
             </>
           );
@@ -187,7 +190,7 @@ const CustomerTable = ({customer, setCustomer}) => {
 
   const onDeleteButton = (record) => {
     Modal.confirm({
-      title: "Are you sure, you want to delete this record?",
+      title: "Bạn có chắc muốn xoá dữ liệu?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
@@ -214,7 +217,7 @@ const CustomerTable = ({customer, setCustomer}) => {
     <div className="table">
       <>
         <Modal
-          title="Customer Infomation"
+          title="Thông tin khách hàng"
           visible={isModalVisible}
           onOk={handle}
           onCancel={handle}
@@ -233,7 +236,7 @@ const CustomerTable = ({customer, setCustomer}) => {
             onChange={(e) => {
               setSearchedText(e.target.value);
             }}
-            placeholder="input search text"
+            placeholder="Tìm kiếm"
             className="searchInput"
             style={{ width: 264 }}
           />
@@ -244,7 +247,7 @@ const CustomerTable = ({customer, setCustomer}) => {
             ghost
             icon={<PlusOutlined />}
           >
-            Add new
+            Tạo mới
           </Button>
         </div>
       </div>

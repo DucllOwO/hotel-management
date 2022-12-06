@@ -3,10 +3,12 @@ import "./login.css";
 import logo from "../../assets/images/logo.png";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import { useNavigate, Navigate } from "react-router-dom";
-import { publicRequest, userRequest } from "../../api/api";
+import { userRequest } from "../../api/api";
 import LocalStorage from "../../Utils/localStorage";
 import { AppContext } from "../../context/AppContext";
 import { Spin } from "antd";
+import ErrorAlert from "../../components/Error/Alert/ErrorAlert";
+import { loginAPI } from "../../api/AuthAPI";
 
 const Login = () => {
   const { setUser } = useContext(AppContext);
@@ -18,7 +20,9 @@ const Login = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const handleUsername = (e) => setUsername(e.target.value);
+  const handleUsername = (e) => {
+    setUsername(e.target.value);
+  };
   const handlePassword = (e) => setPassword(e.target.value);
 
   return (
@@ -34,12 +38,12 @@ const Login = () => {
       <div className="welcome">Welcome, let's enjoy your life</div>
       <div className="form">
         <div className="inputContainer">
-          <div className="labelInput">Username</div>
+          <div className="labelInput">Tên đăng nhập</div>
           <div className="input">
             <input
               id=""
               type="text"
-              placeholder="Please enter username"
+              placeholder="Vui lòng nhập tên đăng nhập"
               className="input"
               value={username}
               onChange={handleUsername}
@@ -48,12 +52,12 @@ const Login = () => {
         </div>
 
         <div className="inputContainer">
-          <div className="labelInput">Password</div>
+          <div className="labelInput">Mật khẩu</div>
           <div className="passwordLine">
             <div className="input">
               <input
                 type={type}
-                placeholder="Please enter password"
+                placeholder="Vui lòng nhập mật khẩu"
                 className="input"
                 value={password}
                 onChange={handlePassword}
@@ -81,7 +85,7 @@ const Login = () => {
           </div>
         ) : (
           <div className="loginButton" onClick={login}>
-            <div className="buttonText">Login</div>
+            <div className="buttonText">Đăng nhập</div>
           </div>
         )}
       </div>
@@ -98,41 +102,38 @@ const Login = () => {
 
   async function login(e) {
     e.preventDefault();
-
     if (!isLoading) {
-      try {
-        setIsLoading(true);
-        const { data } = await publicRequest.post("/auth/login", {
-          username,
-          password,
-        });
-        console.log(data);
-        if (data) {
-          const user = {
-            account: data?.user,
-            token: data?.accessToken,
-            position: data?.position,
-            permission: data?.permission,
-          };
-
-          // save token for axios
-          LocalStorage.setItem("user", user);
-          // save user to app context
-          setUser(user);
+      setIsLoading(true);
+      loginAPI(username.trim(), password.trim())
+        .then(({ data }) => {
           setIsLoading(false);
+          console.log(data);
+          if (data) {
+            const user = {
+              account: data?.user,
+              token: data?.accessToken,
+              position: data?.position,
+              permission: data?.permission,
+            };
 
-          userRequest.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${data?.accessToken}`;
+            // save token for axios
+            LocalStorage.setItem("user", user);
+            // save user to app context
+            setUser(user);
 
-          navigate("/admin");
-        }
-      } catch (error) {
-        setError(error);
-        setIsLoading(false);
-      }
+            userRequest.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${data?.accessToken}`;
+
+            navigate("/admin");
+          }
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          console.log(err);
+          ErrorAlert("Đăng nhập không thành công!!");
+        });
     }
-    // useNavigate('/admin')
   }
 };
 

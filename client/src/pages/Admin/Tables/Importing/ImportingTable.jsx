@@ -22,12 +22,17 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
     },
     {
       key: "2",
-      title: "Date",
+      title: "Ngày lập",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
-        return String(record.date)
-          .toLocaleLowerCase()
-          .includes(value.toLocaleLowerCase());
+        return (
+          String(record.established_date)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.item)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase())
+        );
       },
       dataIndex: "established_date",
       render: (text, record) => {
@@ -52,7 +57,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
     },
     {
       key: "3",
-      title: "Item",
+      title: "Tên sản phẩm",
       dataIndex: "item",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -76,67 +81,66 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
     },
     {
       key: "4",
-      title: "Quatity",
+      title: "Số lượng",
       dataIndex: "amount",
     },
     {
       key: "5",
-      title: "Total cost",
+      title: "Thành tiền",
       dataIndex: "total_cost",
     },
-    {
-      key: "6",
-      title: "Actions",
-      render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  save
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  cancel
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button onClick={(e) => {}}>print</Button>
-              <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setEditingRow(record.idNum);
-                  form.setFieldsValue({
-                    date: record.date,
-                    total: record.total,
-                  });
-                }}
-              >
-                edit
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                delete
-              </Button>
-            </>
-          );
-        }
-      },
-    },
+    // {
+    //   key: "6",
+    //   title: "Thao tác",
+    //   render: (_, record) => {
+    //     if (editingRow !== null) {
+    //       if (editingRow === record.idNum) {
+    //         return (
+    //           <>
+    //             <Button
+    //               htmlType="submit"
+    //               // onClick={() => {form.submit()}}
+    //             >
+    //               Lưu
+    //             </Button>
+    //             <Button
+    //               onClick={() => {
+    //                 setEditingRow(null);
+    //               }}
+    //             >
+    //               Huỷ
+    //             </Button>
+    //           </>
+    //         );
+    //       } else {
+    //       }
+    //     } else {
+    //       return (
+    //         <>
+    //           <Button
+    //             onClick={(e) => {
+    //               e.preventDefault();
+    //               setEditingRow(record.idNum);
+    //               form.setFieldsValue({
+    //                 date: record.date,
+    //                 total: record.total,
+    //               });
+    //             }}
+    //           >
+    //             Chỉnh sửa
+    //           </Button>
+    //           <Button
+    //             onClick={() => {
+    //               onDeleteButton(record);
+    //             }}
+    //           >
+    //             Xoá
+    //           </Button>
+    //         </>
+    //       );
+    //     }
+    //   },
+    // },
   ];
 
   const onAddButton = () => {
@@ -145,7 +149,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
 
   const onDeleteButton = (record) => {
     Modal.confirm({
-      title: "Are you sure, you want to delete this record?",
+      title: "Bạn có chắc muốn xoá dữ liệu?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
@@ -181,7 +185,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
             onChange={(e) => {
               setSearchedText(e.target.value);
             }}
-            placeholder="input search text"
+            placeholder="Tìm kiếm"
             className="searchInput"
             style={{ width: 264 }}
           />
@@ -192,7 +196,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
             ghost
             icon={<PlusOutlined />}
           >
-            Add new
+            Thêm mới
           </Button>
         </div>
       </div>
