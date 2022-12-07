@@ -6,7 +6,8 @@ const getDailyReport = async (req, res, next) => {
   
   const {date, type} = req.query;
 
-  console.log(type)
+  console.log(type);
+  console.log(date);
   
   if(!date || !type)
     return next(BadRequestError());
@@ -45,6 +46,7 @@ const getDailyReport = async (req, res, next) => {
 
 const getMonthlyReport = async (req, res, next) => {
   const {month} = req.query;
+  console.log(month)
   
   if(!month)
   return next(BadRequestError());
@@ -54,7 +56,7 @@ const getMonthlyReport = async (req, res, next) => {
   if(getReportError)
   return next(getReportError);
  
-  const { data: listDailyReport, error: getDailyReportError } = await reportDAL.getDailyReportByMonth(monthlyReport?.month); 
+  const { data: listDailyReport, error: getDailyReportError } = await reportDAL.getDailyReportByMonth(month); 
   
   if(getDailyReportError)
   return next(getDailyReportError);
@@ -66,17 +68,17 @@ const getYearlyReport = async (req, res, next) => {
   
     if(!year)
       return next(BadRequestError());
-    const { data: listMonlyReport, error: getMonthReportError } = await reportDAL.getMonthlyReportByYear(year);
+    const { data: yearlyReport, error: getMonthReportError } = await reportDAL.getYearlyReportByYear(year);
     
     if(getMonthReportError)
     return next(getMonthReportError);
   
-    const {data: monthlyReport, error: getReportError} = await reportDAL.getMonthlyReportByYear(year);
+    const {data: listMonlyReport, error: getReportError} = await reportDAL.getMonthlyReportByYear(year);
     
     if(getReportError)
     return next(getReportError);
   
-    res.status(200).send({report: monthlyReport, data: listMonlyReport});
+    res.status(200).send({report: yearlyReport, data: listMonlyReport});
   }
 module.exports = {
     getDailyReport,

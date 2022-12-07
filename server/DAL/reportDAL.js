@@ -38,11 +38,12 @@ async function getPurchaseByDate(date)
 }
 async function getMonthlyReportByMonth(month)
 {
-    console.log(month)
+    console.log("DAL")
+    console.log(month.toString())
     const{data, error} = await supabase
     .from('monthly_report')
     .select('*')
-    .eq('month', month);
+    .eq('month', month.toString());
     return {data, error}
 }
 async function getDailyReportByMonth(month)

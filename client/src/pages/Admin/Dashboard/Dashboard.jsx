@@ -24,7 +24,6 @@ const Dashboard = () => {
   const {user} = useContext(AppContext)
 
   useEffect(() => {
-    
     switch (type) {
       case "day":
         console.log(semiType)
@@ -42,7 +41,6 @@ const Dashboard = () => {
             console.log(data);
             setData(data.data);
             setReport(data.report);
-            console.log(report)
           });
         }
         break;
@@ -53,7 +51,7 @@ const Dashboard = () => {
           console.log(data);
           setData(data.data);
           setReport(data.report);
-          console.log(report)
+          // console.log(report)
         }); 
         break;
       case "year":
@@ -62,7 +60,7 @@ const Dashboard = () => {
           console.log(data);
           setData(data.data);
           setReport(data.report);
-          console.log(report)
+          // console.log(report)
         });
         break;
       default:
@@ -111,7 +109,7 @@ const Dashboard = () => {
               {type === "day" && (
                  <DatePicker
                  defaultValue={moment()}
-                 onChange={(values)=>{getYear(values._d);}}
+                 onChange={(values)=>{setTime(values._d);}}
                  picker="date"
                  format={dateFormat}
                ></DatePicker>
@@ -120,7 +118,7 @@ const Dashboard = () => {
                 <DatePicker
                   defaultValue={moment()}
                   picker="month"
-                  onChange={(values)=>{setTime(values._d)}}
+                  onChange={(values)=>{setTime(getMonth(values._d));}}
                   format={monthFormat}
                 ></DatePicker>
               )}
@@ -128,7 +126,7 @@ const Dashboard = () => {
                 <DatePicker
                   picker="year"
                   defaultValue={moment()}
-                  onChange={(values)=>{setTime(values._d)}}
+                  onChange={(values)=>{setTime(getYear(values._d))}}
                 ></DatePicker>
               )}
             </div>
@@ -171,7 +169,7 @@ const Dashboard = () => {
         data = {data}
         ></DashboardTable>
         : 
-        <MultiLineChart />
+        <MultiLineChart reportData={data}/>
         }
       </div>
     </div>
