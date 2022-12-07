@@ -1,0 +1,131 @@
+.home {
+    width: 100%;
+    height: 100vh;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none;
+    background-color: var(--light-grey);
+}
+
+.top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 60px;
+    align-items: center;
+    height: 100px;
+    position: relative;
+}
+
+.homeLogo {
+    height: 40px;
+    cursor: pointer;
+}
+
+.nav {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--fs-14);
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.navItem {
+    margin: 0 10px;
+    font-weight: var(--fw-bold);
+    color: var(--grey);
+    cursor: pointer;
+}
+
+.navItem:hover{
+    color: black;
+}
+
+.bullet {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--grey);
+}
+
+.loginBtn {
+    color: var(--black);
+    font-weight: var(--fw-bold);
+}
+
+.signupBtn {
+    color: var(--primary-color);
+    font-weight: var(--fw-bold);
+}
+
+.slider {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 75px;
+}
+
+.sliderPoints {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.sliderPoint {
+    margin: 0 4px;
+    margin-bottom: 40px;
+}
+
+.services{
+    margin: 0 60px;
+    display: flex;
+}
+
+.serveTitle {
+    display: flex;
+    font-size: var(--fs-32);
+    font-weight: var(--fw-bold);
+    align-items: center;
+}
+
+.what{
+    margin-right: 10px;
+    color: var(--black);
+}
+
+.weServe{
+    background-color: var(--black);
+    color: var(--primary-color);
+    padding: 0 10px;
+}
+
+.serveItems {
+    display: flex;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.titleContainer{
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.title{
+    font-size: var(--fs-40);
+    font-weight: var(--fw-bold);
+    text-align: end;
+}
+
+.titleDesc{
+    color: var(--grey);
+    font-size: var(--fs-14);
+}
+
