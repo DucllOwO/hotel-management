@@ -86,39 +86,38 @@ const BookingTable = ({
   const onBooking = (value) => {};
 
   const handleOKModal = async () => {
-    try {
-      const values = await customerInfoForm.validateFields();
-      const isCusObjEmpty = Object.keys(currentCustomer).length === 0;
-      // isCusObjEmpty === true === customer not available
-      if (isCusObjEmpty) {
-        //create customer
-        // create booking
-      } else {
-        const currentSelectRoom = rooms.find(
-          (room) => room.room_name === values.room_name
-        );
-        // create booking
-        const { data: bookingData } = await createBooking(
-          user.position,
-          currentCustomer,
-          currentSelectRoom,
-          from,
-          to
-        );
-
-        setRooms((pre) => {
-          return pre.filter(
-            (data) => data.room_name !== bookingData?.room_name
-          );
-        });
-      }
-      setCurrentCustomer({});
-      SuccessAlert("Đặt phòng thành công.");
-      setCurrentCustomer({});
-    } catch (error) {
-      console.log(error);
-      ErrorAlert("Đặt phòng thất bại!");
-    }
+    // try {
+    //   const values = await customerInfoForm.validateFields();
+    //   const isCusObjEmpty = Object.keys(currentCustomer).length === 0;
+    //   // isCusObjEmpty === true === customer not available
+    //   if (isCusObjEmpty) {
+    //     //create customer
+    //     // create booking
+    //   } else {
+    //     const currentSelectRoom = rooms.find(
+    //       (room) => room.room_name === values.room_name
+    //     );
+    //     // create booking
+    //     const { data: bookingData } = await createBooking(
+    //       user.position,
+    //       currentCustomer,
+    //       currentSelectRoom,
+    //       from,
+    //       to
+    //     );
+    //     setRooms((pre) => {
+    //       return pre.filter(
+    //         (data) => data.room_name !== bookingData?.room_name
+    //       );
+    //     });
+    //   }
+    //   setCurrentCustomer({});
+    //   SuccessAlert("Đặt phòng thành công.");
+    //   setCurrentCustomer({});
+    // } catch (error) {
+    //   console.log(error);
+    //   ErrorAlert("Đặt phòng thất bại!");
+    // }
   };
 
   const openModalInfoCustomer = () => {
