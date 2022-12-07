@@ -6,7 +6,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import "./customertable.css";
 import CustomerModal from "../../Modals/Customer/CustomerModal";
 
-const CustomerTable = ({customer, setCustomer}) => {
+const CustomerTable = ({ customer, setCustomer }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -21,14 +21,12 @@ const CustomerTable = ({customer, setCustomer}) => {
 
   const [searchedText, setSearchedText] = useState("");
 
-  
-
   const columns = [
     {
       key: "1",
       title: "CCCD",
       dataIndex: "id",
-      width: 140
+      width: 140,
     },
     {
       key: "2",
@@ -48,25 +46,9 @@ const CustomerTable = ({customer, setCustomer}) => {
             .includes(value.toLocaleLowerCase())
         );
       },
-      dataIndex: "firstname",
+      dataIndex: "fullname",
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập họ và tên",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return String(record.fullname);
       },
     },
     {
@@ -97,7 +79,7 @@ const CustomerTable = ({customer, setCustomer}) => {
       key: "4",
       title: "Email",
       dataIndex: "email",
-      width:"25%",
+      width: "25%",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -147,16 +129,16 @@ const CustomerTable = ({customer, setCustomer}) => {
           return (
             <>
               <Button
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   setEditingRow(record.idNum);
-                //   form.setFieldsValue({
-                //     name: record.name,
-                //     birthday: record.birthday,
-                //     address: record.address,
-                //     email: record.email,
-                //   });
-                // }}
+              // onClick={(e) => {
+              //   e.preventDefault();
+              //   setEditingRow(record.idNum);
+              //   form.setFieldsValue({
+              //     name: record.name,
+              //     birthday: record.birthday,
+              //     address: record.address,
+              //     email: record.email,
+              //   });
+              // }}
               >
                 Chỉnh sửa
               </Button>
