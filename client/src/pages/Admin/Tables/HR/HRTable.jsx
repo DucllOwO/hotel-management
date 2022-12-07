@@ -15,6 +15,7 @@ import {
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 import { formatDate, formatterInt } from "../../../../Utils/formatter";
 import { createAccount, deleteAccount } from "../../../../api/AccountAPI";
+import moment from "moment";
 
 const DEFAULT_PASSWORD = "123456";
 
@@ -81,7 +82,7 @@ const HRTable = ({ employees, setEmployees }) => {
       title: "Ngày vào làm",
       dataIndex: "start_working_date",
       render: (text, record) => {
-        return String(formatDate(record.date_of_birth));
+        return String(formatDate(record.start_working_date));
       },
     },
     {
@@ -120,11 +121,12 @@ const HRTable = ({ employees, setEmployees }) => {
 
   const openEditModal = (record) => {
     setModal("edit");
-
+    console.log(record.salary.slice(1, record.salary.length));
     form.setFieldsValue({
       ...record,
-      start_working_date: dayjs(record.start_working_date, "DD-MM-YYYY"),
-      date_of_birth: dayjs(record.date_of_birth, "DD-MM-YYYY"),
+      start_working_date: moment(record.start_working_date),
+      date_of_birth: moment(record.date_of_birth),
+      salary: record.salary.slice(1, record.salary.length),
     });
   };
 

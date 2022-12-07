@@ -4,7 +4,7 @@ import { Table, Button, Modal, Form, Input } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import "./customertable.css";
-import CustomerModal from "../../Modals/Customer/CustomerModal";
+import CustomerForm from "../../../../components/Form/CustomerForm";
 
 const CustomerTable = ({ customer, setCustomer }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -48,7 +48,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
       },
       dataIndex: "fullname",
       render: (text, record) => {
-        return String(record.fullname);
+        return text ? String(text) : "";
       },
     },
     {
@@ -56,102 +56,47 @@ const CustomerTable = ({ customer, setCustomer }) => {
       title: "Ngày sinh",
       dataIndex: "date_of_birth",
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="birthday"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập ngày sinh",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return text ? String(text) : "";
       },
     },
     {
       key: "4",
-      title: "Email",
-      dataIndex: "email",
-      width: "25%",
+      title: "Số  điện thoại",
+      dataIndex: "phone_number",
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập email",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return text ? String(text) : "";
       },
     },
     {
       key: "5",
+      title: "Email",
+      dataIndex: "email",
+      width: "25%",
+      render: (text, record) => {
+        return text ? String(text) : "";
+      },
+    },
+    {
+      key: "6",
       title: "Thao tác",
       render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  Lưu
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  Huỷ
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button
-              // onClick={(e) => {
-              //   e.preventDefault();
-              //   setEditingRow(record.idNum);
-              //   form.setFieldsValue({
-              //     name: record.name,
-              //     birthday: record.birthday,
-              //     address: record.address,
-              //     email: record.email,
-              //   });
-              // }}
-              >
-                Chỉnh sửa
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                Xoá
-              </Button>
-            </>
-          );
-        }
+        return (
+          <>
+            <Button
+              htmlType="submit"
+              // onClick={() => {form.submit()}}
+            >
+              Chỉnh sửa
+            </Button>
+            <Button
+              onClick={() => {
+                setEditingRow(null);
+              }}
+            >
+              Xóa
+            </Button>
+          </>
+        );
       },
     },
   ];
@@ -204,7 +149,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
           onOk={handle}
           onCancel={handle}
         >
-          <CustomerModal></CustomerModal>
+          <CustomerForm />
         </Modal>
       </>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
@@ -233,13 +178,11 @@ const CustomerTable = ({ customer, setCustomer }) => {
           </Button>
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={customer}
-          scroll={{ x: true, y: 350 }}
-        ></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={customer}
+        scroll={{ x: true, y: 350 }}
+      ></Table>
     </div>
   );
 };
