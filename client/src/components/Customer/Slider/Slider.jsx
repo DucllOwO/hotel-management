@@ -12,7 +12,7 @@ const Slider = () => {
   return (
     <div className="sliderContainer">
       <div className="black">
-        <div className="name">Hotel Name</div>
+        <div className="hotelName">Hotel Name</div>
       </div>
       <div className="centerBar">
         <div className="centerNav">

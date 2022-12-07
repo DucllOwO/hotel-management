@@ -13,7 +13,7 @@
     border-radius: 40px 0 0 40px;
 }
 
-.name{
+.hotelName{
     font-size: var(--fs-60);
     color: var(--primary-color);
     padding-left: 40px;
