@@ -6,7 +6,8 @@ async function getDailyReportByDate(date)
     const{data, error} = await supabase
     .from('daily_report')
     .select('*')
-    .eq('date', date);
+    .eq('date', date)
+    .order('date', { ascending: true });
     return {data, error}
 }
 async function getReceiptByDate(date)
@@ -15,7 +16,8 @@ async function getReceiptByDate(date)
     const{data, error} = await supabase
     .from('invoice')
     .select('*')
-    .eq('established_date', date);
+    .eq('established_date', date)
+    .order('established_date', { ascending: true });
     return {data, error}
 }
 async function getPaymentByDate(date)
@@ -24,7 +26,8 @@ async function getPaymentByDate(date)
     const{data, error} = await supabase
     .from('payment')
     .select('*')
-    .eq('established_date', date);
+    .eq('established_date', date)
+    .order('established_date', { ascending: true });
     return {data, error}
 }
 async function getPurchaseByDate(date)
@@ -33,8 +36,9 @@ async function getPurchaseByDate(date)
     const{data, error} = await supabase
     .from('purchase')
     .select('*')
-    .eq('established_date', date);
-    return {data, error}
+    .eq('established_date', date)
+    .order('established_date', { ascending: true });
+    return {data, error};
 }
 async function getMonthlyReportByMonth(month)
 {
@@ -51,7 +55,8 @@ async function getDailyReportByMonth(month)
     const{data, error} = await supabase
     .from('daily_report')
     .select('*')
-    .eq('report_month', month);
+    .eq('report_month', month)
+    .order('date', { ascending: true });
     return {data, error}
 }
 
@@ -68,7 +73,8 @@ async function getMonthlyReportByYear(year)
     const {data, error} = await supabase
     .from('monthly_report')
     .select('*')
-    .eq('report_year', year);
+    .eq('report_year', year)
+    .order('month', { ascending: true });
     return {data, error};
 }
 

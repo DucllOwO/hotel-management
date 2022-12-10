@@ -30,37 +30,30 @@ const Dashboard = () => {
         if(semiType ==="income"){
           fetchDailyReport(user?.position, time, semiType)
           .then(({ data }) => {
-            console.log(data);
             setData(data.data);
             setReport(data.report);
-            console.log(report)
           });}
         else{
           fetchDailyReport(user?.position, time, semiType)
           .then(({ data }) => {
-            console.log(data);
             setData(data.data);
             setReport(data.report);
           });
         }
         break;
       case "month":
-        console.log(time);
+        // console.log(time);
         fetchMonthlyReport(user?.position, time)
         .then(({ data }) => {
-          console.log(data);
           setData(data.data);
           setReport(data.report);
-          // console.log(report)
         }); 
         break;
       case "year":
         fetchYearlyReport(user?.position, time)
         .then(({ data }) => {
-          console.log(data);
           setData(data.data);
           setReport(data.report);
-          // console.log(report)
         });
         break;
       default:
@@ -135,13 +128,13 @@ const Dashboard = () => {
         <div className="sumary">
           <Row gutter={16}>
             <Col span={8}>
-              <Card title="Tổng doanh thu">{report[0]?.income}</Card>
+              <Card title="Tổng doanh thu">{report ? report[0]?.income : 0}</Card>
             </Col>
             <Col span={8}>
-              <Card title="Tổng chi phí">{report[0]?.outcome}</Card>
+              <Card title="Tổng chi phí">{report ? report[0]?.outcome : 0}</Card>
             </Col>
             <Col span={8}>
-              <Card title="Tổng lợi nhuận">{report[0]?.profit}</Card>
+              <Card title="Tổng lợi nhuận">{report ? report[0]?.profit : 0}</Card>
             </Col>
           </Row>
         </div>

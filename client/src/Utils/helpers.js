@@ -6,7 +6,7 @@ export const getMonth = (date) => {
     const newDate = new Date(date);
     const dateString = newDate.toISOString();
     const tempArray = dateString.split("-");
-    console.log(tempArray);
+    // console.log(tempArray);
     return `${tempArray[0]}-${tempArray[1]}-1`;
     // console.log(month)
     // return month;
@@ -18,8 +18,8 @@ export const getYear = (date) => {
     const newDate = new Date(date);
     const dateString = newDate.toISOString();
     const tempArray = dateString.split("-");
-    console.log(tempArray);
+    // console.log(tempArray);
     const year = new Date(tempArray[0]);
-    console.log(year)
+    // console.log(year)
     return year.toISOString();
 }
