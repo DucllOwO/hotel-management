@@ -7,7 +7,7 @@ const MultiLineChart = ({reportData}) => {
   useEffect(() => {
     // setConfigData([]);
     setData(reportData);
-    // mapData();
+    config.data = mapData();
     // config.data = configData;
     console.log(config.data)
   }, [reportData]);
