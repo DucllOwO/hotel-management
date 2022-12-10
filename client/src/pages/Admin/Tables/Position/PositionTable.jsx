@@ -150,7 +150,7 @@ const PositionTable = ({ positions, setPositions }) => {
       title: "ID",
       colSpan: 1,
       dataIndex: "id",
-      width: "10%",
+      width: 100,
     },
     {
       key: "2",
@@ -228,7 +228,7 @@ const PositionTable = ({ positions, setPositions }) => {
       <Table
         columns={columns}
         dataSource={positions}
-        scroll={{ y: "60vh" }}
+        scroll={{ y: "100%", x: "100%" }}
         loading={positions ? false : true}
         rowKey={(record) => record.id}
         pagination={{ pageSize: 10 }}

@@ -11,4 +11,5 @@
 .homeContainer {
     flex: 4;
     margin-left: 5px;
+    width: 80%;
 }
