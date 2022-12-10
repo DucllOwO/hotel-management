@@ -17,7 +17,7 @@ const Position = () => {
       })
       .catch((error) => {
         console.log(error);
-        ErrorAlert("Fetch position data error!!");
+        ErrorAlert("Lấy dữ liệu chức vụ từ máy chủ thất bại!!");
       });
   }, [user?.position]);
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./admin.css";
 import Navbar from "../../components/Admin/Navbar/Navbar";
 import Topbar from "../../components/Topbar/Topbar";
@@ -9,11 +9,10 @@ import ErrorBoundary from "../../components/Error/ErrorBoundary/ErrorBoundary";
 
 const Admin = () => {
   const user = LocalStorage.getItem("user");
-  useEffect(() => {
-    userRequest.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${user?.token}`;
-  }, [user?.token]);
+
+  userRequest.defaults.headers.common[
+    "Authorization"
+  ] = `Bearer ${user?.token}`;
 
   return (
     <ErrorBoundary>

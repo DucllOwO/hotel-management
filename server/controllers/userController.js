@@ -54,6 +54,7 @@ const getUser = async (req, res, next) => {
 const createUser = async (req, res, next) => {
   const { type } = req.query;
   const { userInfo } = req.body;
+  console.log(userInfo);
 
   if (!type || !userInfo) return next(BadRequestError());
 
