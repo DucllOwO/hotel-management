@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../../index.css";
 import { Table, Button, Modal, Form, Input, DatePicker, Checkbox } from "antd";
-import "antd/dist/antd.less";
 import "./bookingtable.css";
 import BookingForm from "../../../../../components/Form/BookingForm";
 import { createBooking } from "../../../../../api/BookingAPI";

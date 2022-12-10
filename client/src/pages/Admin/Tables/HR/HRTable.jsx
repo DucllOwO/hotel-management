@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import dayjs from "dayjs";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
-import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import HRForm from "../../../../components/Form/HRForm";
 import { AppContext } from "../../../../context/AppContext";
@@ -303,7 +302,7 @@ const HRTable = ({ employees, setEmployees }) => {
         loading={employees ? false : true}
         columns={columns}
         dataSource={employees}
-        scroll={{ y: 350 }}
+        scroll={{ y: "100%", x: "100%" }}
         rowKey={(record) => record.id}
       ></Table>
     </div>
