@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
-import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import PromotionForm from "../../../../components/Form/PromotionForm";

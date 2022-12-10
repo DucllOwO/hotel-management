@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
-import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import AccountForm from "../../../../components/Form/AccountForm";
 import {
@@ -53,6 +52,7 @@ const AccountTable = ({ accounts, setAccount }) => {
       render: (text, record) => {
         return String(record.username);
       },
+      width: 300,
     },
     {
       key: "2",
@@ -247,7 +247,7 @@ const AccountTable = ({ accounts, setAccount }) => {
         loading={accounts ? false : true}
         columns={columns}
         dataSource={accounts}
-        scroll={{ y: 350 }}
+        scroll={{ y: "100%", x: "100%" }}
         rowKey={(row) => row.username}
       ></Table>
     </div>
