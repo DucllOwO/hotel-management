@@ -80,56 +80,32 @@ const RoomsTable = ({ rooms, setRoom }) => {
         }
       },
     },
+    // {
+    //   key: "3",
+    //   title: "Diện tích",
+    //   dataIndex: "size",
+    //   render: (text, record) => {
+    //     if (editingRow === record.idNum) {
+    //       return (
+    //         <Form.Item
+    //           name="area"
+    //           rules={[
+    //             {
+    //               required: true,
+    //               message: "Vui lòng nhập diện tích",
+    //             },
+    //           ]}
+    //         >
+    //           <Input />
+    //         </Form.Item>
+    //       );
+    //     } else {
+    //       return <p>{text}</p>;
+    //     }
+    //   },
+    // },
     {
       key: "3",
-      title: "Diện tích",
-      dataIndex: "size",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="area"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập diện tích",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-    },
-    {
-      key: "4",
-      title: "Giá",
-      dataIndex: "price",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="price"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập giá",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-    },
-    {
-      key: "5",
       title: "Thao tác",
       render: (_, record) => {
         if (editingRow !== null) {

@@ -92,6 +92,30 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
     },
     {
       key: "6",
+      title: "Giá",
+      dataIndex: "price",
+      render: (text, record) => {
+        if (editingRow === record.idNum) {
+          return (
+            <Form.Item
+              name="price"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập giá",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          );
+        } else {
+          return <p>{text}</p>;
+        }
+      },
+    },
+    {
+      key: "7",
       title: "Thao tác",
       render: (_, record) => {
         return (

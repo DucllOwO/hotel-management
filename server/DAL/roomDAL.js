@@ -13,7 +13,6 @@ const getRoomByStatus = (status) => {
     .select(
       `
       room_name,
-      size,
       room_type_id(name)
     `
     )
@@ -32,10 +31,8 @@ const getRoomAvailable = (listRoom) => {
   return supabase
     .from(TABLE_NAME)
     .select(
-      `
+    `
       room_name,
-      size,
-      price,
       room_type_id(name)
     `
     )
@@ -49,8 +46,6 @@ const getAllRooms = () => {
     .select(
       `
       room_name,
-      size,
-      price,
       status,
       room_type(name)
     `
