@@ -116,6 +116,30 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
     },
     {
       key: "5",
+      title: "Diện tích (m2)",
+      dataIndex: "area",
+      render: (text, record) => {
+        if (editingRow === record.idNum) {
+          return (
+            <Form.Item
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập diện tích",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          );
+        } else {
+          return <p>{text}</p>;
+        }
+      },
+    },
+    {
+      key: "6",
       title: "Thao tác",
       render: (_, record) => {
         if (editingRow !== null) {

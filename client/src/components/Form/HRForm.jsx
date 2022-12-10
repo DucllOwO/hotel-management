@@ -183,26 +183,21 @@ const HRForm = ({ form, disable = false }) => {
             <DatePicker size="large" format={DATE_FORMAT} showToday />
           </Form.Item>
           <Form.Item
-            label="Lương"
-            name="salary"
+            label="Email"
+            name="email"
             rules={[
               {
                 required: true,
-                message: "Vui lòng nhập lương!",
+                message: "Vui lòng nhập email!",
               },
               {
-                type: "number",
-                message: "Lương chỉ bao gồm số!",
+                type: "email",
+                message: "Email không đúng định dạng",
               },
             ]}
           >
-            <InputNumber
-              formatter={(value) =>
-                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-              }
+            <Input
               size="large"
-              controls={false}
-              style={{ width: "100%" }}
             />
           </Form.Item>
         </div>

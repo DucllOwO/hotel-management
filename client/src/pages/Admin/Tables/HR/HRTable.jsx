@@ -86,10 +86,10 @@ const HRTable = ({ employees, setEmployees }) => {
     },
     {
       key: "6",
-      title: "Lương",
-      dataIndex: "salary",
+      title: "Email",
+      dataIndex: "email",
       render: (text, record) => {
-        return String(record.salary);
+        return String(record.email);
       },
     },
     {

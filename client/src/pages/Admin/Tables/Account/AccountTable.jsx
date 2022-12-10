@@ -54,17 +54,17 @@ const AccountTable = ({ accounts, setAccount }) => {
         return String(record.username);
       },
     },
-    {
-      key: "2",
-      title: "Email",
-      dataIndex: "email",
-      render: (text, record) => {
-        return record.email ? String(record.email) : "";
-      },
-    },
+    // {
+    //   key: "2",
+    //   title: "Email",
+    //   dataIndex: "email",
+    //   render: (text, record) => {
+    //     return record.email ? String(record.email) : "";
+    //   },
+    // },
 
     {
-      key: "3",
+      key: "2",
       title: "Thao tác",
       render: (_, record) => {
         return (
