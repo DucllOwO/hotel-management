@@ -4,6 +4,7 @@ import { Table, Button, Modal, Form, Input } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import AddRoomForm from "../../../../components/Form/AddRoomForm";
 
 const RoomsTable = ({ rooms, setRoom }) => {
   const navigate = useNavigate();
@@ -13,6 +14,8 @@ const RoomsTable = ({ rooms, setRoom }) => {
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
+
+  const [modal, setModal] = useState(false);
 
   const columns = [
     {
@@ -181,8 +184,22 @@ const RoomsTable = ({ rooms, setRoom }) => {
     },
   ];
 
-  const onAddButton = () => {
-    navigate("/admin/addroom");
+  const addRoomModal = () => {
+    return (
+      <Modal
+        title="Thêm phòng"
+        open={true}
+        onOk={() => {
+          setModal(false);
+        }}
+        onCancel={() => {
+          setModal(false);
+        }}
+        width="40%"
+      >
+        <AddRoomForm></AddRoomForm>
+      </Modal>
+    );
   };
 
   const onDeleteButton = (record) => {
@@ -212,6 +229,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
 
   return (
     <div className="table">
+      {modal === true && addRoomModal()}
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div></div>
@@ -228,7 +246,9 @@ const RoomsTable = ({ rooms, setRoom }) => {
             style={{ width: 264 }}
           />
           <Button
-            onClick={onAddButton}
+            onClick={() => {
+              setModal(true);
+            }}
             className="addButton"
             type="primary"
             ghost

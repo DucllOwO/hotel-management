@@ -23,6 +23,10 @@ import Position from "./pages/Admin/Position/Position";
 import _404ErrorBoundary from "./components/Error/ErrorBoundary/_404ErrorBoundary";
 import AuthErrorBoundary from "./components/Error/ErrorBoundary/AuthErrorBoundary";
 import Promotion from "./pages/Admin/Promotion/Promotion";
+import AddRoom from "./components/Admin/AddRoom/AddRoom";
+import Import from "./components/Admin/Import/Import";
+
+import "./app.css";
 
 const App = () => {
   const { user } = useContext(AppContext);
@@ -33,10 +37,20 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className="App" style={{ height: "100vh" }}>
         <Routes>
           <Route key="login" index element={<Login />}></Route>
           <Route key="login1" path="/login" element={<Login />}></Route>
+          <Route
+            key="Thêm phòng"
+            path="/admin/addroom"
+            element={<AddRoom />}
+          ></Route>
+          <Route
+            key="Nhập hàng"
+            path="/admin/import"
+            element={<Import />}
+          ></Route>
           <Route key="admin" path="/admin" element={<Admin />}>
             {listFeature
               ? listRoute.map((item) => {
@@ -138,6 +152,14 @@ const listRoute = [
   {
     key: "Đặt phòng",
     value: <Route index path="bookings/list" element={<BookingList />} />,
+  },
+  {
+    key: "Thêm phòng",
+    value: <Route index path="/addroom" element={<AddRoom />} />,
+  },
+  {
+    key: "Nhập hàng",
+    value: <Route index path="/import" element={<Import />} />,
   },
 ];
 

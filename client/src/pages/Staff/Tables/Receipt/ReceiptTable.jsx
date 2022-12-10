@@ -11,6 +11,8 @@ const ReceiptTable = () => {
 
   const [searchedText, setSearchedText] = useState("");
 
+  const [modal, setModal] = useState(false);
+
   const [dataSource, setDataSource] = useState([
     {
       idNum: "2131241231",
@@ -241,12 +243,37 @@ const ReceiptTable = () => {
     setEditingRow(null);
   };
 
+  const HandelOKModal = () => {
+    console.log("ok");
+  };
+
+  const HandelCancelModal = () => {
+    console.log("cancel");
+  };
+
+  const ModalDetail = () => {
+    <Modal
+      open="true"
+      onOk={handleOKModal}
+      onCancel={handleCancelModal}
+      width="40%"
+    ></Modal>;
+  };
+
   return (
     <div className="table">
+      {modal === true && ModalDetail()}
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div></div>
         <div>
+          <Button
+            onClick={() => {
+              modal = true;
+            }}
+          >
+            Modal
+          </Button>
           <Input.Search
             onSearch={(value) => {
               setSearchedText(value);

@@ -4,14 +4,20 @@ import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
 import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
+import PromotionForm from "../../../../components/Form/PromotionForm";
 
 const { RangePicker } = DatePicker;
 
 const dateFormat = "DD-MM-YYYY";
 
 const PromotionTable = ({ vouchers, setVouchers }) => {
-  const [editingRow, setEditingRow] = useState(null);
-
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+  const handle = () => {
+    setIsModalVisible(false);
+  };
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
@@ -19,7 +25,7 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
   const columns = [
     {
       key: "1",
-      title: "Id",
+      title: "ID",
       dataIndex: "id",
       render: (text, record) => {
         return record.id;
@@ -28,7 +34,7 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
     },
     {
       key: "2",
-      title: "Name",
+      title: "Tên phiếu giảm giá",
       dataIndex: "name",
       render: (text, record) => {
         return record.name;
@@ -37,7 +43,7 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
     },
     {
       key: "3",
-      title: "Offer",
+      title: "Giảm",
       dataIndex: "offer",
       render: (text, record) => {
         return record.offer;
@@ -46,7 +52,7 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
     },
     {
       key: "4",
-      title: "Duration",
+      title: "Hiệu lực",
       dataIndex: "duration",
       render: (text, record) => {
         return (
@@ -62,9 +68,11 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
     },
     {
       key: "5",
-      title: "Actions",
+      title: "Hành động",
       render: (_, record) => {
-        return <Button>Suspend</Button>;
+        return (
+          <Button onClick={() => onSuspendButton()}>Ngừng hoạt động</Button>
+        );
       },
       width: "20%",
     },
@@ -84,18 +92,14 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
   //   });
   // };
 
-  // const onDeleteButton = (record) => {
-  //   Modal.confirm({
-  //     title: "Are you sure, you want to delete this record?",
-  //     okText: "Yes",
-  //     okType: "danger",
-  //     onOk: () => {
-  //       setRoom((pre) => {
-  //         return pre.filter((data) => data.idNum !== record.idNum);
-  //       });
-  //     },
-  //   });
-  // };
+  const onSuspendButton = (record) => {
+    Modal.confirm({
+      title: "Bạn có chắc là muốn dừng hoạt động phiếu giảm giá này không?",
+      okText: "Có",
+      cancelText: "Không",
+      okType: "danger",
+    });
+  };
 
   // const onFinish = (values) => {
   //   console.log(editingRow);
@@ -111,7 +115,16 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
 
   return (
     <div className="table">
-      {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
+      <>
+        <Modal
+          title="Thông tin sản phẩm"
+          visible={isModalVisible}
+          onOk={handle}
+          onCancel={handle}
+        >
+          <PromotionForm />
+        </Modal>
+      </>
       <div className="buttonContainer">
         <div></div>
         <div>
@@ -131,18 +144,17 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
             type="primary"
             ghost
             icon={<PlusOutlined />}
+            onClick={() => showModal()}
           >
-            Add new
+            Tạo mới
           </Button>
         </div>
       </div>
-      <Form form={form} className="form">
-        <Table
-          columns={columns}
-          dataSource={vouchers}
-          scroll={{ y: 350 }}
-        ></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={vouchers}
+        scroll={{ y: 350 }}
+      ></Table>
     </div>
   );
 };

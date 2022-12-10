@@ -4,6 +4,7 @@ import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
 import "antd/dist/antd.less";
 import dayjs from "dayjs";
 import moment from "moment";
+import DetailForm from "../../../../components/Form/DetailForm/DetailForm";
 
 const ReceiptTable = ({ receipt, setReceipt }) => {
   const [type, setType] = useState("day");
@@ -13,6 +14,8 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
+
+  const [modal, setModal] = useState(false);
 
   const dateFormat = "DD-MM-YYYY";
   const monthFormat = "MM-YYYY";
@@ -130,14 +133,14 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
           return (
             <>
               <Button
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   setEditingRow(record.idNum);
-                //   form.setFieldsValue({
-                //     date: record.date,
-                //     total: record.total,
-                //   });
-                // }}
+              // onClick={(e) => {
+              //   e.preventDefault();
+              //   setEditingRow(record.idNum);
+              //   form.setFieldsValue({
+              //     date: record.date,
+              //     total: record.total,
+              //   });
+              // }}
               >
                 Chỉnh sửa
               </Button>
@@ -184,11 +187,41 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
     setEditingRow(null);
   };
 
+  const handleOKModal = () => {
+    setModal(false);
+  };
+
+  const handleCancelModal = () => {
+    setModal(false);
+  };
+
+  const ModalDetail = () => {
+    return (
+      <Modal
+        title="INVOICE #123123"
+        open={true}
+        onOk={handleOKModal}
+        onCancel={handleCancelModal}
+        width="60%"
+      >
+        <DetailForm></DetailForm>
+      </Modal>
+    );
+  };
+
   return (
     <div className="table">
+      {modal === true && ModalDetail()}
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div>
+          <Button
+            onClick={() => {
+              setModal(true);
+            }}
+          >
+            Modal
+          </Button>
           <Button
             className="dateBtn"
             type={type === "year" ? "primary" : "default"}

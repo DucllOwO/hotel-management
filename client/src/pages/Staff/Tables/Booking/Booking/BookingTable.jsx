@@ -1,17 +1,31 @@
 import React, { useState } from "react";
-import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
+import "../../index.css";
+import { Table, Button, Modal, Form, Input, DatePicker, Checkbox } from "antd";
 import "antd/dist/antd.less";
-import { PlusOutlined } from "@ant-design/icons";
 import "./bookingtable.css";
-import { faSort } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import BookingForm from "../../../../../components/Form/BookingForm";
+import { createBooking } from "../../../../../api/BookingAPI";
+import SuccessAlert from "../../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
+import ErrorAlert from "../../../../../components/Error/Alert/ErrorAlert";
+import BottomBar from "../../../../../components/Admin/BottomBar/BottomBar";
 
-const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
-  const [editingRow, setEditingRow] = useState(null);
+const { RangePicker } = DatePicker;
 
-  const [form] = Form.useForm();
-
-  const { RangePicker } = DatePicker;
+const BookingTable = ({
+  rooms = null,
+  setRooms,
+  setFrom,
+  setTo,
+  isLoading,
+  user,
+  from,
+  to,
+}) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentCustomer, setCurrentCustomer] = useState({});
+  const [selectedRooms, setSelectedRooms] = useState([]);
+  const [customerInfoForm] = Form.useForm();
+  const [roomForm] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
 
@@ -40,170 +54,146 @@ const BookingTable = ({ rooms, setRooms, setStatus, setFrom, setTo }) => {
 
       title: "Loại phòng",
       dataIndex: "roomType",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="roomType"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the roomType",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
     },
     {
       key: "3",
       title: "Diện tích",
       dataIndex: "size",
       width: 150,
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="area"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the area",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
     },
     {
       key: "4",
       title: "Giá",
       dataIndex: "price",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="price"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the price",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
     },
     {
       key: "5",
       title: "Thao tác",
       render: (_, record) => {
         return (
-          <>
-            <Button
-              onClick={() => {
-                onBooking(record);
+          <Form.Item style={{ marginBottom: 0 }}>
+            <Checkbox
+              onChange={(e) => {
+                setSelectedRooms((prev) => [...prev, record]);
               }}
-            >
-              Đặt
-            </Button>
-          </>
+            ></Checkbox>
+          </Form.Item>
         );
       },
     },
   ];
 
-  const onBooking = (value) => {
-    console.log(value.idNum);
+  const onBooking = (value) => {};
+
+  const handleOKModal = async () => {
+    // try {
+    //   const values = await customerInfoForm.validateFields();
+    //   const isCusObjEmpty = Object.keys(currentCustomer).length === 0;
+    //   // isCusObjEmpty === true === customer not available
+    //   if (isCusObjEmpty) {
+    //     //create customer
+    //     // create booking
+    //   } else {
+    //     const currentSelectRoom = rooms.find(
+    //       (room) => room.room_name === values.room_name
+    //     );
+    //     // create booking
+    //     const { data: bookingData } = await createBooking(
+    //       user.position,
+    //       currentCustomer,
+    //       currentSelectRoom,
+    //       from,
+    //       to
+    //     );
+    //     setRooms((pre) => {
+    //       return pre.filter(
+    //         (data) => data.room_name !== bookingData?.room_name
+    //       );
+    //     });
+    //   }
+    //   setCurrentCustomer({});
+    //   SuccessAlert("Đặt phòng thành công.");
+    //   setCurrentCustomer({});
+    // } catch (error) {
+    //   console.log(error);
+    //   ErrorAlert("Đặt phòng thất bại!");
+    // }
   };
 
-  const onFinish = (values) => {
-    console.log(editingRow);
-    const updateDataSource = [...rooms];
-    updateDataSource.splice(editingRow - 1, 1, {
-      ...values,
-      idNum: editingRow,
-    });
-    console.log(updateDataSource);
-    setRooms(updateDataSource);
-    setEditingRow(null);
+  const openModalInfoCustomer = () => {
+    setIsModalOpen(true);
   };
 
   return (
-    <div className="table">
-      {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
-      <div className="buttonContainer">
-        <div className="header">
+    <div id="bookingTable">
+      <div className="table">
+        <>{isModalOpen ? modalJSX() : null}</>
+        <div className="buttonContainer">
+          <div className="header">
+            <div>
+              <RangePicker
+                format={"DD/MM/YYYY"}
+                onChange={(value) => {
+                  setFrom(value[0]?._d);
+                  setTo(value[1]?._d);
+                }}
+              />
+            </div>
+          </div>
           <div>
-            <RangePicker
-              format={"DD/MM/YYYY"}
-              onChange={(value) => {
-                setFrom(value[0]?._d);
-                setTo(value[1]?._d);
+            <Input.Search
+              onSearch={(value) => {
+                setSearchedText(value);
               }}
+              onChange={(e) => {
+                setSearchedText(e.target.value);
+              }}
+              placeholder="Tìm kiếm"
+              className="searchInput"
+              style={{ width: 264 }}
             />
           </div>
-          <div className="headerButton">
-            <Button
-              className="headerBtn"
-              onClick={() => {
-                setStatus(0);
-              }}
-            >
-              Đang trống
-            </Button>
-            <Button
-              className="headerBtn"
-              onClick={() => {
-                setStatus(1);
-              }}
-            >
-              Đang sử dụng
-            </Button>
-            <Button
-              className="headerBtn"
-              onClick={() => {
-                setStatus(2);
-              }}
-            >
-              Đang đợi
-            </Button>
-          </div>
         </div>
-        <div>
-          <Input.Search
-            onSearch={(value) => {
-              setSearchedText(value);
-            }}
-            onChange={(e) => {
-              setSearchedText(e.target.value);
-            }}
-            placeholder="Tìm kiếm"
-            className="searchInput"
-            style={{ width: 264 }}
-          />
-        </div>
+        <Form form={roomForm}>
+          <Table
+            loading={isLoading}
+            columns={columns}
+            dataSource={rooms}
+            scroll={{ y: "100%" }}
+            rowKey={(row) => row.room_name}
+          ></Table>
+        </Form>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table columns={columns} dataSource={rooms} scroll={{ y: 350 }}></Table>
-      </Form>
+      <BottomBar>
+        <Button type="primary" onClick={(e) => openModalInfoCustomer()}>
+          Đặt
+        </Button>
+      </BottomBar>
     </div>
   );
+  function modalJSX() {
+    return (
+      <Modal
+        title="Nhập thông tin khách hàng"
+        open={true}
+        okText="Đặt"
+        cancelText="Hủy"
+        onOk={handleOKModal}
+        onCancel={handleCancelModal}
+        width="40%"
+      >
+        <BookingForm
+          form={customerInfoForm}
+          setCurrentCustomer={setCurrentCustomer}
+          selectedRooms={selectedRooms}
+        />
+      </Modal>
+    );
+  }
+  function handleCancelModal() {
+    customerInfoForm.resetFields();
+    setIsModalOpen(false);
+  }
 };
 
 export default BookingTable;

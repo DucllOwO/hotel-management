@@ -41,6 +41,13 @@ const roomStatus = {
   WAITING: 2,
 };
 
+const bookingStatus = {
+  WAITING: 0,
+  BOOKED: 1,
+  COMPLETE: 2,
+  CANCEL: 3,
+};
+
 const pagination = {
   LIMIT_DEFAULT: 10,
 };

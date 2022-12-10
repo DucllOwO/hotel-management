@@ -1,4 +1,4 @@
-import React,{useState, useContext, useEffect} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { userRequest } from "../../../api/api";
 import { AppContext } from "../../../context/AppContext";
 import CustomerTable from "../Tables/Customer/CustomerTable";
@@ -11,19 +11,18 @@ const Customer = () => {
   useEffect(() => {
     const fetchCustomer = async () => {
       const { data } = await userRequest.get("/users", {
-        params: { user: { position: user?.position }, type: "customer" }
+        params: { user: { position: user?.position }, type: "customer" },
       });
-      console.log(data.customers);
-      setCustomer(data.customers);
-      console.log(customer)
+      console.log(data);
+      setCustomer(data);
+      console.log(customer);
     };
     fetchCustomer();
-  }, []);
+  }, [user?.position]);
   return (
     <div className="container">
       <div className="customerContainer">
-        <CustomerTable
-        customer ={customer}></CustomerTable>
+        <CustomerTable customer={customer}></CustomerTable>
       </div>
     </div>
   );

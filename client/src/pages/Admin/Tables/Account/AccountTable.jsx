@@ -217,6 +217,7 @@ const AccountTable = ({ accounts, setAccount }) => {
         {modal === "edit" && modalEditAccount()}
       </>
       <div className="buttonContainer">
+        <div></div>
         <div>
           <Input.Search
             onSearch={(value) => {
