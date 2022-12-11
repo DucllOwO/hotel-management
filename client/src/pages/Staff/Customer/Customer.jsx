@@ -20,10 +20,8 @@ const Customer = () => {
     fetchCustomer();
   }, [user?.position]);
   return (
-    <div className="container">
-      <div className="customerContainer">
-        <CustomerTable customer={customer}></CustomerTable>
-      </div>
+    <div className="customerContainer">
+      <CustomerTable customer={customer}></CustomerTable>
     </div>
   );
 };

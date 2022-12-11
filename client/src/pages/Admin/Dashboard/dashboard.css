@@ -1,9 +1,3 @@
-.container {
-    display: flex;
-    overflow: hidden;
-    align-items: stretch;
-    justify-content: space-around;
-}
 .sumary{
     padding-bottom: 16px;
 }

@@ -1,8 +1,3 @@
-.container {
-    display: flex;
-    overflow: hidden;
-}
-
 .itemContainer {
     width: 100%;
     flex: 4;

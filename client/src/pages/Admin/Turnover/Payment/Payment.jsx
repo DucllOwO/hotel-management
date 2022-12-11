@@ -1,4 +1,4 @@
-import React,{useState, useContext, useEffect} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { userRequest } from "../../../../api/api";
 import { AppContext } from "../../../../context/AppContext";
 import Topbar from "../../../../components/Topbar/Topbar";
@@ -12,20 +12,17 @@ const Payment = () => {
   useEffect(() => {
     const fetchPayment = async () => {
       const { data } = await userRequest.get("/payment", {
-        params: { user: { position: user?.position } }
+        params: { user: { position: user?.position } },
       });
       console.log(data);
       setPayment(data);
-      console.log(payment)
+      console.log(payment);
     };
     fetchPayment();
   }, []);
   return (
-    <div className="container">
-      <div className="paymentContainer">
-        <PaymentTable
-        payment = {payment}></PaymentTable>
-      </div>
+    <div className="paymentContainer">
+      <PaymentTable payment={payment}></PaymentTable>
     </div>
   );
 };

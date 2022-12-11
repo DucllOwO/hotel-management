@@ -22,13 +22,11 @@ const Position = () => {
   }, [user?.position]);
   return (
     <PositionProvider>
-      <div className="container">
-        <div className="positionContainer">
-          <PositionTable
-            positions={positions}
-            setPositions={setPositions}
-          ></PositionTable>
-        </div>
+      <div className="positionContainer">
+        <PositionTable
+          positions={positions}
+          setPositions={setPositions}
+        ></PositionTable>
       </div>
     </PositionProvider>
   );

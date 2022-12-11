@@ -19,10 +19,8 @@ const RoomType = () => {
     fetchRoomType();
   }, [user?.position]);
   return (
-    <div className="container">
-      <div className="roomTypeContainer">
-        <RoomTypeTable roomTypes={types}></RoomTypeTable>
-      </div>
+    <div className="roomTypeContainer">
+      <RoomTypeTable roomTypes={types}></RoomTypeTable>
     </div>
   );
 };

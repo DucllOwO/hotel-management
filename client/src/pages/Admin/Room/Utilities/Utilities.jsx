@@ -1,4 +1,4 @@
-import React,{useState, useContext, useEffect} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Topbar from "../../../../components/Topbar/Topbar";
 import { userRequest } from "../../../../api/api";
 import { AppContext } from "../../../../context/AppContext";
@@ -14,19 +14,17 @@ const Utilities = () => {
       const { data } = await userRequest.get("/room_features", {
         params: { user: { position: user?.position } },
       });
-      console.log(data)
+      console.log(data);
       setUtilities(data.data);
     };
     fetchUtilities();
   }, []);
   return (
-    <div className="container">
-      <div className="utilitiesContainer">
-        <UtilitiesTable
-        utilities = {utilities}
-        setUtilities = {setUtilities}
-        ></UtilitiesTable>
-      </div>
+    <div className="utilitiesContainer">
+      <UtilitiesTable
+        utilities={utilities}
+        setUtilities={setUtilities}
+      ></UtilitiesTable>
     </div>
   );
 };
