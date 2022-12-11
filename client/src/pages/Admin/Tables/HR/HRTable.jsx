@@ -266,7 +266,7 @@ const HRTable = ({ employees, setEmployees }) => {
   };
 
   return (
-    <div className="table">
+    <div className="hrtable">
       <>
         {modal === "add" && modalAddEmployee()}
         {modal === "edit" && modalEditEmployee()}
