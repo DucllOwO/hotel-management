@@ -29,7 +29,7 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
       render: (text, record) => {
         return record.id;
       },
-      width: "10%",
+      width: 145,
     },
     {
       key: "2",
@@ -38,7 +38,6 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
       render: (text, record) => {
         return record.name;
       },
-      width: "25%",
     },
     {
       key: "3",
@@ -47,7 +46,6 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
       render: (text, record) => {
         return record.offer;
       },
-      width: "10%",
     },
     {
       key: "4",
@@ -63,7 +61,6 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
           />
         );
       },
-      width: "35%",
     },
     {
       key: "5",
@@ -73,7 +70,6 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
           <Button onClick={() => onSuspendButton()}>Ngừng hoạt động</Button>
         );
       },
-      width: "20%",
     },
   ];
 
@@ -113,11 +109,11 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
   // };
 
   return (
-    <div className="table">
+    <div className="promotionTable">
       <>
         <Modal
           title="Thông tin sản phẩm"
-          visible={isModalVisible}
+          open={isModalVisible}
           onOk={handle}
           onCancel={handle}
         >
@@ -152,7 +148,7 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
       <Table
         columns={columns}
         dataSource={vouchers}
-        scroll={{ y: 350 }}
+        scroll={{ y: "100%", x: "100%" }}
       ></Table>
     </div>
   );

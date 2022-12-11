@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../../index.css";
 import { Table, Button, Modal, Form, Input, DatePicker, Checkbox } from "antd";
-import "./bookingtable.css";
 import BookingForm from "../../../../../components/Form/BookingForm";
 import { createBooking } from "../../../../../api/BookingAPI";
 import SuccessAlert from "../../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
@@ -125,7 +124,7 @@ const BookingTable = ({
 
   return (
     <div id="bookingTable">
-      <div className="table">
+      <div className="bookingTable">
         <>{isModalOpen ? modalJSX() : null}</>
         <div className="buttonContainer">
           <div className="header">
