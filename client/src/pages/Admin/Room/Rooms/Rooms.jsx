@@ -15,14 +15,16 @@ const Rooms = () => {
         params: { user: { position: user?.position } },
       });
       console.log(data);
-      setRooms(data);
+      setRooms(data.rooms);
     };
 
     fetchRoom();
   }, []);
   return (
-    <div className="roomsContainer">
-      <RoomsTable rooms={rooms}></RoomsTable>
+    <div className="container">
+      <div className="roomsContainer">
+        <RoomsTable rooms={rooms}></RoomsTable>
+      </div>
     </div>
   );
 };

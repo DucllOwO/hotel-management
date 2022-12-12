@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import dayjs from "dayjs";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
+import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import HRForm from "../../../../components/Form/HRForm";
 import { AppContext } from "../../../../context/AppContext";
@@ -14,7 +15,6 @@ import {
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 import { formatDate, formatterInt } from "../../../../Utils/formatter";
 import { createAccount, deleteAccount } from "../../../../api/AccountAPI";
-import moment from "moment";
 
 const DEFAULT_PASSWORD = "123456";
 
@@ -81,15 +81,15 @@ const HRTable = ({ employees, setEmployees }) => {
       title: "Ngày vào làm",
       dataIndex: "start_working_date",
       render: (text, record) => {
-        return String(formatDate(record.start_working_date));
+        return String(formatDate(record.date_of_birth));
       },
     },
     {
       key: "6",
-      title: "Email",
-      dataIndex: "email",
+      title: "Lương",
+      dataIndex: "salary",
       render: (text, record) => {
-        return String(record.email);
+        return String(record.salary);
       },
     },
     {
@@ -120,12 +120,11 @@ const HRTable = ({ employees, setEmployees }) => {
 
   const openEditModal = (record) => {
     setModal("edit");
-    console.log(record.salary.slice(1, record.salary.length));
+
     form.setFieldsValue({
       ...record,
-      start_working_date: moment(record.start_working_date),
-      date_of_birth: moment(record.date_of_birth),
-      salary: record.salary.slice(1, record.salary.length),
+      start_working_date: dayjs(record.start_working_date, "DD-MM-YYYY"),
+      date_of_birth: dayjs(record.date_of_birth, "DD-MM-YYYY"),
     });
   };
 
@@ -266,7 +265,7 @@ const HRTable = ({ employees, setEmployees }) => {
   };
 
   return (
-    <div className="hrtable">
+    <div className="table">
       <>
         {modal === "add" && modalAddEmployee()}
         {modal === "edit" && modalEditEmployee()}
@@ -302,7 +301,7 @@ const HRTable = ({ employees, setEmployees }) => {
         loading={employees ? false : true}
         columns={columns}
         dataSource={employees}
-        scroll={{ y: "100%", x: "100%" }}
+        scroll={{ y: 350 }}
         rowKey={(record) => record.id}
       ></Table>
     </div>

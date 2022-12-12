@@ -1,0 +1,118 @@
+.sliderContainer {
+    width: 80%;
+    height: 70vh;
+    background-image: url('https://media.cntraveler.com/photos/53da8c106dec627b149f1e4d/master/pass/one-only-the-palm-dubai-dubai-united-arab-emirates-112572-1.jpg');
+    border-radius: 40px;
+    position: relative;
+}
+
+.black {
+    width: 34%;
+    height: 100%;
+    background-color: var(--black);
+    border-radius: 40px 0 0 40px;
+}
+
+.hotelName{
+    font-size: var(--fs-60);
+    color: var(--primary-color);
+    padding-left: 40px;
+    padding-top: 40px;
+}
+
+.centerBar {
+    height: 150px;
+    width: 90%;
+    position: absolute;
+    bottom: -15%;
+  left: 50%;
+  transform: translate(-50%, -0%);
+
+}
+
+.centerNav {
+    width: 50%;
+    height: 30%;
+    display: flex;
+  flex-direction: row;
+  font-size: var(--fs-18);
+  font-weight: var(--fw-bold);
+  justify-content: space-between;
+  align-items: center;
+}
+
+.labelBtn {
+    margin-left: 10px;
+}
+
+.centerBarBtn{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    width: 33.4%;
+    justify-content: center;
+    background-color: var(--black);
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+.first {
+    border-radius: 20px 0 0 0;
+    background-color: var(--primary-color);
+    color: var(--black);
+}
+
+.last {
+    border-radius: 0 20px 0 0;
+}
+
+.centerBarBtn:hover{
+    background-color: var(--grey);
+    color: var(--black);
+}
+
+.centerDetail {
+    width: 100%;
+    height: 70%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    border-radius: 0 20px 20px 20px;
+    justify-content: space-between;
+    padding: 0 30px;
+}
+
+.centerAddress{
+    width: 25%;
+    height: 80%;
+    padding: 6px 5px;
+    font-weight: var(--fw-bold);
+    border: 1px solid var(--grey);
+    border-radius: 10px;
+    font-size: var(--fs-12);
+}
+
+.addressLabel {
+    color: var(--grey);
+}
+
+.address {
+    font-size: var(--fs-14);
+    margin-top: 3px;
+}
+
+.imgList {
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    height: 80%;
+}
+
+.image{
+    width: 22%;
+    height: 100%;
+    margin: 0 10px;
+    border-radius: 15px;
+    cursor: pointer;
+}

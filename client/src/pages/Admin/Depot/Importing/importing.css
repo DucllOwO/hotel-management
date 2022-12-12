@@ -1,3 +1,8 @@
+.container {
+    display: flex;
+    overflow: hidden;
+}
+
 .importingContainer {
     width: 100%;
     flex: 4;

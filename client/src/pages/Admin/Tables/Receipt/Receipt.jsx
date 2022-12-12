@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
+import "antd/dist/antd.less";
 import dayjs from "dayjs";
 import moment from "moment";
 import DetailForm from "../../../../components/Form/DetailForm/DetailForm";

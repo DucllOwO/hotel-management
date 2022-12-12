@@ -1,55 +1,65 @@
-import { Table, Button } from "antd";
-import React, {useState} from "react";
-import { fetchDailyReport } from "../../../../api/DashboardAPI";
-import { useEffect } from "react";
+import { Table } from "antd";
+import React from "react";
 
 const data = [];
 
-const DashboardTable = ({data, setData}) => {
-  const [type, setType] = useState("income");
-  useEffect(()=>{
-    switch(type){
-      case "income":
-
-        break;
-      default:
-        break;
-    }
-  }, [type])
+const DashboardTable = () => {
   const columns = [
     {
       key: "1",
-      title: "ID",
-      dataIndex: "id",
+      title: "Day",
+      dataIndex: "day",
+      fixed: "left",
+      render: (text, record) => {},
     },
     {
       key: "2",
-      title: "Ngày lập",
-      dataIndex: "established_date",
+      title: "Thu nhập",
+      dataIndex: "income",
+      render: (text, record) => {},
     },
     {
       key: "3",
-      title: "Tổng tiền",
-      dataIndex: "total_cost",
+      title: "Chi phí",
+      dataIndex: "outcome",
+      render: (text, record) => {},
     },
     {
       key: "4",
-      title: "Phương thức",
-      dataIndex: "payment_method",
+      title: "Chi phí",
+      dataIndex: "outcome",
+      render: (text, record) => {},
+    },
+    {
+      key: "5",
+      title: "Lợi nhuận",
+      dataIndex: "profit",
+      fixed: "right",
+      render: (text, record) => {},
+    },
+    {
+      key: "6",
+      title: "Số lượng khách",
+      dataIndex: "customer_amount",
+      render: (text, record) => {},
+    },
+    {
+      key: "7",
+      title: "Lượt đặt phòng",
+      dataIndex: "booking_amount",
+      render: (text, record) => {},
     },
   ];
 
   return (
-    <div>
-      <div className="table">
-        <Table
-          columns={columns}
-          dataSource={data}
-          scroll={{ y: 350 }}
-          rowKey={(row) => row.idNum}
-          style={{ width: "100%" }}
-        ></Table>
-      </div>
+    <div className="table">
+      <Table
+        columns={columns}
+        dataSource={data}
+        scroll={{ y: 350 }}
+        rowKey={(row) => row.idNum}
+        style={{ width: "100%" }}
+      ></Table>
     </div>
   );
 };

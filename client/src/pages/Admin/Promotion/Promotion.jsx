@@ -21,11 +21,13 @@ const Promotion = () => {
   }, [user?.position]);
 
   return (
-    <div className="promotionContainer">
-      <PromotionTable
-        vouchers={vouchers}
-        setVouchers={setVouchers}
-      ></PromotionTable>
+    <div className="container">
+      <div className="promotionContainer">
+        <PromotionTable
+          vouchers={vouchers}
+          setVouchers={setVouchers}
+        ></PromotionTable>
+      </div>
     </div>
   );
 };

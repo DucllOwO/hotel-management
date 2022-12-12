@@ -1,6 +1,10 @@
-.sumary{
-    padding-bottom: 16px;
+.container {
+    display: flex;
+    overflow: hidden;
+    align-items: stretch;
+    justify-content: space-around;
 }
+
 .dashboardContainer {
     display: flex;
     flex-direction: column;
@@ -9,5 +13,5 @@
     margin-right: 5px;
     width: 100%;
     height: 85vh;
-    justify-content: start;
+    justify-content: space-between;
 }

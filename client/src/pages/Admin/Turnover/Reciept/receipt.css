@@ -1,3 +1,8 @@
+.container {
+    display: flex;
+    overflow: hidden;
+}
+
 .recieptContainer {
     width: 100%;
     flex: 4;

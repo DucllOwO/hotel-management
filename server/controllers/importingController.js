@@ -5,7 +5,6 @@ const { BadRequestError } = require("../middlewares/errorHandler");
 const getAllRecord = async (req, res, next) => {
   const { data: importing, error: getImportingError } =
     await importingDAL.getAllRecords();
-    console.log(importing)
     const record = importing?.map((item) => {
       return {
         item: item.item_id?.name,

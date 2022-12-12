@@ -4,8 +4,10 @@ import "./receipt.css";
 
 const Receipt = () => {
   return (
-    <div className="customerContainer">
-      <ReceiptTable></ReceiptTable>
+    <div className="container">
+      <div className="customerContainer">
+        <ReceiptTable></ReceiptTable>
+      </div>
     </div>
   );
 };

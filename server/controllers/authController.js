@@ -31,15 +31,10 @@ const login = async (req, res, next) => {
       );
       const tempPermission = [
         ...new Set(
-          data
-            ?.map((item) => {
-              if (item?.feature_id.action == "read:any")
-                return item?.feature_id.name;
-              return;
-            })
-            .filter((item) => {
-              if (item) return item;
-            })
+          data?.map((item) => {
+            if (item?.feature_id.action == "read:any")
+              return item?.feature_id.name;
+          })
         ),
       ];
       if (getPositionError) return next(getPositionError);

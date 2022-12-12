@@ -21,8 +21,13 @@ const Account = () => {
   }, [user?.position]);
 
   return (
-    <div className="accountContainer">
-      <AccountTable accounts={accounts} setAccount={setAccounts}></AccountTable>
+    <div className="container">
+      <div className="accountContainer">
+        <AccountTable
+          accounts={accounts}
+          setAccount={setAccounts}
+        ></AccountTable>
+      </div>
     </div>
   );
 };

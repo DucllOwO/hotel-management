@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import "../../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
-import "./bookingListtable.css";
+import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
+import "./bookingListtable.css";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -134,7 +135,7 @@ const BookingListTable = ({ booking, setBooking }) => {
   };
 
   return (
-    <div className="bookingListTable">
+    <div className="table">
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div className="headerButtons">
