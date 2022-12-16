@@ -25,7 +25,6 @@ const paymentsRoutes = require("./routes/paymentsRoutes");
 const importingsRoutes = require("./routes/importingsRoutes");
 const featuresRoutes = require("./routes/featuresRoutes");
 
-
 const app = express();
 
 app.use(cors());
