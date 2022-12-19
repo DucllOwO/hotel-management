@@ -120,12 +120,10 @@ const HRTable = ({ employees, setEmployees }) => {
 
   const openEditModal = (record) => {
     setModal("edit");
-    console.log(record.salary.slice(1, record.salary.length));
     form.setFieldsValue({
       ...record,
       start_working_date: moment(record.start_working_date),
       date_of_birth: moment(record.date_of_birth),
-      salary: record.salary.slice(1, record.salary.length),
     });
   };
 

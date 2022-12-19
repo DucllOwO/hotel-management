@@ -8,7 +8,12 @@ import ErrorAlert from "../Error/Alert/ErrorAlert";
 import { fetchPositionByID } from "../../api/PositionAPI";
 import { fetchFeatures } from "../../api/FeatureAPI";
 
-const PositionForm = ({ form, positionID = null, setOldFeaturesState }) => {
+const PositionForm = ({
+  form,
+  positionID = null,
+  setOldFeaturesState,
+  readOnly = false,
+}) => {
   const { features, setFeatures, isFeaturesError } =
     useContext(PositionContext);
   const { user } = useContext(AppContext);
@@ -37,20 +42,23 @@ const PositionForm = ({ form, positionID = null, setOldFeaturesState }) => {
 
   return (
     <>
-      <Form layout="vertical" form={form} name="positionForm">
-        <Form.Item
-          label="Tên chức vụ"
-          name="posName"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập tên chức vụ!",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-      </Form>
+      {!readOnly ? (
+        <Form layout="vertical" form={form} name="positionForm">
+          <Form.Item
+            label="Tên chức vụ"
+            name="posName"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng nhập tên chức vụ!",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        </Form>
+      ) : null}
+
       <div style={{ height: "50vh" }}>
         <FeatureTable
           features={features}

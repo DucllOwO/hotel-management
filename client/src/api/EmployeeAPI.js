@@ -58,7 +58,7 @@ export const createEmployee = async (
 
 export const updateEmployee = (
   positionUser,
-  { id, fullname, date_of_birth, phone_number, start_working_date, salary }
+  { id, fullname, date_of_birth, phone_number, start_working_date, position_id }
 ) => {
   return userRequest.put(`/users/${id.trim()}?type=employee`, {
     user: {
@@ -66,12 +66,10 @@ export const updateEmployee = (
     },
     userInfo: {
       fullname: fullname,
-      date_of_birth: new Date(date_of_birth).toLocaleDateString("en-US"),
+      date_of_birth: new Date(date_of_birth),
       phone_number: phone_number,
-      start_working_date: new Date(start_working_date).toLocaleDateString(
-        "en-US"
-      ),
-      salary: salary,
+      start_working_date: new Date(start_working_date),
+      position_id: position_id,
     },
   });
 };

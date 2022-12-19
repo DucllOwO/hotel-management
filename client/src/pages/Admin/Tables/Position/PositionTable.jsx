@@ -10,9 +10,16 @@ import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/Succe
 import {
   addPosition,
   deletePosition,
+  fetchPositionByID,
   updatePosition,
 } from "../../../../api/PositionAPI";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
+import FeatureTable from "../Function/FeatureTable";
+
+const INITIAL_STATE_CUR_EXPAND_POSITION = {
+  loading: false,
+  features: [],
+};
 
 const PositionTable = ({ positions, setPositions }) => {
   const { user } = useContext(AppContext);
@@ -21,6 +28,10 @@ const PositionTable = ({ positions, setPositions }) => {
   const [modal, setModal] = useState("");
   const [currentPosition, setCurrentPosition] = useState({});
   const [oldFeaturesState, setOldFeaturesState] = useState([]);
+  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+  const [currentExpandPosition, setCurrenExpandPosition] = useState(
+    INITIAL_STATE_CUR_EXPAND_POSITION
+  );
 
   const [searchedText, setSearchedText] = useState("");
   const showModalAdd = (e) => {
@@ -193,6 +204,7 @@ const PositionTable = ({ positions, setPositions }) => {
       },
     },
   ];
+
   return (
     <div className="table">
       <>
@@ -224,17 +236,53 @@ const PositionTable = ({ positions, setPositions }) => {
           </Button>
         </div>
       </div>
-      {console.log(positions)}
       <Table
         columns={columns}
         dataSource={positions}
-        scroll={{ y: "100%", x: "100%" }}
+        scroll={{ y: 500 }}
         loading={positions ? false : true}
         rowKey={(record) => record.id}
-        pagination={{ pageSize: 10 }}
+        expandable={{
+          expandedRowRender: (_) => {
+            return (
+              <FeatureTable
+                features={currentExpandPosition.features}
+                readOnly={true}
+                loading={currentExpandPosition.loading}
+              />
+            );
+          },
+        }}
+        expandedRowKeys={expandedRowKeys}
+        onExpand={onTableRowExpand}
+        pagination={false}
       ></Table>
     </div>
   );
+
+  function onTableRowExpand(expanded, record) {
+    const keys = [];
+    if (expanded) {
+      keys.push(record.id);
+    }
+
+    setExpandedRowKeys(keys);
+
+    if (!currentExpandPosition.loading) {
+      setCurrenExpandPosition((prev) => ({ ...prev, loading: true }));
+      fetchPositionByID(user.position, record.id)
+        .then(({ data }) => {
+          setCurrenExpandPosition((prev) => {
+            return { loading: false, features: data };
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          ErrorAlert(`Lấy dữ liệu quyền của ${record.name} thất bại!!`);
+          setCurrenExpandPosition((prev) => ({ ...prev, loading: false }));
+        });
+    }
+  }
 };
 
 const createFeaturesCheckedArray = (featureCheckboxs) => {
