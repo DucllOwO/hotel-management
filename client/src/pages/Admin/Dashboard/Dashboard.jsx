@@ -52,6 +52,7 @@ const Dashboard = () => {
       case "year":
         fetchYearlyReport(user?.position, time)
         .then(({ data }) => {
+          console.log(data)
           setData(data.data);
           setReport(data.report);
         });
@@ -101,25 +102,25 @@ const Dashboard = () => {
             <div>
               {type === "day" && (
                  <DatePicker
-                 defaultValue={moment()}
-                 onChange={(values)=>{setTime(values._d);}}
+                 defaultValue={dayjs(Date.now())}
+                 onChange={(values)=>{setTime(values.$d);}}
                  picker="date"
                  format={dateFormat}
                ></DatePicker>
               )}
               {type === "month" && (
                 <DatePicker
-                  defaultValue={moment()}
+                  defaultValue={dayjs(Date.now())}
                   picker="month"
-                  onChange={(values)=>{setTime(getMonth(values._d));}}
+                  onChange={(values)=>{setTime(getMonth(values.$d));}}
                   format={monthFormat}
                 ></DatePicker>
               )}
               {type === "year" && (
                 <DatePicker
                   picker="year"
-                  defaultValue={moment()}
-                  onChange={(values)=>{setTime(getYear(values._d))}}
+                  defaultValue={dayjs(Date.now())}
+                  onChange={(values)=>{setTime(getYear(values.$d))}}
                 ></DatePicker>
               )}
             </div>
