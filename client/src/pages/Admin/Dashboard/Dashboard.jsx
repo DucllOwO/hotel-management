@@ -20,13 +20,11 @@ const Dashboard = () => {
   const [data, setData] = useState([]);
   const [report, setReport] = useState([]);
   const [semiType, setSemiType] = useState("income");
-  const [time, setTime] = useState(moment.utc);
+  const [time, setTime] = useState(dayjs(Date.now()));
   const {user} = useContext(AppContext)
-
   useEffect(() => {
     switch (type) {
       case "day":
-        console.log(semiType)
         if(semiType ==="income"){
           fetchDailyReport(user?.position, time, semiType)
           .then(({ data }) => {
@@ -43,16 +41,17 @@ const Dashboard = () => {
         break;
       case "month":
         // console.log(time);
-        fetchMonthlyReport(user?.position, time)
+        fetchMonthlyReport(user?.position, getMonth(time))
         .then(({ data }) => {
           setData(data.data);
           setReport(data.report);
         }); 
         break;
       case "year":
-        fetchYearlyReport(user?.position, time)
+        // console.log(time);
+        // console.log(getYear(time));
+        fetchYearlyReport(user?.position, getYear(time))
         .then(({ data }) => {
-          console.log(data)
           setData(data.data);
           setReport(data.report);
         });
@@ -60,7 +59,7 @@ const Dashboard = () => {
       default:
         break;
     }
-  }, [type, time, semiType])
+  }, [time, semiType, type])
 
   return (
     <div className="container">
@@ -72,7 +71,7 @@ const Dashboard = () => {
               type={type === "year" ? "primary" : "default"}
               onClick={() => {
                 setType("year");
-                setTime(Date.UTC());
+                setTime(dayjs(Date.now()));
               }}
             >
               Năm
@@ -82,7 +81,7 @@ const Dashboard = () => {
               type={type === "month" ? "primary" : "default"}
               onClick={() => {
                 setType("month");
-                setTime(moment.utc);
+                setTime(dayjs(Date.now()));
               }}
             >
               Tháng
@@ -92,7 +91,7 @@ const Dashboard = () => {
               type={type === "day" ? "primary" : "default"}
               onClick={() => {
                 setType("day");
-                setTime(moment.utc);
+                setTime(dayjs(Date.now()));
               }}
             >
               Ngày
@@ -112,7 +111,7 @@ const Dashboard = () => {
                 <DatePicker
                   defaultValue={dayjs(Date.now())}
                   picker="month"
-                  onChange={(values)=>{setTime(getMonth(values.$d));}}
+                  onChange={(values)=>{setTime(values.$d);}}
                   format={monthFormat}
                 ></DatePicker>
               )}
@@ -120,7 +119,7 @@ const Dashboard = () => {
                 <DatePicker
                   picker="year"
                   defaultValue={dayjs(Date.now())}
-                  onChange={(values)=>{setTime(getYear(values.$d))}}
+                  onChange={(values)=>{setTime(values.$d)}}
                 ></DatePicker>
               )}
             </div>
