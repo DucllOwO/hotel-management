@@ -1,7 +1,6 @@
 import React from "react";
 import "../index.css";
 import { Table } from "antd";
-import "antd/dist/antd.less";
 import Checkbox from "antd/lib/checkbox/Checkbox";
 
 const { Column, ColumnGroup } = Table;

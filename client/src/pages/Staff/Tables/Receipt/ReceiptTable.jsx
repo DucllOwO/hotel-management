@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
-import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 
 const ReceiptTable = () => {
@@ -254,8 +253,8 @@ const ReceiptTable = () => {
   const ModalDetail = () => {
     <Modal
       open="true"
-      onOk={handleOKModal}
-      onCancel={handleCancelModal}
+      // onOk={handleOKModal}
+      // onCancel={handleCancelModal}
       width="40%"
     ></Modal>;
   };

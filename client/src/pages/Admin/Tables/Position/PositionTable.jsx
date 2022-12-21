@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Input, Form } from "antd";
-import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import { useContext } from "react";
 import { AppContext } from "../../../../context/AppContext";

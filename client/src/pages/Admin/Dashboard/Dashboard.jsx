@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "../../../assets/colors/Colors";
 import { Button, Card, Col, Row, DatePicker, Space } from "antd";
 import dayjs from "dayjs";
-import moment from "moment";
 import "./dashboard.css";
 import { getMonth, getYear } from "../../../Utils/helpers";
 import { fetchDailyReport, fetchMonthlyReport, fetchYearlyReport } from "../../../api/DashboardAPI";
@@ -128,18 +127,18 @@ const Dashboard = () => {
         <div>
           <Row gutter={16}>
             <Col span={8}>
-              <Card title="Tổng doanh thu">đ 100.000.000</Card>
+              <Card title="Tổng doanh thu">{report ? report.income : "0"}</Card>
             </Col>
             <Col span={8}>
-              <Card title="Tổng chi phí">đ 30.000.000</Card>
+              <Card title="Tổng chi phí">{report ? report.outcome : "0"}</Card>
             </Col>
             <Col span={8}>
-              <Card title="Tổng lợi nhuận">đ 70.000.000</Card>
+              <Card title="Tổng lợi nhuận">{report ? report.profit : "0"}</Card>
             </Col>
           </Row>
         </div>
-        {/* {type === "day" ? <DashboardTable /> : <MultiLineChart />} */}
-        <MultiLineChart />
+        {type === "day" ? <DashboardTable /> : <MultiLineChart reportData={data}/>}
+        {/* <MultiLineChart /> */}
       </div>
     </div>
   );

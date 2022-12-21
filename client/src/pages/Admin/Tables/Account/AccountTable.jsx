@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
-import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import AccountForm from "../../../../components/Form/AccountForm";
 import {
