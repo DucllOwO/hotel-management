@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
-import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import ItemModal from "../../Modals/Item/ItemModal";
 
-const ItemTable = ({items, setItems}) => {
+const ItemTable = ({ items, setItems }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -20,7 +19,6 @@ const ItemTable = ({items, setItems}) => {
 
   const [searchedText, setSearchedText] = useState("");
 
-  
   const columns = [
     {
       key: "1",
@@ -134,15 +132,15 @@ const ItemTable = ({items, setItems}) => {
           return (
             <>
               <Button
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   setEditingRow(record.idNum);
-                //   form.setFieldsValue({
-                //     name: record.name,
-                //     minimum: record.minimum,
-                //     price: record.price,
-                //   });
-                // }}
+              // onClick={(e) => {
+              //   e.preventDefault();
+              //   setEditingRow(record.idNum);
+              //   form.setFieldsValue({
+              //     name: record.name,
+              //     minimum: record.minimum,
+              //     price: record.price,
+              //   });
+              // }}
               >
                 Chỉnh sửa
               </Button>
@@ -224,11 +222,7 @@ const ItemTable = ({items, setItems}) => {
         </div>
       </div>
       <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={items}
-          scroll={{ y: 350 }}
-        ></Table>
+        <Table columns={columns} dataSource={items} scroll={{ y: 350 }}></Table>
       </Form>
     </div>
   );

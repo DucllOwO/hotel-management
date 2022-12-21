@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Table, Button, Modal, Form, Input } from "antd";
-import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 
 const InventoryTable = () => {

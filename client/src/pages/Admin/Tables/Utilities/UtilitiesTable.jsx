@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
-import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import UtilitiesModal from "../../Modals/Utilities/UtilitiesModal";
 
-const UtilitiesTable = ({utilities, setUtilities}) => {
+const UtilitiesTable = ({ utilities, setUtilities }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -22,7 +21,6 @@ const UtilitiesTable = ({utilities, setUtilities}) => {
 
   const [searchedText, setSearchedText] = useState("");
 
-  
   const columns = [
     {
       key: "1",
@@ -93,13 +91,13 @@ const UtilitiesTable = ({utilities, setUtilities}) => {
           return (
             <>
               <Button
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   setEditingRow(record.idNum);
-                //   form.setFieldsValue({
-                //     name: record.name,
-                //   });
-                // }}
+              // onClick={(e) => {
+              //   e.preventDefault();
+              //   setEditingRow(record.idNum);
+              //   form.setFieldsValue({
+              //     name: record.name,
+              //   });
+              // }}
               >
                 Chỉnh sửa
               </Button>
