@@ -3,6 +3,8 @@ import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import ItemModal from "../../Modals/Item/ItemModal";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const ItemTable = ({items, setItems}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -108,53 +110,30 @@ const ItemTable = ({items, setItems}) => {
       key: "5",
       title: "Thao tác",
       render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  Lưu
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  Huỷ
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   setEditingRow(record.idNum);
-                //   form.setFieldsValue({
-                //     name: record.name,
-                //     minimum: record.minimum,
-                //     price: record.price,
-                //   });
-                // }}
-              >
-                Chỉnh sửa
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                Xoá
-              </Button>
-            </>
-          );
-        }
+        return (
+          <>
+            <Button
+            // onClick={(e) => {
+            //   e.preventDefault();
+            //   setEditingRow(record.idNum);
+            //   form.setFieldsValue({
+            //     name: record.name,
+            //     minimum: record.minimum,
+            //     price: record.price,
+            //   });
+            // }}
+            >
+              Chỉnh sửa
+            </Button>
+            <Button
+              onClick={() => {
+                onDeleteButton(record);
+              }}
+            >
+              Xoá
+            </Button>
+          </>
+        );
       },
     },
   ];

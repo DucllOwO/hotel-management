@@ -3,6 +3,9 @@ import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import RoomTypeModal from "../../Modals/RoomType/RoomTypeModal";
+import SaveButton from "../../../../components/IconButton/SaveButton/SaveButton";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -117,51 +120,23 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
       key: "5",
       title: "Thao tác",
       render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  Lưu
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  Huỷ
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button
-              // onClick={(e) => {
-              //   e.preventDefault();
-              //   setEditingRow(record.idNum);
-              //   form.setFieldsValue({
-              //     name: record.name,
-              //   });
-              // }}
-              >
-                Chỉnh sửa
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                Xoá
-              </Button>
-            </>
-          );
-        }
+        return (
+          <>
+            <Button
+              htmlType="submit"
+              // onClick={() => {form.submit()}}
+            >
+              Lưu
+            </Button>
+            <Button
+              onClick={() => {
+                setEditingRow(null);
+              }}
+            >
+              Huỷ
+            </Button>
+          </>
+        );
       },
     },
   ];

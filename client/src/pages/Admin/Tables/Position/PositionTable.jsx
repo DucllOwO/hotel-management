@@ -15,6 +15,8 @@ import {
 } from "../../../../api/PositionAPI";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 import FeatureTable from "../Function/FeatureTable";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const INITIAL_STATE_CUR_EXPAND_POSITION = {
   loading: false,
@@ -182,7 +184,17 @@ const PositionTable = ({ positions, setPositions }) => {
       render: (_, record) => {
         return (
           <>
-            <Button
+            <div className="btnWrap">
+              <EditButton
+                openModalEdit={() => {
+                  setModal("edit");
+                  form.setFieldValue("posName", record.name);
+                  setCurrentPosition(record);
+                }}
+              ></EditButton>
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
+            {/* <Button
               onClick={(e) => {
                 e.preventDefault();
                 setModal("edit");
@@ -198,7 +210,7 @@ const PositionTable = ({ positions, setPositions }) => {
               }}
             >
               Xoá
-            </Button>
+            </Button> */}
           </>
         );
       },

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Table, Button, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-
+import TextButton from "../../../../components/TextButton/TextButton";
+import CheckButton from "../../../../components/IconButton/CheckButton/CheckButton";
 const InventoryTable = () => {
   const [editingRow, setEditingRow] = useState(null);
+
 
   const [form] = Form.useForm();
 
@@ -100,6 +102,28 @@ const InventoryTable = () => {
     },
     {
       key: "4",
+      title: "Thao tác",
+      render: (_, record) => {
+        return (
+          <>
+            <CheckButton
+              title="Kiểm tra phòng"
+              onCheckButton={() => {
+                showModal();
+                form.setFieldValue("room_name", record.room_name);
+              }}
+            ></CheckButton>
+            {/* <TextButton
+              title="Kiểm tra phòng"
+              onHandleTextButton={() => {
+                showModal();
+                form.setFieldValue("room_name", record.room_name);
+              }}
+            ></TextButton> */}
+            {/* <Button
+              onClick={() => {
+                
+              }}
       title: "Giá",
       dataIndex: "price",
       render: (text, record) => {
@@ -114,12 +138,10 @@ const InventoryTable = () => {
                 },
               ]}
             >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+              Kiểm tra phòng
+            </Button> */}
+          </>
+        );
       },
     },
     // {

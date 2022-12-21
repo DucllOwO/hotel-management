@@ -1,0 +1,22 @@
+.deleteBtn {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.editBtn {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.iconBtn {
+    margin-right: 10px;
+}
+
+.cancelBtn {
+    margin-left: 10px;
+}

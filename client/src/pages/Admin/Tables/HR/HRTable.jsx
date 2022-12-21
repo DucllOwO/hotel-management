@@ -14,6 +14,9 @@ import {
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 import { formatDate, formatterInt } from "../../../../Utils/formatter";
 import { createAccount, deleteAccount } from "../../../../api/AccountAPI";
+import moment from "moment";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const DEFAULT_PASSWORD = "123456";
 
@@ -97,20 +100,10 @@ const HRTable = ({ employees, setEmployees }) => {
       render: (_, record) => {
         return (
           <>
-            <Button
-              onClick={() => {
-                openEditModal(record);
-              }}
-            >
-              Chỉnh sửa
-            </Button>
-            <Button
-              onClick={() => {
-                onDeleteButton(record);
-              }}
-            >
-              Xóa
-            </Button>
+            <div className="btnWrap">
+              <EditButton openEditModal={openEditModal}></EditButton>
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
           </>
         );
       },

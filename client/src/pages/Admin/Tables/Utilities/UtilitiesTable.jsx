@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import UtilitiesModal from "../../Modals/Utilities/UtilitiesModal";
+import UtilitiesForm from "../../../../components/Form/UtilitiesForm";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const UtilitiesTable = ({utilities, setUtilities}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -92,13 +94,13 @@ const UtilitiesTable = ({utilities, setUtilities}) => {
           return (
             <>
               <Button
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   setEditingRow(record.idNum);
-                //   form.setFieldsValue({
-                //     name: record.name,
-                //   });
-                // }}
+              // onClick={(e) => {
+              //   e.preventDefault();
+              //   setEditingRow(record.idNum);
+              //   form.setFieldsValue({
+              //     name: record.name,
+              //   });
+              // }}
               >
                 Chỉnh sửa
               </Button>
@@ -150,7 +152,7 @@ const UtilitiesTable = ({utilities, setUtilities}) => {
           onOk={handle}
           onCancel={handle}
         >
-          <UtilitiesModal></UtilitiesModal>
+          <UtilitiesForm />
         </Modal>
       </>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
