@@ -3,11 +3,13 @@ import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import RoomTypeForm from "../../../../components/Form/RoomTypeForm";
-import SaveButton from "../../../../components/IconButton/SaveButton/SaveButton";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
+import RoomTypeExpand from "../../../../components/ExpandedTable/RoomTypeExpand";
+import { getRoomUtilsByRoomTypeID } from "../../../../api/RoomTypeAPI";
+import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 
-const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
+const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -29,6 +31,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
       key: "1",
       title: "ID",
       dataIndex: "id",
+      width: "10vw",
     },
     {
       key: "2",
@@ -73,47 +76,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
       title: "Diện tích (m2)",
       dataIndex: "area",
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập diện tích",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-    },
-    {
-      key: "6",
-      title: "Giá",
-      dataIndex: "price",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="price"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập giá",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return <p>{text}</p>;
       },
     },
     {
@@ -126,22 +89,6 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
               <EditButton openModalEdit={() => {}}></EditButton>
               <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
             </div>
-            {/* <div className="btnWrap">
-              <SaveButton onSaveButton={() => {}}></SaveButton>
-            </div> */}
-            {/* <Button
-              htmlType="submit"
-              // onClick={() => {form.submit()}}
-            >
-              Lưu
-            </Button>
-            <Button
-              onClick={() => {
-                setEditingRow(null);
-              }}
-            >
-              Huỷ
-            </Button> */}
           </>
         );
       },
@@ -178,7 +125,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
       <>
         <Modal
           title="Thông tin loại phòng"
-          visible={isModalVisible}
+          open={isModalVisible}
           onOk={handle}
           onCancel={handle}
           okText="Xác nhận"
@@ -187,7 +134,6 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
           <RoomTypeForm></RoomTypeForm>
         </Modal>
       </>
-      {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div></div>
         <div>
@@ -217,8 +163,39 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
         <Table
           columns={columns}
           dataSource={roomTypes}
-          scroll={{ y: 350 }}
+          scroll={{ y: "70vh" }}
           rowKey={(row) => row.id}
+          expandable={{
+            expandedRowRender: (record) => {
+              return (
+                <RoomTypeExpand
+                  utils={record.utils}
+                  firstHourPrice={record.first_hour_price}
+                  overNightPrice={record.overnight_price}
+                  oneDayPrice={record.one_day_price}
+                  hourPrice={record.hour_price}
+                />
+              );
+            },
+            onExpand: (expanded, record) => {
+              getRoomUtilsByRoomTypeID(positionUser, record.id)
+                .then(({ data }) => {
+                  setRoomTypes((prev) => {
+                    return prev.map((roomType) => {
+                      if (record.name === roomType.name) {
+                        return { ...roomType, utils: data };
+                      }
+                      return roomType;
+                    });
+                  });
+                })
+                .catch((error) => {
+                  console.log(error);
+                  ErrorAlert("Lấy dữ liệu tiện ích của loại phòng thất bại!!");
+                });
+            },
+          }}
+          pagination={false}
         ></Table>
       </Form>
     </div>

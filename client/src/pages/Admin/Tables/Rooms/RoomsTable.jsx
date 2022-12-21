@@ -81,30 +81,6 @@ const RoomsTable = ({ rooms, setRoom }) => {
         }
       },
     },
-    // {
-    //   key: "3",
-    //   title: "Diện tích",
-    //   dataIndex: "size",
-    //   render: (text, record) => {
-    //     if (editingRow === record.idNum) {
-    //       return (
-    //         <Form.Item
-    //           name="area"
-    //           rules={[
-    //             {
-    //               required: true,
-    //               message: "Vui lòng nhập diện tích",
-    //             },
-    //           ]}
-    //         >
-    //           <Input />
-    //         </Form.Item>
-    //       );
-    //     } else {
-    //       return <p>{text}</p>;
-    //     }
-    //   },
-    // },
     {
       key: "3",
       title: "Thao tác",
@@ -142,7 +118,8 @@ const RoomsTable = ({ rooms, setRoom }) => {
   const onDeleteButton = (record) => {
     Modal.confirm({
       title: "Bạn có chắc muốn xoá dữ liệu?",
-      okText: "Yes",
+      okText: "Có",
+      cancelText: "Không",
       okType: "danger",
       onOk: () => {
         setRoom((pre) => {

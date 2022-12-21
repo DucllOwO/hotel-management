@@ -194,23 +194,6 @@ const PositionTable = ({ positions, setPositions }) => {
               ></EditButton>
               <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
             </div>
-            {/* <Button
-              onClick={(e) => {
-                e.preventDefault();
-                setModal("edit");
-                form.setFieldValue("posName", record.name);
-                setCurrentPosition(record);
-              }}
-            >
-              Chỉnh sửa
-            </Button>
-            <Button
-              onClick={() => {
-                onDeleteButton(record);
-              }}
-            >
-              Xoá
-            </Button> */}
           </>
         );
       },

@@ -3,7 +3,7 @@ const roomTypeDAL = require("../DAL/roomTypeDAL");
 const getAll = async (req, res, next) => {
   const { data: roomTypes, error: getRoomTypesError } =
     await roomTypeDAL.getAllTypes();
-    console.log(roomTypes)
+  console.log(roomTypes);
   if (getRoomTypesError) return next(getRoomTypesError);
   else res.status(200).send(roomTypes);
 };

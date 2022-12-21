@@ -1,26 +1,31 @@
 import React, { useState, useContext, useEffect } from "react";
 import RoomTypeTable from "../../Tables/RoomType/RoomTypeTable";
-import { userRequest } from "../../../../api/api";
 import { AppContext } from "../../../../context/AppContext";
 import "./roomtype.css";
+import { getAllRoomType } from "../../../../api/RoomTypeAPI";
+import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 
 const RoomType = () => {
   const [types, setTypes] = useState([]);
   const { user } = useContext(AppContext);
 
   useEffect(() => {
-    const fetchRoomType = async () => {
-      const { data } = await userRequest.get("/roomtypes", {
-        params: { user: { position: user?.position } },
+    getAllRoomType(user.position)
+      .then(({ data }) => {
+        setTypes(data);
+      })
+      .catch((error) => {
+        console.log(error);
+        ErrorAlert("Lấy dữ liệu loại phòng thất bại!!");
       });
-      console.log(data);
-      setTypes(data);
-    };
-    fetchRoomType();
   }, [user?.position]);
   return (
     <div className="roomTypeContainer">
-      <RoomTypeTable roomTypes={types}></RoomTypeTable>
+      <RoomTypeTable
+        roomTypes={types}
+        setRoomTypes={setTypes}
+        positionUser={user.position}
+      ></RoomTypeTable>
     </div>
   );
 };
