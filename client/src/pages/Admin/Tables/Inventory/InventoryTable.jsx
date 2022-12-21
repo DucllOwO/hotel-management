@@ -109,7 +109,7 @@ const InventoryTable = () => {
             <CheckButton
               title="Kiểm tra phòng"
               onCheckButton={() => {
-                showModal();
+                // showModal();
                 form.setFieldValue("room_name", record.room_name);
               }}
             ></CheckButton>
