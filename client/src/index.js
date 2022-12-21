@@ -5,7 +5,9 @@ import { AppProvider } from "./context/AppContext";
 
 ReactDOM.render(
   <AppProvider>
-    <App />
+    <ConfigProvider>
+      <App />
+    </ConfigProvider>
   </AppProvider>,
   document.getElementById("root")
 );
