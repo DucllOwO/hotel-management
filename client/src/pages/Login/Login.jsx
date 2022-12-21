@@ -30,7 +30,7 @@ const Login = () => {
       className="login"
       onKeyDownCapture={(e) => e.key === "Enter" && login(e)}
     >
-      {userLocal && <Navigate to="/admin" replace={true} />}
+      {userLocal && <Navigate to="/admin/dashboard" replace={true} />}
       <div className="logo">
         <img src={logo} alt="logo" className="logoImg" />
       </div>

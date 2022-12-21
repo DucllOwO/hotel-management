@@ -26,7 +26,7 @@ const HRForm = ({ form, disable = false }) => {
   return (
     <Form layout="vertical" form={form} name="positionForm" autoComplete="off">
       <div className="modal">
-        <div className="left" style={{ width: "30vw" }}>
+        <div className="left">
           <Form.Item
             label="CCCD"
             name="id"
@@ -35,10 +35,19 @@ const HRForm = ({ form, disable = false }) => {
                 required: true,
                 message: "Vui lòng nhập CCCD!",
               },
+              {
+                type: "number",
+                message: "CCCD chỉ bao gồm số",
+              },
             ]}
             tooltip="Số CMND/CCCD của khách hàng"
           >
-            <Input size="large" disabled={disable} />
+            <InputNumber
+              size="large"
+              controls={false}
+              disabled={disable}
+              style={{ width: "100%" }}
+            />
           </Form.Item>
           <Form.Item
             label="Họ và tên"
@@ -66,21 +75,18 @@ const HRForm = ({ form, disable = false }) => {
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (value) {
-                    const birthday = new Date(value).toJSON().slice(0, 10);
-                    let utc = new Date().toJSON().slice(0, 10);
-                    console.log(birthday, utc);
-                    //console.log(new Date(birthday) == new Date(utc));
-                    if (birthday < utc) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(
-                      new Error(
-                        "Chọn ngày hôm nay hoặc tương lai là ngày sinh không hợp lệ!"
-                      )
-                    );
+                  const birthday = new Date(value).toJSON().slice(0, 10);
+                  let utc = new Date().toJSON().slice(0, 10);
+                  console.log(birthday, utc);
+                  //console.log(new Date(birthday) == new Date(utc));
+                  if (birthday < utc) {
+                    return Promise.resolve();
                   }
-                  return Promise.resolve();
+                  return Promise.reject(
+                    new Error(
+                      "Chọn ngày hôm nay hoặc tương lai là ngày sinh không hợp lệ!"
+                    )
+                  );
                 },
               }),
             ]}
@@ -108,7 +114,7 @@ const HRForm = ({ form, disable = false }) => {
             <Input size="large" />
           </Form.Item>
         </div>
-        <div className="right" style={{ marginLeft: "10%", width: "30vw" }}>
+        <div className="right">
           <Form.Item
             label="Chức vụ"
             name="position_id"
@@ -149,27 +155,27 @@ const HRForm = ({ form, disable = false }) => {
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (value) {
-                    if (
-                      !getFieldValue("date_of_birth") ||
-                      getFieldValue("date_of_birth") === ""
-                    )
-                      return Promise.reject(
-                        new Error(
-                          "Vui lòng chọn ngày sinh trước khi chọn ngày vào làm!"
-                        )
-                      );
-                    const birthday = new Date(getFieldValue("date_of_birth"));
-                    const startWorkingDay = new Date(value);
-                    console.log(birthday, startWorkingDay);
-                    if (startWorkingDay.getTime() > birthday.getTime()) {
-                      return Promise.resolve();
-                    }
+                  if (
+                    !getFieldValue("date_of_birth") ||
+                    getFieldValue("date_of_birth") === ""
+                  )
                     return Promise.reject(
-                      new Error("Ngày vào làm phải sau ngày sinh!")
+                      new Error(
+                        "Vui lòng chọn ngày sinh trước khi chọn ngày vào làm!"
+                      )
                     );
+                  const birthday = new Date(getFieldValue("date_of_birth"));
+                  const startWorkingDay = new Date(value);
+                  console.log(birthday, startWorkingDay);
+                  if (
+                    !value ||
+                    startWorkingDay.getTime() > birthday.getTime()
+                  ) {
+                    return Promise.resolve();
                   }
-                  return Promise.resolve();
+                  return Promise.reject(
+                    new Error("Ngày vào làm phải sau ngày sinh!")
+                  );
                 },
               }),
             ]}
@@ -177,21 +183,26 @@ const HRForm = ({ form, disable = false }) => {
             <DatePicker size="large" format={DATE_FORMAT} showToday />
           </Form.Item>
           <Form.Item
-            label="Email"
-            name="email"
+            label="Lương"
+            name="salary"
             rules={[
               {
                 required: true,
-                message: "Vui lòng nhập email!",
+                message: "Vui lòng nhập lương!",
               },
               {
-                type: "email",
-                message: "Email không đúng định dạng",
+                type: "number",
+                message: "Lương chỉ bao gồm số!",
               },
             ]}
           >
-            <Input
+            <InputNumber
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
               size="large"
+              controls={false}
+              style={{ width: "100%" }}
             />
           </Form.Item>
         </div>

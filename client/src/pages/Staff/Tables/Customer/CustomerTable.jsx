@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
+import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import "./customertable.css";
-import CustomerForm from "../../../../components/Form/CustomerForm";
+import CustomerModal from "../../Modals/Customer/CustomerModal";
 
 const CustomerTable = ({ customer, setCustomer }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -47,7 +48,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
       },
       dataIndex: "fullname",
       render: (text, record) => {
-        return text ? String(text) : "";
+        return String(record.fullname);
       },
     },
     {
@@ -55,47 +56,102 @@ const CustomerTable = ({ customer, setCustomer }) => {
       title: "Ngày sinh",
       dataIndex: "date_of_birth",
       render: (text, record) => {
-        return text ? String(text) : "";
+        if (editingRow === record.idNum) {
+          return (
+            <Form.Item
+              name="birthday"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập ngày sinh",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          );
+        } else {
+          return <p>{text}</p>;
+        }
       },
     },
     {
       key: "4",
-      title: "Số  điện thoại",
-      dataIndex: "phone_number",
-      render: (text, record) => {
-        return text ? String(text) : "";
-      },
-    },
-    {
-      key: "5",
       title: "Email",
       dataIndex: "email",
       width: "25%",
       render: (text, record) => {
-        return text ? String(text) : "";
+        if (editingRow === record.idNum) {
+          return (
+            <Form.Item
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập email",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          );
+        } else {
+          return <p>{text}</p>;
+        }
       },
     },
     {
-      key: "6",
+      key: "5",
       title: "Thao tác",
       render: (_, record) => {
-        return (
-          <>
-            <Button
-              htmlType="submit"
-              // onClick={() => {form.submit()}}
-            >
-              Chỉnh sửa
-            </Button>
-            <Button
-              onClick={() => {
-                setEditingRow(null);
-              }}
-            >
-              Xóa
-            </Button>
-          </>
-        );
+        if (editingRow !== null) {
+          if (editingRow === record.idNum) {
+            return (
+              <>
+                <Button
+                  htmlType="submit"
+                  // onClick={() => {form.submit()}}
+                >
+                  Lưu
+                </Button>
+                <Button
+                  onClick={() => {
+                    setEditingRow(null);
+                  }}
+                >
+                  Huỷ
+                </Button>
+              </>
+            );
+          } else {
+          }
+        } else {
+          return (
+            <>
+              <Button
+              // onClick={(e) => {
+              //   e.preventDefault();
+              //   setEditingRow(record.idNum);
+              //   form.setFieldsValue({
+              //     name: record.name,
+              //     birthday: record.birthday,
+              //     address: record.address,
+              //     email: record.email,
+              //   });
+              // }}
+              >
+                Chỉnh sửa
+              </Button>
+              <Button
+                onClick={() => {
+                  onDeleteButton(record);
+                }}
+              >
+                Xoá
+              </Button>
+            </>
+          );
+        }
       },
     },
   ];
@@ -148,7 +204,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
           onOk={handle}
           onCancel={handle}
         >
-          <CustomerForm />
+          <CustomerModal></CustomerModal>
         </Modal>
       </>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
@@ -177,11 +233,13 @@ const CustomerTable = ({ customer, setCustomer }) => {
           </Button>
         </div>
       </div>
-      <Table
-        columns={columns}
-        dataSource={customer}
-        scroll={{ x: true, y: 350 }}
-      ></Table>
+      <Form form={form} onFinish={onFinish} className="form">
+        <Table
+          columns={columns}
+          dataSource={customer}
+          scroll={{ x: true, y: 350 }}
+        ></Table>
+      </Form>
     </div>
   );
 };

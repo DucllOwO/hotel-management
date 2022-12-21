@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Input, Form } from "antd";
+import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import { useContext } from "react";
 import { AppContext } from "../../../../context/AppContext";
@@ -150,7 +151,7 @@ const PositionTable = ({ positions, setPositions }) => {
       title: "ID",
       colSpan: 1,
       dataIndex: "id",
-      width: 100,
+      width: "10%",
     },
     {
       key: "2",
@@ -228,7 +229,7 @@ const PositionTable = ({ positions, setPositions }) => {
       <Table
         columns={columns}
         dataSource={positions}
-        scroll={{ y: "100%", x: "100%" }}
+        scroll={{ y: "60vh" }}
         loading={positions ? false : true}
         rowKey={(record) => record.id}
         pagination={{ pageSize: 10 }}

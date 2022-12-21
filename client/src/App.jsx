@@ -23,10 +23,10 @@ import Position from "./pages/Admin/Position/Position";
 import _404ErrorBoundary from "./components/Error/ErrorBoundary/_404ErrorBoundary";
 import AuthErrorBoundary from "./components/Error/ErrorBoundary/AuthErrorBoundary";
 import Promotion from "./pages/Admin/Promotion/Promotion";
-import AddRoom from "./components/Admin/AddRoom/AddRoom";
 import Import from "./components/Admin/Import/Import";
 
 import "./app.css";
+import Home from "./pages/Customer/Home/Home";
 
 const App = () => {
   const { user } = useContext(AppContext);
@@ -41,6 +41,12 @@ const App = () => {
         <Routes>
           <Route key="login" index element={<Login />}></Route>
           <Route key="login1" path="/login" element={<Login />}></Route>
+          <Route key="customer" path="/home" element={<Home />}></Route>
+          <Route
+            key="Nhập hàng"
+            path="/admin/import"
+            element={<Import />}
+          ></Route>
           <Route key="admin" path="/admin" element={<Admin />}>
             {listFeature
               ? listRoute.map((item) => {
@@ -65,7 +71,9 @@ const App = () => {
 const listRoute = [
   {
     key: "Thống kê",
-    value: <Route key="Dashboard" index path="dashboard" element={<Dashboard />} />
+    value: (
+      <Route key="Dashboard" index path="dashboard" element={<Dashboard />} />
+    ),
   },
   {
     key: "Tài khoản",
@@ -73,7 +81,9 @@ const listRoute = [
   },
   {
     key: "Nhập sản phẩm",
-    value: <Route key="Import" index path="importing" element={<Importing />} />
+    value: (
+      <Route key="Import" index path="importing" element={<Importing />} />
+    ),
   },
   {
     key: "Nhân sự",
@@ -87,7 +97,7 @@ const listRoute = [
   },
   {
     key: "Quản lý sản phẩm",
-    value: <Route key="Item" index path="items" element={<Item />} />,
+    value: <Route key="Item" index path="item" element={<Item />} />,
   },
   {
     key: "Danh mục phòng",
@@ -138,10 +148,6 @@ const listRoute = [
   {
     key: "Đặt phòng",
     value: <Route index path="bookings/list" element={<BookingList />} />,
-  },
-  {
-    key: "Thêm phòng",
-    value: <Route index path="/addroom" element={<AddRoom />} />,
   },
   {
     key: "Nhập hàng",

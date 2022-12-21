@@ -3,7 +3,7 @@ import { Line } from "@ant-design/plots";
 
 const MultiLineChart = ({reportData}) => {
   const [data, setData] = useState(reportData);
-  // const [configData, setConfigData] = useState([]);
+
   useEffect(() => {
     console.log(reportData)
     // setConfigData([]);
@@ -68,16 +68,23 @@ const MultiLineChart = ({reportData}) => {
   // );
   const config = {
     data: mapData(),
-    // data
-    //   .map((item) => {
-    //     if(item.date)  
-    //     return [{ time: item.date, value: item.outcome, category: "Doanh thu" },
-    //       { time: item.date, value: item.outcome, category: "Chi phí" },
-    //       { time: item.date, value: item.profit, category: "Lợi nhuận" },]
-    //     // else
-        //   return { time: item.month, value: item.profit, category: "Doanh thu" };
+      // .filter((item, index) => {
+      //   if (item.category === "Gas flarinl")
+      //     return { year: item.year, value: item.value, category: "Doanh thu" };
+      //   if (item.category === "Liquid fuel")
+      //     return { year: item.year, value: item.value, category: "Chi phí" };
+      //   if (item.category === "Solid fuel")
+      //     return { year: item.year, value: item.value, category: "Lợi nhuận" };
+      // })
+      // .map((item) => {
+      //   if (item.category === "Gas flarinl")
+      //     return { year: item.year, value: item.value, category: "Doanh thu" };
+      //   if (item.category === "Liquid fuel")
+      //     return { year: item.year, value: item.value, category: "Chi phí" };
+      //   if (item.category === "Solid fuel")
+      //     return { year: item.year, value: item.value, category: "Lợi nhuận" };
       // }),
-    xField: "time",
+    xField: "year",
     yField: "value",
     seriesField: "category",
     // yAxis: {
@@ -89,6 +96,7 @@ const MultiLineChart = ({reportData}) => {
     width: "100%",
     height: "100%",
   };
+
   return (
     <>
       <Line {...config} />

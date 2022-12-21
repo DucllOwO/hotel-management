@@ -125,20 +125,18 @@ const AccountForm = ({
 
   async function checkAccountAlreadyExist(rule, value, callback) {
     try {
-      if (value) {
-        setValidatingEmployee({
-          hasFeedback: true,
-          validateStatus: "validating",
-        });
-        const res = await fetchEmployeeByID(user?.position, value);
+      setValidatingEmployee({
+        hasFeedback: true,
+        validateStatus: "validating",
+      });
+      const res = await fetchEmployeeByID(user?.position, value);
 
-        setValidatingEmployee({ hasFeedback: false, validateStatus: "" });
-        if (res.data.username) {
-          return Promise.reject(new Error("Nhân viên đã có tài khoản!"));
-        }
-
-        return Promise.resolve();
+      setValidatingEmployee({ hasFeedback: false, validateStatus: "" });
+      if (res.data.username) {
+        return Promise.reject(new Error("Nhân viên đã có tài khoản!"));
       }
+
+      return Promise.resolve();
     } catch (error) {
       console.log(error);
       ErrorAlert("Kiểm tra tài khoản đã tồn tại chưa thất bại!!");
@@ -148,16 +146,14 @@ const AccountForm = ({
 
   function checkUsernameAlreadyExist(rule, value, callback) {
     try {
-      if (value) {
-        const indexEmployees = employees.findIndex(
-          (employee) => employee.username === value
-        );
+      const indexEmployees = employees.findIndex(
+        (employee) => employee.username === value
+      );
 
-        if (indexEmployees >= 0)
-          return Promise.reject(new Error("Tên đăng nhập đã tồn tại!"));
+      if (indexEmployees >= 0)
+        return Promise.reject(new Error("Tên đăng nhập đã tồn tại!"));
 
-        return Promise.resolve();
-      }
+      return Promise.resolve();
     } catch (error) {
       return Promise.reject(
         new Error("Có lỗi khi kiểm tra tài khoản đã tồn tại!")
@@ -181,10 +177,9 @@ const passwordRule = [
 ];
 
 function whitespaceValidator(_, value) {
-  if (value)
-    return !value.includes(" ")
-      ? Promise.resolve()
-      : Promise.reject(new Error("Không được chứa khoảng trắng"));
+  return !value.includes(" ")
+    ? Promise.resolve()
+    : Promise.reject(new Error("Không được chứa khoảng trắng"));
 }
 
 export default AccountForm;

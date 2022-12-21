@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
-
+import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
-import ItemForm from "../../../../components/Form/ItemForm";
+import ItemModal from "../../Modals/Item/ItemModal";
 
-const ItemTable = ({ items, setItems }) => {
+const ItemTable = ({items, setItems}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -20,6 +20,7 @@ const ItemTable = ({ items, setItems }) => {
 
   const [searchedText, setSearchedText] = useState("");
 
+  
   const columns = [
     {
       key: "1",
@@ -108,30 +109,53 @@ const ItemTable = ({ items, setItems }) => {
       key: "5",
       title: "Thao tác",
       render: (_, record) => {
-        return (
-          <>
-            <Button
-            // onClick={(e) => {
-            //   e.preventDefault();
-            //   setEditingRow(record.idNum);
-            //   form.setFieldsValue({
-            //     name: record.name,
-            //     minimum: record.minimum,
-            //     price: record.price,
-            //   });
-            // }}
-            >
-              Chỉnh sửa
-            </Button>
-            <Button
-              onClick={() => {
-                onDeleteButton(record);
-              }}
-            >
-              Xoá
-            </Button>
-          </>
-        );
+        if (editingRow !== null) {
+          if (editingRow === record.idNum) {
+            return (
+              <>
+                <Button
+                  htmlType="submit"
+                  // onClick={() => {form.submit()}}
+                >
+                  Lưu
+                </Button>
+                <Button
+                  onClick={() => {
+                    setEditingRow(null);
+                  }}
+                >
+                  Huỷ
+                </Button>
+              </>
+            );
+          } else {
+          }
+        } else {
+          return (
+            <>
+              <Button
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   setEditingRow(record.idNum);
+                //   form.setFieldsValue({
+                //     name: record.name,
+                //     minimum: record.minimum,
+                //     price: record.price,
+                //   });
+                // }}
+              >
+                Chỉnh sửa
+              </Button>
+              <Button
+                onClick={() => {
+                  onDeleteButton(record);
+                }}
+              >
+                Xoá
+              </Button>
+            </>
+          );
+        }
       },
     },
   ];
@@ -170,7 +194,7 @@ const ItemTable = ({ items, setItems }) => {
           onOk={handle}
           onCancel={handle}
         >
-          <ItemForm />
+          <ItemModal></ItemModal>
         </Modal>
       </>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
@@ -199,7 +223,13 @@ const ItemTable = ({ items, setItems }) => {
           </Button>
         </div>
       </div>
-      <Table columns={columns} dataSource={items} scroll={{ y: 350 }}></Table>
+      <Form form={form} onFinish={onFinish} className="form">
+        <Table
+          columns={columns}
+          dataSource={items}
+          scroll={{ y: 350 }}
+        ></Table>
+      </Form>
     </div>
   );
 };

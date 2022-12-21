@@ -4,9 +4,7 @@
     align-items: stretch;
     justify-content: space-around;
 }
-.sumary{
-    padding-bottom: 16px;
-}
+
 .dashboardContainer {
     display: flex;
     flex-direction: column;
@@ -15,5 +13,5 @@
     margin-right: 5px;
     width: 100%;
     height: 85vh;
-    justify-content: start;
+    justify-content: space-between;
 }

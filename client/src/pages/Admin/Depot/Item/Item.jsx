@@ -11,7 +11,7 @@ const Item = () => {
 
   useEffect(() => {
     const fetchItems = async () => {
-      const { data } = await userRequest.get("/items", {
+      const { data } = await userRequest.get("/item", {
         params: { user: { position: user?.position } }
       });
       console.log(data);

@@ -74,7 +74,7 @@ const Dashboard = () => {
                 setTime(dayjs(Date.now()));
               }}
             >
-              Năm
+              Year
             </Button>
             <Button
               className="dateBtn"
@@ -84,7 +84,7 @@ const Dashboard = () => {
                 setTime(dayjs(Date.now()));
               }}
             >
-              Tháng
+              Month
             </Button>
             <Button
               className="dateBtn"
@@ -94,7 +94,7 @@ const Dashboard = () => {
                 setTime(dayjs(Date.now()));
               }}
             >
-              Ngày
+              Day
             </Button>
           </div>
           <div>
@@ -125,45 +125,21 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className="sumary">
+        <div>
           <Row gutter={16}>
             <Col span={8}>
-              <Card title="Tổng doanh thu">{report ? report[0]?.income : 0}</Card>
+              <Card title="Tổng doanh thu">đ 100.000.000</Card>
             </Col>
             <Col span={8}>
-              <Card title="Tổng chi phí">{report ? report[0]?.outcome : 0}</Card>
+              <Card title="Tổng chi phí">đ 30.000.000</Card>
             </Col>
             <Col span={8}>
-              <Card title="Tổng lợi nhuận">{report ? report[0]?.profit : 0}</Card>
+              <Card title="Tổng lợi nhuận">đ 70.000.000</Card>
             </Col>
           </Row>
         </div>
-        { type ==="day" && <div>
-          <Button
-            className="dateBtn"
-            onClick={() => {
-              setSemiType("income");
-            }}
-          >
-            Thu
-          </Button>
-          <Button
-            className="dateBtn"
-            onClick={() => {
-              setSemiType("outcome");
-            }}
-          >
-            Chi
-          </Button>
-        </div>}
         {/* {type === "day" ? <DashboardTable /> : <MultiLineChart />} */}
-        {(type === "day") 
-        ? <DashboardTable
-        data = {data}
-        ></DashboardTable>
-        : 
-        <MultiLineChart reportData={data}/>
-        }
+        <MultiLineChart />
       </div>
     </div>
   );

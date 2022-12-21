@@ -15,7 +15,7 @@ const Rooms = () => {
         params: { user: { position: user?.position } },
       });
       console.log(data);
-      setRooms(data);
+      setRooms(data.rooms);
     };
 
     fetchRoom();
