@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import dayjs from "dayjs";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
-import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import HRForm from "../../../../components/Form/HRForm";
 import { AppContext } from "../../../../context/AppContext";
@@ -15,6 +14,9 @@ import {
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 import { formatDate, formatterInt } from "../../../../Utils/formatter";
 import { createAccount, deleteAccount } from "../../../../api/AccountAPI";
+import moment from "moment";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const DEFAULT_PASSWORD = "123456";
 
@@ -81,15 +83,15 @@ const HRTable = ({ employees, setEmployees }) => {
       title: "Ngày vào làm",
       dataIndex: "start_working_date",
       render: (text, record) => {
-        return String(formatDate(record.date_of_birth));
+        return String(formatDate(record.start_working_date));
       },
     },
     {
       key: "6",
-      title: "Lương",
-      dataIndex: "salary",
+      title: "Email",
+      dataIndex: "email",
       render: (text, record) => {
-        return String(record.salary);
+        return String(record.email);
       },
     },
     {
@@ -98,20 +100,10 @@ const HRTable = ({ employees, setEmployees }) => {
       render: (_, record) => {
         return (
           <>
-            <Button
-              onClick={() => {
-                openEditModal(record);
-              }}
-            >
-              Chỉnh sửa
-            </Button>
-            <Button
-              onClick={() => {
-                onDeleteButton(record);
-              }}
-            >
-              Xóa
-            </Button>
+            <div className="btnWrap">
+              <EditButton openEditModal={openEditModal}></EditButton>
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
           </>
         );
       },
@@ -120,11 +112,12 @@ const HRTable = ({ employees, setEmployees }) => {
 
   const openEditModal = (record) => {
     setModal("edit");
-
+    console.log(record.salary.slice(1, record.salary.length));
     form.setFieldsValue({
       ...record,
-      start_working_date: dayjs(record.start_working_date, "DD-MM-YYYY"),
-      date_of_birth: dayjs(record.date_of_birth, "DD-MM-YYYY"),
+      start_working_date: moment(record.start_working_date),
+      date_of_birth: moment(record.date_of_birth),
+      salary: record.salary.slice(1, record.salary.length),
     });
   };
 
@@ -265,7 +258,7 @@ const HRTable = ({ employees, setEmployees }) => {
   };
 
   return (
-    <div className="table">
+    <div className="hrtable">
       <>
         {modal === "add" && modalAddEmployee()}
         {modal === "edit" && modalEditEmployee()}
@@ -301,7 +294,7 @@ const HRTable = ({ employees, setEmployees }) => {
         loading={employees ? false : true}
         columns={columns}
         dataSource={employees}
-        scroll={{ y: 350 }}
+        scroll={{ y: "100%", x: "100%" }}
         rowKey={(record) => record.id}
       ></Table>
     </div>

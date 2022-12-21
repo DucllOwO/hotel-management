@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
-import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
-import RoomTypeModal from "../../Modals/RoomType/RoomTypeModal";
+import RoomTypeForm from "../../../../components/Form/RoomTypeForm";
+import SaveButton from "../../../../components/IconButton/SaveButton/SaveButton";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -47,23 +49,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
       },
       dataIndex: "name",
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the name",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return <p>{text}</p>;
       },
     },
     {
@@ -71,29 +57,21 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
       title: "Số lượng khách",
       dataIndex: "max_customers",
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the amount",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return <p>{text}</p>;
       },
     },
     {
       key: "4",
       title: "Số giường",
       dataIndex: "bed_amount",
+      render: (text, record) => {
+        return <p>{text}</p>;
+      },
+    },
+    {
+      key: "5",
+      title: "Diện tích (m2)",
+      dataIndex: "area",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -102,7 +80,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter the amount",
+                  message: "Vui lòng nhập diện tích",
                 },
               ]}
             >
@@ -115,54 +93,57 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
       },
     },
     {
-      key: "5",
+      key: "6",
+      title: "Giá",
+      dataIndex: "price",
+      render: (text, record) => {
+        if (editingRow === record.idNum) {
+          return (
+            <Form.Item
+              name="price"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập giá",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          );
+        } else {
+          return <p>{text}</p>;
+        }
+      },
+    },
+    {
+      key: "7",
       title: "Thao tác",
       render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  Lưu
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  Huỷ
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button
-              // onClick={(e) => {
-              //   e.preventDefault();
-              //   setEditingRow(record.idNum);
-              //   form.setFieldsValue({
-              //     name: record.name,
-              //   });
-              // }}
-              >
-                Chỉnh sửa
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                Xoá
-              </Button>
-            </>
-          );
-        }
+        return (
+          <>
+            <div className="btnWrap">
+              <EditButton openModalEdit={() => {}}></EditButton>
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
+            {/* <div className="btnWrap">
+              <SaveButton onSaveButton={() => {}}></SaveButton>
+            </div> */}
+            {/* <Button
+              htmlType="submit"
+              // onClick={() => {form.submit()}}
+            >
+              Lưu
+            </Button>
+            <Button
+              onClick={() => {
+                setEditingRow(null);
+              }}
+            >
+              Huỷ
+            </Button> */}
+          </>
+        );
       },
     },
   ];
@@ -170,7 +151,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
   const onDeleteButton = (record) => {
     Modal.confirm({
       title: "Bạn có chắc muốn xoá dữ liệu?",
-      okText: "Yes",
+      okText: "OK",
       okType: "danger",
       onOk: () => {
         setRoomTypes((pre) => {
@@ -200,8 +181,10 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
           visible={isModalVisible}
           onOk={handle}
           onCancel={handle}
+          okText="Xác nhận"
+          cancelText="Hủy"
         >
-          <RoomTypeModal></RoomTypeModal>
+          <RoomTypeForm></RoomTypeForm>
         </Modal>
       </>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
@@ -235,6 +218,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
           columns={columns}
           dataSource={roomTypes}
           scroll={{ y: 350 }}
+          rowKey={(row) => row.id}
         ></Table>
       </Form>
     </div>

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
-import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import AddRoomForm from "../../../../components/Form/AddRoomForm";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const RoomsTable = ({ rooms, setRoom }) => {
   const navigate = useNavigate();
@@ -80,111 +81,47 @@ const RoomsTable = ({ rooms, setRoom }) => {
         }
       },
     },
+    // {
+    //   key: "3",
+    //   title: "Diện tích",
+    //   dataIndex: "size",
+    //   render: (text, record) => {
+    //     if (editingRow === record.idNum) {
+    //       return (
+    //         <Form.Item
+    //           name="area"
+    //           rules={[
+    //             {
+    //               required: true,
+    //               message: "Vui lòng nhập diện tích",
+    //             },
+    //           ]}
+    //         >
+    //           <Input />
+    //         </Form.Item>
+    //       );
+    //     } else {
+    //       return <p>{text}</p>;
+    //     }
+    //   },
+    // },
     {
       key: "3",
-      title: "Diện tích",
-      dataIndex: "size",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="area"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập diện tích",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-    },
-    {
-      key: "4",
-      title: "Giá",
-      dataIndex: "price",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="price"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập giá",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-    },
-    {
-      key: "5",
       title: "Thao tác",
       render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  Lưu
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  Huỷ
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button
-              // onClick={(e) => {
-              //   e.preventDefault();
-              //   setEditingRow(record.idNum);
-              //   form.setFieldsValue({
-              //     name: record.name,
-              //     roomType: record.roomType,
-              //     area: record.area,
-              //     price: record.price,
-              //   });
-              // }}
-              >
-                Chỉnh sửa
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                Xoá
-              </Button>
-            </>
-          );
-        }
+        return (
+          <>
+            <div className="btnWrap">
+              <EditButton openModalEdit={openModalEdit}></EditButton>
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
+          </>
+        );
       },
     },
   ];
 
-  const addRoomModal = () => {
+  const openModalEdit = () => {
     return (
       <Modal
         title="Thêm phòng"
@@ -229,7 +166,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
 
   return (
     <div className="table">
-      {modal === true && addRoomModal()}
+      {modal === true && openModalEdit()}
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div></div>

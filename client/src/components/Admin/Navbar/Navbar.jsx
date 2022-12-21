@@ -21,7 +21,7 @@ import { AppContext } from "../../../context/AppContext";
 const Navbar = () => {
   const navigate = useNavigate();
   const { setUser } = useContext(AppContext);
-  const [current, setCurrent] = useState("/admin");
+  const [current, setCurrent] = useState("/admin/dashboard");
 
   const onClickHandler = (e) => {
     // logout == /login
@@ -53,7 +53,7 @@ const Navbar = () => {
         className="menu"
         mode="inline"
         theme="dark"
-        defaultSelectedKeys={["/admin"]}
+        defaultSelectedKeys={["/admin/dashboard"]}
         selectedKeys={[current]}
         onClick={onClickHandler}
         items={
@@ -115,7 +115,7 @@ const Navbar = () => {
                           ? { label: "Nhập sản phẩm", key: "/admin/importing" }
                           : null,
                         permission.includes("Quản lý sản phẩm")
-                          ? { label: "Quản lý sản phẩm", key: "/admin/item" }
+                          ? { label: "Quản lý sản phẩm", key: "/admin/items" }
                           : null,
                       ],
                     }
@@ -156,7 +156,10 @@ const Navbar = () => {
                       key: "/admin/bookings",
                       icon: <DiffOutlined></DiffOutlined>,
                       children: [
-                        { label: "Đặt phòng", key: "/admin/bookings/" },
+                        {
+                          label: "Đặt phòng",
+                          key: "/admin/bookings/",
+                        },
                         {
                           label: "Danh sách phiếu đặt phòng",
                           key: "/admin/bookings/list",

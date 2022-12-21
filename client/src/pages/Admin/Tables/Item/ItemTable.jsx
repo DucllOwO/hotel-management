@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
-import "antd/dist/antd.less";
-import { PlusOutlined } from "@ant-design/icons";
-import ItemModal from "../../Modals/Item/ItemModal";
 
-const ItemTable = ({items, setItems}) => {
+import { PlusOutlined } from "@ant-design/icons";
+import ItemForm from "../../../../components/Form/ItemForm";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
+
+const ItemTable = ({ items, setItems }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -20,7 +22,6 @@ const ItemTable = ({items, setItems}) => {
 
   const [searchedText, setSearchedText] = useState("");
 
-  
   const columns = [
     {
       key: "1",
@@ -109,53 +110,14 @@ const ItemTable = ({items, setItems}) => {
       key: "5",
       title: "Thao tác",
       render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  Lưu
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  Huỷ
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   setEditingRow(record.idNum);
-                //   form.setFieldsValue({
-                //     name: record.name,
-                //     minimum: record.minimum,
-                //     price: record.price,
-                //   });
-                // }}
-              >
-                Chỉnh sửa
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                Xoá
-              </Button>
-            </>
-          );
-        }
+        return (
+          <>
+            <div className="btnWrap">
+              <EditButton openEditModal={() => {}}></EditButton>
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
+          </>
+        );
       },
     },
   ];
@@ -194,7 +156,7 @@ const ItemTable = ({items, setItems}) => {
           onOk={handle}
           onCancel={handle}
         >
-          <ItemModal></ItemModal>
+          <ItemForm />
         </Modal>
       </>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
@@ -223,13 +185,7 @@ const ItemTable = ({items, setItems}) => {
           </Button>
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={items}
-          scroll={{ y: 350 }}
-        ></Table>
-      </Form>
+      <Table columns={columns} dataSource={items} scroll={{ y: 350 }}></Table>
     </div>
   );
 };

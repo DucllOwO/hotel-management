@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
-import "antd/dist/antd.less";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import AccountForm from "../../../../components/Form/AccountForm";
 import {
   createAccount,
@@ -13,6 +12,8 @@ import { AppContext } from "../../../../context/AppContext";
 import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 import { fetchEmployee, updateEmployee } from "../../../../api/EmployeeAPI";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const AccountTable = ({ accounts, setAccount }) => {
   const { user } = useContext(AppContext);
@@ -53,30 +54,44 @@ const AccountTable = ({ accounts, setAccount }) => {
       render: (text, record) => {
         return String(record.username);
       },
+      width: 300,
     },
-    {
-      key: "2",
-      title: "Email",
-      dataIndex: "email",
-      render: (text, record) => {
-        return record.email ? String(record.email) : "";
-      },
-    },
+    // {
+    //   key: "2",
+    //   title: "Email",
+    //   dataIndex: "email",
+    //   render: (text, record) => {
+    //     return record.email ? String(record.email) : "";
+    //   },
+    // },
 
     {
-      key: "3",
+      key: "2",
       title: "Thao tác",
       render: (_, record) => {
         return (
           <>
-            <Button onClick={() => openModalEdit(record)}>Chỉnh sửa</Button>
-            <Button
-              onClick={() => {
-                onDeleteButton(record);
-              }}
-            >
-              Xoá
-            </Button>
+            <div className="btnWrap">
+              <EditButton
+                openModalEdit={() => {
+                  console.log("aaa");
+                  setModal("edit");
+                  const { password, ...tempData } = record;
+                  const employee = employees?.find((employee) => {
+                    return employee.username === record.username;
+                  });
+                  form.setFieldsValue({
+                    ...tempData,
+                    employeeUsername: {
+                      label: employee.username,
+                      value: employee.id,
+                    },
+                    employeeID: employee.id,
+                  });
+                }}
+              ></EditButton>
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
           </>
         );
       },
@@ -84,6 +99,7 @@ const AccountTable = ({ accounts, setAccount }) => {
   ];
 
   const openModalEdit = (record) => {
+    console.log("aa");
     setModal("edit");
     const { password, ...tempData } = record;
     const employee = employees?.find((employee) => {
@@ -247,7 +263,7 @@ const AccountTable = ({ accounts, setAccount }) => {
         loading={accounts ? false : true}
         columns={columns}
         dataSource={accounts}
-        scroll={{ y: 350 }}
+        scroll={{ y: "100%", x: "100%" }}
         rowKey={(row) => row.username}
       ></Table>
     </div>

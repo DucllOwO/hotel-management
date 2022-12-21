@@ -15,7 +15,6 @@ const actionAC = {
 const resourceAC = {
   ACCOUNT: "account",
   BOOKING: "booking",
-  REPORT: "report",
   ROOM: "room",
   ROOM_FEATURE: "room_feature",
   VOUCHER: "voucher",
@@ -28,6 +27,9 @@ const resourceAC = {
   USER: "user",
   INVENTORY: "inventory",
   SERVICE: "service",
+  DAILYREPORT: "daily_report",
+  MONTHLYREPORT: "monthly_report",
+  YEARLYREPORT: "yearly_report",
   ITEM: "item",
   FEATURE: "feature",
   RECEIPT: "invoice",
@@ -37,6 +39,13 @@ const roomStatus = {
   AVAILABLE: 0,
   BOOKED: 1,
   WAITING: 2,
+};
+
+const bookingStatus = {
+  WAITING: 0,
+  BOOKED: 1,
+  COMPLETE: 2,
+  CANCEL: 3,
 };
 
 const pagination = {

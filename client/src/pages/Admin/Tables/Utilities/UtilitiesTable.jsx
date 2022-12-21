@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
-import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
-import UtilitiesModal from "../../Modals/Utilities/UtilitiesModal";
+import UtilitiesForm from "../../../../components/Form/UtilitiesForm";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
-const UtilitiesTable = ({utilities, setUtilities}) => {
+const UtilitiesTable = ({ utilities, setUtilities }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -22,7 +23,6 @@ const UtilitiesTable = ({utilities, setUtilities}) => {
 
   const [searchedText, setSearchedText] = useState("");
 
-  
   const columns = [
     {
       key: "1",
@@ -68,51 +68,14 @@ const UtilitiesTable = ({utilities, setUtilities}) => {
       key: "3",
       title: "Thao tác",
       render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  Lưu
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  Huỷ
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   setEditingRow(record.idNum);
-                //   form.setFieldsValue({
-                //     name: record.name,
-                //   });
-                // }}
-              >
-                Chỉnh sửa
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                Xoá
-              </Button>
-            </>
-          );
-        }
+        return (
+          <>
+            <div className="btnWrap">
+              <EditButton openModalEdit={() => {}}></EditButton>
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
+          </>
+        );
       },
     },
   ];
@@ -151,7 +114,7 @@ const UtilitiesTable = ({utilities, setUtilities}) => {
           onOk={handle}
           onCancel={handle}
         >
-          <UtilitiesModal></UtilitiesModal>
+          <UtilitiesForm />
         </Modal>
       </>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}

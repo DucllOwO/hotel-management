@@ -41,12 +41,6 @@ const App = () => {
         <Routes>
           <Route key="login" index element={<Login />}></Route>
           <Route key="login1" path="/login" element={<Login />}></Route>
-          <Route key="customer" path="/home" element={<Home />}></Route>
-          <Route
-            key="Nhập hàng"
-            path="/admin/import"
-            element={<Import />}
-          ></Route>
           <Route key="admin" path="/admin" element={<Admin />}>
             {listFeature
               ? listRoute.map((item) => {
@@ -97,7 +91,7 @@ const listRoute = [
   },
   {
     key: "Quản lý sản phẩm",
-    value: <Route key="Item" index path="item" element={<Item />} />,
+    value: <Route key="Item" index path="items" element={<Item />} />,
   },
   {
     key: "Danh mục phòng",

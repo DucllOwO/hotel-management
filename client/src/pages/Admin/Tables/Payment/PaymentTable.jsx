@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
-import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import moment from "moment";
@@ -108,58 +107,6 @@ const PaymentTable = ({ payment, setPayment }) => {
         }
       },
     },
-    {
-      key: "5",
-      title: "Thao tác",
-      render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  Lưu
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  Huỷ
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button
-              // onClick={(e) => {
-              //   e.preventDefault();
-              //   setEditingRow(record.idNum);
-              //   form.setFieldsValue({
-              //     date: record.date,
-              //     total: record.total,
-              //   });
-              // }}
-              >
-                Chỉnh sửa
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                Xoá
-              </Button>
-            </>
-          );
-        }
-      },
-    },
   ];
 
   const onChange = (date, dateString) => {
@@ -262,16 +209,6 @@ const PaymentTable = ({ payment, setPayment }) => {
               picker="year"
             ></DatePicker>
           )}
-          <Button
-            style={{ marginLeft: "5px" }}
-            onClick={onAddButton}
-            className="addButton"
-            type="primary"
-            ghost
-            icon={<PlusOutlined />}
-          >
-            Tạo mới
-          </Button>
         </div>
       </div>
       <Form form={form} onFinish={onFinish} className="form">

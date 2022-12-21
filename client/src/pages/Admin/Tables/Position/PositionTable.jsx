@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Input, Form } from "antd";
-import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 import { useContext } from "react";
 import { AppContext } from "../../../../context/AppContext";
@@ -14,6 +13,8 @@ import {
   updatePosition,
 } from "../../../../api/PositionAPI";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const PositionTable = ({ positions, setPositions }) => {
   const { user } = useContext(AppContext);
@@ -151,7 +152,7 @@ const PositionTable = ({ positions, setPositions }) => {
       title: "ID",
       colSpan: 1,
       dataIndex: "id",
-      width: "10%",
+      width: 100,
     },
     {
       key: "2",
@@ -172,7 +173,17 @@ const PositionTable = ({ positions, setPositions }) => {
       render: (_, record) => {
         return (
           <>
-            <Button
+            <div className="btnWrap">
+              <EditButton
+                openModalEdit={() => {
+                  setModal("edit");
+                  form.setFieldValue("posName", record.name);
+                  setCurrentPosition(record);
+                }}
+              ></EditButton>
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
+            {/* <Button
               onClick={(e) => {
                 e.preventDefault();
                 setModal("edit");
@@ -188,7 +199,7 @@ const PositionTable = ({ positions, setPositions }) => {
               }}
             >
               Xoá
-            </Button>
+            </Button> */}
           </>
         );
       },
@@ -229,7 +240,7 @@ const PositionTable = ({ positions, setPositions }) => {
       <Table
         columns={columns}
         dataSource={positions}
-        scroll={{ y: "60vh" }}
+        scroll={{ y: "100%", x: "100%" }}
         loading={positions ? false : true}
         rowKey={(record) => record.id}
         pagination={{ pageSize: 10 }}
