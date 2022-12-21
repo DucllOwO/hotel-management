@@ -123,52 +123,49 @@ const BookingTable = ({
   };
 
   return (
-    <div id="bookingTable">
-      <div className="bookingTable">
-        <>{isModalOpen ? modalJSX() : null}</>
-        <div className="buttonContainer">
-          <div className="header">
-            <div>
-              <RangePicker
-                format={"DD/MM/YYYY"}
-                onChange={(value) => {
-                  setFrom(value[0]?._d);
-                  setTo(value[1]?._d);
-                }}
-              />
-            </div>
-          </div>
+    <div className="bookingTable">
+      <>{isModalOpen ? modalJSX() : null}</>
+      <div className="buttonContainer">
+        <div className="header">
           <div>
-            <Input.Search
-              onSearch={(value) => {
-                setSearchedText(value);
+            <RangePicker
+              format={"DD/MM/YYYY"}
+              onChange={(value) => {
+                setFrom(value[0]?._d);
+                setTo(value[1]?._d);
               }}
-              onChange={(e) => {
-                setSearchedText(e.target.value);
-              }}
-              placeholder="Tìm kiếm"
-              className="searchInput"
-              style={{ width: 264 }}
             />
           </div>
         </div>
-        <Form form={roomForm}>
-          <Table
-            loading={isLoading}
-            columns={columns}
-            dataSource={rooms}
-            scroll={{ y: "100%" }}
-            rowKey={(row) => row.room_name}
-          ></Table>
-        </Form>
+        <div>
+          <Input.Search
+            onSearch={(value) => {
+              setSearchedText(value);
+            }}
+            onChange={(e) => {
+              setSearchedText(e.target.value);
+            }}
+            placeholder="Tìm kiếm"
+            className="searchInput"
+            style={{ width: 264 }}
+          />
+        </div>
       </div>
+      <Form form={roomForm}>
+        <Table
+          loading={isLoading}
+          columns={columns}
+          dataSource={rooms}
+          scroll={{ y: "100%" }}
+          rowKey={(row) => row.room_name}
+        ></Table>
+      </Form>
       <BottomBar>
-        <Button type="primary" onClick={(e) => openModalInfoCustomer()}>
-          Đặt
-        </Button>
+        <Button type="primary">Đặt</Button>
       </BottomBar>
     </div>
   );
+
   function modalJSX() {
     return (
       <Modal

@@ -4,7 +4,7 @@ export const PositionContext = createContext({});
 
 export const PositionProvider = ({ children }) => {
   const [features, setFeatures] = useState([]);
-
+  const [featuresExpandTable, setFeaturesExpandTable] = useState([]);
   const [isFeaturesError, setIsFeaturesError] = useState(null);
 
   return (
@@ -13,6 +13,8 @@ export const PositionProvider = ({ children }) => {
         features,
         setFeatures,
         isFeaturesError,
+        featuresExpandTable,
+        setFeaturesExpandTable,
         setIsFeaturesError,
       }}
     >

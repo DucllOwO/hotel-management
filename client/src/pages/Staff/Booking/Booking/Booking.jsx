@@ -1,6 +1,8 @@
+import { Button } from "antd";
 import React, { useState, useContext, useEffect } from "react";
 import { userRequest } from "../../../../api/api";
 import { fetchBookingByDate } from "../../../../api/BookingAPI";
+import BottomBar from "../../../../components/Admin/BottomBar/BottomBar";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 import { AppContext } from "../../../../context/AppContext";
 import BookingTable from "../../Tables/Booking/Booking/BookingTable";
@@ -30,19 +32,17 @@ const Booking = () => {
     }
   }, [user?.position, from, to]);
   return (
-    <div className="container">
-      <div className="bookingContainer">
-        <BookingTable
-          setRooms={setRooms}
-          rooms={rooms}
-          from={from}
-          to={to}
-          setFrom={setFrom}
-          setTo={setTo}
-          isLoading={isLoading}
-          user={user}
-        ></BookingTable>
-      </div>
+    <div className="bookingContainer">
+      <BookingTable
+        setRooms={setRooms}
+        rooms={rooms}
+        from={from}
+        to={to}
+        setFrom={setFrom}
+        setTo={setTo}
+        isLoading={isLoading}
+        user={user}
+      ></BookingTable>
     </div>
   );
 };

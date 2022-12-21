@@ -21,10 +21,8 @@ const Rooms = () => {
     fetchRoom();
   }, []);
   return (
-    <div className="container">
-      <div className="roomsContainer">
-        <RoomsTable rooms={rooms}></RoomsTable>
-      </div>
+    <div className="roomsContainer">
+      <RoomsTable rooms={rooms}></RoomsTable>
     </div>
   );
 };

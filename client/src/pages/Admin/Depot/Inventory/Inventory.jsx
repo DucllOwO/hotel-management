@@ -25,10 +25,8 @@ const Inventory = () => {
   }, [user.position]);
 
   return (
-    <div className="container">
-      <div className="inventoryContainer">
-        <InventoryTable rooms={rooms}></InventoryTable>
-      </div>
+    <div className="inventoryContainer">
+      <InventoryTable rooms={rooms}></InventoryTable>
     </div>
   );
 };

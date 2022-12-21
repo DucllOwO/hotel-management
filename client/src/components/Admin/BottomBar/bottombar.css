@@ -1,17 +1,13 @@
 .bottomBar {
     height: 60px;
-    width: 100%;
+    position: fixed;
+        bottom: 0;
+        width: 100%;
     background-color: var(--light-grey);
-    position: sticky;
     align-self: flex-end;
-    bottom: 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 0 31px;
-}
-
-.createBtn {
-    margin-left: 10px;
+    padding: 0 30px;
 }
