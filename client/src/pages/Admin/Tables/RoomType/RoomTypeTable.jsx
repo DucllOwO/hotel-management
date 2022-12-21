@@ -3,6 +3,9 @@ import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import RoomTypeForm from "../../../../components/Form/RoomTypeForm";
+import SaveButton from "../../../../components/IconButton/SaveButton/SaveButton";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -119,7 +122,14 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
       render: (_, record) => {
         return (
           <>
-            <Button
+            <div className="btnWrap">
+              <EditButton openModalEdit={() => {}}></EditButton>
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
+            {/* <div className="btnWrap">
+              <SaveButton onSaveButton={() => {}}></SaveButton>
+            </div> */}
+            {/* <Button
               htmlType="submit"
               // onClick={() => {form.submit()}}
             >
@@ -131,7 +141,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
               }}
             >
               Huỷ
-            </Button>
+            </Button> */}
           </>
         );
       },

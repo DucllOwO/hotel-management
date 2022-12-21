@@ -24,3 +24,7 @@
 .dateBtn {
     margin-left: 5px;
 }
+
+.btnWrap {
+    display: flex;
+}

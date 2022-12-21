@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Table, Button, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import InventoryForm from "../../../../components/Form/InventoryForm";
+import TextButton from "../../../../components/TextButton/TextButton";
+import CheckButton from "../../../../components/IconButton/CheckButton/CheckButton";
 
 const InventoryTable = ({ rooms }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -64,14 +66,27 @@ const InventoryTable = ({ rooms }) => {
       render: (_, record) => {
         return (
           <>
-            <Button
-              onClick={() => {
+            <CheckButton
+              title="Kiểm tra phòng"
+              onCheckButton={() => {
                 showModal();
                 form.setFieldValue("room_name", record.room_name);
               }}
+            ></CheckButton>
+            {/* <TextButton
+              title="Kiểm tra phòng"
+              onHandleTextButton={() => {
+                showModal();
+                form.setFieldValue("room_name", record.room_name);
+              }}
+            ></TextButton> */}
+            {/* <Button
+              onClick={() => {
+                
+              }}
             >
               Kiểm tra phòng
-            </Button>
+            </Button> */}
           </>
         );
       },

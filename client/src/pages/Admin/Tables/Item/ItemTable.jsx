@@ -4,6 +4,8 @@ import { Table, Button, Modal, Form, Input } from "antd";
 
 import { PlusOutlined } from "@ant-design/icons";
 import ItemForm from "../../../../components/Form/ItemForm";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const ItemTable = ({ items, setItems }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -110,26 +112,10 @@ const ItemTable = ({ items, setItems }) => {
       render: (_, record) => {
         return (
           <>
-            <Button
-            // onClick={(e) => {
-            //   e.preventDefault();
-            //   setEditingRow(record.idNum);
-            //   form.setFieldsValue({
-            //     name: record.name,
-            //     minimum: record.minimum,
-            //     price: record.price,
-            //   });
-            // }}
-            >
-              Chỉnh sửa
-            </Button>
-            <Button
-              onClick={() => {
-                onDeleteButton(record);
-              }}
-            >
-              Xoá
-            </Button>
+            <div className="btnWrap">
+              <EditButton openEditModal={() => {}}></EditButton>
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
           </>
         );
       },

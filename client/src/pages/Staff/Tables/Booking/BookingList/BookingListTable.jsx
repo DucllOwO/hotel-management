@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import "../../index.css";
-import { Table, Button, Modal, Form, Input } from "antd";
+import { Table, Button, Modal, Form, Input, Tooltip } from "antd";
 import "./bookingListtable.css";
 import { PlusOutlined } from "@ant-design/icons";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import TextButton from "../../../../../components/TextButton/TextButton";
+import CheckButton from "../../../../../components/IconButton/CheckButton/CheckButton";
+import CancelButton from "../../../../../components/IconButton/CancelButton/CancelButton";
 
 const BookingListTable = ({ booking, setBooking }) => {
   const [editingRow, setEditingRow] = useState(null);
@@ -97,20 +100,13 @@ const BookingListTable = ({ booking, setBooking }) => {
       render: (_, record) => {
         return (
           <>
-            <Button
-              onClick={() => {
-                onBooking(record);
-              }}
-            >
-              Nhận phòng
-            </Button>
-            <Button
-              onClick={() => {
-                onBooking(record);
-              }}
-            >
-              Huỷ
-            </Button>
+            <div className="btnWrap">
+              <CheckButton
+                title="Nhận phòng"
+                onCheckButton={() => {}}
+              ></CheckButton>
+              <CancelButton title="Hủy" onCheckButton={() => {}}></CancelButton>
+            </div>
           </>
         );
       },

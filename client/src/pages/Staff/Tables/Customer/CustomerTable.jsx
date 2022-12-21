@@ -4,6 +4,8 @@ import { Table, Button, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import "./customertable.css";
 import CustomerForm from "../../../../components/Form/CustomerForm";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const CustomerTable = ({ customer, setCustomer }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -81,19 +83,10 @@ const CustomerTable = ({ customer, setCustomer }) => {
       render: (_, record) => {
         return (
           <>
-            <Button
-              htmlType="submit"
-              // onClick={() => {form.submit()}}
-            >
-              Chỉnh sửa
-            </Button>
-            <Button
-              onClick={() => {
-                setEditingRow(null);
-              }}
-            >
-              Xóa
-            </Button>
+            <div className="btnWrap">
+              <EditButton openModalEdit={() => {}}></EditButton>
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
           </>
         );
       },
