@@ -194,7 +194,9 @@ const PositionTable = ({ positions, setPositions }) => {
                   setCurrentPosition(record);
                 }}
               ></EditButton>
-              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+              <DeleteButton
+                onDeleteButton={(e) => onDeleteButton(record)}
+              ></DeleteButton>
             </div>
             {/* <Button
               onClick={(e) => {
