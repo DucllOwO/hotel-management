@@ -29,6 +29,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
       key: "1",
       title: "ID",
       dataIndex: "id",
+      width: 125,
     },
     {
       key: "2",
@@ -56,6 +57,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
       key: "3",
       title: "Số lượng khách",
       dataIndex: "max_customers",
+      align: "center",
       render: (text, record) => {
         return <p>{text}</p>;
       },
@@ -64,6 +66,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
       key: "4",
       title: "Số giường",
       dataIndex: "bed_amount",
+      align: "center",
       render: (text, record) => {
         return <p>{text}</p>;
       },
@@ -72,6 +75,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
       key: "5",
       title: "Diện tích (m2)",
       dataIndex: "area",
+      align: "center",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -96,6 +100,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
       key: "6",
       title: "Giá",
       dataIndex: "price",
+      align: "center",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -217,7 +222,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
         <Table
           columns={columns}
           dataSource={roomTypes}
-          scroll={{ y: 350 }}
+          scroll={{ y: "100%", x: "100%" }}
           rowKey={(row) => row.id}
         ></Table>
       </Form>

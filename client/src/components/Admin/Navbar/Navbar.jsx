@@ -53,8 +53,9 @@ const Navbar = () => {
         className="menu"
         mode="inline"
         theme="dark"
-        defaultSelectedKeys={["/admin/dashboard"]}
-        selectedKeys={[current]}
+        // defaultSelectedKeys={["/admin/dashboard"]}
+        defaultSelectedKeys={[window.location.pathname]}
+        selectedKeys={[window.location.pathname]}
         onClick={onClickHandler}
         items={
           permission

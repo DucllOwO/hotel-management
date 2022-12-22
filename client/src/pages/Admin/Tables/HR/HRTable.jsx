@@ -66,6 +66,7 @@ const HRTable = ({ employees, setEmployees }) => {
       key: "3",
       title: "Ngày sinh",
       dataIndex: "date_of_birth",
+      align: "center",
       render: (text, record) => {
         return String(formatDate(record.date_of_birth));
       },
@@ -74,6 +75,7 @@ const HRTable = ({ employees, setEmployees }) => {
       key: "4",
       title: "Số điện thoại",
       dataIndex: "phone_number",
+      align: "center",
       render: (text, record) => {
         return String(record.phone_number);
       },
@@ -82,6 +84,7 @@ const HRTable = ({ employees, setEmployees }) => {
       key: "5",
       title: "Ngày vào làm",
       dataIndex: "start_working_date",
+      align: "center",
       render: (text, record) => {
         return String(formatDate(record.start_working_date));
       },
@@ -90,6 +93,7 @@ const HRTable = ({ employees, setEmployees }) => {
       key: "6",
       title: "Email",
       dataIndex: "email",
+      align: "center",
       render: (text, record) => {
         return String(record.email);
       },
@@ -256,7 +260,7 @@ const HRTable = ({ employees, setEmployees }) => {
   };
 
   return (
-    <div className="hrtable">
+    <div className="table">
       <>
         {modal === "add" && modalAddEmployee()}
         {modal === "edit" && modalEditEmployee()}
@@ -289,6 +293,7 @@ const HRTable = ({ employees, setEmployees }) => {
       </div>
 
       <Table
+        tableLayout="auto"
         loading={employees ? false : true}
         columns={columns}
         dataSource={employees}

@@ -54,7 +54,8 @@ const AccountTable = ({ accounts, setAccount }) => {
       render: (text, record) => {
         return String(record.username);
       },
-      width: 300,
+      width: "80%",
+      align: "center",
     },
     // {
     //   key: "2",

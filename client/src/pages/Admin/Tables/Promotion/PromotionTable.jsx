@@ -29,12 +29,14 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
       render: (text, record) => {
         return record.id;
       },
-      width: 145,
+      width: "10%",
+      align: "center",
     },
     {
       key: "2",
       title: "Tên phiếu giảm giá",
       dataIndex: "name",
+      width: "25%",
       render: (text, record) => {
         return record.name;
       },
@@ -43,6 +45,8 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
       key: "3",
       title: "Giảm",
       dataIndex: "offer",
+      align: "center",
+      width: "15%",
       render: (text, record) => {
         return record.offer;
       },
@@ -51,6 +55,8 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
       key: "4",
       title: "Hiệu lực",
       dataIndex: "duration",
+      width: "30%",
+      align: "center",
       render: (text, record) => {
         return (
           <RangePicker

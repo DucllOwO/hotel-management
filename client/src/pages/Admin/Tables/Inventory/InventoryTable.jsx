@@ -43,11 +43,15 @@ const InventoryTable = ({ rooms }) => {
       key: "1",
       title: "Tên phòng",
       dataIndex: "room_name",
+      width: "26.6666%",
+      align: "center",
     },
     {
       key: "2",
       title: "Loại phòng",
       dataIndex: "room_type",
+      width: "26.6666%",
+      align: "center",
       render: (text, record) => {
         return <p>{record.room_type_id.name}</p>;
       },
@@ -56,6 +60,8 @@ const InventoryTable = ({ rooms }) => {
       key: "3",
       title: "Diện tích phòng",
       dataIndex: "size",
+      width: "26.6666%",
+      align: "center",
       render: (text, record) => {
         return <p>{text}</p>;
       },
@@ -133,7 +139,11 @@ const InventoryTable = ({ rooms }) => {
           />
         </div>
       </div>
-      <Table columns={columns} dataSource={rooms} scroll={{ y: 410 }}></Table>
+      <Table
+        columns={columns}
+        dataSource={rooms}
+        scroll={{ y: "100%", x: "100%" }}
+      ></Table>
     </div>
   );
 };

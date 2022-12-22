@@ -246,7 +246,7 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
         <Table
           columns={columns}
           dataSource={receipt}
-          scroll={{ y: 350 }}
+          scroll={{ y: "100%", x: "100%" }}
         ></Table>
       </Form>
     </div>

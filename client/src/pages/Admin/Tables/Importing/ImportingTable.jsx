@@ -18,11 +18,14 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
       key: "1",
       title: "ID",
       dataIndex: "id",
+      width: "10%",
+      align: "center",
     },
     {
       key: "2",
       title: "Ngày lập",
       filteredValue: [searchedText],
+      align: "center",
       onFilter: (value, record) => {
         return (
           String(record.established_date)
@@ -58,6 +61,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
       key: "3",
       title: "Tên sản phẩm",
       dataIndex: "item",
+      align: "center",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -82,11 +86,13 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
       key: "4",
       title: "Số lượng",
       dataIndex: "amount",
+      align: "center",
     },
     {
       key: "5",
       title: "Thành tiền",
       dataIndex: "total_cost",
+      align: "center",
     },
     // {
     //   key: "6",
@@ -203,7 +209,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
         <Table
           columns={columns}
           dataSource={importingRecord}
-          scroll={{ y: 350 }}
+          scroll={{ y: "100%", x: "100%" }}
         ></Table>
       </Form>
     </div>

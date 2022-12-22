@@ -32,6 +32,8 @@ const BookingTable = ({
       key: "1",
       title: "Phòng",
       filteredValue: [searchedText],
+      width: "25%",
+      align: "center",
       onFilter: (value, record) => {
         return (
           String(record.room_name)
@@ -52,17 +54,22 @@ const BookingTable = ({
 
       title: "Loại phòng",
       dataIndex: "roomType",
+      width: "25%",
+      align: "center",
     },
     {
       key: "3",
       title: "Diện tích",
       dataIndex: "size",
-      width: 150,
+      width: "17%",
+      align: "center",
     },
     {
       key: "4",
       title: "Giá",
       dataIndex: "price",
+      width: "17%",
+      align: "center",
     },
     {
       key: "5",

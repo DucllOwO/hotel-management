@@ -24,9 +24,9 @@ import _404ErrorBoundary from "./components/Error/ErrorBoundary/_404ErrorBoundar
 import AuthErrorBoundary from "./components/Error/ErrorBoundary/AuthErrorBoundary";
 import Promotion from "./pages/Admin/Promotion/Promotion";
 import Import from "./components/Admin/Import/Import";
+import Home from "./pages/Customer/Home/Home";
 
 import "./app.css";
-import Home from "./pages/Customer/Home/Home";
 
 const App = () => {
   const { user } = useContext(AppContext);
@@ -41,6 +41,7 @@ const App = () => {
         <Routes>
           <Route key="login" index element={<Login />}></Route>
           <Route key="login1" path="/login" element={<Login />}></Route>
+          <Route key="home" path="/home" element={<Home />}></Route>
           <Route key="admin" path="/admin" element={<Admin />}>
             {listFeature
               ? listRoute.map((item) => {

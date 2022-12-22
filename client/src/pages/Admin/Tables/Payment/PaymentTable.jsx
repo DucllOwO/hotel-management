@@ -215,7 +215,7 @@ const PaymentTable = ({ payment, setPayment }) => {
         <Table
           columns={columns}
           dataSource={payment}
-          scroll={{ y: 350 }}
+          scroll={{ y: "100%", x: "100%" }}
         ></Table>
       </Form>
     </div>
