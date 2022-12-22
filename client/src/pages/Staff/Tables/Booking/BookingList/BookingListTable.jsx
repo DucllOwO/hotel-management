@@ -168,13 +168,7 @@ const BookingListTable = ({ booking, setBooking }) => {
           </Button> */}
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={booking}
-          scroll={{ y: 350 }}
-        ></Table>
-      </Form>
+      <Table columns={columns} dataSource={booking} scroll={{ y: 350 }}></Table>
     </div>
   );
 };

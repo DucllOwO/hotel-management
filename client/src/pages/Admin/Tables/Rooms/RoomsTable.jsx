@@ -199,13 +199,11 @@ const RoomsTable = ({ rooms, setRoom }) => {
           </Button>
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={rooms}
-          scroll={{ y: "100%", x: "100%" }}
-        ></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={rooms}
+        scroll={{ y: "100%", x: "100%" }}
+      ></Table>
     </div>
   );
 };

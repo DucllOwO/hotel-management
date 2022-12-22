@@ -147,13 +147,11 @@ const UtilitiesTable = ({ utilities, setUtilities }) => {
           </Button>
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={utilities}
-          scroll={{ y: "60vh", x: "100%" }}
-        ></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={utilities}
+        scroll={{ y: "60vh", x: "100%" }}
+      ></Table>
     </div>
   );
 };

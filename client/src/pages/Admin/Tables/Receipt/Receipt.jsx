@@ -242,13 +242,11 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
           </div>
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={receipt}
-          scroll={{ y: "100%", x: "100%" }}
-        ></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={receipt}
+        scroll={{ y: "100%", x: "100%" }}
+      ></Table>
     </div>
   );
 };

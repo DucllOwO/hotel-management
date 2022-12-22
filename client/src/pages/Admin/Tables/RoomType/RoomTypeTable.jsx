@@ -218,14 +218,12 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
           </Button>
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={roomTypes}
-          scroll={{ y: "100%", x: "100%" }}
-          rowKey={(row) => row.id}
-        ></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={roomTypes}
+        scroll={{ y: "100%", x: "100%" }}
+        rowKey={(row) => row.id}
+      ></Table>
     </div>
   );
 };

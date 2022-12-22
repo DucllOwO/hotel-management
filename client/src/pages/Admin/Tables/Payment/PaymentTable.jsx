@@ -211,13 +211,11 @@ const PaymentTable = ({ payment, setPayment }) => {
           )}
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={payment}
-          scroll={{ y: "100%", x: "100%" }}
-        ></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={payment}
+        scroll={{ y: "100%", x: "100%" }}
+      ></Table>
     </div>
   );
 };
