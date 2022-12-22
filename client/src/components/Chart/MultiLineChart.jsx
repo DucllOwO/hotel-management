@@ -13,13 +13,13 @@ const MultiLineChart = ({reportData}) => {
   }, [reportData]);
   const mapData = () => {
     const mapIncome = data.map((item) => {      
-      return {time: item.date, value: item.income, category: "Doanh thu"};       
+      return {time: item.date ? item.date : item.month, value: item.income, category: "Doanh thu"};       
     });
     const mapOutcome = data.map((item) => {
-      return {time: item.date, value: item.outcome, category: "Chi phí"};
+      return {time: item.date ? item.date : item.month, value: item.outcome, category: "Chi phí"};
     }); 
     const mapProfit = data.map((item) => {
-      return {time: item.date, value: item.profit, category: "Lợi nhuận"};
+      return {time: item.date ? item.date : item.month, value: item.profit, category: "Lợi nhuận"};
     });
     return [...mapIncome,...mapOutcome,...mapProfit];
   }
