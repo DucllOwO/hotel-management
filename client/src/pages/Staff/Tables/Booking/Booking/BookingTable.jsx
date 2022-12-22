@@ -128,11 +128,12 @@ const BookingTable = ({
       <div className="buttonContainer">
         <div className="header">
           <div>
-            <RangePicker
-              format={"DD/MM/YYYY"}
+            <RangePicker showTime
+              format={"DD/MM/YYYY hh:mm:ss"}
               onChange={(value) => {
-                setFrom(value[0]?._d);
-                setTo(value[1]?._d);
+                console.log(value)
+                setFrom(value[0]?.$d);
+                setTo(value[1]?.$d);
               }}
             />
           </div>
