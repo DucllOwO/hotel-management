@@ -27,12 +27,14 @@ const CustomerTable = ({ customer, setCustomer }) => {
       key: "1",
       title: "CCCD",
       dataIndex: "id",
-      width: 140,
+      width: "15%",
     },
     {
       key: "2",
       title: "Họ và tên",
       width: "25%",
+      align: "center",
+      sorter: (a, b) => a.fullname.localeCompare(b.fullname),
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
@@ -56,6 +58,9 @@ const CustomerTable = ({ customer, setCustomer }) => {
       key: "3",
       title: "Ngày sinh",
       dataIndex: "date_of_birth",
+      width: "15%",
+      align: "center",
+      sorter: (a, b) => a.date_of_birth.localeCompare(b.date_of_birth),
       render: (text, record) => {
         return text ? String(text) : "";
       },
@@ -64,6 +69,9 @@ const CustomerTable = ({ customer, setCustomer }) => {
       key: "4",
       title: "Số  điện thoại",
       dataIndex: "phone_number",
+      width: "20%",
+      align: "center",
+      sorter: (a, b) => a.phone_number.localeCompare(b.phone_number),
       render: (text, record) => {
         return text ? String(text) : "";
       },
@@ -73,6 +81,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
       title: "Email",
       dataIndex: "email",
       width: "25%",
+      align: "center",
       render: (text, record) => {
         return text ? String(text) : "";
       },
@@ -171,9 +180,10 @@ const CustomerTable = ({ customer, setCustomer }) => {
         </div>
       </div>
       <Table
+        tableLayout="auto"
         columns={columns}
         dataSource={customer}
-        scroll={{ x: true, y: 350 }}
+        scroll={{ x: "100%", y: "100%" }}
       ></Table>
     </div>
   );

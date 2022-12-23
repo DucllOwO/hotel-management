@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import dayjs from "dayjs";
 import "../index.css";
-import { Table, Button, Modal, Form, Input } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
+import { PlusOutlined, CalendarOutlined } from "@ant-design/icons";
 import HRForm from "../../../../components/Form/HRForm";
 import { AppContext } from "../../../../context/AppContext";
 import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
@@ -42,9 +42,23 @@ const HRTable = ({ employees, setEmployees }) => {
     },
     {
       key: "2",
-      title: "Tên",
+      title: "Họ Tên",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
+        var dob = "";
+        var startDay = "";
+        dob =
+          record.date_of_birth.slice(8, 10) +
+          "-" +
+          record.date_of_birth.slice(5, 7) +
+          "-" +
+          record.date_of_birth.slice(0, 4);
+        startDay =
+          record.start_working_date.slice(8, 10) +
+          "-" +
+          record.start_working_date.slice(5, 7) +
+          "-" +
+          record.start_working_date.slice(0, 4);
         return (
           String(record.fullname)
             .toLocaleLowerCase()
@@ -54,9 +68,15 @@ const HRTable = ({ employees, setEmployees }) => {
             .includes(value.toLocaleLowerCase()) ||
           String(record.phone_number)
             .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          dob.toLocaleLowerCase().includes(value.toLocaleLowerCase()) ||
+          startDay.toLocaleLowerCase().includes(value.toLocaleLowerCase()) ||
+          String(record.email)
+            .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase())
         );
       },
+      sorter: (a, b) => a.fullname.localeCompare(b.fullname),
       dataIndex: "fullname",
       render: (text, record) => {
         return String(record.fullname);
@@ -66,6 +86,8 @@ const HRTable = ({ employees, setEmployees }) => {
       key: "3",
       title: "Ngày sinh",
       dataIndex: "date_of_birth",
+      align: "center",
+      sorter: (a, b) => a.date_of_birth.localeCompare(b.date_of_birth),
       render: (text, record) => {
         return String(formatDate(record.date_of_birth));
       },
@@ -74,6 +96,7 @@ const HRTable = ({ employees, setEmployees }) => {
       key: "4",
       title: "Số điện thoại",
       dataIndex: "phone_number",
+      align: "center",
       render: (text, record) => {
         return String(record.phone_number);
       },
@@ -82,14 +105,18 @@ const HRTable = ({ employees, setEmployees }) => {
       key: "5",
       title: "Ngày vào làm",
       dataIndex: "start_working_date",
+      align: "center",
       render: (text, record) => {
         return String(formatDate(record.start_working_date));
       },
+      sorter: (a, b) =>
+        a.start_working_date.localeCompare(b.start_working_date),
     },
     {
       key: "6",
       title: "Email",
       dataIndex: "email",
+      align: "center",
       render: (text, record) => {
         return String(record.email);
       },
@@ -256,7 +283,7 @@ const HRTable = ({ employees, setEmployees }) => {
   };
 
   return (
-    <div className="hrtable">
+    <div className="table">
       <>
         {modal === "add" && modalAddEmployee()}
         {modal === "edit" && modalEditEmployee()}
@@ -289,6 +316,7 @@ const HRTable = ({ employees, setEmployees }) => {
       </div>
 
       <Table
+        tableLayout="auto"
         loading={employees ? false : true}
         columns={columns}
         dataSource={employees}

@@ -42,19 +42,16 @@ const AccountTable = ({ accounts, setAccount }) => {
       dataIndex: "username",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
-        return (
-          String(record.username)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.email)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase())
-        );
+        return String(record.username)
+          .toLocaleLowerCase()
+          .includes(value.toLocaleLowerCase());
       },
       render: (text, record) => {
         return String(record.username);
       },
-      width: 300,
+      width: "80%",
+      align: "center",
+      sorter: (a, b) => a.username.localeCompare(b.username),
     },
     // {
     //   key: "2",

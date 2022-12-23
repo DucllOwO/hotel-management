@@ -1,6 +1,15 @@
 import React, { useState } from "react";
-import { Table, Button, Modal, Form, Input } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  Slider,
+  Dropdown,
+  Select,
+} from "antd";
+import { PlusOutlined, FilterOutlined, DownOutlined } from "@ant-design/icons";
 import InventoryForm from "../../../../components/Form/InventoryForm";
 import TextButton from "../../../../components/TextButton/TextButton";
 import CheckButton from "../../../../components/IconButton/CheckButton/CheckButton";
@@ -16,6 +25,25 @@ const InventoryTable = ({ rooms }) => {
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
+  const areaMark = {
+    10: "10",
+    60: "60",
+  };
+
+  const items = [
+    {
+      label: "Loại 1",
+      key: "1",
+    },
+    {
+      label: "Luxury",
+      key: "2",
+    },
+    {
+      label: "President",
+      key: "3",
+    },
+  ];
 
   const [dataSource, setDataSource] = useState([
     {
@@ -43,21 +71,84 @@ const InventoryTable = ({ rooms }) => {
       key: "1",
       title: "Tên phòng",
       dataIndex: "room_name",
+      width: "26.6666%",
+      align: "center",
+      sorter: (a, b) => a.room_name.localeCompare(b.room_name),
     },
     {
       key: "2",
       title: "Loại phòng",
-      dataIndex: "room_type",
+      dataIndex: "roomType",
+      width: "26.6666%",
+      align: "center",
+      filteredValue: [searchedText],
+      onFilter: (value, record) => {
+        return (
+          String(record.room_name)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.room_type_id.name)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase())
+        );
+      },
       render: (text, record) => {
         return <p>{record.room_type_id.name}</p>;
+      },
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div>
+                <Select
+                  size="large"
+                  options={items}
+                  showSearch
+                  placeholder="Chọn loại phòng"
+                  onChange={(e) => {}}
+                />
+              </div>
+              <Button type="primary" style={{ marginTop: "10px" }}>
+                Reset
+              </Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
       },
     },
     {
       key: "3",
-      title: "Diện tích phòng",
+      title: "Diện tích (m2)",
       dataIndex: "size",
+      width: "26.6666%",
+      align: "center",
       render: (text, record) => {
         return <p>{text}</p>;
+      },
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <Slider
+                range
+                max={60}
+                min={10}
+                marks={areaMark}
+                defaultValue={[10, 20]}
+                onChange={(value) => {
+                  console.log(value);
+                }}
+              />
+              <Button type="primary">Reset</Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
       },
     },
     {
@@ -133,7 +224,11 @@ const InventoryTable = ({ rooms }) => {
           />
         </div>
       </div>
-      <Table columns={columns} dataSource={rooms} scroll={{ y: 410 }}></Table>
+      <Table
+        columns={columns}
+        dataSource={rooms}
+        scroll={{ y: "100%", x: "100%" }}
+      ></Table>
     </div>
   );
 };

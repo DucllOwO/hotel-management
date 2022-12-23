@@ -78,12 +78,12 @@ const MultiLineChart = ({reportData}) => {
     xField: "time",
     yField: "value",
     seriesField: "category",
-    // yAxis: {
-    //   label: {
-    //     formatter: (v) =>
-    //       `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`),
-    //   },
-    // },
+    yAxis: {
+      label: {
+        formatter: (v) =>
+          `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`),
+      },
+    },
     width: "100%",
     height: "100%",
   };

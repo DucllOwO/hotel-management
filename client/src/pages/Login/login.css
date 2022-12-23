@@ -61,7 +61,7 @@
 
 .labelInput {
     font-size: var(--fs-14);
-    color: var(--light-grey);
+    color: var(--grey);
     user-select: none;
     font-weight: bold;
 }
@@ -74,6 +74,7 @@
     font-weight: var(--fw-bold);
     color: var(--primary-color);
     user-select: none;
+    margin-top: 6px;
 }
 
 ::placeholder{

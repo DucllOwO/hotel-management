@@ -163,12 +163,15 @@ const PositionTable = ({ positions, setPositions }) => {
       title: "ID",
       colSpan: 1,
       dataIndex: "id",
-      width: 100,
+      width: "15%",
+      align: "center",
+      sorter: (a, b) => a.id - b.id,
     },
     {
       key: "2",
       title: "Tên chức vụ",
       width: "60%",
+      align: "center",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return String(record.name)
@@ -176,6 +179,7 @@ const PositionTable = ({ positions, setPositions }) => {
           .includes(value.toLocaleLowerCase());
       },
       dataIndex: "name",
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
       key: "3",
@@ -192,7 +196,9 @@ const PositionTable = ({ positions, setPositions }) => {
                   setCurrentPosition(record);
                 }}
               ></EditButton>
-              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+              <DeleteButton
+                onDeleteButton={(e) => onDeleteButton(record)}
+              ></DeleteButton>
             </div>
             {/* <Button
               onClick={(e) => {
@@ -251,7 +257,7 @@ const PositionTable = ({ positions, setPositions }) => {
       <Table
         columns={columns}
         dataSource={positions}
-        scroll={{ y: 500 }}
+        scroll={{ y: "100%", x: "100%" }}
         loading={positions ? false : true}
         rowKey={(record) => record.id}
         expandable={{
