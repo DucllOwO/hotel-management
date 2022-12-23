@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "../index.css";
-import { Table, Button, Modal, Form, Input } from "antd";
+import { Table, Button, Modal, Form, Input, Slider } from "antd";
 
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import ItemForm from "../../../../components/Form/ItemForm";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
@@ -21,6 +21,11 @@ const ItemTable = ({ items, setItems }) => {
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
+
+  const priceMark = {
+    100000: "100,000đ",
+    10000000: "10,000,000đ",
+  };
 
   const columns = [
     {
@@ -42,6 +47,7 @@ const ItemTable = ({ items, setItems }) => {
       width: "30%",
       align: "center",
       dataIndex: "name",
+      sorter: (a, b) => a.name.localeCompare(b.name),
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -68,6 +74,7 @@ const ItemTable = ({ items, setItems }) => {
       dataIndex: "reserve_amount",
       width: "20%",
       align: "center",
+      sorter: (a, b) => a.reserve_amount - b.reserve_amount,
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -94,6 +101,30 @@ const ItemTable = ({ items, setItems }) => {
       dataIndex: "sell_price",
       width: "20%",
       align: "center",
+      sorter: (a, b) => a.sell_price - b.sell_price,
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div className="priceSlider">
+                <Slider
+                  width={0.8}
+                  range
+                  min={100000}
+                  max={10000000}
+                  marks={priceMark}
+                  defaultValue={[100000, 1000000]}
+                  onChange={(value) => {}}
+                />
+                <Button type="primary">Reset</Button>
+              </div>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (

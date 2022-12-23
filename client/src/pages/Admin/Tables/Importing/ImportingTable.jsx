@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../index.css";
-import { Table, Button, Modal, Form, Input } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Table, Button, Modal, Form, Input, Slider } from "antd";
+import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
 const ImportingTable = ({ importingRecord, setRecord }) => {
@@ -12,6 +12,11 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
+
+  const amountMark = {
+    1: "1",
+    200: "200",
+  };
 
   const columns = [
     {
@@ -37,6 +42,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
         );
       },
       dataIndex: "established_date",
+      sorter: (a, b) => a.established_date.localeCompare(b.established_date),
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -62,37 +68,43 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
       title: "Tên sản phẩm",
       dataIndex: "item",
       align: "center",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="total"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the total",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
+      sorter: (a, b) => a.item.localeCompare(b.item),
     },
     {
       key: "4",
       title: "Số lượng",
       dataIndex: "amount",
       align: "center",
+      sorter: (a, b) => a.amount - b.amount,
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <Slider
+                range
+                max={200}
+                min={1}
+                marks={amountMark}
+                defaultValue={[10, 20]}
+                onChange={(value) => {
+                  console.log(value);
+                }}
+              />
+              <Button type="primary">Reset</Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
     },
     {
       key: "5",
       title: "Thành tiền",
-      dataIndex: "total_cost",
+      dataIndex: "total",
       align: "center",
+      // sorter: (a, b) => a.total.localeCompare(b.total),
     },
     // {
     //   key: "6",

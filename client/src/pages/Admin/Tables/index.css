@@ -28,3 +28,12 @@
 .btnWrap {
     display: flex;
 }
+
+.filterContainer {
+    padding: 8px
+}
+
+.priceSlider{
+    width: 300px;
+    padding: 5px 35px;
+}
