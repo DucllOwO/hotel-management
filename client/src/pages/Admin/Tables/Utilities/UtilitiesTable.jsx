@@ -7,14 +7,10 @@ import EditButton from "../../../../components/IconButton/EditButton/EditButton"
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const UtilitiesTable = ({ utilities, setUtilities }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState("");
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handle = () => {
-    setIsModalVisible(false);
+  const showModalAdd = () => {
+    setIsModalVisible("add");
   };
 
   const [editingRow, setEditingRow] = useState(null);
@@ -97,31 +93,36 @@ const UtilitiesTable = ({ utilities, setUtilities }) => {
     });
   };
 
-  const onFinish = (values) => {
-    console.log(editingRow);
-    const updateDataSource = [...utilities];
-    updateDataSource.splice(editingRow - 1, 1, {
-      ...values,
-      idNum: editingRow,
-    });
-    console.log(updateDataSource);
-    setUtilities(updateDataSource);
-    setEditingRow(null);
+  const ModalAddUtil = () => (
+    <Modal
+      title="Thông tin tiện ích"
+      open={true}
+      onOk={handleOkModalAdd}
+      onCancel={handleCancelModal}
+      width="60%"
+    >
+      <UtilitiesForm form={form} />
+    </Modal>
+  );
+
+  const ModalEditUtil = (Util) => {
+    return (
+      <Modal
+        title="Thông tin tiện ích"
+        open={true}
+        onOk={handleOKModalEdit}
+        onCancel={handleCancelModal}
+        width="60%"
+      >
+        <UtilitiesForm form={form} />
+      </Modal>
+    );
   };
 
   return (
     <div className="table">
-      <>
-        <Modal
-          title="Thông tin tiện ích"
-          visible={isModalVisible}
-          onOk={handle}
-          onCancel={handle}
-        >
-          <UtilitiesForm />
-        </Modal>
-      </>
-      {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
+      <>{isModalVisible === "add" ? ModalAddUtil() : null}</>
+      <>{isModalVisible === "edit" ? <ModalEditUtil /> : null}</>
       <div className="buttonContainer">
         <div></div>
         <div>
@@ -137,7 +138,7 @@ const UtilitiesTable = ({ utilities, setUtilities }) => {
             style={{ width: 264 }}
           />
           <Button
-            onClick={showModal}
+            onClick={() => showModalAdd()}
             className="addButton"
             type="primary"
             ghost
@@ -154,6 +155,13 @@ const UtilitiesTable = ({ utilities, setUtilities }) => {
       ></Table>
     </div>
   );
+
+  function handleOkModalAdd() {}
+  function handleOKModalEdit() {}
+
+  function handleCancelModal() {
+    setIsModalVisible("");
+  }
 };
 
 export default UtilitiesTable;

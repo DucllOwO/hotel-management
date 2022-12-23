@@ -9,7 +9,14 @@
       "request": "launch",
       "type": "chrome",
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/client/src/"
+      "webRoot": "${workspaceFolder}/client/src",
+      // "sourceMapPathOverrides": {
+      //     "webpack:///./~/*": "${webRoot}/client/node_modules/*",       
+      //     "webpack:///./*":   "${webRoot}/client/*",         
+      //     "webpack:///*":     "*",     
+      //     "webpack:///src/*": "${webRoot}/client/*",    
+      //     "meteor://💻app/*": "${webRoot}/*"
+      // }
     }
     // {
     //         "type": "chrome",

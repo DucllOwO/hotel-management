@@ -15,7 +15,6 @@ const RoomTypeExpand = ({ utils = [], ...prices }) => {
       key: "1",
       title: "Loại giờ",
       render: (text, record) => {
-        console.log(String(priceTypes[Object.keys(record)[0]]));
         return String(priceTypes[Object.keys(record)[0]]);
       },
       width: 300,
@@ -30,7 +29,6 @@ const RoomTypeExpand = ({ utils = [], ...prices }) => {
         "hourPrice",
       ],
       render: (text, record) => {
-        console.log(record);
         return <p>{Object.values(record)[0]}</p>;
       },
     },

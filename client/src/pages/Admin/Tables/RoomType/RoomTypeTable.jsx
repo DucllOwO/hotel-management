@@ -8,19 +8,16 @@ import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteB
 import RoomTypeExpand from "../../../../components/ExpandedTable/RoomTypeExpand";
 import { getRoomUtilsByRoomTypeID } from "../../../../api/RoomTypeAPI";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
+import LocalStorage from "../../../../Utils/localStorage";
 
 const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState();
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
+  const [roomUtils, setRoomUtils] = useState(
+    createUtilsCheckArr(LocalStorage.getItem("utils"))
+  );
 
-  const handle = () => {
-    setIsModalVisible(false);
-  };
-
-  const [editingRow, setEditingRow] = useState(null);
+  const [isUtilCheck, setIsUtilCheck] = useState(false);
 
   const [form] = Form.useForm();
 
@@ -89,7 +86,11 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
         return (
           <>
             <div className="btnWrap">
-              <EditButton openModalEdit={() => {}}></EditButton>
+              <EditButton
+                openModalEdit={() => {
+                  setIsModalVisible("edit");
+                }}
+              ></EditButton>
               <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
             </div>
           </>
@@ -98,44 +99,56 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
     },
   ];
 
-  const onDeleteButton = (record) => {
-    Modal.confirm({
-      title: "Bạn có chắc muốn xoá dữ liệu?",
-      okText: "OK",
-      okType: "danger",
-      onOk: () => {
-        setRoomTypes((pre) => {
-          return pre.filter((data) => data.idNum !== record.idNum);
-        });
-      },
-    });
+  const handleOkModal = () => {
+    form
+      .validateFields()
+      .then((values) => {
+        console.log(values);
+      })
+      .catch((error) => console.log(error));
   };
 
-  const onFinish = (values) => {
-    console.log(editingRow);
-    const updateDataSource = [...roomTypes];
-    updateDataSource.splice(editingRow - 1, 1, {
-      ...values,
-      idNum: editingRow,
-    });
-    console.log(updateDataSource);
-    setRoomTypes(updateDataSource);
-    setEditingRow(null);
+  const modalEdit = (record) => {
+    return (
+      <Modal
+        title="Thông tin loại phòng"
+        open={true}
+        onOk={handleOkModal}
+        onCancel={handleCancelModal}
+        okText="Xác nhận"
+        cancelText="Hủy"
+        width="50vw"
+      >
+        <RoomTypeForm form={form}></RoomTypeForm>
+      </Modal>
+    );
+  };
+
+  const modalAdd = () => {
+    return (
+      <Modal
+        title="Thông tin loại phòng"
+        open={true}
+        onOk={handleOkModal}
+        onCancel={handleCancelModal}
+        okText="Xác nhận"
+        cancelText="Hủy"
+        width="50vw"
+      >
+        <RoomTypeForm
+          form={form}
+          utils={roomUtils}
+          setUtils={setRoomUtils}
+        ></RoomTypeForm>
+      </Modal>
+    );
   };
 
   return (
     <div className="table">
       <>
-        <Modal
-          title="Thông tin loại phòng"
-          open={isModalVisible}
-          onOk={handle}
-          onCancel={handle}
-          okText="Xác nhận"
-          cancelText="Hủy"
-        >
-          <RoomTypeForm></RoomTypeForm>
-        </Modal>
+        {isModalVisible === "add" ? modalAdd() : null}
+        {isModalVisible === "edit" ? modalEdit() : null}
       </>
       <div className="buttonContainer">
         <div></div>
@@ -152,7 +165,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
             style={{ width: 264 }}
           />
           <Button
-            onClick={showModal}
+            onClick={(e) => showModalAdd()}
             className="addButton"
             type="primary"
             ghost
@@ -162,47 +175,74 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
           </Button>
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={roomTypes}
-          scroll={{ y: "70vh" }}
-          rowKey={(row) => row.id}
-          expandable={{
-            expandedRowRender: (record) => {
-              return (
-                <RoomTypeExpand
-                  utils={record.utils}
-                  firstHourPrice={record.first_hour_price}
-                  overNightPrice={record.overnight_price}
-                  oneDayPrice={record.one_day_price}
-                  hourPrice={record.hour_price}
-                />
-              );
-            },
-            onExpand: (expanded, record) => {
-              getRoomUtilsByRoomTypeID(positionUser, record.id)
-                .then(({ data }) => {
-                  setRoomTypes((prev) => {
-                    return prev.map((roomType) => {
-                      if (record.name === roomType.name) {
-                        return { ...roomType, utils: data };
-                      }
-                      return roomType;
-                    });
+      <Table
+        columns={columns}
+        dataSource={roomTypes}
+        scroll={{ y: "70vh" }}
+        rowKey={(row) => row.id}
+        expandable={{
+          expandedRowRender: (record) => {
+            return (
+              <RoomTypeExpand
+                utils={record.utils}
+                firstHourPrice={record.first_hour_price}
+                overNightPrice={record.overnight_price}
+                oneDayPrice={record.one_day_price}
+                hourPrice={record.hour_price}
+              />
+            );
+          },
+          onExpand: (expanded, record) => {
+            getRoomUtilsByRoomTypeID(positionUser, record.id)
+              .then(({ data }) => {
+                setRoomTypes((prev) => {
+                  return prev.map((roomType) => {
+                    if (record.name === roomType.name) {
+                      return { ...roomType, utils: data };
+                    }
+                    return roomType;
                   });
-                })
-                .catch((error) => {
-                  console.log(error);
-                  ErrorAlert("Lấy dữ liệu tiện ích của loại phòng thất bại!!");
                 });
-            },
-          }}
-          pagination={false}
-        ></Table>
-      </Form>
+              })
+              .catch((error) => {
+                console.log(error);
+                ErrorAlert("Lấy dữ liệu tiện ích của loại phòng thất bại!!");
+              });
+          },
+        }}
+        pagination={false}
+      ></Table>
     </div>
   );
+
+  function onDeleteButton(record) {
+    Modal.confirm({
+      title: "Bạn có chắc muốn xoá dữ liệu?",
+      okText: "OK",
+      okType: "danger",
+      onOk: () => {
+        setRoomTypes((pre) => {
+          return pre.filter((data) => data.idNum !== record.idNum);
+        });
+      },
+    });
+  }
+
+  function handleCancelModal() {
+    setIsModalVisible(false);
+    setRoomUtils(createUtilsCheckArr(LocalStorage.getItem("utils")));
+    form.resetFields();
+  }
+
+  function showModalAdd() {
+    setIsModalVisible("add");
+  }
 };
+
+function createUtilsCheckArr(utils) {
+  return utils.map((util) => {
+    return { ...util, checked: false };
+  });
+}
 
 export default RoomTypeTable;
