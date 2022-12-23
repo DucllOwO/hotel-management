@@ -13,8 +13,7 @@ const getAllBookings = async (req, res, next) => {
 };
 const getRooms = async (req, res, next) => {
   const { from: from, to: to } = req.query;
-  console.log(from);
-  console.log(to);
+
   if (!from || !to) return next(BadRequestError());
 
   const { data: booking, error: getBookingError } =

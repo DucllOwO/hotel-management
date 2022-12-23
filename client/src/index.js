@@ -6,7 +6,11 @@ import { AppProvider } from "./context/AppContext";
 
 ReactDOM.render(
   <AppProvider>
-    <ConfigProvider>
+    <ConfigProvider 
+    theme={{
+      token: {
+      },
+    }}>
       <App />
     </ConfigProvider>
   </AppProvider>,
