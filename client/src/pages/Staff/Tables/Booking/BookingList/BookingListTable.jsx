@@ -23,12 +23,15 @@ const BookingListTable = ({ booking, setBooking }) => {
       dataIndex: "id",
       width: "10%",
       align: "center",
+      sorter: (a, b) => a.id - b.id,
     },
     {
       key: "2",
       title: "Khách hàng",
       width: "20%",
+      align: "center",
       filteredValue: [searchedText],
+      sorter: (a, b) => a.customer_id.localeCompare(b.customer_id),
       onFilter: (value, record) => {
         return (
           String(record.customer_id)
@@ -38,6 +41,9 @@ const BookingListTable = ({ booking, setBooking }) => {
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
           String(record.book_to)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.size)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase())
         );
@@ -68,17 +74,23 @@ const BookingListTable = ({ booking, setBooking }) => {
       title: "Từ ngày",
       dataIndex: "book_from",
       width: "20%",
+      align: "center",
+      sorter: (a, b) => a.book_from.localeCompare(b.book_from),
     },
     {
       key: "4",
       title: "Đến ngày",
       dataIndex: "book_to",
       width: "20%",
+      align: "center",
+      sorter: (a, b) => a.book_to.localeCompare(b.book_to),
     },
     {
       key: "5",
       title: "Phòng",
       dataIndex: "size",
+      align: "center",
+      sorter: (a, b) => a.customer_id.localeCompare(b.customer_id),
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (

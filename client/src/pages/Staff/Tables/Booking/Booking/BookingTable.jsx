@@ -1,6 +1,17 @@
 import React, { useState } from "react";
 import "../../index.css";
-import { Table, Button, Modal, Form, Input, DatePicker, Checkbox } from "antd";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  DatePicker,
+  Checkbox,
+  Select,
+  Slider,
+} from "antd";
+import { FilterOutlined } from "@ant-design/icons";
 import BookingForm from "../../../../../components/Form/BookingForm";
 import { createBooking } from "../../../../../api/BookingAPI";
 import SuccessAlert from "../../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
@@ -27,6 +38,31 @@ const BookingTable = ({
 
   const [searchedText, setSearchedText] = useState("");
 
+  const items = [
+    {
+      label: "Loại 1",
+      key: "1",
+    },
+    {
+      label: "Luxury",
+      key: "2",
+    },
+    {
+      label: "President",
+      key: "3",
+    },
+  ];
+
+  const areaMark = {
+    10: "10",
+    60: "60",
+  };
+
+  const priceMark = {
+    100000: "100,000đ",
+    10000000: "10,000,000đ",
+  };
+
   const columns = [
     {
       key: "1",
@@ -34,6 +70,7 @@ const BookingTable = ({
       filteredValue: [searchedText],
       width: "25%",
       align: "center",
+      sorter: (a, b) => a.room_name.localeCompare(b.room_name),
       onFilter: (value, record) => {
         return (
           String(record.room_name)
@@ -44,6 +81,9 @@ const BookingTable = ({
             .includes(value.toLocaleLowerCase()) ||
           String(record.size)
             .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.price)
+            .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase())
         );
       },
@@ -51,11 +91,33 @@ const BookingTable = ({
     },
     {
       key: "2",
-
       title: "Loại phòng",
       dataIndex: "roomType",
       width: "25%",
       align: "center",
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div>
+                <Select
+                  size="medium"
+                  options={items}
+                  showSearch
+                  placeholder="Chọn loại phòng"
+                  onChange={(e) => {}}
+                />
+              </div>
+              <Button type="primary" style={{ marginTop: "10px" }}>
+                Reset
+              </Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
     },
     {
       key: "3",
@@ -63,6 +125,29 @@ const BookingTable = ({
       dataIndex: "size",
       width: "17%",
       align: "center",
+      sorter: (a, b) => a.size - b.size,
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <Slider
+                range
+                max={60}
+                min={10}
+                marks={areaMark}
+                defaultValue={[10, 20]}
+                onChange={(value) => {
+                  console.log(value);
+                }}
+              />
+              <Button type="primary">Reset</Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
     },
     {
       key: "4",
@@ -70,6 +155,30 @@ const BookingTable = ({
       dataIndex: "price",
       width: "17%",
       align: "center",
+      sorter: (a, b) => a.price - b.price,
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div className="priceSlider">
+                <Slider
+                  width={0.8}
+                  range
+                  min={100000}
+                  max={10000000}
+                  marks={priceMark}
+                  defaultValue={[100000, 1000000]}
+                  onChange={(value) => {}}
+                />
+                <Button type="primary">Reset</Button>
+              </div>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
     },
     {
       key: "5",
@@ -135,10 +244,11 @@ const BookingTable = ({
       <div className="buttonContainer">
         <div className="header">
           <div>
-            <RangePicker showTime
+            <RangePicker
+              showTime
               format={"DD/MM/YYYY hh:mm:ss"}
               onChange={(value) => {
-                console.log(value)
+                console.log(value);
                 setFrom(value[0]?.$d);
                 setTo(value[1]?.$d);
               }}

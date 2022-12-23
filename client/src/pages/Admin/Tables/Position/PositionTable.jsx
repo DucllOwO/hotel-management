@@ -165,6 +165,7 @@ const PositionTable = ({ positions, setPositions }) => {
       dataIndex: "id",
       width: "15%",
       align: "center",
+      sorter: (a, b) => a.id - b.id,
     },
     {
       key: "2",
@@ -178,6 +179,7 @@ const PositionTable = ({ positions, setPositions }) => {
           .includes(value.toLocaleLowerCase());
       },
       dataIndex: "name",
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
       key: "3",

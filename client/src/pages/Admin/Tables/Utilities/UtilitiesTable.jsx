@@ -42,11 +42,12 @@ const UtilitiesTable = ({ utilities, setUtilities }) => {
           String(record.name)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
-          String(record.price)
+          String(record.id)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase())
         );
       },
+      sorter: (a, b) => a.name.localeCompare(b.name),
       dataIndex: "name",
       render: (text, record) => {
         if (editingRow === record.idNum) {

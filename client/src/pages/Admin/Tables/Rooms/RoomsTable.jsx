@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../index.css";
-import { Table, Button, Modal, Form, Input } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Table, Button, Modal, Form, Input, Select } from "antd";
+import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import AddRoomForm from "../../../../components/Form/AddRoomForm";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";
@@ -18,6 +18,21 @@ const RoomsTable = ({ rooms, setRoom }) => {
 
   const [modal, setModal] = useState(false);
 
+  const items = [
+    {
+      label: "Loại 1",
+      key: "1",
+    },
+    {
+      label: "Luxury",
+      key: "2",
+    },
+    {
+      label: "President",
+      key: "3",
+    },
+  ];
+
   const columns = [
     {
       key: "1",
@@ -25,17 +40,15 @@ const RoomsTable = ({ rooms, setRoom }) => {
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
-          String(record.name)
+          String(record.room_name)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
           String(record.roomType)
             .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.size)
-            .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase())
         );
       },
+      sorter: (a, b) => a.room_name.localeCompare(b.room_name),
       dataIndex: "room_name",
       width: "40%",
       align: "center",
@@ -83,6 +96,29 @@ const RoomsTable = ({ rooms, setRoom }) => {
         } else {
           return <p>{text}</p>;
         }
+      },
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div>
+                <Select
+                  size="medium"
+                  options={items}
+                  showSearch
+                  placeholder="Chọn loại phòng"
+                  onChange={(e) => {}}
+                />
+              </div>
+              <Button type="primary" style={{ marginTop: "10px" }}>
+                Reset
+              </Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
       },
     },
     // {
