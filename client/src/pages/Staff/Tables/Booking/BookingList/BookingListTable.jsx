@@ -180,7 +180,11 @@ const BookingListTable = ({ booking, setBooking }) => {
           </Button> */}
         </div>
       </div>
-      <Table columns={columns} dataSource={booking} scroll={{ y: 350 }}></Table>
+      <Table
+        columns={columns}
+        dataSource={booking}
+        scroll={{ y: "60vh", x: "100%" }}
+      ></Table>
     </div>
   );
 };

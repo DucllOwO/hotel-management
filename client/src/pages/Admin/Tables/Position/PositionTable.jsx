@@ -257,7 +257,7 @@ const PositionTable = ({ positions, setPositions }) => {
       <Table
         columns={columns}
         dataSource={positions}
-        scroll={{ y: "100%", x: "100%" }}
+        scroll={{ y: "60vh", x: "100%" }}
         loading={positions ? false : true}
         rowKey={(record) => record.id}
         expandable={{

@@ -238,7 +238,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
       <Table
         columns={columns}
         dataSource={rooms}
-        scroll={{ y: "100%", x: "100%" }}
+        scroll={{ y: "60vh", x: "100%" }}
       ></Table>
     </div>
   );

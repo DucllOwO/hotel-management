@@ -380,7 +380,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
       <Table
         columns={columns}
         dataSource={roomTypes}
-        scroll={{ y: "100%", x: "100%" }}
+        scroll={{ y: "60vh", x: "100%" }}
         rowKey={(row) => row.id}
       ></Table>
     </div>

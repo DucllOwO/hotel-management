@@ -260,7 +260,7 @@ const AccountTable = ({ accounts, setAccount }) => {
         loading={accounts ? false : true}
         columns={columns}
         dataSource={accounts}
-        scroll={{ y: "100%", x: "100%" }}
+        scroll={{ y: "60vh", x: "100%" }}
         rowKey={(row) => row.username}
       ></Table>
     </div>
