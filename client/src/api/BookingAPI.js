@@ -8,15 +8,21 @@ export const fetchBookingByDate = (positionUser, from, to) => {
   });
 };
 
+export const createCustomer = (positionUser, newCustomer) => {
+  return userRequest.post("/user", {
+    params: {user: { position: positionUser }, type: "customer", userInfo: newCustomer},
+  });
+};
+
 export const createBooking = (positionUser, customer, room, from, to) => {
+  console.log(from)
   return userRequest.post("/bookings", {
     user: { position: positionUser },
     booking: {
       book_from: from,
       book_to: to,
-      status: DEDAULT_STATUS_BOOKING,
-      deposit: room.price,
       customer_id: customer.id,
     },
+    rooms: room,
   });
 };

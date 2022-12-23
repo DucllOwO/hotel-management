@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import "../../index.css";
 import { Table, Button, Modal, Form, Input, DatePicker, Checkbox } from "antd";
 import BookingForm from "../../../../../components/Form/BookingForm";
-import { createBooking } from "../../../../../api/BookingAPI";
+import { createBooking, createCustomer } from "../../../../../api/BookingAPI";
 import SuccessAlert from "../../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import ErrorAlert from "../../../../../components/Error/Alert/ErrorAlert";
 import BottomBar from "../../../../../components/Admin/BottomBar/BottomBar";
-
 const { RangePicker } = DatePicker;
 
 const BookingTable = ({
@@ -72,7 +71,11 @@ const BookingTable = ({
           <Form.Item style={{ marginBottom: 0 }}>
             <Checkbox
               onChange={(e) => {
-                setSelectedRooms((prev) => [...prev, record]);
+                console.log(e)
+                if(!selectedRooms.includes(record))
+                  setSelectedRooms((prev) => [...prev, record]);
+                else if(selectedRooms.includes(record))
+                  setSelectedRooms((prev) => prev.filter((data) => data !== record))
               }}
             ></Checkbox>
           </Form.Item>
@@ -84,42 +87,49 @@ const BookingTable = ({
   const onBooking = (value) => {};
 
   const handleOKModal = async () => {
-    // try {
-    //   const values = await customerInfoForm.validateFields();
-    //   const isCusObjEmpty = Object.keys(currentCustomer).length === 0;
-    //   // isCusObjEmpty === true === customer not available
-    //   if (isCusObjEmpty) {
-    //     //create customer
-    //     // create booking
-    //   } else {
-    //     const currentSelectRoom = rooms.find(
-    //       (room) => room.room_name === values.room_name
-    //     );
-    //     // create booking
-    //     const { data: bookingData } = await createBooking(
-    //       user.position,
-    //       currentCustomer,
-    //       currentSelectRoom,
-    //       from,
-    //       to
-    //     );
-    //     setRooms((pre) => {
-    //       return pre.filter(
-    //         (data) => data.room_name !== bookingData?.room_name
-    //       );
-    //     });
-    //   }
-    //   setCurrentCustomer({});
-    //   SuccessAlert("Đặt phòng thành công.");
-    //   setCurrentCustomer({});
-    // } catch (error) {
-    //   console.log(error);
-    //   ErrorAlert("Đặt phòng thất bại!");
-    // }
+    try {
+      const values = await customerInfoForm.validateFields();
+      const isCusObjEmpty = Object.keys(currentCustomer).length === 0;
+      // isCusObjEmpty === true === customer not available
+      if (isCusObjEmpty) {
+        const {data: userData} = await createCustomer(
+          user?.position,
+          currentCustomer,
+        );
+      } else {
+        // const currentSelectRoom = rooms.find(
+        //   (room) => room.room_name === values.room_name
+        // );
+        // create booking
+        const { data: bookingData } = await createBooking(
+          user?.position,
+          currentCustomer,
+          selectedRooms,
+          from,
+          to
+        );
+        // console.log(bookingData)
+        // setRooms((pre) => {
+        //   return pre.filter(
+        //     (data) => data.room_name !== bookingData?.room_name
+        //   );
+        // });
+        console.log(rooms)
+      }
+      // setCurrentCustomer({});
+      SuccessAlert("Đặt phòng thành công.");
+      setCurrentCustomer({});
+    } catch (error) {
+      console.log(error);
+      ErrorAlert("Đặt phòng thất bại!");
+    }
   };
 
   const openModalInfoCustomer = () => {
-    setIsModalOpen(true);
+    if(selectedRooms.length !== 0)
+      setIsModalOpen(true);
+    else 
+      ErrorAlert("Vui lòng chọn phòng cần đặt")
   };
 
   return (
@@ -162,7 +172,7 @@ const BookingTable = ({
         ></Table>
       </Form>
       <BottomBar>
-        <Button type="primary">Đặt</Button>
+        <Button type="primary" onClick={openModalInfoCustomer}>Đặt</Button>
       </BottomBar>
     </div>
   );

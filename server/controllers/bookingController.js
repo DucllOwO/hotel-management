@@ -55,9 +55,9 @@ const getBooking = async (req, res, next) => {
 
 // tao booking khong can check phong trong vi chi co status available moi co nut dat phong
 const createBooking = async (req, res, next) => {
-  const { booking, roomsID } = req.body;
+  const { booking, rooms } = req.body;
 
-  if (!booking) return next(BadRequestError());
+  if (!booking || !rooms) return next(BadRequestError());
 
   // const { data: customerTemp, error: customerTempError } =
   //   await customerDAL.getCustomerByID(customer?.id);
@@ -74,13 +74,23 @@ const createBooking = async (req, res, next) => {
     await bookingDAL.insertBooking({
       ...booking,
     });
-
-  const { data: usedRoomRes, error: createUsedRoomError } =
-    await usedRoomDAL.createUsedRoom(booking[0]?.id, roomsID);
-
+    
   if (insertBookingError) return next(insertBookingError);
+  console.log(bookingRes)
+  console.log(rooms)
+  rooms.forEach(async (values) => {
+    const {data: roomRes, error: insertUsedRoomError} = await usedRoomDAL.createUsedRoom(
+      bookingRes[0]?.id,
+      values,
+  );
+      if(insertUsedRoomError) return next(insertUsedRoomError);
+})
+  
 
-  res.status(201).send(bookingRes[0]);
+  // if(insertUsedRoomError)
+  //   return next(insertUsedRoomError);
+
+  res.status(201).send(bookingRes);
 };
 
 const deleteBooking = async (req, res, next) => {

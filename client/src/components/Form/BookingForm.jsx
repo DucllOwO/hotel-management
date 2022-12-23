@@ -21,14 +21,14 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
         user.position,
         form.getFieldValue("id")
       );
-      // console.log(data);
+      // console.log(dayjs(data.date_of_birth));
       // console.log(form.getFieldValue("id"));
       if (data) {
         setCurrentCustomer(data);
         setIsCustomerExist(true);
         form.setFieldsValue({
           ...data,
-          date_of_birth: dayjs(data.date_of_birth, "DD-MM-YYYY"),
+          date_of_birth: dayjs(data.date_of_birth),
         });
         setDisable(true);
       } else {
