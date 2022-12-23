@@ -108,17 +108,21 @@ const BookingTable = ({
           from,
           to
         );
-        // console.log(bookingData)
-        // setRooms((pre) => {
-        //   return pre.filter(
-        //     (data) => data.room_name !== bookingData?.room_name
-        //   );
-        // });
+        console.log(selectedRooms)
+        setRooms((pre) => {
+          return pre.filter(
+            (data) => !selectedRooms.includes(data)
+            // data.room_name !== bookingData?.room_name
+          );
+        });
         console.log(rooms)
       }
       // setCurrentCustomer({});
       SuccessAlert("Đặt phòng thành công.");
       setCurrentCustomer({});
+      setSelectedRooms([]);
+      setIsModalOpen(false);
+      customerInfoForm.resetFields();
     } catch (error) {
       console.log(error);
       ErrorAlert("Đặt phòng thất bại!");
