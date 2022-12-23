@@ -31,7 +31,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
       key: "1",
       title: "ID",
       dataIndex: "id",
-      width: "10vw",
+      width: 125,
     },
     {
       key: "2",
@@ -59,6 +59,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
       key: "3",
       title: "Số lượng khách",
       dataIndex: "max_customers",
+      align: "center",
       render: (text, record) => {
         return <p>{text}</p>;
       },
@@ -67,6 +68,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
       key: "4",
       title: "Số giường",
       dataIndex: "bed_amount",
+      align: "center",
       render: (text, record) => {
         return <p>{text}</p>;
       },
@@ -75,6 +77,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
       key: "5",
       title: "Diện tích (m2)",
       dataIndex: "area",
+      align: "center",
       render: (text, record) => {
         return <p>{text}</p>;
       },

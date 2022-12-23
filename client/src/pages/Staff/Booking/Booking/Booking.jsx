@@ -17,6 +17,8 @@ const Booking = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    console.log(from)
+    console.log(to)
     if (from && to) {
       setIsLoading(true);
       fetchBookingByDate(user?.position, from, to)

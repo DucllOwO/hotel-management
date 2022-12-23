@@ -37,6 +37,8 @@ const RoomsTable = ({ rooms, setRoom }) => {
         );
       },
       dataIndex: "room_name",
+      width: "40%",
+      align: "center",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -61,6 +63,8 @@ const RoomsTable = ({ rooms, setRoom }) => {
       key: "2",
       title: "Loại phòng",
       dataIndex: "roomType",
+      width: "40%",
+      align: "center",
       render: (text, record) => {
         if (editingRow === record.id) {
           return (
@@ -172,9 +176,11 @@ const RoomsTable = ({ rooms, setRoom }) => {
           </Button>
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table columns={columns} dataSource={rooms} scroll={{ y: 350 }}></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={rooms}
+        scroll={{ y: "100%", x: "100%" }}
+      ></Table>
     </div>
   );
 };

@@ -21,10 +21,13 @@ const BookingListTable = ({ booking, setBooking }) => {
       key: "1",
       title: "ID",
       dataIndex: "id",
+      width: "10%",
+      align: "center",
     },
     {
       key: "2",
       title: "Khách hàng",
+      width: "20%",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
@@ -64,11 +67,13 @@ const BookingListTable = ({ booking, setBooking }) => {
       key: "3",
       title: "Từ ngày",
       dataIndex: "book_from",
+      width: "20%",
     },
     {
       key: "4",
       title: "Đến ngày",
       dataIndex: "book_to",
+      width: "20%",
     },
     {
       key: "5",
@@ -163,13 +168,7 @@ const BookingListTable = ({ booking, setBooking }) => {
           </Button> */}
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={booking}
-          scroll={{ y: 350 }}
-        ></Table>
-      </Form>
+      <Table columns={columns} dataSource={booking} scroll={{ y: 350 }}></Table>
     </div>
   );
 };

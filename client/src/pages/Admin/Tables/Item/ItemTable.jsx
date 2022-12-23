@@ -27,6 +27,8 @@ const ItemTable = ({ items, setItems }) => {
       key: "1",
       title: "ID",
       dataIndex: "id",
+      width: "10%",
+      align: "center",
     },
     {
       key: "2",
@@ -37,6 +39,8 @@ const ItemTable = ({ items, setItems }) => {
           .toLocaleLowerCase()
           .includes(value.toLocaleLowerCase());
       },
+      width: "30%",
+      align: "center",
       dataIndex: "name",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -62,6 +66,8 @@ const ItemTable = ({ items, setItems }) => {
       key: "3",
       title: "Số lượng tồn",
       dataIndex: "reserve_amount",
+      width: "20%",
+      align: "center",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -86,6 +92,8 @@ const ItemTable = ({ items, setItems }) => {
       key: "4",
       title: "Giá",
       dataIndex: "sell_price",
+      width: "20%",
+      align: "center",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -185,7 +193,11 @@ const ItemTable = ({ items, setItems }) => {
           </Button>
         </div>
       </div>
-      <Table columns={columns} dataSource={items} scroll={{ y: 350 }}></Table>
+      <Table
+        columns={columns}
+        dataSource={items}
+        scroll={{ y: "60vh", x: "100%" }}
+      ></Table>
     </div>
   );
 };

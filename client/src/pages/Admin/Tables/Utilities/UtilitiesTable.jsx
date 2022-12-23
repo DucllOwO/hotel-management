@@ -28,11 +28,15 @@ const UtilitiesTable = ({ utilities, setUtilities }) => {
       key: "1",
       title: "ID",
       dataIndex: "id",
+      width: "15%",
+      align: "center",
     },
     {
       key: "2",
       title: "Tên tiện ích",
       filteredValue: [searchedText],
+      width: "65%",
+      align: "center",
       onFilter: (value, record) => {
         return (
           String(record.name)
@@ -143,13 +147,11 @@ const UtilitiesTable = ({ utilities, setUtilities }) => {
           </Button>
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={utilities}
-          scroll={{ y: 350 }}
-        ></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={utilities}
+        scroll={{ y: "60vh", x: "100%" }}
+      ></Table>
     </div>
   );
 };

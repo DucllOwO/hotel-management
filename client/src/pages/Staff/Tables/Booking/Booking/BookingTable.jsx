@@ -32,6 +32,8 @@ const BookingTable = ({
       key: "1",
       title: "Phòng",
       filteredValue: [searchedText],
+      width: "25%",
+      align: "center",
       onFilter: (value, record) => {
         return (
           String(record.room_name)
@@ -52,17 +54,22 @@ const BookingTable = ({
 
       title: "Loại phòng",
       dataIndex: "roomType",
+      width: "25%",
+      align: "center",
     },
     {
       key: "3",
       title: "Diện tích",
       dataIndex: "size",
-      width: 150,
+      width: "17%",
+      align: "center",
     },
     {
       key: "4",
       title: "Giá",
       dataIndex: "price",
+      width: "17%",
+      align: "center",
     },
     {
       key: "5",
@@ -128,11 +135,12 @@ const BookingTable = ({
       <div className="buttonContainer">
         <div className="header">
           <div>
-            <RangePicker
-              format={"DD/MM/YYYY"}
+            <RangePicker showTime
+              format={"DD/MM/YYYY hh:mm:ss"}
               onChange={(value) => {
-                setFrom(value[0]?._d);
-                setTo(value[1]?._d);
+                console.log(value)
+                setFrom(value[0]?.$d);
+                setTo(value[1]?.$d);
               }}
             />
           </div>
