@@ -42,20 +42,16 @@ const AccountTable = ({ accounts, setAccount }) => {
       dataIndex: "username",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
-        return (
-          String(record.username)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.email)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase())
-        );
+        return String(record.username)
+          .toLocaleLowerCase()
+          .includes(value.toLocaleLowerCase());
       },
       render: (text, record) => {
         return String(record.username);
       },
       width: "80%",
       align: "center",
+      sorter: (a, b) => a.username.localeCompare(b.username),
     },
     // {
     //   key: "2",
@@ -264,7 +260,7 @@ const AccountTable = ({ accounts, setAccount }) => {
         loading={accounts ? false : true}
         columns={columns}
         dataSource={accounts}
-        scroll={{ y: "100%", x: "100%" }}
+        scroll={{ y: "60vh", x: "100%" }}
         rowKey={(row) => row.username}
       ></Table>
     </div>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../index.css";
-import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Table, Button, Modal, Form, Input, DatePicker, Select } from "antd";
+import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import PromotionForm from "../../../../components/Form/PromotionForm";
 
@@ -21,6 +21,17 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
 
   const [searchedText, setSearchedText] = useState("");
 
+  const items = [
+    {
+      label: "Còn hiệu lực",
+      key: "1",
+    },
+    {
+      label: "Hết hiệu lực",
+      key: "2",
+    },
+  ];
+
   const columns = [
     {
       key: "1",
@@ -31,12 +42,15 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
       },
       width: "10%",
       align: "center",
+      sorter: (a, b) => a.id - b.id,
     },
     {
       key: "2",
       title: "Tên phiếu giảm giá",
       dataIndex: "name",
       width: "25%",
+      align: "center",
+      sorter: (a, b) => a.name.localeCompare(b.name),
       render: (text, record) => {
         return record.name;
       },
@@ -47,6 +61,7 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
       dataIndex: "offer",
       align: "center",
       width: "15%",
+      sorter: (a, b) => a.offer - b.offer,
       render: (text, record) => {
         return record.offer;
       },
@@ -57,6 +72,29 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
       dataIndex: "duration",
       width: "30%",
       align: "center",
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div>
+                <Select
+                  size="medium"
+                  options={items}
+                  showSearch
+                  placeholder="Chọn hiệu lực"
+                  onChange={(e) => {}}
+                />
+              </div>
+              <Button type="primary" style={{ marginTop: "10px" }}>
+                Reset
+              </Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
       render: (text, record) => {
         return (
           <RangePicker
@@ -154,7 +192,7 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
       <Table
         columns={columns}
         dataSource={vouchers}
-        scroll={{ y: "100%", x: "100%" }}
+        scroll={{ y: "60vh", x: "100%" }}
       ></Table>
     </div>
   );

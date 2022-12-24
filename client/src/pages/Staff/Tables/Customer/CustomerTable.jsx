@@ -33,6 +33,8 @@ const CustomerTable = ({ customer, setCustomer }) => {
       key: "2",
       title: "Họ và tên",
       width: "25%",
+      align: "center",
+      sorter: (a, b) => a.fullname.localeCompare(b.fullname),
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
@@ -58,6 +60,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
       dataIndex: "date_of_birth",
       width: "15%",
       align: "center",
+      sorter: (a, b) => a.date_of_birth.localeCompare(b.date_of_birth),
       render: (text, record) => {
         return text ? String(text) : "";
       },
@@ -68,6 +71,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
       dataIndex: "phone_number",
       width: "20%",
       align: "center",
+      sorter: (a, b) => a.phone_number.localeCompare(b.phone_number),
       render: (text, record) => {
         return text ? String(text) : "";
       },
@@ -179,7 +183,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
         tableLayout="auto"
         columns={columns}
         dataSource={customer}
-        scroll={{ x: "100%", y: "100%" }}
+        scroll={{ x: "60vh", y: "100%" }}
       ></Table>
     </div>
   );

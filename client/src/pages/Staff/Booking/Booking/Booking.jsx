@@ -12,6 +12,7 @@ import "./booking.css";
 const Booking = () => {
   const [rooms, setRooms] = useState([]);
   const { user } = useContext(AppContext);
+  const [rentType, setRentType] = useState("Ngắn hạn");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -34,17 +35,18 @@ const Booking = () => {
     }
   }, [user?.position, from, to]);
   return (
-    <div className="bookingContainer">
-      <BookingTable
-        setRooms={setRooms}
-        rooms={rooms}
-        from={from}
-        to={to}
-        setFrom={setFrom}
-        setTo={setTo}
-        isLoading={isLoading}
-        user={user}
-      ></BookingTable>
+    <div className="container">
+      <div className="bookingContainer">
+        <BookingTable
+          user={user}
+          rooms={rooms}
+          setRooms={setRooms}
+          setFrom={setFrom}
+          from={from}
+          setTo={setTo}
+          to={to}
+        ></BookingTable>
+      </div>
     </div>
   );
 };

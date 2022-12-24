@@ -1,12 +1,22 @@
 import React, { useState } from "react";
 import "../../index.css";
-import { Table, Button, Modal, Form, Input, DatePicker, Checkbox } from "antd";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  DatePicker,
+  Checkbox,
+  Select,
+  Slider,
+} from "antd";
+import { FilterOutlined } from "@ant-design/icons";
 import BookingForm from "../../../../../components/Form/BookingForm";
-import { createBooking } from "../../../../../api/BookingAPI";
+import { createBooking, createCustomer } from "../../../../../api/BookingAPI";
 import SuccessAlert from "../../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import ErrorAlert from "../../../../../components/Error/Alert/ErrorAlert";
 import BottomBar from "../../../../../components/Admin/BottomBar/BottomBar";
-
 const { RangePicker } = DatePicker;
 
 const BookingTable = ({
@@ -27,6 +37,31 @@ const BookingTable = ({
 
   const [searchedText, setSearchedText] = useState("");
 
+  const items = [
+    {
+      label: "Loại 1",
+      key: "1",
+    },
+    {
+      label: "Luxury",
+      key: "2",
+    },
+    {
+      label: "President",
+      key: "3",
+    },
+  ];
+
+  const areaMark = {
+    10: "10",
+    60: "60",
+  };
+
+  const priceMark = {
+    100000: "100,000đ",
+    10000000: "10,000,000đ",
+  };
+
   const columns = [
     {
       key: "1",
@@ -34,6 +69,7 @@ const BookingTable = ({
       filteredValue: [searchedText],
       width: "25%",
       align: "center",
+      sorter: (a, b) => a.room_name.localeCompare(b.room_name),
       onFilter: (value, record) => {
         return (
           String(record.room_name)
@@ -44,6 +80,9 @@ const BookingTable = ({
             .includes(value.toLocaleLowerCase()) ||
           String(record.size)
             .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.price)
+            .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase())
         );
       },
@@ -51,11 +90,33 @@ const BookingTable = ({
     },
     {
       key: "2",
-
       title: "Loại phòng",
       dataIndex: "roomType",
       width: "25%",
       align: "center",
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div>
+                <Select
+                  size="medium"
+                  options={items}
+                  showSearch
+                  placeholder="Chọn loại phòng"
+                  onChange={(e) => {}}
+                />
+              </div>
+              <Button type="primary" style={{ marginTop: "10px" }}>
+                Reset
+              </Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
     },
     {
       key: "3",
@@ -63,6 +124,29 @@ const BookingTable = ({
       dataIndex: "size",
       width: "17%",
       align: "center",
+      sorter: (a, b) => a.size - b.size,
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <Slider
+                range
+                max={60}
+                min={10}
+                marks={areaMark}
+                defaultValue={[10, 20]}
+                onChange={(value) => {
+                  console.log(value);
+                }}
+              />
+              <Button type="primary">Reset</Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
     },
     {
       key: "4",
@@ -70,6 +154,30 @@ const BookingTable = ({
       dataIndex: "price",
       width: "17%",
       align: "center",
+      sorter: (a, b) => a.price - b.price,
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div className="priceSlider">
+                <Slider
+                  width={0.8}
+                  range
+                  min={100000}
+                  max={10000000}
+                  marks={priceMark}
+                  defaultValue={[100000, 1000000]}
+                  onChange={(value) => {}}
+                />
+                <Button type="primary">Reset</Button>
+              </div>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
     },
     {
       key: "5",
@@ -79,7 +187,11 @@ const BookingTable = ({
           <Form.Item style={{ marginBottom: 0 }}>
             <Checkbox
               onChange={(e) => {
-                setSelectedRooms((prev) => [...prev, record]);
+                console.log(e)
+                if(!selectedRooms.includes(record))
+                  setSelectedRooms((prev) => [...prev, record]);
+                else if(selectedRooms.includes(record))
+                  setSelectedRooms((prev) => prev.filter((data) => data !== record))
               }}
             ></Checkbox>
           </Form.Item>
@@ -91,42 +203,53 @@ const BookingTable = ({
   const onBooking = (value) => {};
 
   const handleOKModal = async () => {
-    // try {
-    //   const values = await customerInfoForm.validateFields();
-    //   const isCusObjEmpty = Object.keys(currentCustomer).length === 0;
-    //   // isCusObjEmpty === true === customer not available
-    //   if (isCusObjEmpty) {
-    //     //create customer
-    //     // create booking
-    //   } else {
-    //     const currentSelectRoom = rooms.find(
-    //       (room) => room.room_name === values.room_name
-    //     );
-    //     // create booking
-    //     const { data: bookingData } = await createBooking(
-    //       user.position,
-    //       currentCustomer,
-    //       currentSelectRoom,
-    //       from,
-    //       to
-    //     );
-    //     setRooms((pre) => {
-    //       return pre.filter(
-    //         (data) => data.room_name !== bookingData?.room_name
-    //       );
-    //     });
-    //   }
-    //   setCurrentCustomer({});
-    //   SuccessAlert("Đặt phòng thành công.");
-    //   setCurrentCustomer({});
-    // } catch (error) {
-    //   console.log(error);
-    //   ErrorAlert("Đặt phòng thất bại!");
-    // }
+    try {
+      const values = await customerInfoForm.validateFields();
+      const isCusObjEmpty = Object.keys(currentCustomer).length === 0;
+      // isCusObjEmpty === true === customer not available
+      if (isCusObjEmpty) {
+        const {data: userData} = await createCustomer(
+          user?.position,
+          currentCustomer,
+        );
+      } else {
+        // const currentSelectRoom = rooms.find(
+        //   (room) => room.room_name === values.room_name
+        // );
+        // create booking
+        const { data: bookingData } = await createBooking(
+          user?.position,
+          currentCustomer,
+          selectedRooms,
+          from,
+          to
+        );
+        console.log(selectedRooms)
+        setRooms((pre) => {
+          return pre.filter(
+            (data) => !selectedRooms.includes(data)
+            // data.room_name !== bookingData?.room_name
+          );
+        });
+        console.log(rooms)
+      }
+      // setCurrentCustomer({});
+      SuccessAlert("Đặt phòng thành công.");
+      setCurrentCustomer({});
+      setSelectedRooms([]);
+      setIsModalOpen(false);
+      customerInfoForm.resetFields();
+    } catch (error) {
+      console.log(error);
+      ErrorAlert("Đặt phòng thất bại!");
+    }
   };
 
   const openModalInfoCustomer = () => {
-    setIsModalOpen(true);
+    if(selectedRooms.length !== 0)
+      setIsModalOpen(true);
+    else 
+      ErrorAlert("Vui lòng chọn phòng cần đặt")
   };
 
   return (
@@ -135,10 +258,11 @@ const BookingTable = ({
       <div className="buttonContainer">
         <div className="header">
           <div>
-            <RangePicker showTime
+            <RangePicker
+              showTime
               format={"DD/MM/YYYY hh:mm:ss"}
               onChange={(value) => {
-                console.log(value)
+                console.log(value);
                 setFrom(value[0]?.$d);
                 setTo(value[1]?.$d);
               }}
@@ -164,12 +288,12 @@ const BookingTable = ({
           loading={isLoading}
           columns={columns}
           dataSource={rooms}
-          scroll={{ y: "100%" }}
+          scroll={{ y: "60vh", x: "100%" }}
           rowKey={(row) => row.room_name}
         ></Table>
       </Form>
       <BottomBar>
-        <Button type="primary">Đặt</Button>
+        <Button type="primary" onClick={openModalInfoCustomer}>Đặt</Button>
       </BottomBar>
     </div>
   );

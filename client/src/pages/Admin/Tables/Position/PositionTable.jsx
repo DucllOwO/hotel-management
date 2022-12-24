@@ -165,6 +165,7 @@ const PositionTable = ({ positions, setPositions }) => {
       dataIndex: "id",
       width: "15%",
       align: "center",
+      sorter: (a, b) => a.id - b.id,
     },
     {
       key: "2",
@@ -178,6 +179,7 @@ const PositionTable = ({ positions, setPositions }) => {
           .includes(value.toLocaleLowerCase());
       },
       dataIndex: "name",
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
       key: "3",
@@ -238,7 +240,7 @@ const PositionTable = ({ positions, setPositions }) => {
       <Table
         columns={columns}
         dataSource={positions}
-        scroll={{ y: "100%", x: "100%" }}
+        scroll={{ y: "60vh", x: "100%" }}
         loading={positions ? false : true}
         rowKey={(record) => record.id}
         expandable={{
