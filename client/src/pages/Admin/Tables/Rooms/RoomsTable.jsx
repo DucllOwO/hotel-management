@@ -18,20 +18,14 @@ const RoomsTable = ({ rooms, setRoom }) => {
 
   const [modal, setModal] = useState(false);
 
-  const items = [
-    {
-      label: "Loại 1",
-      key: "1",
-    },
-    {
-      label: "Luxury",
-      key: "2",
-    },
-    {
-      label: "President",
-      key: "3",
-    },
-  ];
+  const [filter, setFilter] = useState("");
+
+  const items = rooms.map((value, index) => {
+    return {
+      label: "" + value.roomType.toString(),
+      value: "" + value.roomType.toString(),
+    };
+  });
 
   const columns = [
     {
@@ -78,39 +72,32 @@ const RoomsTable = ({ rooms, setRoom }) => {
       dataIndex: "roomType",
       width: "40%",
       align: "center",
-      render: (text, record) => {
-        if (editingRow === record.id) {
-          return (
-            <Form.Item
-              name="roomType"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập loại phòng",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-      filterDropdown: () => {
+      filteredValue: filter !== "" ? [filter] : null,
+      filterDropdown: ({ confirm, clearFilters }) => {
         return (
           <>
             <div className="filterContainer">
               <div>
                 <Select
+                  style={{ width: 300 }}
                   size="medium"
                   options={items}
                   showSearch
                   placeholder="Chọn loại phòng"
-                  onChange={(e) => {}}
+                  onChange={(e) => {
+                    setFilter(e);
+                    confirm();
+                  }}
                 />
               </div>
-              <Button type="primary" style={{ marginTop: "10px" }}>
+              <Button
+                type="primary"
+                style={{ marginTop: "10px" }}
+                onClick={() => {
+                  setFilter("");
+                  clearFilters({ closeDropdown: true });
+                }}
+              >
                 Reset
               </Button>
             </div>
@@ -120,6 +107,21 @@ const RoomsTable = ({ rooms, setRoom }) => {
       filterIcon: () => {
         return <FilterOutlined />;
       },
+      onFilter: (value, record) => {
+        if (filter === "") {
+          return record.roomType;
+        } else {
+          return record.roomType === value;
+        }
+        // record.roomType === value;
+        // console.log(value);
+      },
+      // onFilter: (value, record) => {
+      //   console.log("1");
+      //   return record.roomType
+      //     .toLocaleLowerCase()
+      //     .includes(value.toLocaleLowerCase());
+      // },
     },
     // {
     //   key: "3",
@@ -192,18 +194,6 @@ const RoomsTable = ({ rooms, setRoom }) => {
     });
   };
 
-  const onFinish = (values) => {
-    console.log(editingRow);
-    const updateDataSource = [...rooms];
-    updateDataSource.splice(editingRow - 1, 1, {
-      ...values,
-      idNum: editingRow,
-    });
-    console.log(updateDataSource);
-    setRoom(updateDataSource);
-    setEditingRow(null);
-  };
-
   return (
     <div className="table">
       {modal === true && openModalEdit()}
@@ -238,7 +228,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
       <Table
         columns={columns}
         dataSource={rooms}
-        scroll={{ y: "100%", x: "100%" }}
+        scroll={{ y: "60vh", x: "100%" }}
       ></Table>
     </div>
   );

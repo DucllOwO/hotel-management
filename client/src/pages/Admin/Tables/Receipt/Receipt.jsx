@@ -56,28 +56,14 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
     },
     {
       key: "3",
-      title: "Tổng tiền",
+      title: "Tổng tiền (đ)",
       align: "center",
       dataIndex: "total_cost",
       sorter: (a, b) => a.total_cost - b.total_cost,
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="total"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the total",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
       },
     },
     {

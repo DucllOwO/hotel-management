@@ -57,7 +57,7 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
     },
     {
       key: "3",
-      title: "Giảm",
+      title: "Giảm (%)",
       dataIndex: "offer",
       align: "center",
       width: "15%",

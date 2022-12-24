@@ -98,12 +98,22 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
       filterIcon: () => {
         return <FilterOutlined />;
       },
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+      },
     },
     {
       key: "5",
-      title: "Thành tiền",
+      title: "Tổng tiền (đ)",
       dataIndex: "total",
       align: "center",
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+      },
       // sorter: (a, b) => a.total.localeCompare(b.total),
     },
     // {
@@ -220,7 +230,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
       <Table
         columns={columns}
         dataSource={importingRecord}
-        scroll={{ y: "100%", x: "100%" }}
+        scroll={{ y: "60vh  ", x: "100%" }}
       ></Table>
     </div>
   );

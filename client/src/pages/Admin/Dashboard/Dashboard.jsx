@@ -5,11 +5,15 @@ import dayjs from "dayjs";
 // import moment, { now } from "moment";
 import "./dashboard.css";
 import { getMonth, getYear } from "../../../Utils/helpers";
-import { fetchDailyReport, fetchMonthlyReport, fetchYearlyReport } from "../../../api/DashboardAPI";
+import {
+  fetchDailyReport,
+  fetchMonthlyReport,
+  fetchYearlyReport,
+} from "../../../api/DashboardAPI";
 import MultiLineChart from "../../../components/Chart/MultiLineChart";
 import DashboardTable from "../Tables/Dashboard/DashboardTable";
 import { useEffect } from "react";
-import {AppContext} from "../../../context/AppContext"; 
+import { AppContext } from "../../../context/AppContext";
 import { useContext } from "react";
 
 const dateFormat = "DD-MM-YYYY";
@@ -21,21 +25,19 @@ const Dashboard = () => {
   const [report, setReport] = useState([]);
   const [semiType, setSemiType] = useState("income");
   const [time, setTime] = useState(dayjs(Date.now()));
-  const {user} = useContext(AppContext)
+  const { user } = useContext(AppContext);
 
   useEffect(() => {
     switch (type) {
       case "day":
-        console.log(time)
-        if(semiType ==="income"){
-          fetchDailyReport(user?.position, time, semiType)
-          .then(({ data }) => {
+        console.log(time);
+        if (semiType === "income") {
+          fetchDailyReport(user?.position, time, semiType).then(({ data }) => {
             setData(data.data);
             setReport(data.report);
-          });}
-        else{
-          fetchDailyReport(user?.position, time, semiType)
-          .then(({ data }) => {
+          });
+        } else {
+          fetchDailyReport(user?.position, time, semiType).then(({ data }) => {
             setData(data.data);
             setReport(data.report);
           });
@@ -43,15 +45,13 @@ const Dashboard = () => {
         break;
       case "month":
         // console.log(time);
-        fetchMonthlyReport(user?.position, getMonth(time))
-        .then(({ data }) => {
+        fetchMonthlyReport(user?.position, getMonth(time)).then(({ data }) => {
           setData(data.data);
           setReport(data.report);
-        }); 
+        });
         break;
       case "year":
-        fetchYearlyReport(user?.position, getYear(time))
-        .then(({ data }) => {
+        fetchYearlyReport(user?.position, getYear(time)).then(({ data }) => {
           setData(data.data);
           setReport(data.report);
         });
@@ -59,7 +59,7 @@ const Dashboard = () => {
       default:
         break;
     }
-  }, [type, time, semiType])
+  }, [type, time, semiType]);
 
   return (
     <div className="container">
@@ -100,18 +100,22 @@ const Dashboard = () => {
           <div>
             <div>
               {type === "day" && (
-                 <DatePicker
-                 defaultValue={dayjs(Date.now())}
-                 onChange={(values)=>{setTime(values.$d);}}
-                 picker="date"
-                 format={dateFormat}
-               ></DatePicker>
+                <DatePicker
+                  defaultValue={dayjs(Date.now())}
+                  onChange={(values) => {
+                    setTime(values.$d);
+                  }}
+                  picker="date"
+                  format={dateFormat}
+                ></DatePicker>
               )}
               {type === "month" && (
                 <DatePicker
                   defaultValue={dayjs(Date.now())}
                   picker="month"
-                  onChange={(values)=>{setTime(values.$d);}}
+                  onChange={(values) => {
+                    setTime(values.$d);
+                  }}
                   format={monthFormat}
                 ></DatePicker>
               )}
@@ -119,7 +123,9 @@ const Dashboard = () => {
                 <DatePicker
                   picker="year"
                   defaultValue={dayjs(Date.now())}
-                  onChange={(values)=>{setTime(values.$d)}}
+                  onChange={(values) => {
+                    setTime(values.$d);
+                  }}
                 ></DatePicker>
               )}
             </div>
@@ -128,42 +134,54 @@ const Dashboard = () => {
         <div className="sumary">
           <Row gutter={16}>
             <Col span={8}>
-              <Card title="Tổng doanh thu">{report ? report[0]?.income : 0}</Card>
+              <Card title="Tổng doanh thu">
+                {report[0]
+                  ? report[0]?.income.toLocaleString("en-US") + " vnd"
+                  : 0 + " đ"}
+              </Card>
             </Col>
             <Col span={8}>
-              <Card title="Tổng chi phí">{report ? report[0]?.outcome : 0}</Card>
+              <Card title="Tổng chi phí">
+                {report[0]
+                  ? report[0]?.outcome.toLocaleString("en-US") + " vnd"
+                  : 0 + " đ"}
+              </Card>
             </Col>
             <Col span={8}>
-              <Card title="Tổng lợi nhuận">{report ? report[0]?.profit : 0}</Card>
+              <Card title="Tổng lợi nhuận">
+                {report[0]
+                  ? report[0]?.profit.toLocaleString("en-US") + " vnd"
+                  : 0 + " đ"}
+              </Card>
             </Col>
           </Row>
         </div>
-        { type ==="day" && <div>
-          <Button
-            className="dateBtn"
-            onClick={() => {
-              setSemiType("income");
-            }}
-          >
-            Thu
-          </Button>
-          <Button
-            className="dateBtn"
-            onClick={() => {
-              setSemiType("outcome");
-            }}
-          >
-            Chi
-          </Button>
-        </div>}
+        {type === "day" && (
+          <div>
+            <Button
+              className="dateBtn"
+              onClick={() => {
+                setSemiType("income");
+              }}
+            >
+              Thu
+            </Button>
+            <Button
+              className="dateBtn"
+              onClick={() => {
+                setSemiType("outcome");
+              }}
+            >
+              Chi
+            </Button>
+          </div>
+        )}
         {/* {type === "day" ? <DashboardTable /> : <MultiLineChart />} */}
-        {(type === "day") 
-        ? <DashboardTable
-        data = {data}
-        ></DashboardTable>
-        : 
-        <MultiLineChart reportData={data}/>
-        }
+        {type === "day" ? (
+          <DashboardTable data={data}></DashboardTable>
+        ) : (
+          <MultiLineChart reportData={data} />
+        )}
       </div>
     </div>
   );

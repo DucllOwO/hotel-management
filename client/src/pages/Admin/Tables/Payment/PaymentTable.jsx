@@ -71,10 +71,15 @@ const PaymentTable = ({ payment, setPayment }) => {
     },
     {
       key: "4",
-      title: "Thành tiền",
+      title: "Tổng tiền (đ)",
       align: "center",
-      dataIndex: "cost",
-      sorter: (a, b) => a.cost - b.cost,
+      dataIndex: "total_cost",
+      sorter: (a, b) => a.total_cost - b.total_cost,
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+      },
     },
   ];
 

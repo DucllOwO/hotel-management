@@ -94,10 +94,15 @@ const ItemTable = ({ items, setItems }) => {
           return <p>{text}</p>;
         }
       },
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+      },
     },
     {
       key: "4",
-      title: "Giá",
+      title: "Giá (đ)",
       dataIndex: "sell_price",
       width: "20%",
       align: "center",
@@ -125,24 +130,10 @@ const ItemTable = ({ items, setItems }) => {
       filterIcon: () => {
         return <FilterOutlined />;
       },
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="price"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the minimum",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
       },
     },
     {

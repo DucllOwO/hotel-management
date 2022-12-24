@@ -37,20 +37,14 @@ const BookingTable = ({
 
   const [searchedText, setSearchedText] = useState("");
 
-  const items = [
-    {
-      label: "Loại 1",
-      key: "1",
-    },
-    {
-      label: "Luxury",
-      key: "2",
-    },
-    {
-      label: "President",
-      key: "3",
-    },
-  ];
+  const [filter, setFilter] = useState("");
+
+  const items = rooms.map((value, index) => {
+    return {
+      label: "" + value.roomType.toString(),
+      value: "" + value.roomType.toString(),
+    };
+  });
 
   const areaMark = {
     10: "10",
@@ -94,7 +88,14 @@ const BookingTable = ({
       dataIndex: "roomType",
       width: "25%",
       align: "center",
-      filterDropdown: () => {
+      filteredValue: filter !== "" ? [filter] : null,
+      onFilter: (value, record) => {
+        return String(record.roomType)
+          .toLocaleLowerCase()
+          .includes(value.toLocaleLowerCase());
+      },
+      ellipsis: true,
+      filterDropdown: ({ clearFilters }) => {
         return (
           <>
             <div className="filterContainer">
@@ -104,10 +105,20 @@ const BookingTable = ({
                   options={items}
                   showSearch
                   placeholder="Chọn loại phòng"
-                  onChange={(e) => {}}
+                  onChange={(e) => {
+                    setFilter(e);
+                    clearFilters();
+                  }}
                 />
               </div>
-              <Button type="primary" style={{ marginTop: "10px" }}>
+              <Button
+                type="primary"
+                style={{ marginTop: "10px" }}
+                onClick={() => {
+                  setFilter("");
+                  clearFilters();
+                }}
+              >
                 Reset
               </Button>
             </div>
@@ -115,7 +126,11 @@ const BookingTable = ({
         );
       },
       filterIcon: () => {
-        return <FilterOutlined />;
+        return (
+          <FilterOutlined
+          // className={filter ? "filterActive" : "filterNormal"}
+          />
+        );
       },
     },
     {
@@ -150,33 +165,38 @@ const BookingTable = ({
     },
     {
       key: "4",
-      title: "Giá",
+      title: "Giá (đ)",
       dataIndex: "price",
       width: "17%",
       align: "center",
       sorter: (a, b) => a.price - b.price,
-      filterDropdown: () => {
-        return (
-          <>
-            <div className="filterContainer">
-              <div className="priceSlider">
-                <Slider
-                  width={0.8}
-                  range
-                  min={100000}
-                  max={10000000}
-                  marks={priceMark}
-                  defaultValue={[100000, 1000000]}
-                  onChange={(value) => {}}
-                />
-                <Button type="primary">Reset</Button>
-              </div>
-            </div>
-          </>
-        );
-      },
-      filterIcon: () => {
-        return <FilterOutlined />;
+      // filterDropdown: () => {
+      //   return (
+      //     <>
+      //       <div className="filterContainer">
+      //         <div className="priceSlider">
+      //           <Slider
+      //             width={0.8}
+      //             range
+      //             min={100000}
+      //             max={10000000}
+      //             marks={priceMark}
+      //             defaultValue={[100000, 1000000]}
+      //             onChange={(value) => {}}
+      //           />
+      //           <Button type="primary">Reset</Button>
+      //         </div>
+      //       </div>
+      //     </>
+      //   );
+      // },
+      // filterIcon: () => {
+      //   return <FilterOutlined />;
+      // },
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
       },
     },
     {
@@ -187,11 +207,13 @@ const BookingTable = ({
           <Form.Item style={{ marginBottom: 0 }}>
             <Checkbox
               onChange={(e) => {
-                console.log(e)
-                if(!selectedRooms.includes(record))
+                console.log(e);
+                if (!selectedRooms.includes(record))
                   setSelectedRooms((prev) => [...prev, record]);
-                else if(selectedRooms.includes(record))
-                  setSelectedRooms((prev) => prev.filter((data) => data !== record))
+                else if (selectedRooms.includes(record))
+                  setSelectedRooms((prev) =>
+                    prev.filter((data) => data !== record)
+                  );
               }}
             ></Checkbox>
           </Form.Item>
@@ -208,9 +230,9 @@ const BookingTable = ({
       const isCusObjEmpty = Object.keys(currentCustomer).length === 0;
       // isCusObjEmpty === true === customer not available
       if (isCusObjEmpty) {
-        const {data: userData} = await createCustomer(
+        const { data: userData } = await createCustomer(
           user?.position,
-          currentCustomer,
+          currentCustomer
         );
       } else {
         // const currentSelectRoom = rooms.find(
@@ -224,14 +246,14 @@ const BookingTable = ({
           from,
           to
         );
-        console.log(selectedRooms)
+        console.log(selectedRooms);
         setRooms((pre) => {
           return pre.filter(
             (data) => !selectedRooms.includes(data)
             // data.room_name !== bookingData?.room_name
           );
         });
-        console.log(rooms)
+        console.log(rooms);
       }
       // setCurrentCustomer({});
       SuccessAlert("Đặt phòng thành công.");
@@ -246,10 +268,8 @@ const BookingTable = ({
   };
 
   const openModalInfoCustomer = () => {
-    if(selectedRooms.length !== 0)
-      setIsModalOpen(true);
-    else 
-      ErrorAlert("Vui lòng chọn phòng cần đặt")
+    if (selectedRooms.length !== 0) setIsModalOpen(true);
+    else ErrorAlert("Vui lòng chọn phòng cần đặt");
   };
 
   return (
@@ -293,7 +313,9 @@ const BookingTable = ({
         ></Table>
       </Form>
       <BottomBar>
-        <Button type="primary" onClick={openModalInfoCustomer}>Đặt</Button>
+        <Button type="primary" onClick={openModalInfoCustomer}>
+          Đặt
+        </Button>
       </BottomBar>
     </div>
   );
