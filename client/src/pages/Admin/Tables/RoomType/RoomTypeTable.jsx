@@ -228,42 +228,9 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
         return <FilterOutlined />;
       },
     },
+
     {
       key: "6",
-      title: "Giá",
-      dataIndex: "price",
-      align: "center",
-      width: "20%",
-      render: (text, record) => {
-        return <p>{text}</p>;
-      },
-      sorter: (a, b) => a.price - b.price,
-      filterDropdown: () => {
-        return (
-          <>
-            <div className="filterContainer">
-              <div className="priceSlider">
-                <Slider
-                  width={0.8}
-                  range
-                  min={100000}
-                  max={10000000}
-                  marks={priceMark}
-                  defaultValue={[100000, 1000000]}
-                  onChange={(value) => {}}
-                />
-                <Button type="primary">Reset</Button>
-              </div>
-            </div>
-          </>
-        );
-      },
-      filterIcon: () => {
-        return <FilterOutlined />;
-      },
-    },
-    {
-      key: "7",
       title: "Thao tác",
       render: (_, record) => {
         return (
