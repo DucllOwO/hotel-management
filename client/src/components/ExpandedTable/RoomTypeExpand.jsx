@@ -1,4 +1,5 @@
-import { Card, Col, Row, Table } from "antd";
+import { Card, Col, Empty, Row, Table } from "antd";
+import CheckableTag from "antd/es/tag/CheckableTag";
 import React from "react";
 import UtilitiesButton from "../Button/UtilitiesButton/UtilitiesButton";
 
@@ -47,15 +48,24 @@ const RoomTypeExpand = ({ utils = [], ...prices }) => {
         </Col>
         <Col xs={24} xl={8}>
           <Card title="Tiện ích" bordered={true} style={{ width: "30vw" }}>
-            {utils
-              ? utils.map((util) => (
-                  <UtilitiesButton
-                    name={util.room_feature.name}
-                    size="medium"
-                    disabled={true}
-                  ></UtilitiesButton>
-                ))
-              : null}
+            {utils.length > 0 ? (
+              utils.map((util) => (
+                <CheckableTag
+                  key={util.id}
+                  checked={true}
+                  style={{
+                    margin: "5px 0 0 5px",
+                    fontSize: 18,
+                    padding: 5,
+                    border: "1px solid black",
+                  }}
+                >
+                  {util.room_feature.name}
+                </CheckableTag>
+              ))
+            ) : (
+              <Empty description={"Không có dữ liệu tiện ích của phòng"} />
+            )}
           </Card>
         </Col>
       </Row>

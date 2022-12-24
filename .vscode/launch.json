@@ -1,7 +1,4 @@
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
     {
@@ -9,22 +6,14 @@
       "request": "launch",
       "type": "chrome",
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/client/src",
-      // "sourceMapPathOverrides": {
-      //     "webpack:///./~/*": "${webRoot}/client/node_modules/*",       
-      //     "webpack:///./*":   "${webRoot}/client/*",         
-      //     "webpack:///*":     "*",     
-      //     "webpack:///src/*": "${webRoot}/client/*",    
-      //     "meteor://💻app/*": "${webRoot}/*"
-      // }
+      "webRoot": "${workspaceFolder}/client/src"
+    },
+    {
+      "type": "node-terminal",
+      "name": "Run Script: start",
+      "request": "launch",
+      "command": "node index.js",
+      "cwd": "${workspaceFolder}\\server"
     }
-    // {
-    //         "type": "chrome",
-    //         "request": "launch",
-    //         "name": "Launch Brave against localhost",
-    //         "runtimeExecutable": "/Applications/Brave Browser Dev.app/Contents/MacOS/Brave Browser Dev",
-    //         "url": "http://localhost:3000",
-    //         "webRoot": "${workspaceFolder}"
-    //     },
   ]
 }

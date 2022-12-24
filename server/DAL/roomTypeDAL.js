@@ -4,7 +4,8 @@ function getAllTypes() {
   return supabase
     .from("room_type")
     .select("*")
-    .order("id", { ascending: true });
+    .order("id", { ascending: true })
+    .eq("is_active", true);
 }
 async function getTypeByID(id) {
   const { data, error } = await supabase
@@ -13,24 +14,26 @@ async function getTypeByID(id) {
     .eq("id", id);
   return { data, error };
 }
-async function createRoomType(newRoomType) {
-  const { data, error } = await supabase.from("room_type").insert({
-    name: newRoomType.name,
-    max_customer: newRoomType.max_customer,
-    bed_amount: newRoomType.bed_amount,
-  });
-  return { data, error };
+function createRoomType(newRoomType) {
+  return supabase.from("room_type").insert({ ...newRoomType });
 }
-async function updateRoomType(id, newInfo) {
-  const { data, error } = await supabase
+function updateRoomType(id, newInfo) {
+  return supabase
     .from("room_type")
     .update({ ...newInfo })
     .eq("id", id);
-  return { data, error };
+}
+
+function hideRoomType(roomTypeID) {
+  return supabase
+    .from("room_type")
+    .update({ is_active: false })
+    .eq("id", roomTypeID);
 }
 module.exports = {
   getAllTypes,
   getTypeByID,
   createRoomType,
   updateRoomType,
+  hideRoomType,
 };

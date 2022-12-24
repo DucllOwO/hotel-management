@@ -14,35 +14,45 @@ const getByID = (req, res, next) => {
   if (getRoomTypeError) return next(getRoomTypeError);
   else res.status(200).send(roomType);
 };
-const createType = (req, res) => {
+const createType = async (req, res, next) => {
   const { roomType } = req.body;
+
+  console.log(roomType);
 
   if (!roomType) return next(BadRequestError());
 
-  const { error: insertRoomTypeError } = roomTypeDAL.createRoomType({
-    ...roomType,
-  });
+  const { data: roomTypeData, error: insertRoomTypeError } =
+    await roomTypeDAL.createRoomType(roomType);
 
   if (insertRoomTypeError) return next(insertRoomTypeError);
 
-  res.status(201).send("Created");
+  res.status(201).send(roomTypeData[0]);
 };
-const updateInformation = (req, res) => {
+const updateInformation = async (req, res) => {
   const { roomType } = req.body;
-  const { id: roomTypeID } = roomType?.id;
+  const { id } = req.params;
 
-  if (!roomType) return next(BadRequestError());
+  if (!roomType) throw BadRequestError();
 
-  const { error: updateRoomTypeError } = roomTypeDAL.updateRoomType(
-    roomTypeID,
-    {
-      ...roomType,
-    }
+  console.log({ ...roomType });
+  const { data, error: updateRoomTypeError } = await roomTypeDAL.updateRoomType(
+    id,
+    roomType
   );
 
-  if (updateRoomTypeError) return next(updateRoomTypeError);
+  if (updateRoomTypeError) throw updateRoomTypeError;
 
-  res.status(201).send("Created");
+  res.status(204).send(data[0]);
+};
+
+const hideRoomType = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  const { error } = await roomTypeDAL.hideRoomType(id);
+
+  if (error) throw error;
+
+  res.status(204).send();
 };
 
 module.exports = {
@@ -50,4 +60,5 @@ module.exports = {
   getByID,
   createType,
   updateInformation,
+  hideRoomType,
 };

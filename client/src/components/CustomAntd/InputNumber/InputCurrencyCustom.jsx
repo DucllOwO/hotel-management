@@ -1,11 +1,16 @@
 import { InputNumber } from "antd";
-import React from "react";
+import React, { useState } from "react";
 
-const InputCurrencyCustom = ({ addonAfter, control = false }) => {
+const InputCurrencyCustom = ({
+  control = false,
+  setFieldValue,
+  fieldName = "",
+  valueDefault = "",
+}) => {
+  const [isInput, setIsInput] = useState(false);
   return (
     <InputNumber
       addonAfter={String("đ")}
-      controls={control}
       formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
     />
   );
