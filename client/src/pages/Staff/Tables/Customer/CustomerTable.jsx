@@ -183,7 +183,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
         tableLayout="auto"
         columns={columns}
         dataSource={customer}
-        scroll={{ x: "100%", y: "100%" }}
+        scroll={{ x: "60vh", y: "100%" }}
       ></Table>
     </div>
   );

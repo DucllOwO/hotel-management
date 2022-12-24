@@ -220,7 +220,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
       <Table
         columns={columns}
         dataSource={importingRecord}
-        scroll={{ y: "100%", x: "100%" }}
+        scroll={{ y: "60vh", x: "100%" }}
       ></Table>
     </div>
   );
