@@ -302,7 +302,7 @@ const BookingTable = ({
           loading={isLoading}
           columns={columns}
           dataSource={rooms}
-          scroll={{ y: "100%" }}
+          scroll={{ y: "60vh", x: "100%" }}
           rowKey={(row) => row.room_name}
         ></Table>
       </Form>

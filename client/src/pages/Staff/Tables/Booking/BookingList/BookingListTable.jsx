@@ -5,7 +5,6 @@ import "./bookingListtable.css";
 import { PlusOutlined } from "@ant-design/icons";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import TextButton from "../../../../../components/TextButton/TextButton";
 import CheckButton from "../../../../../components/IconButton/CheckButton/CheckButton";
 import CancelButton from "../../../../../components/IconButton/CancelButton/CancelButton";
 
@@ -180,7 +179,11 @@ const BookingListTable = ({ booking, setBooking }) => {
           </Button> */}
         </div>
       </div>
-      <Table columns={columns} dataSource={booking} scroll={{ y: 350 }}></Table>
+      <Table
+        columns={columns}
+        dataSource={booking}
+        scroll={{ y: "60vh", x: "100%" }}
+      ></Table>
     </div>
   );
 };

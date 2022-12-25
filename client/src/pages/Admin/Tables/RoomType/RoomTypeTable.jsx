@@ -16,19 +16,33 @@ import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import RoomTypeForm from "../../../../components/Form/RoomTypeForm";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
+import RoomTypeExpand from "../../../../components/ExpandedTable/RoomTypeExpand";
+import {
+  createRoomType,
+  hideRoomType,
+  updateRoomType,
+} from "../../../../api/RoomTypeAPI";
+import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
+import LocalStorage from "../../../../Utils/localStorage";
+import {
+  createRoomFeaturesByRoomTypeID,
+  getRoomUtilsByRoomTypeID,
+  updateRoomFeaturesByRoomTypeID,
+} from "../../../../api/hasRoomFeatures";
+import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 
-const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
+  const [isModalVisible, setIsModalVisible] = useState();
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
+  const [roomUtils, setRoomUtils] = useState(
+    createUtilsCheckArr(LocalStorage.getItem("utils") || [])
+  );
 
-  const handle = () => {
-    setIsModalVisible(false);
-  };
+  const [oldRoomUtils, setOldRoomUtils] = useState([]);
 
-  const [editingRow, setEditingRow] = useState(null);
+  const [isUtilEmpty, setIsUtilEmpty] = useState(false);
+
+  const [currentSelectedID, setCurrentSelectedID] = useState(null);
 
   const [form] = Form.useForm();
 
@@ -188,23 +202,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
       align: "center",
       width: "15%",
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập diện tích",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return <p>{text}</p>;
       },
       sorter: (a, b) => a.area - b.area,
       filterDropdown: () => {
@@ -230,128 +228,168 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
         return <FilterOutlined />;
       },
     },
+
     {
       key: "6",
-      title: "Giá",
-      dataIndex: "price",
-      align: "center",
-      width: "20%",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="price"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập giá",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-      sorter: (a, b) => a.price - b.price,
-      filterDropdown: () => {
-        return (
-          <>
-            <div className="filterContainer">
-              <div className="priceSlider">
-                <Slider
-                  width={0.8}
-                  range
-                  min={100000}
-                  max={10000000}
-                  marks={priceMark}
-                  defaultValue={[100000, 1000000]}
-                  onChange={(value) => {}}
-                />
-                <Button type="primary">Reset</Button>
-              </div>
-            </div>
-          </>
-        );
-      },
-      filterIcon: () => {
-        return <FilterOutlined />;
-      },
-    },
-    {
-      key: "7",
       title: "Thao tác",
       render: (_, record) => {
         return (
           <>
             <div className="btnWrap">
-              <EditButton openModalEdit={() => {}}></EditButton>
-              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+              <EditButton
+                openModalEdit={() => onOpenModalEdit(record)}
+              ></EditButton>
+              <DeleteButton
+                onDeleteButton={() => onDeleteButton(record)}
+              ></DeleteButton>
             </div>
-            {/* <div className="btnWrap">
-              <SaveButton onSaveButton={() => {}}></SaveButton>
-            </div> */}
-            {/* <Button
-              htmlType="submit"
-              // onClick={() => {form.submit()}}
-            >
-              Lưu
-            </Button>
-            <Button
-              onClick={() => {
-                setEditingRow(null);
-              }}
-            >
-              Huỷ
-            </Button> */}
           </>
         );
       },
     },
   ];
 
-  const onDeleteButton = (record) => {
-    Modal.confirm({
-      title: "Bạn có chắc muốn xoá dữ liệu?",
-      okText: "OK",
-      okType: "danger",
-      onOk: () => {
-        setRoomTypes((pre) => {
-          return pre.filter((data) => data.idNum !== record.idNum);
-        });
-      },
-    });
+  const onOpenModalEdit = (record) => {
+    setIsModalVisible("edit");
+    setCurrentSelectedID(record.id);
+    form.setFieldsValue({ ...record });
+    getRoomUtilsByRoomTypeID(positionUser, record.id)
+      .then(({ data }) => {
+        const tempUtilArr = createUtilsCheckEditArr(
+          LocalStorage.getItem("utils"),
+          data
+        );
+        setRoomUtils(tempUtilArr);
+        setOldRoomUtils(tempUtilArr);
+      })
+      .catch((error) => {
+        console.log(error);
+        ErrorAlert("Lấy dữ liệu tiện ích của loại phòng thất bại!!");
+      });
   };
 
-  const onFinish = (values) => {
-    console.log(editingRow);
-    const updateDataSource = [...roomTypes];
-    updateDataSource.splice(editingRow - 1, 1, {
-      ...values,
-      idNum: editingRow,
-    });
-    console.log(updateDataSource);
-    setRoomTypes(updateDataSource);
-    setEditingRow(null);
+  const handleOkModalAdd = () => {
+    if (checkUtilArrEmpty(roomUtils)) {
+      form
+        .validateFields()
+        .then((values) => {
+          createRoomType(positionUser, values)
+            .then(({ data }) => {
+              setRoomTypes((prev) => [...prev, data]);
+              createRoomFeaturesByRoomTypeID(
+                positionUser,
+                data.id,
+                getCheckUtil(roomUtils)
+              )
+                .then((res) => {
+                  SuccessAlert("Tạo loại phòng thành công");
+                  resetAllValue();
+                })
+                .catch((err) => {
+                  console.log(err);
+                  ErrorAlert("Tạo tiện ích cho loại phòng thất bại!");
+                });
+            })
+            .catch((error) => {
+              console.log(error);
+              ErrorAlert("Tạo loại phòng thất bại!!");
+            });
+        })
+        .catch((error) => console.log(error));
+    } else setIsUtilEmpty(true);
+  };
+
+  const modalEdit = () => {
+    return (
+      <Modal
+        title="Chỉnh sửa thông tin loại phòng"
+        open={true}
+        onOk={handleOkModalEdit}
+        onCancel={handleCancelModal}
+        okText="Xác nhận"
+        cancelText="Hủy"
+        width="50vw"
+      >
+        <RoomTypeForm
+          form={form}
+          utils={roomUtils}
+          setUtils={setRoomUtils}
+          isUtilEmpty={isUtilEmpty}
+        ></RoomTypeForm>
+      </Modal>
+    );
+  };
+
+  const handleOkModalEdit = () => {
+    if (checkUtilArrEmpty(roomUtils)) {
+      form
+        .validateFields()
+        .then((values) => {
+          updateRoomType(positionUser, currentSelectedID, values)
+            .then(({ data }) => {
+              // filter old roomtype with new ones
+              const [checkUtils, unCheckUtils] = compareUtilCheckArray(
+                roomUtils,
+                oldRoomUtils
+              );
+              updateRoomFeaturesByRoomTypeID(
+                positionUser,
+                currentSelectedID,
+                checkUtils,
+                unCheckUtils
+              )
+                .then((res) => {
+                  SuccessAlert("Cập nhật loại phòng thành công");
+                  resetAllValue();
+                })
+                .catch((err) => {
+                  ErrorAlert(
+                    "Cập nhật dữ liệu tiện ích của loại phòng thất bại!!"
+                  );
+                });
+              setRoomTypes((prev) =>
+                prev.map((roomType) => {
+                  if (roomType.id == currentSelectedID) return { ...data };
+                  return roomType;
+                })
+              );
+            })
+            .catch((err) => {
+              console.log(err);
+              ErrorAlert("Cập nhật dữ liệu loại phòng thất bại!!");
+            });
+        })
+        .catch((error) => console.log(error));
+    } else setIsUtilEmpty(true);
+  };
+
+  const modalAdd = () => {
+    return (
+      <Modal
+        title="Tạo mới loại phòng"
+        open={true}
+        onOk={handleOkModalAdd}
+        onCancel={handleCancelModal}
+        okText="Xác nhận"
+        cancelText="Hủy"
+        width="50vw"
+      >
+        <RoomTypeForm
+          form={form}
+          utils={roomUtils}
+          setUtils={setRoomUtils}
+          isUtilEmpty={isUtilEmpty}
+        ></RoomTypeForm>
+      </Modal>
+    );
   };
 
   return (
     <div className="table">
       <>
-        <Modal
-          title="Thông tin loại phòng"
-          visible={isModalVisible}
-          onOk={handle}
-          onCancel={handle}
-          okText="Xác nhận"
-          cancelText="Hủy"
-        >
-          <RoomTypeForm></RoomTypeForm>
-        </Modal>
+        {isModalVisible === "add" ? modalAdd() : null}
+        {isModalVisible === "edit" ? modalEdit() : null}
       </>
-      {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div></div>
         <div>
@@ -367,7 +405,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
             style={{ width: 264 }}
           />
           <Button
-            onClick={showModal}
+            onClick={(e) => showModalAdd()}
             className="addButton"
             type="primary"
             ghost
@@ -380,11 +418,126 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
       <Table
         columns={columns}
         dataSource={roomTypes}
-        scroll={{ y: "100%", x: "100%" }}
+        scroll={{ y: "60vh", x: "100%" }}
         rowKey={(row) => row.id}
+        expandable={{
+          expandedRowRender: (record) => {
+            return (
+              <RoomTypeExpand
+                utils={record.utils}
+                firstHourPrice={record.first_hour_price}
+                overNightPrice={record.overnight_price}
+                oneDayPrice={record.one_day_price}
+                hourPrice={record.hour_price}
+              />
+            );
+          },
+          onExpand: (expanded, record) => {
+            getRoomUtilsByRoomTypeID(positionUser, record.id)
+              .then(({ data }) => {
+                setRoomTypes((prev) => {
+                  return prev.map((roomType) => {
+                    if (record.name === roomType.name) {
+                      return { ...roomType, utils: data };
+                    }
+                    return roomType;
+                  });
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+                ErrorAlert("Lấy dữ liệu tiện ích của loại phòng thất bại!!");
+              });
+          },
+        }}
+        pagination={false}
       ></Table>
     </div>
   );
+
+  function getCheckUtil(utils) {
+    return utils.filter((util) => util.checked === true);
+  }
+
+  // check to ensure util array has at least 1 util is check
+  function checkUtilArrEmpty(roomUtils) {
+    let hasCheck = false;
+    for (const util of roomUtils) {
+      if (util.checked) {
+        setIsUtilEmpty(false);
+        hasCheck = true;
+        break;
+      }
+    }
+    return hasCheck;
+  }
+
+  function onDeleteButton(record) {
+    Modal.confirm({
+      title: "Bạn có chắc muốn xoá dữ liệu?",
+      okText: "OK",
+      okType: "danger",
+      onOk: () => {
+        hideRoomType(positionUser, record.id)
+          .then((res) => {
+            setRoomTypes((pre) => {
+              return pre.filter((data) => data.id !== record.id);
+            });
+            SuccessAlert("Xóa thông tin loại phòng thành công.");
+          })
+          .catch((err) => {
+            console.log(err);
+            ErrorAlert("Xóa thông tin loại phòng thất bại!!");
+          });
+      },
+    });
+  }
+
+  function handleCancelModal() {
+    resetAllValue();
+  }
+
+  function resetAllValue() {
+    setIsModalVisible(false);
+    form.resetFields();
+    setRoomUtils(createUtilsCheckArr(LocalStorage.getItem("utils")));
+    setOldRoomUtils([]);
+    setCurrentSelectedID(null);
+  }
+
+  function showModalAdd() {
+    setIsModalVisible("add");
+  }
 };
+
+function createUtilsCheckArr(utils = []) {
+  return utils.map((util) => {
+    return { ...util, checked: false };
+  });
+}
+function createUtilsCheckEditArr(utilsDefault = [], utilsOfRoom = []) {
+  return utilsDefault.map((util) => {
+    const index = utilsOfRoom.findIndex(
+      (utilOfRoom) => utilOfRoom.room_feature.id === util.id
+    );
+
+    if (index >= 0) return { ...util, checked: true };
+    else return { ...util, checked: false };
+  });
+}
+
+function compareUtilCheckArray(utils, oldUtils) {
+  let checkArr = [];
+  let unCheckArr = [];
+
+  utils.forEach((util, index) => {
+    if (util.checked === true && oldUtils[index].checked === false)
+      checkArr.push(util);
+    if (util.checked === false && oldUtils[index].checked === true)
+      unCheckArr.push(util);
+  });
+
+  return [checkArr, unCheckArr];
+}
 
 export default RoomTypeTable;

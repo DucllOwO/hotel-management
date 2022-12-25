@@ -200,23 +200,6 @@ const PositionTable = ({ positions, setPositions }) => {
                 onDeleteButton={(e) => onDeleteButton(record)}
               ></DeleteButton>
             </div>
-            {/* <Button
-              onClick={(e) => {
-                e.preventDefault();
-                setModal("edit");
-                form.setFieldValue("posName", record.name);
-                setCurrentPosition(record);
-              }}
-            >
-              Chỉnh sửa
-            </Button>
-            <Button
-              onClick={() => {
-                onDeleteButton(record);
-              }}
-            >
-              Xoá
-            </Button> */}
           </>
         );
       },
@@ -257,7 +240,7 @@ const PositionTable = ({ positions, setPositions }) => {
       <Table
         columns={columns}
         dataSource={positions}
-        scroll={{ y: "100%", x: "100%" }}
+        scroll={{ y: "60vh", x: "100%" }}
         loading={positions ? false : true}
         rowKey={(record) => record.id}
         expandable={{

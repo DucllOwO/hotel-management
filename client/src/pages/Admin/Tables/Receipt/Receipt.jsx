@@ -268,7 +268,7 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
       <Table
         columns={columns}
         dataSource={receipt}
-        scroll={{ y: "100%", x: "100%" }}
+        scroll={{ y: "60vh", x: "100%" }}
       ></Table>
     </div>
   );
