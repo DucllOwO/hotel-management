@@ -4,6 +4,7 @@ const {
   createType,
   updateInformation,
   hideType,
+  hideRoomType,
 } = require("../controllers/roomTypeController");
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
 const { hasPermission } = require("../middlewares/roleAccessControl");
@@ -38,6 +39,13 @@ router.put(
   authorizeAccessToken,
   hasPermission(actionAC.UPDATE, resourceAC.ROOMTYPE),
   tryCatch(updateInformation)
+);
+
+router.delete(
+  "/:id",
+  authorizeAccessToken,
+  hasPermission(actionAC.DELETE, resourceAC.ROOMTYPE),
+  tryCatch(hideRoomType)
 );
 
 module.exports = router;

@@ -6,7 +6,7 @@ import { AppContext } from "../../../../context/AppContext";
 import InventoryTable from "../../Tables/Inventory/InventoryTable";
 import "./inventory.css";
 
-const CLEANING_STATUS = 4;
+const CLEANING_STATUS = 3;
 
 const Inventory = () => {
   const { user } = useContext(AppContext);
