@@ -22,9 +22,16 @@ const ItemTable = ({ items, setItems }) => {
 
   const [searchedText, setSearchedText] = useState("");
 
+  const [reserveFilter, setReserveFilter] = useState(null);
+  const [priceFilter, setPriceFilter] = useState(null);
+
   const priceMark = {
-    100000: "100,000đ",
-    10000000: "10,000,000đ",
+    0: "0đ",
+    1000000: "1,000,000đ",
+  };
+  const reserveMark = {
+    0: "0",
+    200: "200",
   };
 
   const columns = [
@@ -75,23 +82,46 @@ const ItemTable = ({ items, setItems }) => {
       width: "20%",
       align: "center",
       sorter: (a, b) => a.reserve_amount - b.reserve_amount,
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="minimum"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the minimum",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
+      filteredValue: reserveFilter !== null ? [reserveFilter] : null,
+      filterDropdown: ({ clearFilters }) => {
+        return (
+          <>
+            <div className="filterContainer">
+              <Slider
+                range
+                max={200}
+                min={0}
+                marks={reserveMark}
+                defaultValue={[0, 20]}
+                onChange={(e) => {
+                  setReserveFilter(null);
+                  setReserveFilter(e);
+                }}
+              />
+              <Button
+                type="primary"
+                onClick={() => {
+                  setReserveFilter(null);
+                  clearFilters({ closeDropdown: true });
+                }}
+              >
+                Reset
+              </Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
+      onFilter: (value, record) => {
+        if (reserveFilter === null) {
+          return record.reserve_amount;
         } else {
-          return <p>{text}</p>;
+          return (
+            record.reserve_amount >= value[0] &&
+            record.reserve_amount <= value[1]
+          );
         }
       },
       render: (value) => {
@@ -107,21 +137,39 @@ const ItemTable = ({ items, setItems }) => {
       width: "20%",
       align: "center",
       sorter: (a, b) => a.sell_price - b.sell_price,
-      filterDropdown: () => {
+      filteredValue: priceFilter !== null ? [priceFilter] : null,
+      filterDropdown: ({ clearFilters }) => {
         return (
           <>
             <div className="filterContainer">
               <div className="priceSlider">
                 <Slider
+                  tipFormatter={(value) => {
+                    return `${value < 0 ? "-" : ""} ${Math.abs(value)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+                  }}
                   width={0.8}
+                  step={5000}
                   range
-                  min={100000}
-                  max={10000000}
+                  min={0}
+                  max={1000000}
                   marks={priceMark}
-                  defaultValue={[100000, 1000000]}
-                  onChange={(value) => {}}
+                  defaultValue={[0, 100000]}
+                  onChange={(e) => {
+                    setPriceFilter(null);
+                    setPriceFilter(e);
+                  }}
                 />
-                <Button type="primary">Reset</Button>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setPriceFilter(null);
+                    clearFilters({ closeDropdown: true });
+                  }}
+                >
+                  Reset
+                </Button>
               </div>
             </div>
           </>
@@ -129,6 +177,13 @@ const ItemTable = ({ items, setItems }) => {
       },
       filterIcon: () => {
         return <FilterOutlined />;
+      },
+      onFilter: (value, record) => {
+        if (priceFilter === null) {
+          return record.sell_price;
+        } else {
+          return record.sell_price >= value[0] && record.sell_price <= value[1];
+        }
       },
       render: (value) => {
         return `${value < 0 ? "-" : ""} ${Math.abs(value)

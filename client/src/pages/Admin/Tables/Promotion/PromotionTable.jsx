@@ -72,29 +72,29 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
       dataIndex: "duration",
       width: "30%",
       align: "center",
-      filterDropdown: () => {
-        return (
-          <>
-            <div className="filterContainer">
-              <div>
-                <Select
-                  size="medium"
-                  options={items}
-                  showSearch
-                  placeholder="Chọn hiệu lực"
-                  onChange={(e) => {}}
-                />
-              </div>
-              <Button type="primary" style={{ marginTop: "10px" }}>
-                Reset
-              </Button>
-            </div>
-          </>
-        );
-      },
-      filterIcon: () => {
-        return <FilterOutlined />;
-      },
+      // filterDropdown: () => {
+      //   return (
+      //     <>
+      //       <div className="filterContainer">
+      //         <div>
+      //           <Select
+      //             size="medium"
+      //             options={items}
+      //             showSearch
+      //             placeholder="Chọn hiệu lực"
+      //             onChange={(e) => {}}
+      //           />
+      //         </div>
+      //         <Button type="primary" style={{ marginTop: "10px" }}>
+      //           Reset
+      //         </Button>
+      //       </div>
+      //     </>
+      //   );
+      // },
+      // filterIcon: () => {
+      //   return <FilterOutlined />;
+      // },
       render: (text, record) => {
         return (
           <RangePicker

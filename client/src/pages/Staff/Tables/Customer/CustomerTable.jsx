@@ -6,6 +6,7 @@ import "./customertable.css";
 import CustomerForm from "../../../../components/Form/CustomerForm";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
+import { formatDate } from "../../../../Utils/formatter";
 
 const CustomerTable = ({ customer, setCustomer }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -46,6 +47,9 @@ const CustomerTable = ({ customer, setCustomer }) => {
             .includes(value.toLocaleLowerCase()) ||
           String(record.phone)
             .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.email)
+            .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase())
         );
       },
@@ -62,7 +66,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
       align: "center",
       sorter: (a, b) => a.date_of_birth.localeCompare(b.date_of_birth),
       render: (text, record) => {
-        return text ? String(text) : "";
+        return String(formatDate(record.date_of_birth));
       },
     },
     {
@@ -183,7 +187,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
         tableLayout="auto"
         columns={columns}
         dataSource={customer}
-        scroll={{ x: "100%", y: "100%" }}
+        scroll={{ x: "60vh", y: "100%" }}
       ></Table>
     </div>
   );

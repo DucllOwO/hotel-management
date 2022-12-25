@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "../../index.css";
-import { Table, Button, Modal, Form, Input, Tooltip } from "antd";
+import { Table, Button, Modal, Form, Input, Tooltip, Slider } from "antd";
 import "./bookingListtable.css";
-import { PlusOutlined } from "@ant-design/icons";
+import { FilterOutlined } from "@ant-design/icons";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TextButton from "../../../../../components/TextButton/TextButton";
@@ -91,25 +91,6 @@ const BookingListTable = ({ booking, setBooking }) => {
       dataIndex: "size",
       align: "center",
       sorter: (a, b) => a.customer_id.localeCompare(b.customer_id),
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="area"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the area",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
     },
     {
       key: "5",

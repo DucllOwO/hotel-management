@@ -136,21 +136,21 @@ const Dashboard = () => {
             <Col span={8}>
               <Card title="Tổng doanh thu">
                 {report[0]
-                  ? report[0]?.income.toLocaleString("en-US") + " vnd"
+                  ? report[0]?.income.toLocaleString("en-US") + " đ"
                   : 0 + " đ"}
               </Card>
             </Col>
             <Col span={8}>
               <Card title="Tổng chi phí">
                 {report[0]
-                  ? report[0]?.outcome.toLocaleString("en-US") + " vnd"
+                  ? report[0]?.outcome.toLocaleString("en-US") + " đ"
                   : 0 + " đ"}
               </Card>
             </Col>
             <Col span={8}>
               <Card title="Tổng lợi nhuận">
                 {report[0]
-                  ? report[0]?.profit.toLocaleString("en-US") + " vnd"
+                  ? report[0]?.profit.toLocaleString("en-US") + " đ"
                   : 0 + " đ"}
               </Card>
             </Col>

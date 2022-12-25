@@ -145,11 +145,16 @@ const InventoryTable = ({ rooms }) => {
                 min={10}
                 marks={areaMark}
                 defaultValue={[10, 20]}
-                onChange={(value) => {
-                  console.log(value);
-                }}
+                onChange={(value) => {}}
               />
-              <Button type="primary">Reset</Button>
+              <Button
+                type="primary"
+                onClick={() => {
+                  console.log(rooms);
+                }}
+              >
+                Reset
+              </Button>
             </div>
           </>
         );

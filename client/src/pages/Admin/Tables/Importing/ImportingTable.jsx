@@ -3,6 +3,7 @@ import "../index.css";
 import { Table, Button, Modal, Form, Input, Slider } from "antd";
 import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { formatDate, formatterInt } from "../../../../Utils/formatter";
 
 const ImportingTable = ({ importingRecord, setRecord }) => {
   const navigate = useNavigate();
@@ -13,9 +14,17 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
 
   const [searchedText, setSearchedText] = useState("");
 
+  const [amountFilter, setAmountFilter] = useState(null);
+  const [priceFilter, setPriceFilter] = useState(null);
+
   const amountMark = {
-    1: "1",
+    0: "0",
     200: "200",
+  };
+
+  const priceMark = {
+    100000: "100,000đ",
+    10000000: "10,000,000đ",
   };
 
   const columns = [
@@ -44,23 +53,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
       dataIndex: "established_date",
       sorter: (a, b) => a.established_date.localeCompare(b.established_date),
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="date"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the date",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return String(formatDate(record.established_date));
       },
     },
     {
@@ -76,21 +69,31 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
       dataIndex: "amount",
       align: "center",
       sorter: (a, b) => a.amount - b.amount,
-      filterDropdown: () => {
+      filteredValue: amountFilter !== null ? [amountFilter] : null,
+      filterDropdown: ({ clearFilters }) => {
         return (
           <>
             <div className="filterContainer">
               <Slider
                 range
                 max={200}
-                min={1}
+                min={0}
                 marks={amountMark}
-                defaultValue={[10, 20]}
-                onChange={(value) => {
-                  console.log(value);
+                defaultValue={[0, 20]}
+                onChange={(e) => {
+                  setAmountFilter(null);
+                  setAmountFilter(e);
                 }}
               />
-              <Button type="primary">Reset</Button>
+              <Button
+                type="primary"
+                onClick={() => {
+                  setAmountFilter(null);
+                  clearFilters({ closeDropdown: true });
+                }}
+              >
+                Reset
+              </Button>
             </div>
           </>
         );
@@ -103,18 +106,73 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
           .toString()
           .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
       },
+      onFilter: (value, record) => {
+        if (amountFilter === null) {
+          return record.amount;
+        } else {
+          return record.amount >= value[0] && record.amount <= value[1];
+        }
+      },
     },
     {
       key: "5",
       title: "Tổng tiền (đ)",
-      dataIndex: "total",
+      dataIndex: "total_cost",
       align: "center",
       render: (value) => {
         return `${value < 0 ? "-" : ""} ${Math.abs(value)
           .toString()
           .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
       },
-      // sorter: (a, b) => a.total.localeCompare(b.total),
+      sorter: (a, b) => a.total_cost - b.total_cost,
+      filteredValue: priceFilter !== null ? [priceFilter] : null,
+      filterDropdown: ({ clearFilters }) => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div className="priceSlider">
+                <Slider
+                  tipFormatter={(value) => {
+                    return `${value < 0 ? "-" : ""} ${Math.abs(value)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+                  }}
+                  step={100000}
+                  width={0.8}
+                  range
+                  min={100000}
+                  max={10000000}
+                  marks={priceMark}
+                  defaultValue={[100000, 1000000]}
+                  onChange={(e) => {
+                    setPriceFilter(null);
+                    setPriceFilter(e);
+                  }}
+                />
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setPriceFilter(null);
+                    clearFilters({ closeDropdown: true });
+                  }}
+                >
+                  Reset
+                </Button>
+              </div>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
+      onFilter: (value, record) => {
+        if (priceFilter === null) {
+          return record.total_cost;
+        } else {
+          return record.total_cost >= value[0] && record.total_cost <= value[1];
+        }
+      },
     },
     // {
     //   key: "6",

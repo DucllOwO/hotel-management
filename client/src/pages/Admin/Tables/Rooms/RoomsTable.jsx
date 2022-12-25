@@ -94,6 +94,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
                 type="primary"
                 style={{ marginTop: "10px" }}
                 onClick={() => {
+                  console.log(rooms);
                   setFilter("");
                   clearFilters({ closeDropdown: true });
                 }}

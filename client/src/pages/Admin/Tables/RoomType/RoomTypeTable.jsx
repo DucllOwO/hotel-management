@@ -36,6 +36,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
 
   const [customerfilter, setCustomerFilter] = useState(null);
   const [bedfilter, setBedFilter] = useState(null);
+  const [areaFilter, setAreaFilter] = useState(null);
 
   const maxCustomerMark = {
     1: "1",
@@ -47,7 +48,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
   };
   const areaMark = {
     10: "10",
-    60: "60",
+    100: "100",
   };
 
   const priceMark = {
@@ -252,45 +253,46 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes }) => {
       dataIndex: "area",
       align: "center",
       width: "15%",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập diện tích",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
       sorter: (a, b) => a.area - b.area,
-      filterDropdown: () => {
+      filteredValue: areaFilter !== null ? [areaFilter] : null,
+      filterDropdown: ({ clearFilters }) => {
         return (
           <>
             <div className="filterContainer">
               <Slider
                 range
-                max={60}
+                max={100}
                 min={10}
+                step={10}
                 marks={areaMark}
-                defaultValue={[10, 20]}
-                onChange={(value) => {}}
+                defaultValue={[10, 30]}
+                onChange={(e) => {
+                  setAreaFilter(null);
+                  setAreaFilter(e);
+                }}
               />
-              <Button type="primary">Reset</Button>
+              <Button
+                type="primary"
+                onClick={() => {
+                  setAreaFilter(null);
+                  clearFilters({ closeDropdown: true });
+                }}
+              >
+                Reset
+              </Button>
             </div>
           </>
         );
       },
       filterIcon: () => {
         return <FilterOutlined />;
+      },
+      onFilter: (value, record) => {
+        if (areaFilter === null) {
+          return record.area;
+        } else {
+          return record.area >= value[0] && record.area <= value[1];
+        }
       },
     },
     {

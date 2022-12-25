@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../index.css";
-import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Table, Button, Modal, Form, Input, DatePicker, Slider } from "antd";
+import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import moment from "moment";
 
@@ -14,8 +14,15 @@ const PaymentTable = ({ payment, setPayment }) => {
 
   const [searchedText, setSearchedText] = useState("");
 
+  const [priceFilter, setPriceFilter] = useState(null);
+
   const dateFormat = "DD-MM-YYYY";
   const monthFormat = "MM-YYYY";
+
+  const priceMark = {
+    0: "0đ",
+    50000000: "50,000,000đ",
+  };
 
   const columns = [
     {
@@ -75,6 +82,54 @@ const PaymentTable = ({ payment, setPayment }) => {
       align: "center",
       dataIndex: "total_cost",
       sorter: (a, b) => a.total_cost - b.total_cost,
+      filteredValue: priceFilter !== null ? [priceFilter] : null,
+      filterDropdown: ({ clearFilters }) => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div className="priceSlider">
+                <Slider
+                  tipFormatter={(value) => {
+                    return `${value < 0 ? "-" : ""} ${Math.abs(value)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+                  }}
+                  width={0.8}
+                  step={500000}
+                  range
+                  min={0}
+                  max={50000000}
+                  marks={priceMark}
+                  defaultValue={[0, 1000000]}
+                  onChange={(e) => {
+                    setPriceFilter(null);
+                    setPriceFilter(e);
+                  }}
+                />
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setPriceFilter(null);
+                    clearFilters({ closeDropdown: true });
+                  }}
+                >
+                  Reset
+                </Button>
+              </div>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
+      onFilter: (value, record) => {
+        if (priceFilter === null) {
+          return record.total_cost;
+        } else {
+          return record.total_cost >= value[0] && record.total_cost <= value[1];
+        }
+      },
       render: (value) => {
         return `${value < 0 ? "-" : ""} ${Math.abs(value)
           .toString()
