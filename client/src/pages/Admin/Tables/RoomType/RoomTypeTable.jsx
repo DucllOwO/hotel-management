@@ -48,6 +48,10 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
 
   const [searchedText, setSearchedText] = useState("");
 
+  const [customerfilter, setCustomerFilter] = useState(null);
+  const [bedfilter, setBedFilter] = useState(null);
+  const [areaFilter, setAreaFilter] = useState(null);
+
   const maxCustomerMark = {
     1: "1",
     10: "10",
@@ -58,7 +62,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
   };
   const areaMark = {
     10: "10",
-    60: "60",
+    100: "100",
   };
 
   const priceMark = {
@@ -66,21 +70,39 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
     10000000: "10,000,000đ",
   };
 
-  const items = [
-    {
-      label: "Loại 1",
-      key: "1",
-    },
-    {
-      label: "Luxury",
-      key: "2",
-    },
-    {
-      label: "President",
-      key: "3",
-    },
-  ];
+  // const items = roomTypes.map((value, index) => {
+  //   return {
+  //     label: "" + value.name.toString(),
+  //     value: "" + value.name.toString(),
+  //   };
+  // });
+  // {
+  //   label: "Loại 1",
+  //   key: "1",
+  // },
+  // {
+  //   label: "Luxury",
+  //   key: "2",
+  // },
+  // {
+  //   label: "President",
+  //   key: "3",
+  // },
 
+  // const items = [
+  //   {
+  //     label: "Loại 1",
+  //     key: "1",
+  //   },
+  //   {
+  //     label: "Luxury",
+  //     key: "2",
+  //   },
+  //   {
+  //     label: "President",
+  //     key: "3",
+  //   },
+  // ];
   const columns = [
     {
       key: "1",
@@ -100,32 +122,40 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
           .includes(value.toLocaleLowerCase());
       },
       dataIndex: "name",
-      render: (text, record) => {
-        return <p>{text}</p>;
-      },
-      filterDropdown: () => {
-        return (
-          <>
-            <div className="filterContainer">
-              <div>
-                <Select
-                  size="medium"
-                  options={items}
-                  showSearch
-                  placeholder="Chọn loại phòng"
-                  onChange={(e) => {}}
-                />
-              </div>
-              <Button type="primary" style={{ marginTop: "10px" }}>
-                Reset
-              </Button>
-            </div>
-          </>
-        );
-      },
-      filterIcon: () => {
-        return <FilterOutlined />;
-      },
+      // filterDropdown: () => {
+      //   return (
+      //     <>
+      //       <div className="filterContainer">
+      //         <div>
+      //           <Select
+      //             style={{ width: "170px" }}
+      //             size="medium"
+      //             options={items}
+      //             filterOption={(input, option) =>
+      //               (option?.label ?? "")
+      //                 .toLowerCase()
+      //                 .includes(input.toLowerCase())
+      //             }
+      //             optionFilterProp="children"
+      //             showSearch
+      //             placeholder="Chọn loại phòng"
+      //             onChange={filterRoomType}
+      //           />
+      //         </div>
+      //         <Button
+      //           type="primary"
+      //           style={{ marginTop: "10px" }}
+      //           onClick={() => {}}
+      //         >
+      //           Reset
+      //         </Button>
+      //       </div>
+      //     </>
+      //   );
+      // },
+      // filterIcon: () => {
+      //   return <FilterOutlined />;
+      // },
     },
     {
       key: "3",
@@ -137,29 +167,47 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
         return <p>{text}</p>;
       },
       sorter: (a, b) => a.max_customers - b.max_customers,
-      filterDropdown: () => {
+      filteredValue: customerfilter !== null ? [customerfilter] : null,
+      filterDropdown: ({ clearFilters }) => {
         return (
           <>
             <div className="filterContainer">
               <Slider
-                formatter={(value) => value.toString().replace(".", ",")}
-                parser={(input) => input.replace(/[^\w\,-]+/g, "")}
                 range
                 max={10}
                 min={1}
                 defaultValue={[1, 4]}
                 marks={maxCustomerMark}
-                onChange={(value) => {
-                  console.log(value);
+                onChange={(e) => {
+                  setCustomerFilter("");
+                  setCustomerFilter(e);
                 }}
               />
-              <Button type="primary">Reset</Button>
+              <Button
+                type="primary"
+                onClick={() => {
+                  setCustomerFilter(null);
+                  clearFilters({ closeDropdown: true });
+                }}
+              >
+                Reset
+              </Button>
             </div>
           </>
         );
       },
       filterIcon: () => {
         return <FilterOutlined />;
+      },
+      onFilter: (value, record) => {
+        console.log(customerfilter);
+        if (customerfilter === null) {
+          return record.max_customers;
+        } else {
+          return (
+            record.max_customers >= value[0] && record.max_customers <= value[1]
+          );
+        }
       },
     },
     {
@@ -171,8 +219,9 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
       render: (text, record) => {
         return <p>{text}</p>;
       },
+      filteredValue: bedfilter !== null ? [bedfilter] : null,
       sorter: (a, b) => a.bed_amount - b.bed_amount,
-      filterDropdown: () => {
+      filterDropdown: ({ clearFilters }) => {
         return (
           <>
             <div className="filterContainer">
@@ -182,17 +231,34 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
                 max={5}
                 min={1}
                 marks={bedAmountMark}
-                onChange={(value) => {
-                  console.log(value);
+                onChange={(e) => {
+                  setBedFilter(null);
+                  setBedFilter(e);
                 }}
               />
-              <Button type="primary">Reset</Button>
+              <Button
+                type="primary"
+                onClick={() => {
+                  setBedFilter(null);
+                  clearFilters({ closeDropdown: true });
+                }}
+              >
+                Reset
+              </Button>
             </div>
           </>
         );
       },
       filterIcon: () => {
         return <FilterOutlined />;
+      },
+      onFilter: (value, record) => {
+        console.log(bedfilter);
+        if (bedfilter === null) {
+          return record.bed_amount;
+        } else {
+          return record.bed_amount >= value[0] && record.bed_amount <= value[1];
+        }
       },
     },
     {
@@ -201,25 +267,78 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
       dataIndex: "area",
       align: "center",
       width: "15%",
-      render: (text, record) => {
-        return <p>{text}</p>;
-      },
       sorter: (a, b) => a.area - b.area,
-      filterDropdown: () => {
+      filteredValue: areaFilter !== null ? [areaFilter] : null,
+      filterDropdown: ({ clearFilters }) => {
         return (
           <>
             <div className="filterContainer">
               <Slider
                 range
-                max={60}
+                max={100}
                 min={10}
+                step={10}
                 marks={areaMark}
-                defaultValue={[10, 20]}
-                onChange={(value) => {
-                  console.log(value);
+                defaultValue={[10, 30]}
+                onChange={(e) => {
+                  setAreaFilter(null);
+                  setAreaFilter(e);
                 }}
               />
-              <Button type="primary">Reset</Button>
+              <Button
+                type="primary"
+                onClick={() => {
+                  setAreaFilter(null);
+                  clearFilters({ closeDropdown: true });
+                }}
+              >
+                Reset
+              </Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
+      onFilter: (value, record) => {
+        if (areaFilter === null) {
+          return record.area;
+        } else {
+          return record.area >= value[0] && record.area <= value[1];
+        }
+      },
+    },
+
+    {
+      key: "6",
+      title: "Giá (đ)",
+      dataIndex: "price",
+      align: "center",
+      width: "20%",
+      sorter: (a, b) => a.price - b.price,
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div className="priceSlider">
+                <Slider
+                  tipFormatter={(value) => {
+                    return `${value < 0 ? "-" : ""} ${Math.abs(value)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+                  }}
+                  step={100000}
+                  width={0.8}
+                  range
+                  min={100000}
+                  max={10000000}
+                  marks={priceMark}
+                  defaultValue={[100000, 1000000]}
+                  onChange={(value) => {}}
+                />
+                <Button type="primary">Reset</Button>
+              </div>
             </div>
           </>
         );
@@ -228,9 +347,8 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
         return <FilterOutlined />;
       },
     },
-
     {
-      key: "6",
+      key: "7",
       title: "Thao tác",
       render: (_, record) => {
         return (

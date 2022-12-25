@@ -37,24 +37,19 @@ const BookingTable = ({
 
   const [searchedText, setSearchedText] = useState("");
 
-  const items = [
-    {
-      label: "Loại 1",
-      key: "1",
-    },
-    {
-      label: "Luxury",
-      key: "2",
-    },
-    {
-      label: "President",
-      key: "3",
-    },
-  ];
+  const [filter, setFilter] = useState("");
+  const [areaFilter, setAreaFilter] = useState(null);
+
+  const items = rooms.map((value, index) => {
+    return {
+      label: "" + value.roomType.toString(),
+      value: "" + value.roomType.toString(),
+    };
+  });
 
   const areaMark = {
     10: "10",
-    60: "60",
+    100: "100",
   };
 
   const priceMark = {
@@ -78,7 +73,7 @@ const BookingTable = ({
           String(record.roomType)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
-          String(record.size)
+          String(record.area)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
           String(record.price)
@@ -94,7 +89,14 @@ const BookingTable = ({
       dataIndex: "roomType",
       width: "25%",
       align: "center",
-      filterDropdown: () => {
+      filteredValue: filter !== "" ? [filter] : null,
+      onFilter: (value, record) => {
+        return String(record.roomType)
+          .toLocaleLowerCase()
+          .includes(value.toLocaleLowerCase());
+      },
+      ellipsis: true,
+      filterDropdown: ({ clearFilters }) => {
         return (
           <>
             <div className="filterContainer">
@@ -104,10 +106,65 @@ const BookingTable = ({
                   options={items}
                   showSearch
                   placeholder="Chọn loại phòng"
-                  onChange={(e) => {}}
+                  onChange={(e) => {
+                    setFilter(e);
+                    clearFilters();
+                  }}
                 />
               </div>
-              <Button type="primary" style={{ marginTop: "10px" }}>
+              <Button
+                type="primary"
+                style={{ marginTop: "10px" }}
+                onClick={() => {
+                  setFilter("");
+                  clearFilters();
+                }}
+              >
+                Reset
+              </Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return (
+          <FilterOutlined
+          // className={filter ? "filterActive" : "filterNormal"}
+          />
+        );
+      },
+    },
+    {
+      key: "3",
+      title: "Diện tích (m2)",
+      dataIndex: "area",
+      width: "17%",
+      align: "center",
+      sorter: (a, b) => a.area - b.area,
+      filteredValue: areaFilter !== null ? [areaFilter] : null,
+      filterDropdown: ({ clearFilters }) => {
+        return (
+          <>
+            <div className="filterContainer">
+              <Slider
+                range
+                max={100}
+                min={10}
+                step={10}
+                marks={areaMark}
+                defaultValue={[10, 30]}
+                onChange={(e) => {
+                  setAreaFilter(null);
+                  setAreaFilter(e);
+                }}
+              />
+              <Button
+                type="primary"
+                onClick={() => {
+                  setAreaFilter(null);
+                  clearFilters({ closeDropdown: true });
+                }}
+              >
                 Reset
               </Button>
             </div>
@@ -117,66 +174,48 @@ const BookingTable = ({
       filterIcon: () => {
         return <FilterOutlined />;
       },
-    },
-    {
-      key: "3",
-      title: "Diện tích",
-      dataIndex: "size",
-      width: "17%",
-      align: "center",
-      sorter: (a, b) => a.size - b.size,
-      filterDropdown: () => {
-        return (
-          <>
-            <div className="filterContainer">
-              <Slider
-                range
-                max={60}
-                min={10}
-                marks={areaMark}
-                defaultValue={[10, 20]}
-                onChange={(value) => {
-                  console.log(value);
-                }}
-              />
-              <Button type="primary">Reset</Button>
-            </div>
-          </>
-        );
-      },
-      filterIcon: () => {
-        return <FilterOutlined />;
+      onFilter: (value, record) => {
+        if (areaFilter === null) {
+          return record.area;
+        } else {
+          return record.area >= value[0] && record.area <= value[1];
+        }
       },
     },
     {
       key: "4",
-      title: "Giá",
+      title: "Giá (đ)",
       dataIndex: "price",
       width: "17%",
       align: "center",
       sorter: (a, b) => a.price - b.price,
-      filterDropdown: () => {
-        return (
-          <>
-            <div className="filterContainer">
-              <div className="priceSlider">
-                <Slider
-                  width={0.8}
-                  range
-                  min={100000}
-                  max={10000000}
-                  marks={priceMark}
-                  defaultValue={[100000, 1000000]}
-                  onChange={(value) => {}}
-                />
-                <Button type="primary">Reset</Button>
-              </div>
-            </div>
-          </>
-        );
-      },
-      filterIcon: () => {
-        return <FilterOutlined />;
+      // filterDropdown: () => {
+      //   return (
+      //     <>
+      //       <div className="filterContainer">
+      //         <div className="priceSlider">
+      //           <Slider
+      //             width={0.8}
+      //             range
+      //             min={100000}
+      //             max={10000000}
+      //             marks={priceMark}
+      //             defaultValue={[100000, 1000000]}
+      //             onChange={(value) => {}}
+      //           />
+      //           <Button type="primary">Reset</Button>
+      //         </div>
+      //       </div>
+      //     </>
+      //   );
+      // },
+      // filterIcon: () => {
+      //   return <FilterOutlined />;
+      // },
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
       },
     },
     {
@@ -187,11 +226,13 @@ const BookingTable = ({
           <Form.Item style={{ marginBottom: 0 }}>
             <Checkbox
               onChange={(e) => {
-                console.log(e)
-                if(!selectedRooms.includes(record))
+                console.log(e);
+                if (!selectedRooms.includes(record))
                   setSelectedRooms((prev) => [...prev, record]);
-                else if(selectedRooms.includes(record))
-                  setSelectedRooms((prev) => prev.filter((data) => data !== record))
+                else if (selectedRooms.includes(record))
+                  setSelectedRooms((prev) =>
+                    prev.filter((data) => data !== record)
+                  );
               }}
             ></Checkbox>
           </Form.Item>
@@ -207,19 +248,19 @@ const BookingTable = ({
       const values = await customerInfoForm.validateFields();
       const isCusObjEmpty = Object.keys(currentCustomer).length === 0;
       // isCusObjEmpty === true === customer not available
-      console.log(isCusObjEmpty)
+      console.log(isCusObjEmpty);
       if (isCusObjEmpty) {
         const newCustomer = {
           id: customerInfoForm.getFieldValue("id"),
           fullname: customerInfoForm.getFieldValue("fullname"),
           phone_number: customerInfoForm.getFieldValue("phone_number"),
           email: customerInfoForm.getFieldValue("email"),
-          date_of_birth: customerInfoForm.getFieldValue("date_of_birth")
+          date_of_birth: customerInfoForm.getFieldValue("date_of_birth"),
         };
         console.log(newCustomer);
-        const {data: userData} = await createCustomer(
+        const { data: userData } = await createCustomer(
           user?.position,
-          newCustomer,
+          newCustomer
         );
         const { data: bookingData } = await createBooking(
           user?.position,
@@ -228,7 +269,7 @@ const BookingTable = ({
           from,
           to
         );
-        console.log("done")
+        console.log("done");
       } else {
         // return;
         const { data: bookingData } = await createBooking(
@@ -239,14 +280,14 @@ const BookingTable = ({
           to
         );
       }
-      console.log(selectedRooms)
+      console.log(selectedRooms);
       setRooms((pre) => {
         return pre.filter(
           (data) => !selectedRooms.includes(data)
           // data.room_name !== bookingData?.room_name
         );
       });
-      console.log(rooms)
+      console.log(rooms);
       SuccessAlert("Đặt phòng thành công.");
       setCurrentCustomer({});
       setSelectedRooms([]);
@@ -260,10 +301,8 @@ const BookingTable = ({
   };
 
   const openModalInfoCustomer = () => {
-    if(selectedRooms.length !== 0)
-      setIsModalOpen(true);
-    else 
-      ErrorAlert("Vui lòng chọn phòng cần đặt")
+    if (selectedRooms.length !== 0) setIsModalOpen(true);
+    else ErrorAlert("Vui lòng chọn phòng cần đặt");
   };
 
   return (
@@ -307,7 +346,9 @@ const BookingTable = ({
         ></Table>
       </Form>
       <BottomBar>
-        <Button type="primary" onClick={openModalInfoCustomer}>Đặt</Button>
+        <Button type="primary" onClick={openModalInfoCustomer}>
+          Đặt
+        </Button>
       </BottomBar>
     </div>
   );

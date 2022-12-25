@@ -320,7 +320,7 @@ const HRTable = ({ employees, setEmployees }) => {
         loading={employees ? false : true}
         columns={columns}
         dataSource={employees}
-        scroll={{ y: "70vh", x: "100%" }}
+        scroll={{ y: "60vh", x: "100%" }}
         rowKey={(record) => record.id}
       ></Table>
     </div>
