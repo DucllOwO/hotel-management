@@ -237,6 +237,7 @@ const InventoryTable = ({ rooms }) => {
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         columns={columns}
         dataSource={rooms}
         scroll={{ y: "60vh", x: "100%" }}

@@ -241,6 +241,7 @@ const PaymentTable = ({ payment, setPayment }) => {
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         columns={columns}
         dataSource={payment}
         scroll={{ y: "60vh", x: "100%" }}

@@ -161,6 +161,7 @@ const BookingListTable = ({ booking, setBooking }) => {
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         columns={columns}
         dataSource={booking}
         scroll={{ y: "60vh", x: "100%" }}

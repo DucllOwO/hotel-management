@@ -316,6 +316,7 @@ const HRTable = ({ employees, setEmployees }) => {
       </div>
 
       <Table
+        showSorterTooltip={false}
         tableLayout="auto"
         loading={employees ? false : true}
         columns={columns}

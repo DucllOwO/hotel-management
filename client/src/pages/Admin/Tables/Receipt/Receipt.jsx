@@ -352,6 +352,7 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         columns={columns}
         dataSource={receipt}
         scroll={{ y: "60vh", x: "100%" }}

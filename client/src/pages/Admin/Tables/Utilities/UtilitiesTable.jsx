@@ -150,6 +150,7 @@ const UtilitiesTable = ({ utilities, setUtilities }) => {
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         columns={columns}
         dataSource={utilities}
         scroll={{ y: "60vh", x: "100%" }}

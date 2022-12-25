@@ -271,6 +271,7 @@ const ItemTable = ({ items, setItems }) => {
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         columns={columns}
         dataSource={items}
         scroll={{ y: "60vh", x: "100%" }}

@@ -238,6 +238,7 @@ const PositionTable = ({ positions, setPositions }) => {
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         columns={columns}
         dataSource={positions}
         scroll={{ y: "60vh", x: "100%" }}

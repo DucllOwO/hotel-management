@@ -286,6 +286,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         columns={columns}
         dataSource={importingRecord}
         scroll={{ y: "60vh  ", x: "100%" }}

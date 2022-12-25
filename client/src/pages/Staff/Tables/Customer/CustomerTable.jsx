@@ -184,6 +184,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         tableLayout="auto"
         columns={columns}
         dataSource={customer}

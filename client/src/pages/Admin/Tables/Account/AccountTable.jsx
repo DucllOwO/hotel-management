@@ -257,6 +257,7 @@ const AccountTable = ({ accounts, setAccount }) => {
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         loading={accounts ? false : true}
         columns={columns}
         dataSource={accounts}

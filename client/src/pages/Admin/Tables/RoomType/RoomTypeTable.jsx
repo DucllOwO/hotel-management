@@ -534,6 +534,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         columns={columns}
         dataSource={roomTypes}
         scroll={{ y: "60vh", x: "100%" }}

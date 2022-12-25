@@ -338,6 +338,7 @@ const BookingTable = ({
       </div>
       <Form form={roomForm}>
         <Table
+          showSorterTooltip={false}
           loading={isLoading}
           columns={columns}
           dataSource={rooms}
