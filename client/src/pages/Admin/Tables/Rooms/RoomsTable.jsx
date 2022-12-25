@@ -3,7 +3,7 @@ import "../index.css";
 import { Table, Button, Modal, Form, Input, Select } from "antd";
 import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { getAllRoomType } from "../../../../api/RoomTypeAPI"
+import { getAllRoomType } from "../../../../api/RoomTypeAPI";
 import AddRoomForm from "../../../../components/Form/AddRoomForm";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
@@ -21,28 +21,33 @@ const RoomsTable = ({ rooms, setRoom, listType }) => {
 
   const [filter, setFilter] = useState("");
 
-
   const items = listType.map((item) => {
     return {
-      label : item.name,
-      value : item.name,
-    }
+      label: item.name,
+      value: item.name,
+    };
   });
-  
+
   const columns = [
     {
       key: "1",
       title: "Tên phòng",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
-        return (
-          String(record.room_name)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
+        return String(record.room_name)
+          .toLocaleLowerCase()
+          .search(value.toLocaleLowerCase()) !== -1 ||
           String(record.roomType)
             .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase())
-        );
+            .search(value.toLocaleLowerCase()) !== -1
+          ? true
+          : false;
+        // String(record.room_name)
+        //   .toLocaleLowerCase()
+        //   .includes(value.toLocaleLowerCase()) ||
+        // String(record.roomType)
+        //   .toLocaleLowerCase()
+        //   .includes(value.toLocaleLowerCase())
       },
       sorter: (a, b) => a.room_name.localeCompare(b.room_name),
       dataIndex: "room_name",
@@ -96,7 +101,9 @@ const RoomsTable = ({ rooms, setRoom, listType }) => {
                 type="primary"
                 style={{ marginTop: "10px" }}
                 onClick={() => {
-                  console.log(rooms);
+                  const ele = "pn";
+                  const elephant = "phòng đơn";
+                  console.log(elephant.search(ele));
                   setFilter("");
                   clearFilters({ closeDropdown: true });
                 }}

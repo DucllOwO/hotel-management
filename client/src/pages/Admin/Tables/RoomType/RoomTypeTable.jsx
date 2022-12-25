@@ -110,15 +110,25 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
       dataIndex: "id",
       width: "5%",
       align: "center",
+      fixed: "left",
     },
     {
       key: "2",
       title: "Tên loại phòng",
       filteredValue: [searchedText],
+      fixed: "left",
+      width: "20%",
       align: "center",
       onFilter: (value, record) => {
         return String(record.name)
           .toLocaleLowerCase()
+          .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+          .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+          .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+          .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+          .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+          .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+          .replace(/đ/g, "d")
           .includes(value.toLocaleLowerCase());
       },
       dataIndex: "name",
@@ -162,7 +172,6 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
       title: "Số lượng khách",
       dataIndex: "max_customers",
       align: "center",
-      width: "15%",
       render: (text, record) => {
         return <p>{text}</p>;
       },
@@ -215,7 +224,6 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
       title: "Số giường",
       dataIndex: "bed_amount",
       align: "center",
-      width: "15%",
       render: (text, record) => {
         return <p>{text}</p>;
       },
@@ -266,7 +274,6 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
       title: "Diện tích (m2)",
       dataIndex: "area",
       align: "center",
-      width: "15%",
       sorter: (a, b) => a.area - b.area,
       filteredValue: areaFilter !== null ? [areaFilter] : null,
       filterDropdown: ({ clearFilters }) => {
@@ -350,6 +357,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
     {
       key: "7",
       title: "Thao tác",
+      fixed: "right",
       render: (_, record) => {
         return (
           <>
@@ -537,7 +545,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
         showSorterTooltip={false}
         columns={columns}
         dataSource={roomTypes}
-        scroll={{ y: "60vh", x: "100%" }}
+        scroll={{ y: "60vh", x: 1000 }}
         rowKey={(row) => row.id}
         expandable={{
           expandedRowRender: (record) => {
