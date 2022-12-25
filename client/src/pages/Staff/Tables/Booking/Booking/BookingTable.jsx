@@ -307,7 +307,7 @@ const BookingTable = ({
   };
 
   return (
-    <div className="bookingTable">
+    <div className="table">
       <>{isModalOpen ? modalJSX() : null}</>
       <div className="buttonContainer">
         <div className="header">

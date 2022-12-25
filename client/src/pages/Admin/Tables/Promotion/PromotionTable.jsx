@@ -153,7 +153,7 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
   // };
 
   return (
-    <div className="promotionTable">
+    <div className="table">
       <>
         <Modal
           title="Thông tin sản phẩm"

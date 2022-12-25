@@ -127,7 +127,7 @@ const BookingListTable = ({ booking, setBooking }) => {
   };
 
   return (
-    <div className="bookingListTable">
+    <div className="table">
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div className="headerButtons">

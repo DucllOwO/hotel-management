@@ -162,7 +162,7 @@ const Navbar = () => {
                           key: "/admin/bookings/",
                         },
                         {
-                          label: "Danh sách phiếu đặt phòng",
+                          label: "Danh ",
                           key: "/admin/bookings/list",
                         },
                       ],
