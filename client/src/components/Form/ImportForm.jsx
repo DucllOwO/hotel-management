@@ -10,14 +10,14 @@ const DATE_FORMAT = "DD-MM-YYYY";
 
 const ImportForm = ({ form }) => {
   const { user } = useContext(AppContext);
-  const [positions, setPositions] = useState([]);
+//   const [positions, setPositions] = useState([]);
   const [listItem, setListItem] = useState([]);
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
   
   useEffect(() => {
-    console.log(user?.account.fullname)
+    // console.log(user?.account.fullname)
     fetchItems(user?.position)
     .then(({data}) => {
         setListItem(data);
@@ -32,8 +32,8 @@ const ImportForm = ({ form }) => {
   })
 
   const calcTotalCost = () => {
-    setTotalCost(quantity*price);
-    console.log(totalCost)
+    setTotalCost(quantity * price);
+    // console.log(totalCost)
   }
 
   return (
@@ -90,7 +90,7 @@ const ImportForm = ({ form }) => {
             label="Thành tiền"
             name="total_cost"
           >
-            <Input size="large" disabled={true} addonAfter={"đ"} defaultValue={"2fgdfgdfg"}/>
+            <Input size="large" disabled={true} addonAfter={"đ"} value={totalCost}/>
           </Form.Item>
         </div>
       </div>

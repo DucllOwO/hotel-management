@@ -23,13 +23,13 @@ const getByID = (req, res, next) => {
   else res.status(200).send(getByID(id));
 };
 const createRecord = async (req, res, next) => {
-  const { importing, item, employee } = req.body;
+  const { record, employee } = req.body;
 
-  if (!importing || !item || !employee) return next(BadRequestError());
+  if (!record || !employee) return next(BadRequestError());
 
   const { error: insertImportingError } = await importingDAL.createNewRecord({
     employee_id: employee?.id,
-    ...importing,
+    ...record,
   });
 
   if (insertImportingError) return next(insertImportingError);

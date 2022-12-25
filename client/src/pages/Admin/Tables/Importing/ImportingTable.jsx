@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../index.css";
+import dayjs from "dayjs"
 import { Table, Button, Modal, Form, Input, Slider } from "antd";
 import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
@@ -178,7 +179,15 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
     console.log(isModalOpen)
   };    
   const handleOKModal = async () => {
-    console.log("first")
+    const newImport = {
+      item_id: importForm.getFieldValue("item"),
+      amount: importForm.getFieldValue("quantity"),
+      established_date: dayjs(Date.now()).$d,
+      price: importForm.getFieldValue("price"),
+      total_cost: importForm.getFieldValue("total_cost")
+      // employee_id:  
+    }
+    console.log(newImport);
   }
 
   return (

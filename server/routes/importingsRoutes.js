@@ -5,6 +5,7 @@ const {
 } = require("../controllers/importingController");
 
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
+const { tryCatch } = require("../middlewares/errorHandler");
 const { hasPermission } = require("../middlewares/roleAccessControl");
 const { actionAC, resourceAC } = require("../utils/constants");
 const router = require("express").Router();
@@ -25,7 +26,7 @@ router.post(
   "/",
   authorizeAccessToken,
   hasPermission(actionAC.CREATE, resourceAC.PURCHASE),
-  createRecord
+  tryCatch(createRecord)
 );
 
 module.exports = router;
