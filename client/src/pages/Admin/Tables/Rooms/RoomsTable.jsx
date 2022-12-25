@@ -3,11 +3,12 @@ import "../index.css";
 import { Table, Button, Modal, Form, Input, Select } from "antd";
 import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { getAllRoomType } from "../../../../api/RoomTypeAPI"
 import AddRoomForm from "../../../../components/Form/AddRoomForm";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
-const RoomsTable = ({ rooms, setRoom }) => {
+const RoomsTable = ({ rooms, setRoom, listType }) => {
   const navigate = useNavigate();
 
   const [editingRow, setEditingRow] = useState(null);
@@ -20,13 +21,14 @@ const RoomsTable = ({ rooms, setRoom }) => {
 
   const [filter, setFilter] = useState("");
 
-  const items = rooms.map((value, index) => {
-    return {
-      label: "" + value.roomType.toString(),
-      value: "" + value.roomType.toString(),
-    };
-  });
 
+  const items = listType.map((item) => {
+    return {
+      label : item.name,
+      value : item.name,
+    }
+  });
+  
   const columns = [
     {
       key: "1",

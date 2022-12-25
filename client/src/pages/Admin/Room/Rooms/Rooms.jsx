@@ -1,28 +1,32 @@
 import React, { useState, useContext, useEffect } from "react";
 import RoomsTable from "../../Tables/Rooms/RoomsTable";
 import Topbar from "../../../../components/Topbar/Topbar";
-import { userRequest } from "../../../../api/api";
+import { fetchRoom } from "../../../../api/RoomAPI";
+import { getAllRoomType } from "../../../../api/RoomTypeAPI";
 import { AppContext } from "../../../../context/AppContext";
 import "./rooms.css";
 
 const Rooms = () => {
   const [rooms, setRooms] = useState([]);
   const { user } = useContext(AppContext);
+  const [listType, setListType] = useState([])
 
   useEffect(() => {
-    const fetchRoom = async () => {
-      const { data } = await userRequest.get("/rooms", {
-        params: { user: { position: user?.position } },
-      });
+    fetchRoom(user?.position)
+    .then(({data}) => {
       console.log(data);
       setRooms(data);
-    };
-
-    fetchRoom();
+    });
+    getAllRoomType(user?.position)
+    .then(({data}) => {
+      console.log(data)
+      setListType(data)
+    })
+    
   }, []);
   return (
     <div className="roomsContainer">
-      <RoomsTable rooms={rooms}></RoomsTable>
+      <RoomsTable rooms={rooms} listType={listType}></RoomsTable>
     </div>
   );
 };

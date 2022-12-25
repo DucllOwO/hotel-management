@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
-import { userRequest } from "../../../../api/api";
 import { AppContext } from "../../../../context/AppContext";
 import ImportingTable from "../../Tables/Importing/ImportingTable";
+import { fetchRecord } from "../../../../api/ImportAPI"
 import "./importing.css";
 
 const Importing = () => {
@@ -9,15 +9,11 @@ const Importing = () => {
   const { user } = useContext(AppContext);
 
   useEffect(() => {
-    const fetchRecord = async () => {
-      const { data } = await userRequest.get("/importing", {
-        params: { user: { position: user?.position } },
-      });
-      console.log(data);
+    fetchRecord(user?.position)
+    .then(({data}) => {
       setRecord(data);
-    };
-    fetchRecord();
-  }, []);
+    })
+  }, [record]);
   return (
     <div className="importingContainer">
       <ImportingTable importingRecord={record}></ImportingTable>

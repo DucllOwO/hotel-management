@@ -28,6 +28,7 @@ const BookingTable = ({
   user,
   from,
   to,
+  listType,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState({});
@@ -40,10 +41,10 @@ const BookingTable = ({
   const [filter, setFilter] = useState("");
   const [areaFilter, setAreaFilter] = useState(null);
 
-  const items = rooms.map((value, index) => {
+  const items = listType.map((item) => {
     return {
-      label: "" + value.roomType.toString(),
-      value: "" + value.roomType.toString(),
+      label: "" + item.name.toString(),
+      value: "" + item.name.toString(),
     };
   });
 
