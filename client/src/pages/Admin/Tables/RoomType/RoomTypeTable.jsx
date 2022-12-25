@@ -1,17 +1,6 @@
 import React, { useState } from "react";
 import "../index.css";
-import {
-  Table,
-  Button,
-  Modal,
-  Form,
-  Input,
-  Slider,
-  Row,
-  Col,
-  InputNumber,
-  Select,
-} from "antd";
+import { Table, Button, Modal, Form, Input, Slider, Select } from "antd";
 import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import RoomTypeForm from "../../../../components/Form/RoomTypeForm";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";
