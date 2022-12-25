@@ -33,8 +33,6 @@ const updateInformation = async (req, res) => {
   const { id } = req.params;
 
   if (!roomType) throw BadRequestError();
-
-  console.log({ ...roomType });
   const { data, error: updateRoomTypeError } = await roomTypeDAL.updateRoomType(
     id,
     roomType
@@ -42,7 +40,7 @@ const updateInformation = async (req, res) => {
 
   if (updateRoomTypeError) throw updateRoomTypeError;
 
-  res.status(204).send(data[0]);
+  res.status(200).send(data[0]);
 };
 
 const hideRoomType = async (req, res) => {

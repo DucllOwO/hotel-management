@@ -160,9 +160,12 @@ const RoomTypeForm = ({ form, utils, setUtils, isUtilEmpty }) => {
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
+                  if (value >= 32767)
+                    return Promise.reject(new Error("Số lượng khách quá lớn!"));
                   if (value > 0) {
                     return Promise.resolve();
                   }
+
                   return Promise.reject(
                     new Error("Số lượng khách phải lớn hơn 0!")
                   );
@@ -186,6 +189,8 @@ const RoomTypeForm = ({ form, utils, setUtils, isUtilEmpty }) => {
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
+                  if (value >= 32767)
+                    return Promise.reject(new Error("Số lượng khách quá lớn!"));
                   if (value > 0) {
                     return Promise.resolve();
                   }
@@ -212,6 +217,8 @@ const RoomTypeForm = ({ form, utils, setUtils, isUtilEmpty }) => {
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
+                  if (value >= 32767)
+                    return Promise.reject(new Error("Số lượng khách quá lớn!"));
                   if (value > 0) {
                     return Promise.resolve();
                   }
@@ -262,6 +269,8 @@ const RoomTypeForm = ({ form, utils, setUtils, isUtilEmpty }) => {
               );
             })
           : null}
+      </Row>
+      <Row>
         {isUtilEmpty ? (
           <ErrorMessage message="Vui lòng chọn ít nhất một tiện ích." />
         ) : null}
