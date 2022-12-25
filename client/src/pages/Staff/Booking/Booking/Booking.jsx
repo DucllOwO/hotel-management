@@ -1,5 +1,6 @@
 import { Button } from "antd";
 import React, { useState, useContext, useEffect } from "react";
+import { getAllRoomType } from "../../../../api/RoomTypeAPI";
 import { userRequest } from "../../../../api/api";
 import { fetchBookingByDate } from "../../../../api/BookingAPI";
 import BottomBar from "../../../../components/Admin/BottomBar/BottomBar";
@@ -12,12 +13,20 @@ import "./booking.css";
 const Booking = () => {
   const [rooms, setRooms] = useState([]);
   const { user } = useContext(AppContext);
-  const [rentType, setRentType] = useState("Ngắn hạn");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [listType, setListType] = useState([])
+
 
   useEffect(() => {
+    if(listType)
+    {
+      getAllRoomType(user?.position)
+      .then(({data}) => {
+        console.log(data)
+        setListType(data)
+    })}
     console.log(from)
     console.log(to)
     if (from && to) {
@@ -43,6 +52,7 @@ const Booking = () => {
           setRooms={setRooms}
           setFrom={setFrom}
           from={from}
+          listType={listType}
           setTo={setTo}
           to={to}
         ></BookingTable>
