@@ -102,7 +102,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
     {
       key: "5",
       title: "Thành tiền",
-      dataIndex: "total",
+      dataIndex: "total_cost",
       align: "center",
       // sorter: (a, b) => a.total.localeCompare(b.total),
     },

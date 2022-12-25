@@ -9,8 +9,10 @@ export const fetchBookingByDate = (positionUser, from, to) => {
 };
 
 export const createCustomer = (positionUser, newCustomer) => {
-  return userRequest.post("/user", {
-    params: {user: { position: positionUser }, type: "customer", userInfo: newCustomer},
+  console.log("called")
+  console.log(positionUser)
+  return userRequest.post("/users", {
+    user: { position: positionUser }, type: "customer", userInfo: newCustomer,
   });
 };
 
