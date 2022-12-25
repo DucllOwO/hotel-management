@@ -246,7 +246,6 @@ const BookingTable = ({
 
   const handleOKModal = async () => {
     try {
-      const values = await customerInfoForm.validateFields();
       const isCusObjEmpty = Object.keys(currentCustomer).length === 0;
       // isCusObjEmpty === true === customer not available
       console.log(isCusObjEmpty);

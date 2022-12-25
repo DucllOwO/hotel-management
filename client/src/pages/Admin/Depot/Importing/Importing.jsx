@@ -11,9 +11,10 @@ const Importing = () => {
   useEffect(() => {
     fetchRecord(user?.position)
     .then(({data}) => {
+      console.log(data)
       setRecord(data);
     })
-  }, [record]);
+  }, []);
   return (
     <div className="importingContainer">
       <ImportingTable importingRecord={record}></ImportingTable>

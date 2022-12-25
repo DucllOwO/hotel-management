@@ -146,7 +146,7 @@ const listRoute = [
   },
   {
     key: "Nhập hàng",
-    value: <Route index path="/import" element={<Import />} />,
+    value: <Route index path="/importing" element={<Import />} />,
   },
 ];
 
