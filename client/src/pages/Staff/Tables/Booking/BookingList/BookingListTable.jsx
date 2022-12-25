@@ -30,7 +30,8 @@ const BookingListTable = ({ booking, setBooking }) => {
       width: "20%",
       align: "center",
       filteredValue: [searchedText],
-      sorter: (a, b) => a.customer_id.localeCompare(b.customer_id),
+      // sorter: (a, b) => a.customer_id.localeCompare(b.customer_id),
+      sorter: (a, b) => a.customer_id - b.customer_id,
       onFilter: (value, record) => {
         return (
           String(record.customer_id)
@@ -89,7 +90,7 @@ const BookingListTable = ({ booking, setBooking }) => {
       title: "Phòng",
       dataIndex: "size",
       align: "center",
-      sorter: (a, b) => a.customer_id.localeCompare(b.customer_id),
+      sorter: (a, b) => a.size.localeCompare(b.size),
     },
     {
       key: "5",
