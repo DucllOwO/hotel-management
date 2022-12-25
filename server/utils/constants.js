@@ -39,6 +39,7 @@ const roomStatus = {
   AVAILABLE: 0,
   BOOKED: 1,
   WAITING: 2,
+  CLEANING: 3,
 };
 
 const bookingStatus = {

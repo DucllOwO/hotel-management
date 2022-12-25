@@ -107,7 +107,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
     {
       key: "5",
       title: "Tổng tiền (đ)",
-      dataIndex: "total",
+      dataIndex: "total_cost",
       align: "center",
       render: (value) => {
         return `${value < 0 ? "-" : ""} ${Math.abs(value)

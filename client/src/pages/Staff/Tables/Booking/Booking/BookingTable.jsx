@@ -229,16 +229,30 @@ const BookingTable = ({
       const values = await customerInfoForm.validateFields();
       const isCusObjEmpty = Object.keys(currentCustomer).length === 0;
       // isCusObjEmpty === true === customer not available
+      console.log(isCusObjEmpty);
       if (isCusObjEmpty) {
+        const newCustomer = {
+          id: customerInfoForm.getFieldValue("id"),
+          fullname: customerInfoForm.getFieldValue("fullname"),
+          phone_number: customerInfoForm.getFieldValue("phone_number"),
+          email: customerInfoForm.getFieldValue("email"),
+          date_of_birth: customerInfoForm.getFieldValue("date_of_birth"),
+        };
+        console.log(newCustomer);
         const { data: userData } = await createCustomer(
           user?.position,
-          currentCustomer
+          newCustomer
         );
+        const { data: bookingData } = await createBooking(
+          user?.position,
+          newCustomer,
+          selectedRooms,
+          from,
+          to
+        );
+        console.log("done");
       } else {
-        // const currentSelectRoom = rooms.find(
-        //   (room) => room.room_name === values.room_name
-        // );
-        // create booking
+        // return;
         const { data: bookingData } = await createBooking(
           user?.position,
           currentCustomer,
@@ -246,21 +260,21 @@ const BookingTable = ({
           from,
           to
         );
-        console.log(selectedRooms);
-        setRooms((pre) => {
-          return pre.filter(
-            (data) => !selectedRooms.includes(data)
-            // data.room_name !== bookingData?.room_name
-          );
-        });
-        console.log(rooms);
       }
-      // setCurrentCustomer({});
+      console.log(selectedRooms);
+      setRooms((pre) => {
+        return pre.filter(
+          (data) => !selectedRooms.includes(data)
+          // data.room_name !== bookingData?.room_name
+        );
+      });
+      console.log(rooms);
       SuccessAlert("Đặt phòng thành công.");
       setCurrentCustomer({});
       setSelectedRooms([]);
       setIsModalOpen(false);
       customerInfoForm.resetFields();
+      // setCurrentCustomer({});
     } catch (error) {
       console.log(error);
       ErrorAlert("Đặt phòng thất bại!");
@@ -308,7 +322,7 @@ const BookingTable = ({
           loading={isLoading}
           columns={columns}
           dataSource={rooms}
-          scroll={{ y: "100%" }}
+          scroll={{ y: "60vh", x: "100%" }}
           rowKey={(row) => row.room_name}
         ></Table>
       </Form>

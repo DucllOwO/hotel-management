@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Button } from "antd";
 
 const UtilitiesButton = (props) => {
-  const [size, setSize] = useState("large");
-
   const [type, setType] = useState("default");
 
   return (
@@ -11,14 +9,16 @@ const UtilitiesButton = (props) => {
       type={type}
       shape="round"
       onClick={() => {
-        if (type === "default") {
-          setType("primary");
-        } else {
-          setType("default");
-        }
+        if (!props.disabled)
+          if (type === "default") {
+            setType("primary");
+          } else {
+            setType("default");
+          }
       }}
       icon={props.icon ? <props.icon></props.icon> : ""}
-      size={size}
+      size={props.size ? props.size : "large"}
+      style={{ margin: "5px 0 0 5px" }}
     >
       {props.name}
     </Button>
