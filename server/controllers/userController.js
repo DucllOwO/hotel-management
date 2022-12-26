@@ -51,10 +51,23 @@ const getUser = async (req, res, next) => {
   }
 };
 
+const getEmployeeByUsername = async (req, res, next) => {
+  const { username } = req.params;
+
+  const { data: employee, error: getEmployeeError } =
+    await employeeDAL.getEmployeeByUsername(username);
+
+  if (getEmployeeError) return next(getEmployeeError);
+
+  return res.status(200).send(employee[0]);
+}
+
 const createUser = async (req, res, next) => {
-  const { type } = req.query;
-  const { userInfo } = req.body;
+  console.log("called")
+  // const { type } = req.params;
+  const { userInfo: userInfo, type: type } = req.body;
   console.log(userInfo);
+  console.log(type)
 
   if (!type || !userInfo) return next(BadRequestError());
 
@@ -142,4 +155,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  getEmployeeByUsername
 };

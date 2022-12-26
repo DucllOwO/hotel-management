@@ -84,8 +84,10 @@ const DetailRoomTable = () => {
       title: "Giá",
       dataIndex: "price",
       align: "center",
-      render: (text, record) => {
-        return record.price ? String(record.price) : "";
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
       },
     },
   ];

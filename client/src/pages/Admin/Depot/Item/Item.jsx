@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { userRequest } from "../../../../api/api";
+import { fetchItems } from "../../../../api/ItemAPI";
 import { AppContext } from "../../../../context/AppContext";
 import Topbar from "../../../../components/Topbar/Topbar";
 import ItemTable from "../../Tables/Item/ItemTable";
@@ -10,19 +10,14 @@ const Item = () => {
   const { user } = useContext(AppContext);
 
   useEffect(() => {
-    const fetchItems = async () => {
-      const { data } = await userRequest.get("/items", {
-        params: { user: { position: user?.position } },
-      });
-      console.log(data);
+    fetchItems(user?.position)
+    .then(({data})=> {
       setItems(data);
-      console.log(items);
-    };
-    fetchItems();
+    })
   }, []);
   return (
     <div className="itemContainer">
-      <ItemTable items={items}></ItemTable>
+      <ItemTable items={items} setItems={setItems} user={user}></ItemTable>
     </div>
   );
 };

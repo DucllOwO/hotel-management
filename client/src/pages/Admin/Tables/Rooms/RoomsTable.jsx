@@ -11,7 +11,9 @@ import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 import { createRoom, hideRoom, updateRoom } from "../../../../api/RoomAPI";
 import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 
-const RoomsTable = ({ rooms, setRoom, positionUser }) => {
+const RoomsTable = ({ rooms, setRoom, positionUser, listType }) => {
+  const navigate = useNavigate();
+
   const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
@@ -22,31 +24,14 @@ const RoomsTable = ({ rooms, setRoom, positionUser }) => {
 
   const [roomTypes, setRoomTypes] = useState([]);
 
-  const items = [
-    {
-      label: "Loại 1",
-      key: "1",
-    },
-    {
-      label: "Luxury",
-      key: "2",
-    },
-    {
-      label: "President",
-      key: "3",
-    },
-  ];
+  const [filter, setFilter] = useState("");
 
-  useEffect(() => {
-    getAllRoomType(positionUser)
-      .then(({ data }) => {
-        setRoomTypes(data);
-      })
-      .catch((err) => {
-        console.log(err);
-        ErrorAlert("Lấy dữ liệu loại phòng thất bại!!");
-      });
-  }, [positionUser]);
+  const items = listType.map((item) => {
+    return {
+      label: item.name,
+      value: item.name,
+    };
+  });
 
   const columns = [
     {
@@ -99,23 +84,36 @@ const RoomsTable = ({ rooms, setRoom, positionUser }) => {
       dataIndex: "room_type_id",
       width: "30%",
       align: "center",
+      filteredValue: filter !== "" ? [filter] : null,
       render: (text, record) => {
         return <p>{record.room_type_id.name}</p>;
       },
-      filterDropdown: () => {
+      filterDropdown: ({ confirm, clearFilters }) => {
         return (
           <>
             <div className="filterContainer">
               <div>
                 <Select
+                  style={{ width: 300 }}
                   size="medium"
                   options={items}
                   showSearch
                   placeholder="Chọn loại phòng"
-                  onChange={(e) => {}}
+                  onChange={(e) => {
+                    setFilter(e);
+                    confirm();
+                  }}
                 />
               </div>
-              <Button type="primary" style={{ marginTop: "10px" }}>
+              <Button
+                type="primary"
+                style={{ marginTop: "10px" }}
+                onClick={() => {
+                  console.log(rooms);
+                  setFilter("");
+                  clearFilters({ closeDropdown: true });
+                }}
+              >
                 Reset
               </Button>
             </div>
@@ -125,9 +123,24 @@ const RoomsTable = ({ rooms, setRoom, positionUser }) => {
       filterIcon: () => {
         return <FilterOutlined />;
       },
+      onFilter: (value, record) => {
+        if (filter === "") {
+          return record.roomType;
+        } else {
+          return record.roomType === value;
+        }
+        // record.roomType === value;
+        // console.log(value);
+      },
+      // onFilter: (value, record) => {
+      //   console.log("1");
+      //   return record.roomType
+      //     .toLocaleLowerCase()
+      //     .includes(value.toLocaleLowerCase());
+      // },
     },
     {
-      key: "4",
+      key: "3",
       title: "Trạng thái",
       dataIndex: "status",
       width: "20%",

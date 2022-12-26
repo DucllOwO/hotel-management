@@ -25,13 +25,14 @@ const getUnavailableRoomID = (listBooking) => {
   console.log(listBooking);
   return supabase
     .from("used_room")
-    .select("room_name")
+    .select("room_id")
     .in("booking_id", listBooking)
-    .eq("is_active", true);
+    .eq("is_active", true)
+    .order("room_id", { ascending: true });
 };
 
 const getRoomAvailable = (listRoom) => {
-  console.log(listRoom);
+  // console.log(listRoom);
   return supabase
     .from(TABLE_NAME)
     .select(

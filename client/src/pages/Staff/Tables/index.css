@@ -20,3 +20,11 @@
     background-color: var(--black);
     color: var(--white);
 }
+
+.filterActive {
+    color: var(--light-blue)
+}
+
+.filterNormal {
+    color: var(--grey)
+}

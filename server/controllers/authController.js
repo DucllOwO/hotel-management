@@ -48,6 +48,7 @@ const login = async (req, res, next) => {
         .json({
           user: {
             ...userWithoutPassword,
+            
             fullname: employeePosition[0].fullname,
           },
           accessToken,
