@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import "../index.css";
-import { Table, Button, Modal, Form, Input } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Table, Button, Modal, Form, Input, Select } from "antd";
+import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import AddRoomForm from "../../../../components/Form/AddRoomForm";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const RoomsTable = ({ rooms, setRoom }) => {
   const navigate = useNavigate();
@@ -16,6 +18,21 @@ const RoomsTable = ({ rooms, setRoom }) => {
 
   const [modal, setModal] = useState(false);
 
+  const items = [
+    {
+      label: "Loại 1",
+      key: "1",
+    },
+    {
+      label: "Luxury",
+      key: "2",
+    },
+    {
+      label: "President",
+      key: "3",
+    },
+  ];
+
   const columns = [
     {
       key: "1",
@@ -23,18 +40,18 @@ const RoomsTable = ({ rooms, setRoom }) => {
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
-          String(record.name)
+          String(record.room_name)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
           String(record.roomType)
             .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.size)
-            .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase())
         );
       },
+      sorter: (a, b) => a.room_name.localeCompare(b.room_name),
       dataIndex: "room_name",
+      width: "40%",
+      align: "center",
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -59,6 +76,8 @@ const RoomsTable = ({ rooms, setRoom }) => {
       key: "2",
       title: "Loại phòng",
       dataIndex: "roomType",
+      width: "40%",
+      align: "center",
       render: (text, record) => {
         if (editingRow === record.id) {
           return (
@@ -78,112 +97,71 @@ const RoomsTable = ({ rooms, setRoom }) => {
           return <p>{text}</p>;
         }
       },
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div>
+                <Select
+                  size="medium"
+                  options={items}
+                  showSearch
+                  placeholder="Chọn loại phòng"
+                  onChange={(e) => {}}
+                />
+              </div>
+              <Button type="primary" style={{ marginTop: "10px" }}>
+                Reset
+              </Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
     },
+    // {
+    //   key: "3",
+    //   title: "Diện tích",
+    //   dataIndex: "size",
+    //   render: (text, record) => {
+    //     if (editingRow === record.idNum) {
+    //       return (
+    //         <Form.Item
+    //           name="area"
+    //           rules={[
+    //             {
+    //               required: true,
+    //               message: "Vui lòng nhập diện tích",
+    //             },
+    //           ]}
+    //         >
+    //           <Input />
+    //         </Form.Item>
+    //       );
+    //     } else {
+    //       return <p>{text}</p>;
+    //     }
+    //   },
+    // },
     {
       key: "3",
-      title: "Diện tích",
-      dataIndex: "size",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="area"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập diện tích",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-    },
-    {
-      key: "4",
-      title: "Giá",
-      dataIndex: "price",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="price"
-              rules={[
-                {
-                  required: true,
-                  message: "Vui lòng nhập giá",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-    },
-    {
-      key: "5",
       title: "Thao tác",
       render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  Lưu
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  Huỷ
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button
-              // onClick={(e) => {
-              //   e.preventDefault();
-              //   setEditingRow(record.idNum);
-              //   form.setFieldsValue({
-              //     name: record.name,
-              //     roomType: record.roomType,
-              //     area: record.area,
-              //     price: record.price,
-              //   });
-              // }}
-              >
-                Chỉnh sửa
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                Xoá
-              </Button>
-            </>
-          );
-        }
+        return (
+          <>
+            <div className="btnWrap">
+              <EditButton openModalEdit={openModalEdit}></EditButton>
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
+          </>
+        );
       },
     },
   ];
 
-  const addRoomModal = () => {
+  const openModalEdit = () => {
     return (
       <Modal
         title="Thêm phòng"
@@ -228,7 +206,7 @@ const RoomsTable = ({ rooms, setRoom }) => {
 
   return (
     <div className="table">
-      {modal === true && addRoomModal()}
+      {modal === true && openModalEdit()}
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div></div>
@@ -257,9 +235,11 @@ const RoomsTable = ({ rooms, setRoom }) => {
           </Button>
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table columns={columns} dataSource={rooms} scroll={{ y: 350 }}></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={rooms}
+        scroll={{ y: "60vh", x: "100%" }}
+      ></Table>
     </div>
   );
 };

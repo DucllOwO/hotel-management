@@ -1,4 +1,4 @@
-import React,{useState, useContext, useEffect} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { userRequest } from "../../../../api/api";
 import { AppContext } from "../../../../context/AppContext";
 import ImportingTable from "../../Tables/Importing/ImportingTable";
@@ -11,7 +11,7 @@ const Importing = () => {
   useEffect(() => {
     const fetchRecord = async () => {
       const { data } = await userRequest.get("/importing", {
-        params: { user: { position: user?.position } }
+        params: { user: { position: user?.position } },
       });
       console.log(data);
       setRecord(data);
@@ -19,11 +19,8 @@ const Importing = () => {
     fetchRecord();
   }, []);
   return (
-    <div className="container">
-      <div className="importingContainer">
-        <ImportingTable
-        importingRecord = {record}></ImportingTable>
-      </div>
+    <div className="importingContainer">
+      <ImportingTable importingRecord={record}></ImportingTable>
     </div>
   );
 };

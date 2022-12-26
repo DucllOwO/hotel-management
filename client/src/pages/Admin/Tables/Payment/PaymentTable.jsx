@@ -22,10 +22,13 @@ const PaymentTable = ({ payment, setPayment }) => {
       key: "1",
       title: "ID",
       dataIndex: "id",
+      width: "10%",
+      align: "center",
     },
     {
       key: "2",
       title: "Ngày lập",
+      align: "center",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return String(record.date)
@@ -33,29 +36,12 @@ const PaymentTable = ({ payment, setPayment }) => {
           .includes(value.toLocaleLowerCase());
       },
       dataIndex: "established_date",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="date"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the date",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
+      sorter: (a, b) => a.established_date.localeCompare(b.established_date),
     },
     {
       key: "3",
       title: "Lí do",
+      align: "center",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return String(record.date)
@@ -86,78 +72,9 @@ const PaymentTable = ({ payment, setPayment }) => {
     {
       key: "4",
       title: "Thành tiền",
+      align: "center",
       dataIndex: "cost",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="total"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the total",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
-    },
-    {
-      key: "5",
-      title: "Thao tác",
-      render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  Lưu
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  Huỷ
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button
-              // onClick={(e) => {
-              //   e.preventDefault();
-              //   setEditingRow(record.idNum);
-              //   form.setFieldsValue({
-              //     date: record.date,
-              //     total: record.total,
-              //   });
-              // }}
-              >
-                Chỉnh sửa
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                Xoá
-              </Button>
-            </>
-          );
-        }
-      },
+      sorter: (a, b) => a.cost - b.cost,
     },
   ];
 
@@ -261,25 +178,13 @@ const PaymentTable = ({ payment, setPayment }) => {
               picker="year"
             ></DatePicker>
           )}
-          <Button
-            style={{ marginLeft: "5px" }}
-            onClick={onAddButton}
-            className="addButton"
-            type="primary"
-            ghost
-            icon={<PlusOutlined />}
-          >
-            Tạo mới
-          </Button>
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={payment}
-          scroll={{ y: 350 }}
-        ></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={payment}
+        scroll={{ y: "60vh", x: "100%" }}
+      ></Table>
     </div>
   );
 };

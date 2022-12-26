@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import UtilitiesModal from "../../Modals/Utilities/UtilitiesModal";
+import UtilitiesForm from "../../../../components/Form/UtilitiesForm";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const UtilitiesTable = ({ utilities, setUtilities }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -26,21 +28,26 @@ const UtilitiesTable = ({ utilities, setUtilities }) => {
       key: "1",
       title: "ID",
       dataIndex: "id",
+      width: "15%",
+      align: "center",
     },
     {
       key: "2",
       title: "Tên tiện ích",
       filteredValue: [searchedText],
+      width: "65%",
+      align: "center",
       onFilter: (value, record) => {
         return (
           String(record.name)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
-          String(record.price)
+          String(record.id)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase())
         );
       },
+      sorter: (a, b) => a.name.localeCompare(b.name),
       dataIndex: "name",
       render: (text, record) => {
         if (editingRow === record.idNum) {
@@ -66,51 +73,14 @@ const UtilitiesTable = ({ utilities, setUtilities }) => {
       key: "3",
       title: "Thao tác",
       render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  Lưu
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  Huỷ
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button
-              // onClick={(e) => {
-              //   e.preventDefault();
-              //   setEditingRow(record.idNum);
-              //   form.setFieldsValue({
-              //     name: record.name,
-              //   });
-              // }}
-              >
-                Chỉnh sửa
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                Xoá
-              </Button>
-            </>
-          );
-        }
+        return (
+          <>
+            <div className="btnWrap">
+              <EditButton openModalEdit={() => {}}></EditButton>
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
+          </>
+        );
       },
     },
   ];
@@ -149,7 +119,7 @@ const UtilitiesTable = ({ utilities, setUtilities }) => {
           onOk={handle}
           onCancel={handle}
         >
-          <UtilitiesModal></UtilitiesModal>
+          <UtilitiesForm />
         </Modal>
       </>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
@@ -178,13 +148,11 @@ const UtilitiesTable = ({ utilities, setUtilities }) => {
           </Button>
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={utilities}
-          scroll={{ y: 350 }}
-        ></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={utilities}
+        scroll={{ y: "60vh", x: "100%" }}
+      ></Table>
     </div>
   );
 };

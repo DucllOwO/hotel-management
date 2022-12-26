@@ -20,10 +20,8 @@ const HR = () => {
       });
   }, [user?.position]);
   return (
-    <div className="container">
-      <div className="hrContainer">
-        <HRTable employees={employees} setEmployees={setEmployees}></HRTable>
-      </div>
+    <div className="hrContainer">
+      <HRTable employees={employees} setEmployees={setEmployees}></HRTable>
     </div>
   );
 };

@@ -15,6 +15,8 @@ import {
 } from "../../../../api/PositionAPI";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 import FeatureTable from "../Function/FeatureTable";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const INITIAL_STATE_CUR_EXPAND_POSITION = {
   loading: false,
@@ -161,12 +163,15 @@ const PositionTable = ({ positions, setPositions }) => {
       title: "ID",
       colSpan: 1,
       dataIndex: "id",
-      width: "10%",
+      width: "15%",
+      align: "center",
+      sorter: (a, b) => a.id - b.id,
     },
     {
       key: "2",
       title: "Tên chức vụ",
       width: "60%",
+      align: "center",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return String(record.name)
@@ -174,6 +179,7 @@ const PositionTable = ({ positions, setPositions }) => {
           .includes(value.toLocaleLowerCase());
       },
       dataIndex: "name",
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
       key: "3",
@@ -182,7 +188,19 @@ const PositionTable = ({ positions, setPositions }) => {
       render: (_, record) => {
         return (
           <>
-            <Button
+            <div className="btnWrap">
+              <EditButton
+                openModalEdit={() => {
+                  setModal("edit");
+                  form.setFieldValue("posName", record.name);
+                  setCurrentPosition(record);
+                }}
+              ></EditButton>
+              <DeleteButton
+                onDeleteButton={(e) => onDeleteButton(record)}
+              ></DeleteButton>
+            </div>
+            {/* <Button
               onClick={(e) => {
                 e.preventDefault();
                 setModal("edit");
@@ -198,7 +216,7 @@ const PositionTable = ({ positions, setPositions }) => {
               }}
             >
               Xoá
-            </Button>
+            </Button> */}
           </>
         );
       },
@@ -239,7 +257,7 @@ const PositionTable = ({ positions, setPositions }) => {
       <Table
         columns={columns}
         dataSource={positions}
-        scroll={{ y: 500 }}
+        scroll={{ y: "60vh", x: "100%" }}
         loading={positions ? false : true}
         rowKey={(record) => record.id}
         expandable={{

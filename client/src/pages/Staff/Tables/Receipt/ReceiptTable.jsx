@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
+import "antd/dist/antd.less";
 import { PlusOutlined } from "@ant-design/icons";
 
 const ReceiptTable = () => {
@@ -286,13 +287,11 @@ const ReceiptTable = () => {
           />
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={dataSource}
-          scroll={{ x: true, y: 350 }}
-        ></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={dataSource}
+        scroll={{ x: true, y: 350 }}
+      ></Table>
     </div>
   );
 };

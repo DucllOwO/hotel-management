@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../index.css";
-import { Table, Button, Modal, Form, Input } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Table, Button, Modal, Form, Input, Slider } from "antd";
+import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
 const ImportingTable = ({ importingRecord, setRecord }) => {
@@ -13,16 +13,24 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
 
   const [searchedText, setSearchedText] = useState("");
 
+  const amountMark = {
+    1: "1",
+    200: "200",
+  };
+
   const columns = [
     {
       key: "1",
       title: "ID",
       dataIndex: "id",
+      width: "10%",
+      align: "center",
     },
     {
       key: "2",
       title: "Ngày lập",
       filteredValue: [searchedText],
+      align: "center",
       onFilter: (value, record) => {
         return (
           String(record.established_date)
@@ -34,6 +42,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
         );
       },
       dataIndex: "established_date",
+      sorter: (a, b) => a.established_date.localeCompare(b.established_date),
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -58,35 +67,44 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
       key: "3",
       title: "Tên sản phẩm",
       dataIndex: "item",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="total"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the total",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
+      align: "center",
+      sorter: (a, b) => a.item.localeCompare(b.item),
     },
     {
       key: "4",
       title: "Số lượng",
       dataIndex: "amount",
+      align: "center",
+      sorter: (a, b) => a.amount - b.amount,
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <Slider
+                range
+                max={200}
+                min={1}
+                marks={amountMark}
+                defaultValue={[10, 20]}
+                onChange={(value) => {
+                  console.log(value);
+                }}
+              />
+              <Button type="primary">Reset</Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
     },
     {
       key: "5",
       title: "Thành tiền",
-      dataIndex: "total_cost",
+      dataIndex: "total",
+      align: "center",
+      // sorter: (a, b) => a.total.localeCompare(b.total),
     },
     // {
     //   key: "6",
@@ -199,13 +217,11 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
           </Button>
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={importingRecord}
-          scroll={{ y: 350 }}
-        ></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={importingRecord}
+        scroll={{ y: "60vh", x: "100%" }}
+      ></Table>
     </div>
   );
 };

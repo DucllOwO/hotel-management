@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import "../index.css";
-import { Table, Button, Modal, Form, Input } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import ItemModal from "../../Modals/Item/ItemModal";
+import { Table, Button, Modal, Form, Input, Slider } from "antd";
+
+import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
+import ItemForm from "../../../../components/Form/ItemForm";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const ItemTable = ({ items, setItems }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -19,11 +22,18 @@ const ItemTable = ({ items, setItems }) => {
 
   const [searchedText, setSearchedText] = useState("");
 
+  const priceMark = {
+    100000: "100,000đ",
+    10000000: "10,000,000đ",
+  };
+
   const columns = [
     {
       key: "1",
       title: "ID",
       dataIndex: "id",
+      width: "10%",
+      align: "center",
     },
     {
       key: "2",
@@ -34,7 +44,10 @@ const ItemTable = ({ items, setItems }) => {
           .toLocaleLowerCase()
           .includes(value.toLocaleLowerCase());
       },
+      width: "30%",
+      align: "center",
       dataIndex: "name",
+      sorter: (a, b) => a.name.localeCompare(b.name),
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -59,6 +72,9 @@ const ItemTable = ({ items, setItems }) => {
       key: "3",
       title: "Số lượng tồn",
       dataIndex: "reserve_amount",
+      width: "20%",
+      align: "center",
+      sorter: (a, b) => a.reserve_amount - b.reserve_amount,
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -83,6 +99,32 @@ const ItemTable = ({ items, setItems }) => {
       key: "4",
       title: "Giá",
       dataIndex: "sell_price",
+      width: "20%",
+      align: "center",
+      sorter: (a, b) => a.sell_price - b.sell_price,
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div className="priceSlider">
+                <Slider
+                  width={0.8}
+                  range
+                  min={100000}
+                  max={10000000}
+                  marks={priceMark}
+                  defaultValue={[100000, 1000000]}
+                  onChange={(value) => {}}
+                />
+                <Button type="primary">Reset</Button>
+              </div>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -107,53 +149,14 @@ const ItemTable = ({ items, setItems }) => {
       key: "5",
       title: "Thao tác",
       render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  Lưu
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  Huỷ
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button
-              // onClick={(e) => {
-              //   e.preventDefault();
-              //   setEditingRow(record.idNum);
-              //   form.setFieldsValue({
-              //     name: record.name,
-              //     minimum: record.minimum,
-              //     price: record.price,
-              //   });
-              // }}
-              >
-                Chỉnh sửa
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                Xoá
-              </Button>
-            </>
-          );
-        }
+        return (
+          <>
+            <div className="btnWrap">
+              <EditButton openEditModal={() => {}}></EditButton>
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
+          </>
+        );
       },
     },
   ];
@@ -192,7 +195,7 @@ const ItemTable = ({ items, setItems }) => {
           onOk={handle}
           onCancel={handle}
         >
-          <ItemModal></ItemModal>
+          <ItemForm />
         </Modal>
       </>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
@@ -221,9 +224,11 @@ const ItemTable = ({ items, setItems }) => {
           </Button>
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table columns={columns} dataSource={items} scroll={{ y: 350 }}></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={items}
+        scroll={{ y: "60vh", x: "100%" }}
+      ></Table>
     </div>
   );
 };

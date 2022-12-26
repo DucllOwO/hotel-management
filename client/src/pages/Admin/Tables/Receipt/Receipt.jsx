@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import "../index.css";
-import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
+import { Table, Button, Modal, Form, Input, DatePicker, Select } from "antd";
 import dayjs from "dayjs";
+import { FilterOutlined } from "@ant-design/icons";
 import moment from "moment";
 import DetailForm from "../../../../components/Form/DetailForm/DetailForm";
+import EditButton from "../../../../components/IconButton/EditButton/EditButton";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const ReceiptTable = ({ receipt, setReceipt }) => {
   const [type, setType] = useState("day");
@@ -19,46 +22,44 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
   const dateFormat = "DD-MM-YYYY";
   const monthFormat = "MM-YYYY";
 
+  const items = [
+    {
+      label: "Offline",
+      key: "1",
+    },
+    {
+      label: "Online",
+      key: "2",
+    },
+  ];
+
   const columns = [
     {
       key: "1",
       title: "ID",
       dataIndex: "id",
+      align: "center",
+      width: "10%",
     },
     {
       key: "2",
       title: "Ngày lập",
+      align: "center",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return String(record.date)
           .toLocaleLowerCase()
           .includes(value.toLocaleLowerCase());
       },
+      sorter: (a, b) => a.established_date.localeCompare(b.established_date),
       dataIndex: "established_date",
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="date"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the date",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
-      },
     },
     {
       key: "3",
       title: "Tổng tiền",
+      align: "center",
       dataIndex: "total_cost",
+      sorter: (a, b) => a.total_cost - b.total_cost,
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -82,7 +83,31 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
     {
       key: "4",
       title: "Phương thức",
+      align: "center",
       dataIndex: "payment_method",
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div>
+                <Select
+                  size="medium"
+                  options={items}
+                  showSearch
+                  placeholder="Chọn hình thức"
+                  onChange={(e) => {}}
+                />
+              </div>
+              <Button type="primary" style={{ marginTop: "10px" }}>
+                Reset
+              </Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -107,52 +132,14 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
       key: "5",
       title: "Thao tác",
       render: (_, record) => {
-        if (editingRow !== null) {
-          if (editingRow === record.idNum) {
-            return (
-              <>
-                <Button
-                  htmlType="submit"
-                  // onClick={() => {form.submit()}}
-                >
-                  Lưu
-                </Button>
-                <Button
-                  onClick={() => {
-                    setEditingRow(null);
-                  }}
-                >
-                  Huỷ
-                </Button>
-              </>
-            );
-          } else {
-          }
-        } else {
-          return (
-            <>
-              <Button
-              // onClick={(e) => {
-              //   e.preventDefault();
-              //   setEditingRow(record.idNum);
-              //   form.setFieldsValue({
-              //     date: record.date,
-              //     total: record.total,
-              //   });
-              // }}
-              >
-                Chỉnh sửa
-              </Button>
-              <Button
-                onClick={() => {
-                  onDeleteButton(record);
-                }}
-              >
-                Xoá
-              </Button>
-            </>
-          );
-        }
+        return (
+          <>
+            <div className="btnWrap">
+              <EditButton openModalEdit={() => {}}></EditButton>
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
+          </>
+        );
       },
     },
   ];
@@ -278,13 +265,11 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
           </div>
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={receipt}
-          scroll={{ y: 350 }}
-        ></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={receipt}
+        scroll={{ y: "60vh", x: "100%" }}
+      ></Table>
     </div>
   );
 };

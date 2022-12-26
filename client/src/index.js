@@ -1,12 +1,16 @@
+import { ConfigProvider, theme } from "antd";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { AppProvider } from "./context/AppContext";
-import { ConfigProvider } from "antd";
 
 ReactDOM.render(
   <AppProvider>
-    <ConfigProvider>
+    <ConfigProvider 
+    theme={{
+      token: {
+      },
+    }}>
       <App />
     </ConfigProvider>
   </AppProvider>,

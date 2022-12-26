@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import "../../index.css";
-import { Table, Button, Modal, Form, Input } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Table, Button, Modal, Form, Input, Tooltip } from "antd";
 import "./bookingListtable.css";
+import { PlusOutlined } from "@ant-design/icons";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import TextButton from "../../../../../components/TextButton/TextButton";
+import CheckButton from "../../../../../components/IconButton/CheckButton/CheckButton";
+import CancelButton from "../../../../../components/IconButton/CancelButton/CancelButton";
 
 const BookingListTable = ({ booking, setBooking }) => {
   const [editingRow, setEditingRow] = useState(null);
@@ -18,11 +21,17 @@ const BookingListTable = ({ booking, setBooking }) => {
       key: "1",
       title: "ID",
       dataIndex: "id",
+      width: "10%",
+      align: "center",
+      sorter: (a, b) => a.id - b.id,
     },
     {
       key: "2",
       title: "Khách hàng",
+      width: "20%",
+      align: "center",
       filteredValue: [searchedText],
+      sorter: (a, b) => a.customer_id.localeCompare(b.customer_id),
       onFilter: (value, record) => {
         return (
           String(record.customer_id)
@@ -32,6 +41,9 @@ const BookingListTable = ({ booking, setBooking }) => {
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
           String(record.book_to)
+            .toLocaleLowerCase()
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.size)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase())
         );
@@ -61,16 +73,24 @@ const BookingListTable = ({ booking, setBooking }) => {
       key: "3",
       title: "Từ ngày",
       dataIndex: "book_from",
+      width: "20%",
+      align: "center",
+      sorter: (a, b) => a.book_from.localeCompare(b.book_from),
     },
     {
       key: "4",
       title: "Đến ngày",
       dataIndex: "book_to",
+      width: "20%",
+      align: "center",
+      sorter: (a, b) => a.book_to.localeCompare(b.book_to),
     },
     {
       key: "5",
       title: "Phòng",
       dataIndex: "size",
+      align: "center",
+      sorter: (a, b) => a.customer_id.localeCompare(b.customer_id),
       render: (text, record) => {
         if (editingRow === record.idNum) {
           return (
@@ -97,20 +117,13 @@ const BookingListTable = ({ booking, setBooking }) => {
       render: (_, record) => {
         return (
           <>
-            <Button
-              onClick={() => {
-                onBooking(record);
-              }}
-            >
-              Nhận phòng
-            </Button>
-            <Button
-              onClick={() => {
-                onBooking(record);
-              }}
-            >
-              Huỷ
-            </Button>
+            <div className="btnWrap">
+              <CheckButton
+                title="Nhận phòng"
+                onCheckButton={() => {}}
+              ></CheckButton>
+              <CancelButton title="Hủy" onCheckButton={() => {}}></CancelButton>
+            </div>
           </>
         );
       },
@@ -134,7 +147,7 @@ const BookingListTable = ({ booking, setBooking }) => {
   };
 
   return (
-    <div className="table">
+    <div className="bookingListTable">
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div className="headerButtons">
@@ -167,13 +180,11 @@ const BookingListTable = ({ booking, setBooking }) => {
           </Button> */}
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={booking}
-          scroll={{ y: 350 }}
-        ></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={booking}
+        scroll={{ y: "60vh", x: "100%" }}
+      ></Table>
     </div>
   );
 };

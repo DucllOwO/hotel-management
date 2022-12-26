@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../../../assets/colors/Colors";
 import { Button, Card, Col, Row, DatePicker, Space } from "antd";
 import dayjs from "dayjs";
-import moment from "moment";
+// import moment, { now } from "moment";
 import "./dashboard.css";
 import { getMonth, getYear } from "../../../Utils/helpers";
 import { fetchDailyReport, fetchMonthlyReport, fetchYearlyReport } from "../../../api/DashboardAPI";
@@ -22,9 +22,11 @@ const Dashboard = () => {
   const [semiType, setSemiType] = useState("income");
   const [time, setTime] = useState(dayjs(Date.now()));
   const {user} = useContext(AppContext)
+
   useEffect(() => {
     switch (type) {
       case "day":
+        console.log(time)
         if(semiType ==="income"){
           fetchDailyReport(user?.position, time, semiType)
           .then(({ data }) => {
@@ -48,8 +50,6 @@ const Dashboard = () => {
         }); 
         break;
       case "year":
-        // console.log(time);
-        // console.log(getYear(time));
         fetchYearlyReport(user?.position, getYear(time))
         .then(({ data }) => {
           setData(data.data);
@@ -59,7 +59,7 @@ const Dashboard = () => {
       default:
         break;
     }
-  }, [time, semiType, type])
+  }, [type, time, semiType])
 
   return (
     <div className="container">
@@ -74,7 +74,7 @@ const Dashboard = () => {
                 setTime(dayjs(Date.now()));
               }}
             >
-              Year
+              Năm
             </Button>
             <Button
               className="dateBtn"
@@ -84,7 +84,7 @@ const Dashboard = () => {
                 setTime(dayjs(Date.now()));
               }}
             >
-              Month
+              Tháng
             </Button>
             <Button
               className="dateBtn"
@@ -94,7 +94,7 @@ const Dashboard = () => {
                 setTime(dayjs(Date.now()));
               }}
             >
-              Day
+              Ngày
             </Button>
           </div>
           <div>
@@ -125,21 +125,45 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div>
+        <div className="sumary">
           <Row gutter={16}>
             <Col span={8}>
-              <Card title="Tổng doanh thu">đ 100.000.000</Card>
+              <Card title="Tổng doanh thu">{report ? report[0]?.income : 0}</Card>
             </Col>
             <Col span={8}>
-              <Card title="Tổng chi phí">đ 30.000.000</Card>
+              <Card title="Tổng chi phí">{report ? report[0]?.outcome : 0}</Card>
             </Col>
             <Col span={8}>
-              <Card title="Tổng lợi nhuận">đ 70.000.000</Card>
+              <Card title="Tổng lợi nhuận">{report ? report[0]?.profit : 0}</Card>
             </Col>
           </Row>
         </div>
+        { type ==="day" && <div>
+          <Button
+            className="dateBtn"
+            onClick={() => {
+              setSemiType("income");
+            }}
+          >
+            Thu
+          </Button>
+          <Button
+            className="dateBtn"
+            onClick={() => {
+              setSemiType("outcome");
+            }}
+          >
+            Chi
+          </Button>
+        </div>}
         {/* {type === "day" ? <DashboardTable /> : <MultiLineChart />} */}
-        <MultiLineChart />
+        {(type === "day") 
+        ? <DashboardTable
+        data = {data}
+        ></DashboardTable>
+        : 
+        <MultiLineChart reportData={data}/>
+        }
       </div>
     </div>
   );

@@ -1,13 +1,49 @@
 import React, { useState } from "react";
-import { Table, Button, Modal, Form, Input } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  Slider,
+  Dropdown,
+  Select,
+} from "antd";
+import { PlusOutlined, FilterOutlined, DownOutlined } from "@ant-design/icons";
+import InventoryForm from "../../../../components/Form/InventoryForm";
+import TextButton from "../../../../components/TextButton/TextButton";
+import CheckButton from "../../../../components/IconButton/CheckButton/CheckButton";
 
-const InventoryTable = () => {
-  const [editingRow, setEditingRow] = useState(null);
-
+const InventoryTable = ({ rooms }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+  const handle = () => {
+    setIsModalVisible(false);
+  };
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
+  const areaMark = {
+    10: "10",
+    60: "60",
+  };
+
+  const items = [
+    {
+      label: "Loại 1",
+      key: "1",
+    },
+    {
+      label: "Luxury",
+      key: "2",
+    },
+    {
+      label: "President",
+      key: "3",
+    },
+  ];
 
   const [dataSource, setDataSource] = useState([
     {
@@ -33,175 +69,145 @@ const InventoryTable = () => {
   const columns = [
     {
       key: "1",
-      title: "ID",
-      dataIndex: "id",
+      title: "Tên phòng",
+      dataIndex: "room_name",
+      width: "26.6666%",
+      align: "center",
+      sorter: (a, b) => a.room_name.localeCompare(b.room_name),
     },
     {
       key: "2",
-      title: "Tên sản phẩm",
+      title: "Loại phòng",
+      dataIndex: "roomType",
+      width: "26.6666%",
+      align: "center",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
-          String(record.name)
+          String(record.room_name)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
-          String(record.amount)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.price)
+          String(record.room_type_id.name)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase())
         );
       },
-      dataIndex: "name",
       render: (text, record) => {
-        if (editingRow === record.id) {
-          return (
-            <Form.Item
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the name",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return <p>{record.room_type_id.name}</p>;
+      },
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div>
+                <Select
+                  size="large"
+                  options={items}
+                  showSearch
+                  placeholder="Chọn loại phòng"
+                  onChange={(e) => {}}
+                />
+              </div>
+              <Button type="primary" style={{ marginTop: "10px" }}>
+                Reset
+              </Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
       },
     },
     {
       key: "3",
-      title: "Số lượng",
-      dataIndex: "amount",
+      title: "Diện tích (m2)",
+      dataIndex: "size",
+      width: "26.6666%",
+      align: "center",
       render: (text, record) => {
-        if (editingRow === record.id) {
-          return (
-            <Form.Item
-              name="amount"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the amount",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return <p>{text}</p>;
+      },
+      filterDropdown: () => {
+        return (
+          <>
+            <div className="filterContainer">
+              <Slider
+                range
+                max={60}
+                min={10}
+                marks={areaMark}
+                defaultValue={[10, 20]}
+                onChange={(value) => {
+                  console.log(value);
+                }}
+              />
+              <Button type="primary">Reset</Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
       },
     },
     {
       key: "4",
-      title: "Giá",
-      dataIndex: "price",
-      render: (text, record) => {
-        if (editingRow === record.id) {
-          return (
-            <Form.Item
-              name="price"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the price",
-                },
-              ]}
+      title: "Thao tác",
+      render: (_, record) => {
+        return (
+          <>
+            <CheckButton
+              title="Kiểm tra phòng"
+              onCheckButton={() => {
+                showModal();
+                form.setFieldValue("room_name", record.room_name);
+              }}
+            ></CheckButton>
+            {/* <TextButton
+              title="Kiểm tra phòng"
+              onHandleTextButton={() => {
+                showModal();
+                form.setFieldValue("room_name", record.room_name);
+              }}
+            ></TextButton> */}
+            {/* <Button
+              onClick={() => {
+                
+              }}
             >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+              Kiểm tra phòng
+            </Button> */}
+          </>
+        );
       },
     },
-    // {
-    //   key: "5",
-    //   title: "Thao tác",
-    //   render: (_, record) => {
-    //     if (editingRow !== null) {
-    //       if (editingRow === record.id) {
-    //         return (
-    //           <>
-    //             <Button
-    //               htmlType="submit"
-    //               // onClick={() => {form.submit()}}
-    //             >
-    //               Lưu
-    //             </Button>
-    //             <Button
-    //               onClick={() => {
-    //                 setEditingRow(null);
-    //               }}
-    //             >
-    //               Huỷ
-    //             </Button>
-    //           </>
-    //         );
-    //       } else {
-    //       }
-    //     } else {
-    //       return (
-    //         <>
-    //           {/* <Button
-    //             onClick={(e) => {
-    //               e.preventDefault();
-    //               setEditingRow(record.id);
-    //               form.setFieldsValue({
-    //                 name: record.name,
-    //                 amount: record.amount,
-    //                 price: record.price,
-    //               });
-    //             }}
-    //           >
-    //             edit
-    //           </Button> */}
-    //           <Button
-    //             onClick={() => {
-    //               onDeleteButton(record);
-    //             }}
-    //           >
-    //             Xoá
-    //           </Button>
-    //         </>
-    //       );
-    //     }
-    //   },
-    // },
   ];
 
-  const onDeleteButton = (record) => {
-    Modal.confirm({
-      title: "Are you sure, you want to delete this record?",
-      okText: "Yes",
-      okType: "danger",
-      onOk: () => {
-        setDataSource((pre) => {
-          return pre.filter((data) => data.id !== record.id);
-        });
-      },
-    });
-  };
+  function handleOKModalAdd() {
+    setIsModalVisible(false);
+  }
+  function handleCancelModal() {
+    setIsModalVisible(false);
+  }
 
-  const onFinish = (values) => {
-    console.log(editingRow);
-    const updateDataSource = [...dataSource];
-    updateDataSource.splice(editingRow - 1, 1, { ...values, id: editingRow });
-    console.log(updateDataSource);
-    setDataSource(updateDataSource);
-    setEditingRow(null);
+  const modalForm = () => {
+    return (
+      <Modal
+        title="Nhập số lượng sản phẩm sử dụng"
+        open={true}
+        onOk={handleOKModalAdd}
+        onCancel={handleCancelModal}
+        width="50%"
+      >
+        <InventoryForm form={form} />
+      </Modal>
+    );
   };
 
   return (
     <div className="table">
-      {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
+      <>{isModalVisible ? modalForm() : null}</>
       <div className="buttonContainer">
         <div></div>
         <div>
@@ -218,13 +224,11 @@ const InventoryTable = () => {
           />
         </div>
       </div>
-      <Form form={form} onFinish={onFinish} className="form">
-        <Table
-          columns={columns}
-          dataSource={dataSource}
-          scroll={{ y: 410 }}
-        ></Table>
-      </Form>
+      <Table
+        columns={columns}
+        dataSource={rooms}
+        scroll={{ y: "60vh", x: "100%" }}
+      ></Table>
     </div>
   );
 };
