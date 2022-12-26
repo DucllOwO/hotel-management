@@ -28,17 +28,17 @@ const getRooms = async (req, res, next) => {
 
   if (getAvailableRoomIDError) return next(getAvailableRoomIDError);
 
-  const listRoomName = unavailableRoomID?.map((item) => item.room_name);
+  const listRoomID = unavailableRoomID?.map((item) => item.id);
 
-  const { data, error } = await roomDAL.getRoomAvailable(listRoomName);
+  const { data, error } = await roomDAL.getRoomAvailable(listRoomID);
 
   if (error) return next(error);
   console.log(data);
 
   const listRoom = data?.map((item) => {
     return {
-      roomType: item.room_type_id.name,
       ...item,
+      roomType: item.room_type_id.name,
     };
   });
   res.status(200).send({ listRoom });
@@ -56,6 +56,7 @@ const getBooking = async (req, res, next) => {
 // tao booking khong can check phong trong vi chi co status available moi co nut dat phong
 const createBooking = async (req, res, next) => {
   const { booking, rooms } = req.body;
+  console.log(rooms)
 
   if (!booking || !rooms) return next(BadRequestError());
 

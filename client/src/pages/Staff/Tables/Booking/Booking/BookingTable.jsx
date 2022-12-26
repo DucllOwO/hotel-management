@@ -11,6 +11,7 @@ import {
   Select,
   Slider,
 } from "antd";
+import dayjs from "dayjs"
 import { FilterOutlined } from "@ant-design/icons";
 import BookingForm from "../../../../../components/Form/BookingForm";
 import { createBooking, createCustomer } from "../../../../../api/BookingAPI";
@@ -248,38 +249,44 @@ const BookingTable = ({
     try {
       const isCusObjEmpty = Object.keys(currentCustomer).length === 0;
       // isCusObjEmpty === true === customer not available
+      console.log(currentCustomer)
       console.log(isCusObjEmpty);
       if (isCusObjEmpty) {
-        const newCustomer = {
-          id: customerInfoForm.getFieldValue("id"),
-          fullname: customerInfoForm.getFieldValue("fullname"),
-          phone_number: customerInfoForm.getFieldValue("phone_number"),
-          email: customerInfoForm.getFieldValue("email"),
-          date_of_birth: customerInfoForm.getFieldValue("date_of_birth"),
-        };
-        console.log(newCustomer);
-        const { data: userData } = await createCustomer(
-          user?.position,
-          newCustomer
-        );
-        const { data: bookingData } = await createBooking(
-          user?.position,
-          newCustomer,
-          selectedRooms,
-          from,
-          to
-        );
+        const birthday = dayjs(customerInfoForm.getFieldValue("date_of_birth"));
+        const now = dayjs(Date.now());  
+        if(now.diff(birthday, "year") < 18)
+        {
+          ErrorAlert("Khách hàng chưa đủ 18 tuổi");
+          return;
+        }
+        await customerInfoForm.validateFields()
+        .then(async (value) => {
+          console.log(value);
+          const newCustomer = {
+            id: value.id,
+            fullname: value.fullname,
+            phone_number: value.phone_number,
+            email: value.email,
+            date_of_birth: value.date_of_birth,
+          };
+          const { data: userData } = await createCustomer(
+            user?.position,
+            newCustomer
+          );
+          setCurrentCustomer(newCustomer);
+        })
         console.log("done");
-      } else {
+      } 
+      console.log(currentCustomer)
         // return;
-        const { data: bookingData } = await createBooking(
-          user?.position,
-          currentCustomer,
-          selectedRooms,
-          from,
-          to
-        );
-      }
+      const { data: bookingData } = await createBooking(
+        user?.position,
+        currentCustomer,
+        selectedRooms,
+        from,
+        to
+      );
+      
       console.log(selectedRooms);
       setRooms((pre) => {
         return pre.filter(

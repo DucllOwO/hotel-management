@@ -17,7 +17,7 @@ export const createCustomer = (positionUser, newCustomer) => {
 };
 
 export const createBooking = (positionUser, customer, room, from, to) => {
-  console.log(from)
+  // console.log(from)
   return userRequest.post("/bookings", {
     user: { position: positionUser },
     booking: {
