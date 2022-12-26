@@ -19,6 +19,8 @@ const getRooms = async (req, res, next) => {
   const { data: booking, error: getBookingError } =
     await bookingDAL.getBookingByDate(from, to);
 
+    console.log(booking)
+
   if (getBookingError) return next(getBookingError);
 
   const listBookingID = booking?.map((item) => item.id);
@@ -26,9 +28,12 @@ const getRooms = async (req, res, next) => {
   const { data: unavailableRoomID, getAvailableRoomIDError } =
     await roomDAL.getUnavailableRoomID(listBookingID);
 
+    console.log(unavailableRoomID)
+
   if (getAvailableRoomIDError) return next(getAvailableRoomIDError);
 
-  const listRoomID = unavailableRoomID?.map((item) => item.id);
+  const listRoomID = unavailableRoomID?.map((item) => item.room_id);
+  console.log(listRoomID)
 
   const { data, error } = await roomDAL.getRoomAvailable(listRoomID);
 
