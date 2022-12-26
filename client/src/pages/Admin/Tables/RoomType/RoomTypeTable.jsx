@@ -221,6 +221,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
     {
       key: "6",
       title: "Thao tác",
+      width: "15%",
       render: (_, record) => {
         return (
           <>

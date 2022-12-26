@@ -22,7 +22,11 @@ const Rooms = () => {
   }, []);
   return (
     <div className="roomsContainer">
-      <RoomsTable rooms={rooms}></RoomsTable>
+      <RoomsTable
+        rooms={rooms}
+        positionUser={user.position}
+        setRoom={setRooms}
+      ></RoomsTable>
     </div>
   );
 };

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, Form, Input, Slider } from "antd";
-
 import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import ItemForm from "../../../../components/Form/ItemForm";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";

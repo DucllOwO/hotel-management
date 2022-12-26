@@ -3,8 +3,8 @@ const bookingDAL = require("./BookingDAL");
 
 const TABLE_NAME = "room";
 
-const getRoomByName = (roomName) => {
-  return supabase.from(TABLE_NAME).select().eq("room_name", roomName);
+const getRoomByName = (id) => {
+  return supabase.from(TABLE_NAME).select().eq("room_name", id);
 };
 
 const getRoomByStatus = (status) => {
@@ -12,8 +12,10 @@ const getRoomByStatus = (status) => {
     .from(TABLE_NAME)
     .select(
       `
+      id,
       room_name,
-      room_type_id(name)
+      room_type_id(id,
+        name)
     `
     )
     .eq("status", status);
@@ -23,7 +25,8 @@ const getUnavailableRoomID = (listBooking) => {
   return supabase
     .from("used_room")
     .select("room_name")
-    .in("booking_id", listBooking);
+    .in("booking_id", listBooking)
+    .eq("is_active", true);
 };
 
 const getRoomAvailable = (listRoom) => {
@@ -31,13 +34,16 @@ const getRoomAvailable = (listRoom) => {
   return supabase
     .from(TABLE_NAME)
     .select(
-    `
+      `
+      id,
       room_name,
-      room_type_id(name)
+      room_type_id(id,
+        name)
     `
     )
     .not("room_name", "in", `(${listRoom})`)
-    .order("room_name", { ascending: true });
+    .order("room_name", { ascending: true })
+    .eq("is_active", true);
 };
 
 const getAllRooms = () => {
@@ -45,23 +51,46 @@ const getAllRooms = () => {
     .from(TABLE_NAME)
     .select(
       `
+      id,
       room_name,
       status,
-      room_type(name)
+      room_type_id(id,
+        name)
     `
     )
-    .order("room_name", { ascending: true });
+    .order("id", { ascending: true })
+    .eq("is_active", true);
 };
 
-const updateRoom = (room, roomName) => {
+const updateRoom = (room, id) => {
   return supabase
     .from(TABLE_NAME)
     .update({ ...room })
-    .eq("room_name", roomName);
+    .eq("id", id)
+    .select(
+      `
+      id,
+      room_name,
+      status,
+      room_type_id(id,
+        name)
+    `
+    );
 };
 
 const insertRoom = (room) => {
-  return supabase.from(TABLE_NAME).insert(room);
+  return supabase
+    .from(TABLE_NAME)
+    .insert(room)
+    .select(
+      `
+      id,
+      room_name,
+      status,
+      room_type_id(id,
+        name)
+    `
+    );
 };
 
 module.exports = {

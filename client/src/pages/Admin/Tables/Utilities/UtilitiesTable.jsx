@@ -113,7 +113,7 @@ const UtilitiesTable = ({ utilities, setUtilities, positionUser }) => {
             SuccessAlert("Chỉnh sửa tiện ích thành công.");
             setUtilities((prev) =>
               prev.map((roomType) => {
-                if (roomType.id == editingRow) return { ...data };
+                if (roomType.id == util.id) return { ...data };
                 return roomType;
               })
             );
