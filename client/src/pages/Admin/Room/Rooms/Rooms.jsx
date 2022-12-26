@@ -27,6 +27,7 @@ const Rooms = () => {
         rooms={rooms}
         positionUser={user.position}
         setRoom={setRooms}
+        listType={listType}
       ></RoomsTable>
     </div>
   );

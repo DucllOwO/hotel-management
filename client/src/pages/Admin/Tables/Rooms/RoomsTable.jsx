@@ -11,9 +11,7 @@ import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 import { createRoom, hideRoom, updateRoom } from "../../../../api/RoomAPI";
 import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 
-const RoomsTable = ({ rooms, setRoom, positionUser, listType }) => {
-  const navigate = useNavigate();
-
+const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
   const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
@@ -32,6 +30,17 @@ const RoomsTable = ({ rooms, setRoom, positionUser, listType }) => {
       value: item.name,
     };
   });
+
+  useEffect(() => {
+    getAllRoomType(positionUser)
+      .then(({ data }) => {
+        setRoomTypes(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("Lấy dữ liệu loại phòng thất bại!!");
+      });
+  }, [positionUser]);
 
   const columns = [
     {
