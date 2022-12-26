@@ -252,15 +252,15 @@ const BookingTable = ({
       console.log(currentCustomer)
       console.log(isCusObjEmpty);
       if (isCusObjEmpty) {
-        const birthday = dayjs(customerInfoForm.getFieldValue("date_of_birth"));
-        const now = dayjs(Date.now());  
-        if(now.diff(birthday, "year") < 18)
-        {
-          ErrorAlert("Khách hàng chưa đủ 18 tuổi");
-          return;
-        }
-        await customerInfoForm.validateFields()
+        customerInfoForm.validateFields()
         .then(async (value) => {
+          const birthday = dayjs(customerInfoForm.getFieldValue("date_of_birth"));
+          const now = dayjs(Date.now());  
+          if(now.diff(birthday, "year") < 18)
+          {
+            ErrorAlert("Khách hàng chưa đủ 18 tuổi");
+            return;
+          }
           console.log(value);
           const newCustomer = {
             id: value.id,
@@ -274,37 +274,43 @@ const BookingTable = ({
             newCustomer
           );
           setCurrentCustomer(newCustomer);
+          booking(userData);
         })
-        console.log("done");
-      } 
-      console.log(currentCustomer)
-        // return;
-      const { data: bookingData } = await createBooking(
-        user?.position,
-        currentCustomer,
-        selectedRooms,
-        from,
-        to
-      );
-      
-      console.log(selectedRooms);
-      setRooms((pre) => {
-        return pre.filter(
-          (data) => !selectedRooms.includes(data)
-          // data.room_name !== bookingData?.room_name
-        );
-      });
-      console.log(rooms);
-      SuccessAlert("Đặt phòng thành công.");
-      setCurrentCustomer({});
-      setSelectedRooms([]);
-      setIsModalOpen(false);
-      customerInfoForm.resetFields();
+        .catch((value) => {
+          ErrorAlert("Vui lòng nhập đầy đủ thông tin");
+          throw value;
+        })
+      }
+      else 
+        booking(currentCustomer);
       // setCurrentCustomer({});
     } catch (error) {
       console.log(error);
       ErrorAlert("Đặt phòng thất bại!");
     }
+  };
+  const booking = async (customer) => {
+    const { data: bookingData } = await createBooking(
+      user?.position,
+      customer,
+      selectedRooms,
+      from,
+      to
+    );
+    
+    console.log(selectedRooms);
+    setRooms((pre) => {
+      return pre.filter(
+        (data) => !selectedRooms.includes(data)
+        // data.room_name !== bookingData?.room_name
+      );
+    });
+    console.log(rooms);
+    SuccessAlert("Đặt phòng thành công.");
+    setCurrentCustomer({});
+    setSelectedRooms([]);
+    setIsModalOpen(false);
+    customerInfoForm.resetFields();
   };
 
   const openModalInfoCustomer = () => {
