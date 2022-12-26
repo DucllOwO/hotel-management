@@ -28,7 +28,7 @@ const Inventory = () => {
   return (
     <ItemProvider>
       <div className="inventoryContainer">
-        <InventoryTable rooms={rooms}></InventoryTable>
+        <InventoryTable rooms={rooms} user={user}></InventoryTable>
       </div>
     </ItemProvider>
     

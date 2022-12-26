@@ -23,6 +23,7 @@ const ImportForm = ({ form }) => {
             setListItem(data);
         })
     }
+    console.log(listItem)
   }, []);
 
   const items = listItem.map((item) => {

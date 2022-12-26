@@ -35,20 +35,20 @@ const InventoryForm = ({ form, record, setRecord }) => {
           min={0} 
           defaultValue={0}
           onChange={(value) => {setRecord((prev) => {
+            console.log(prev)
             prev.map((item) => {
               if(item.id === record.id)
               {
                 item.amount = value;
-                return; 
               }  
             })
-            return {
+            return [
               ...prev,
-              record: {
+              {
                 id: record.id,
                 amount: value,
               }
-            }
+            ]
           })}}
         />;
       },

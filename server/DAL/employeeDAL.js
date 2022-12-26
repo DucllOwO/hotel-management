@@ -37,6 +37,10 @@ const getEmployeeByID = (EmployeeID) => {
   return supabase.from(TABLE_NAME).select().eq("id", EmployeeID);
 };
 
+const getEmployeeByUsername = (username) => {
+  return supabase.from(TABLE_NAME).select().eq("username", username);
+};
+
 const insertEmployee = (Employee) => {
   return supabase.from(TABLE_NAME).insert({ ...Employee });
 };
@@ -62,4 +66,5 @@ module.exports = {
   deleteEmployee,
   getEmployeePositionByUsername,
   getEmployeePositionByEmail,
+  getEmployeeByUsername
 };
