@@ -51,6 +51,17 @@ const getUser = async (req, res, next) => {
   }
 };
 
+const getEmployeeByUsername = async (req, res, next) => {
+  const { username } = req.params;
+
+  const { data: employee, error: getEmployeeError } =
+    await employeeDAL.getEmployeeByUsername(username);
+
+  if (getEmployeeError) return next(getEmployeeError);
+
+  return res.status(200).send(employee[0]);
+}
+
 const createUser = async (req, res, next) => {
   console.log("called")
   // const { type } = req.params;
@@ -144,4 +155,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  getEmployeeByUsername
 };

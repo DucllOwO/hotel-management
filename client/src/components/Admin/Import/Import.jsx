@@ -17,6 +17,7 @@ const Import = ({items}) => {
     unitPrice: "",
     total: "",
   },]);
+  const [listItem, setListItem] = useState({});
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
@@ -32,6 +33,7 @@ const Import = ({items}) => {
     // console.log(totalCost)
   }
   useEffect(()=> {
+    setListItem(items); 
     calcTotalCost();
   }, [quantity, price])
   const columns = [
@@ -61,6 +63,7 @@ const Import = ({items}) => {
               //     .toLowerCase()
               //     .includes(input.toLowerCase())
               // }
+              onChange={(value) => {onItemChange(value)}}
               options={items}
             />
           </div>
@@ -132,7 +135,7 @@ const Import = ({items}) => {
             <div>
               <CancelButton
                 title="Xoá"
-                onClick={onDeleteButton(record)}
+                onCancelButton={onDeleteButton}
               ></CancelButton>
             </div>
           </>
@@ -141,8 +144,13 @@ const Import = ({items}) => {
     },
 
   ];
-
+  const onItemChange = (item) => {
+    setListItem((prev)=>{
+      prev.filter((value) => value === item)
+    })
+  }
   const onAddProduct = () => {
+    
     setDataSource((pre) => {
       return [
         ...pre,
@@ -193,7 +201,7 @@ const Import = ({items}) => {
             columns={columns}
             dataSource={dataSource}
             scroll={{ y: 350 }}
-            rowKey={(row) => row.idNum}
+            rowKey={(row) => row.id}
             pagination={false}
           ></Table>
         </div>
