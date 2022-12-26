@@ -38,7 +38,6 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
         setIsCustomerExist(false);
         setDisable(false);
         form.resetFields();
-        form.setFieldsValue()
         form.setFieldsValue({id: searchID});
       }
       setIsSearching(false);
