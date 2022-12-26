@@ -18,7 +18,8 @@ const getRoomByStatus = (status) => {
         name)
     `
     )
-    .eq("status", status);
+    .eq("status", status)
+    .eq("is_active", true);
 };
 const getUnavailableRoomID = (listBooking) => {
   console.log(listBooking);
