@@ -16,7 +16,8 @@ async function getItemByID(filter) {
 async function createNewItem(newItem) {
   const { data, error } = await supabase
     .from("item")
-    .insert({newItem});
+    .insert(newItem);
+  return {data, error};
 }
 
 module.exports = {

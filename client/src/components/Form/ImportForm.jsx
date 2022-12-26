@@ -1,8 +1,9 @@
-import { DatePicker, Form, Input, InputNumber, Select } from "antd";
+import { DatePicker, Form, Input, InputNumber, Select, Table, Button } from "antd";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { fetchItems } from "../../api/ItemAPI";
 import { useContext } from "react";
+import Import from "../Admin/Import/Import";
 import { AppContext } from "../../context/AppContext";
 import ErrorAlert from "../Error/Alert/ErrorAlert";
 
@@ -12,16 +13,16 @@ const ImportForm = ({ form }) => {
   const { user } = useContext(AppContext);
 //   const [positions, setPositions] = useState([]);
   const [listItem, setListItem] = useState([]);
-  const [price, setPrice] = useState(0);
-  const [quantity, setQuantity] = useState(0);
-  const [totalCost, setTotalCost] = useState(0);
+  
   
   useEffect(() => {
-    // console.log(user?.account.fullname)
-    fetchItems(user?.position)
-    .then(({data}) => {
-        setListItem(data);
-    })
+    if(listItem)
+    {
+        fetchItems(user?.position)
+        .then(({data}) => {
+            setListItem(data);
+        })
+    }
   }, []);
 
   const items = listItem.map((item) => {
@@ -31,15 +32,15 @@ const ImportForm = ({ form }) => {
     }
   })
 
-  const calcTotalCost = () => {
-    setTotalCost(quantity * price);
-    // console.log(totalCost)
-  }
-
+  
+  
+    const handleAdd = () => {
+        
+    };
   return (
     <Form layout="vertical" form={form} name="positionForm" autoComplete="off">
       <div className="modal">
-        <div className="left" style={{ width: "30vw" }}>
+        <div style={{ width: "60vw" }}>
           <Form.Item
             label="Nhân viên"
             name="id"
@@ -47,7 +48,18 @@ const ImportForm = ({ form }) => {
           >
             <Input size="large" disabled={true} defaultValue={user?.account.fullname}/>
           </Form.Item>
-          <Form.Item
+          <Import items={items}></Import>
+          {/* <Table
+            // components={components}
+            rowClassName={() => 'editable-row'}
+            bordered
+            dataSource={dataSource}
+            columns={columns}
+          />
+          <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
+            Add a row
+          </Button> */}
+          {/* <Form.Item
             label="Tên sản phẩm"
             name="item"
             rules={[
@@ -72,7 +84,7 @@ const ImportForm = ({ form }) => {
             ]}
             
           >
-            <InputNumber size="large" min={0} onChange={(value) => {setQuantity(value); calcTotalCost()}}/>
+            <InputNumber size="large" min={0} onChange={(value) => { setQuantity(value);}}/>
           </Form.Item>
           <Form.Item
             label="Giá"
@@ -84,14 +96,14 @@ const ImportForm = ({ form }) => {
               },
             ]}
           >
-            <InputNumber size="large" min={0} addonAfter={"đ"} onChange={(value) => {setPrice(value); calcTotalCost()}}/>
+            <InputNumber size="large" min={0} addonAfter={"đ"} onChange={(value) => {setPrice(value);}}/>
           </Form.Item>
           <Form.Item
             label="Thành tiền"
             name="total_cost"
           >
-            <Input size="large" disabled={true} addonAfter={"đ"} value={totalCost}/>
-          </Form.Item>
+            <Input size="large" addonAfter={"đ"} disabled={true} placeholder={totalCost}/>
+          </Form.Item> */}
         </div>
       </div>
     </Form>

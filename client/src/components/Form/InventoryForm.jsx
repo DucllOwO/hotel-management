@@ -3,15 +3,15 @@ import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import { fetchItems } from "../../api/ItemAPI";
 import { AppContext } from "../../context/AppContext";
+import { ItemContext } from "../../context/ItemContext";
 import ErrorAlert from "../Error/Alert/ErrorAlert";
 
-const InventoryForm = ({ form }) => {
+const InventoryForm = ({ form, record, setRecord }) => {
   const { user } = useContext(AppContext);
   const [items, setItems] = useState([]);
   useEffect(() => {
     fetchItems(user?.position)
       .then(({ data }) => {
-        console.log(data);
         setItems(data);
       })
       .catch((err) => {
@@ -31,7 +31,26 @@ const InventoryForm = ({ form }) => {
       title: "Số lượng",
       dataIndex: "amount",
       render: (text, record) => {
-        return <InputNumber value={0} />;
+        return <InputNumber 
+          min={0} 
+          defaultValue={0}
+          onChange={(value) => {setRecord((prev) => {
+            prev.map((item) => {
+              if(item.id === record.id)
+              {
+                item.amount = value;
+                return; 
+              }  
+            })
+            return {
+              ...prev,
+              record: {
+                id: record.id,
+                amount: value,
+              }
+            }
+          })}}
+        />;
       },
     },
   ];
@@ -41,7 +60,7 @@ const InventoryForm = ({ form }) => {
       <Form.Item label="Tên phòng" name="room_name">
         <Input disabled={true} />
       </Form.Item>
-      <Table columns={columns} dataSource={items}></Table>
+      <Table name="table" columns={columns} dataSource={items} rowKey={(record) => record.id}></Table>
     </Form>
   );
 };

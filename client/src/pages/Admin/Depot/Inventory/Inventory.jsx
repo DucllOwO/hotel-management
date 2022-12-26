@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { fetchRoomByStatus } from "../../../../api/RoomAPI";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 import { AppContext } from "../../../../context/AppContext";
+import { ItemProvider } from "../../../../context/ItemContext";
 import InventoryTable from "../../Tables/Inventory/InventoryTable";
 import "./inventory.css";
 
@@ -25,9 +26,12 @@ const Inventory = () => {
   }, [user.position]);
 
   return (
-    <div className="inventoryContainer">
-      <InventoryTable rooms={rooms}></InventoryTable>
-    </div>
+    <ItemProvider>
+      <div className="inventoryContainer">
+        <InventoryTable rooms={rooms}></InventoryTable>
+      </div>
+    </ItemProvider>
+    
   );
 };
 

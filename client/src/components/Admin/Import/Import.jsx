@@ -2,29 +2,45 @@ import React, { useState } from "react";
 import Topbar from "../../Topbar/Topbar";
 import { Input, Button, Table, Select, InputNumber, Modal } from "antd";
 import BottomBar from "../BottomBar/BottomBar";
+import CancelButton from "../../IconButton/CancelButton/CancelButton";
 import "./import.css";
 import { PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-const Import = () => {
+const Import = ({items}) => {
   const navigate = useNavigate();
+  const [dataSource, setDataSource] = useState([{
+    id: 1,
+    name: "",
+    amount: "",
+    unitPrice: "",
+    total: "",
+  },]);
+  const [price, setPrice] = useState(0);
+  const [quantity, setQuantity] = useState(0);
+  const [totalCost, setTotalCost] = useState(0);
+  // const onChangeSelect = (value) => {
+  //   console.log(value);
+  // };
 
-  const onChangeSelect = (value) => {
-    console.log(value);
-  };
-
-  const onSearch = (value) => {
-    console.log("search:", value);
-  };
-
-  const [dataSource, setDataSource] = useState([]);
-
+  // const onSearch = (value) => {
+  //   console.log("search:", value);
+  // };
+  const calcTotalCost = () => {
+    setTotalCost(quantity * price);
+    // console.log(totalCost)
+  }
+  useEffect(()=> {
+    calcTotalCost();
+  }, [quantity, price])
   const columns = [
     {
       key: "1",
-      title: "No",
+      title: "STT",
       dataIndex: "id",
       align: "center",
+      width: 50,
     },
     {
       key: "2",
@@ -33,27 +49,19 @@ const Import = () => {
       align: "center",
       render: (text, record) => {
         return (
-          <div className="inputCon">
+          <div>
             <Select
+              width={200}
               showSearch
               placeholder="Chọn một sản phẩm"
-              onChange={onChangeSelect}
-              onSearch={onSearch}
-              filterOption={(input, option) =>
-                (option?.label ?? "")
-                  .toLowerCase()
-                  .includes(input.toLowerCase())
-              }
-              options={[
-                {
-                  value: "president",
-                  label: "President",
-                },
-                {
-                  value: "luxury",
-                  label: "Luxury",
-                },
-              ]}
+              // onChange={onChangeSelect}
+              // onSearch={onSearch}
+              // filterOption={(input, option) =>
+              //   (option?.label ?? "")
+              //     .toLowerCase()
+              //     .includes(input.toLowerCase())
+              // }
+              options={items}
             />
           </div>
         );
@@ -62,15 +70,16 @@ const Import = () => {
     {
       key: "3",
       title: "Số lượng",
-      dataIndex: "amount",
+      dataIndex: "quantity",
+      width: 100,
       align: "center",
       render: (_, record) => {
         return (
           <>
             <InputNumber
-              defaultValue={1}
-              min={1}
-              onChange={() => {}}
+              defaultValue={0}
+              min={0}
+              onChange={(value) => setQuantity(value)}
             ></InputNumber>
           </>
         );
@@ -79,33 +88,58 @@ const Import = () => {
     {
       key: "4",
       title: "Đơn giá",
-      dataIndex: "unitPrice",
+      dataIndex: "price",
       align: "center",
+      render: (_, record) => {
+        return (
+          <>
+            <InputNumber
+              defaultValue={0}
+              addonAfter={"đ"}
+              min={0}
+              onChange={(value) => setPrice(value)}
+            ></InputNumber>
+          </>
+        )
+      }
     },
     {
       key: "5",
       title: "Thành tiền",
       dataIndex: "total",
       align: "center",
+      render: (_, record) => {
+        return (
+          <>
+            <InputNumber
+              placeholder={totalCost}
+              addonAfter={"đ"}
+              disabled={true}
+            ></InputNumber>
+          </>
+        )
+      }
     },
     {
       key: "6",
       title: "Thao tác",
+      dataIndex: "action",
+      width: 80,
       align: "center",
       render: (_, record) => {
         return (
           <>
-            <Button
-              onClick={() => {
-                onDeleteButton(record);
-              }}
-            >
-              delete
-            </Button>
+            <div>
+              <CancelButton
+                title="Xoá"
+                onClick={onDeleteButton(record)}
+              ></CancelButton>
+            </div>
           </>
-        );
-      },
+        )
+      }
     },
+
   ];
 
   const onAddProduct = () => {
@@ -139,31 +173,20 @@ const Import = () => {
     });
   };
 
-  const onCancel = () => {
-    Modal.confirm({
-      title: "Are you sure, you want to discard changes?",
-      okText: "Yes",
-      okType: "danger",
-      onOk: () => {
-        navigate(-1);
-      },
-    });
-  };
+  // const onCancel = () => {
+  //   Modal.confirm({
+  //     title: "Are you sure, you want to discard changes?",
+  //     okText: "Yes",
+  //     okType: "danger",
+  //     onOk: () => {
+  //       navigate(-1);
+  //     },
+  //   });
+  // };
 
   return (
     <div className="import">
-      <Topbar
-        name="Huỳnh Thế Vĩ"
-        img="https://12ax7web.s3.amazonaws.com/accounts/1/products/1986199880924/Boba-Stitch_800x800_SEPS-1000x1000.jpg"
-        position="Manager"
-      ></Topbar>
-
       <div className="importContainer">
-        <div className="inputCon">
-          <div className="label">ID: </div>
-          <Input placeholder="ID" disabled="true"></Input>
-        </div>
-
         <div>
           <Table
             size="small"
@@ -174,26 +197,10 @@ const Import = () => {
             pagination={false}
           ></Table>
         </div>
-      </div>
-
-      <BottomBar>
-        <div className="bottomBar">
-          <div>
-            <Button icon={<PlusOutlined />}>Thêm</Button>
-          </div>
-          <div>
-            <Button
-              onClick={() => {
-                onCancel();
-              }}
-              style={{ marginRight: "10px" }}
-            >
-              Hủy
-            </Button>
-            <Button type="primary">Xong</Button>
-          </div>
+        <div>
+            <Button icon={<PlusOutlined />} onClick={onAddProduct}>Thêm</Button>
         </div>
-      </BottomBar>
+      </div>
     </div>
   );
 };

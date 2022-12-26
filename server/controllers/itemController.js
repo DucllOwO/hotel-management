@@ -22,11 +22,11 @@ const createItem = async (req, res, next) => {
 
   if (!item) return next(BadRequestError());
 
-  const { error: insertItemError } = await itemDAL.createNewItem({item});
+  const { data: createItemData , error: insertItemError } = await itemDAL.createNewItem(item);
 
   if (insertItemError) return next(insertItemError);
 
-  res.status(201).send("Created");
+  res.status(201).send({data: createItemData});
 };
 
 module.exports = {

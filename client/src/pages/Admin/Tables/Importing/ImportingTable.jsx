@@ -235,10 +235,11 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
         cancelText="Hủy"
         onOk={handleOKModal}
         onCancel={handleCancelModal}
-        width="40%"
+        width="60%"
       >
         <ImportForm
           form={importForm}
+          width="100%"
         />
       </Modal>
     );

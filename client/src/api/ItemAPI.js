@@ -5,3 +5,9 @@ export const fetchItems = (positionUser) => {
     params: { user: { position: positionUser } },
   });
 };
+
+export const createItem = (positionUser, newItem) => {
+  return userRequest.post("/items", {
+    user: {position: positionUser}, item: newItem,
+  });
+};

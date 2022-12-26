@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../index.css";
+import AppContext from "antd/es/app/context";
+import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import { Table, Button, Modal, Form, Input, Slider } from "antd";
-
+import { createItem } from "../../../../api/ItemAPI";
 import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import ItemForm from "../../../../components/Form/ItemForm";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
+import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 
-const ItemTable = ({ items, setItems }) => {
+const ItemTable = ({ items, setItems, user }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -17,9 +20,9 @@ const ItemTable = ({ items, setItems }) => {
   };
 
   const [editingRow, setEditingRow] = useState(null);
-
-  const [form] = Form.useForm();
-
+  // const {user} = useContext(AppContext);
+  const [itemForm] = Form.useForm();
+  const [newItem, setNewItem] =useState({});
   const [searchedText, setSearchedText] = useState("");
 
   const [reserveFilter, setReserveFilter] = useState(null);
@@ -231,6 +234,37 @@ const ItemTable = ({ items, setItems }) => {
     setItems(upnameDataSource);
     setEditingRow(null);
   };
+  const handleCancelModal = () => {
+    setIsModalVisible(false);
+  }
+  const handleOKModal =async () => {
+    try{
+      itemForm.validateFields().then((value) => {
+        setNewItem({
+          name: value.name,
+          reserve_amount: value.quantity,
+          free_amount: 0,
+          sell_price: value.price,
+        })
+    });
+    console.log(newItem)
+      const {data: itemData} = await createItem(user?.position, newItem);    
+      console.log(itemData)
+      setItems((prev) => {
+        console.log(prev)
+        return [
+          ...prev,
+          itemData.data[0]
+        ]})
+      SuccessAlert("Tạo sản phẩm mới thành công");
+    }
+    catch{
+      ErrorAlert("Đã xảy ra lỗi khi tạo sản phẩm mới");
+    }
+    // console.log(data)
+    // console.log(newItem);
+    // console.log(user)
+  }
 
   return (
     <div className="table">
@@ -238,10 +272,10 @@ const ItemTable = ({ items, setItems }) => {
         <Modal
           title="Thông tin sản phẩm"
           visible={isModalVisible}
-          onOk={handle}
-          onCancel={handle}
+          onOk={handleOKModal}
+          onCancel={handleCancelModal}
         >
-          <ItemForm />
+          <ItemForm form={itemForm}/>
         </Modal>
       </>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
