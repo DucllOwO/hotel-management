@@ -2,7 +2,7 @@ import { Form, Input, Upload, InputNumber } from "antd";
 import ImgCrop from "antd-img-crop";
 import React, { useState } from "react";
 
-const ItemForm = ({form}) => {
+const ItemForm = ({form, item, isEditing}) => {
   const [fileList, setFileList] = useState([]);
   const [disabled, setDisabled] = useState(true);
   const onChange = ({ fileList: newFileList }) => {
@@ -35,11 +35,11 @@ const ItemForm = ({form}) => {
             message: "Vui lòng nhập tên sản phẩm",
           },
         ]}>
-        <Input required/>
+        <Input required disabled={isEditing} />
       </Form.Item>
       <Form.Item 
         label="Số lượng tồn"
-        name="quantity"
+        name="reserve_amount"
         required
         rules={[
           {
@@ -53,11 +53,11 @@ const ItemForm = ({form}) => {
           else
             setDisabled(true);
         }}>
-        <InputNumber value={0} min={0}/>
+        <InputNumber min={0}/>
       </Form.Item>
       <Form.Item 
         label="Giá" 
-        name="price"
+        name="sell_price"
         required
         rules={[
           {
@@ -65,7 +65,7 @@ const ItemForm = ({form}) => {
             message: "Vui lòng nhập giá"
           }
         ]}>
-        <InputNumber addonAfter={"đ"} min={0} value={0} />
+        <InputNumber addonAfter={"đ"} min={0} />
       </Form.Item>
     </Form>
   );

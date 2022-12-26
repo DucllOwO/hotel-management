@@ -11,3 +11,9 @@ export const createItem = (positionUser, newItem) => {
     user: {position: positionUser}, item: newItem,
   });
 };
+
+export const updateItem = (positionUser, itemID, newItem) => {
+  return userRequest.put(`/items/${newItem.id}`, {
+    user: { position: positionUser }, itemID: itemID, newItem: newItem
+  })
+}
