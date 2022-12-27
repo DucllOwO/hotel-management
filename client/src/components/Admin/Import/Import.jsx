@@ -21,6 +21,8 @@ const Import = ({ items, setListItem, importList, setImportList }) => {
 
   //   calcTotalCost();
   // }, [quantity, price]);
+
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const columns = [
     {
       key: "1",
@@ -143,7 +145,6 @@ const Import = ({ items, setListItem, importList, setImportList }) => {
           <>
             <div>
               <CancelButton
-                title="Xoá"
                 onCancelButton={() => onDeleteButton(record)}
               ></CancelButton>
             </div>
@@ -155,23 +156,49 @@ const Import = ({ items, setListItem, importList, setImportList }) => {
 
   const onAmountChange = (e, importID) => {
     setImportList((prev) => {
-      return prev.map((importTemp) => {
+      return prev.map((importTemp, index) => {
         if (importTemp.id === importID) {
-          return { ...importTemp, amount: e, total: e * importTemp.unitPrice };
+          return {
+            ...importTemp,
+            id: index + 1,
+            amount: e,
+            total: e * importTemp.unitPrice,
+          };
         }
-        return importTemp;
+        return { ...importTemp, id: index + 1 };
       });
     });
   };
 
-  function onDeleteButton(record) {}
+  function onDeleteButton(record) {
+    setListItem((prev) => [
+      ...prev,
+      selectedOptions.find((option) => option.option.label === record.name),
+    ]);
+
+    setImportList((prev) =>
+      prev.filter((importTemp) => importTemp.name !== record.name)
+    );
+    //reset id column
+    setImportList((prev) => {
+      return prev.map((importTemp, index) => {
+        return { ...importTemp, id: index + 1 };
+      });
+    });
+  }
 
   const onItemChange = (itemID, importID) => {
-    // setListItem((prev) => {
-    //   return prev.filter((value) => value.option.value !== itemID);
-    // });
-
     let option = items.find((item) => item.option.value === itemID);
+    setSelectedOptions((prev) => [...prev, option]);
+    setListItem((prev) => {
+      return prev.filter((value) => {
+        if (value.option.value !== itemID) {
+          return true;
+        }
+        return false;
+      });
+    });
+
     console.log(option);
     setImportList((prev) => {
       return prev.map((importTemp) => {
