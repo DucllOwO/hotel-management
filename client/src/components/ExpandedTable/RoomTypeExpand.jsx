@@ -30,7 +30,7 @@ const RoomTypeExpand = ({ utils = [], ...prices }) => {
         "hourPrice",
       ],
       render: (text, record) => {
-        return <p>{Object.values(record)[0]}</p>;
+        return <p>{Object.values(record)[0].toLocaleString()}</p>;
       },
     },
   ];
