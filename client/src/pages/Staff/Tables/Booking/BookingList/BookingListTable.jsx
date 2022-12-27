@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import "../../index.css";
 import { Table, Button, Modal, Form, Input, Tooltip, Slider } from "antd";
 import "./bookingListtable.css";
+import dayjs from "dayjs";
 import { FilterOutlined } from "@ant-design/icons";
 import ErrorAlert from "../../../../../components/Error/Alert/ErrorAlert"
 import SuccessAlert from "../../../../../components/Success/SusscessAlert.jsx/SuccessAlert"
-import { updateBookingStatus } from "../../../../../api/BookingListAPI";
+import { createReceipt, getInventory, getRoomByBookingID, updateBookingStatus } from "../../../../../api/BookingListAPI";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DetailForm from "../../../../../components/Form/DetailForm/DetailForm"
@@ -16,12 +17,17 @@ import { AppContext } from "../../../../../context/AppContext";
 import { useEffect } from "react";
 import BookingListForm from "../../../../../components/Form/BookingListForm";
 import { useForm } from "antd/es/form/Form";
+import { fetchEmployeeByUsername } from "../../../../../api/EmployeeAPI";
 
 const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
   const [editingRow, setEditingRow] = useState(null);
   const [isCheckout, setIsCheckout] = useState(false);
-  const [form] = Form.useForm();
-  const infoForm = useForm();
+  const [currentEmployee, setCurrentEmployee] = useState({});
+  const [selectedBooking, setSelectedBooking] = useState({});
+  const [usedRoom, setUsedRoom] = useState([]);
+  const [serviceCost, setServiceCost] = useState(0);
+  // const [form] = Form.useForm();
+  const [infoForm] = Form.useForm();
   const {user} = useContext(AppContext);
   const [searchedText, setSearchedText] = useState("");
   const [isShowReceipt, setShowReceipt] = useState(false)
@@ -103,7 +109,7 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
       sorter: (a, b) => a.customer_id.localeCompare(b.customer_id),
     },
     {
-      key: "5",
+      key: "6",
       title: "Thao tác",
       render: (_, record) => {
         if(status === "0")
@@ -141,17 +147,18 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
       okType: "danger",
       onOk: () => {
         setIsCheckout(true);
-          // updateBookingStatus(user?.position, "2", record.id)
-          // .then((data) => {
-          //   SuccessAlert("Trả phòng thành công");
-          //   setBooking((prev) => 
-          //     prev.filter((value) => {return value.id !== record.id})
-          //   )
-          // })
-          // .catch((value) => {
-          //   ErrorAlert("Trả phòng thất bại");
-          //   throw value;
-          // })
+        setSelectedBooking(record);
+        // updateBookingStatus(user?.position, "2", record.id)
+        //   .then((data) => {
+        //     SuccessAlert("Trả phòng thành công");
+        //     setBooking((prev) => 
+        //       prev.filter((value) => {return value.id !== record.id})
+        //     )
+        //   })
+        //   .catch((value) => {
+        //     ErrorAlert("Trả phòng thất bại");
+        //     throw value;
+        //   })
       },
     });
   }
@@ -211,8 +218,59 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
     setBooking(updateDataSource);
     setEditingRow(null);
   };
-  const handleOKModal = () => {
+  const handleOKModal = async () => {
+    fetchEmployeeByUsername(user?.position, user?.account.username).then((data) => {
+      setCurrentEmployee(data.data);
+      console.log(data.data)
+    });
 
+    console.log(selectedBooking)
+    getInventory(user?.position, selectedBooking.id).then((data) => {
+      console.log(data.data)
+      data.data.forEach((value) => {
+        setServiceCost((prev) => { 
+          return prev + (value.price * value.amount);
+        });
+      });
+    });
+
+    console.log(serviceCost)
+
+    getRoomByBookingID(user?.position, selectedBooking.id).then((data) => {
+      console.log(data)
+      setUsedRoom(data.data);
+    })
+    
+    infoForm.validateFields().then( async (data) => {
+      const newReceipt = {
+        established_date: dayjs(Date.now()),
+        payment_method: data.method,
+        checkout_time: dayjs(Date.now()),
+        note: data.note,
+        surcharge: data.surcharge,
+        service_cost: serviceCost,
+
+
+      }
+      // const {data: receipt} = await createReceipt(user?.position, newReceipt, selectedBooking, currentEmployee);
+      SuccessAlert("Trả phòng thành công")
+    })
+    .catch((value) => {
+      ErrorAlert("Vui lòng nhập đủ các thông tin");
+      throw value
+    })
+
+    // updateBookingStatus(user?.position, "2", record.id)
+        //   .then((data) => {
+        //     SuccessAlert("Trả phòng thành công");
+        //     setBooking((prev) => 
+        //       prev.filter((value) => {return value.id !== record.id})
+        //     )
+        //   })
+        //   .catch((value) => {
+        //     ErrorAlert("Trả phòng thất bại");
+        //     throw value;
+        //   })
 
     setIsCheckout(false);
     setShowReceipt(true);
@@ -232,7 +290,7 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
         onCancel={handleCancelModal}
         width="40%"
       >
-        <BookingListForm/>
+        <BookingListForm form={infoForm}/>
       </Modal>
     );
   }
