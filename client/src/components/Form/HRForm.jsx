@@ -89,21 +89,6 @@ const HRForm = ({
                   return Promise.resolve();
                 },
               }),
-
-              // ({ getFieldValue }) => ({
-              //   validator(_, value) {
-              //     if (value) {
-              //       const index = employees.findIndex(
-              //         (employee) => employee.id == form.getFieldValue("id")
-              //       );
-
-              //       if (index >= 0)
-              //         return Promise.reject(new Error("CCCD/CMND đã tồn tại"));
-              //       return Promise.resolve();
-              //     }
-              //     return Promise.resolve();
-              //   },
-              // }),
               {
                 pattern: new RegExp(/\d/g),
                 message: "CMND/CCCD chỉ được nhập số",
@@ -120,6 +105,7 @@ const HRForm = ({
               maxLength={12}
               enterButton="Kiểm tra"
               loading={isLoading}
+              disabled={disable}
             />
           </Form.Item>
           {isEmployeeExist ? (

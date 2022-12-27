@@ -127,7 +127,9 @@ const HRTable = ({ employees, setEmployees }) => {
           <>
             <div className="btnWrap">
               <EditButton
-                openEditModal={() => openEditModal(record)}
+                onEditButton={(e) => {
+                  openEditModal(record);
+                }}
               ></EditButton>
               <DeleteButton
                 onDeleteButton={() => onDeleteButton(record)}
@@ -141,10 +143,15 @@ const HRTable = ({ employees, setEmployees }) => {
 
   const openEditModal = (record) => {
     setModal("edit");
+    console.log({
+      ...record,
+      start_working_date: dayjs(record.start_working_date),
+      date_of_birth: dayjs(record.date_of_birth),
+    });
     form.setFieldsValue({
       ...record,
-      start_working_date: moment(record.start_working_date),
-      date_of_birth: moment(record.date_of_birth),
+      start_working_date: dayjs(record.start_working_date),
+      date_of_birth: dayjs(record.date_of_birth),
     });
   };
 
@@ -255,8 +262,8 @@ const HRTable = ({ employees, setEmployees }) => {
   return (
     <div className="table">
       <>
-        {modal === "add" && modalAddEmployee()}
-        {modal === "edit" && modalEditEmployee()}
+        {modal === "add" ? modalAddEmployee() : null}
+        {modal === "edit" ? modalEditEmployee() : null}
       </>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
