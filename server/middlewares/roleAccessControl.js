@@ -38,7 +38,6 @@ const hasPermission = (action, resource) => {
       const { user } =
         Object.keys(req.body).length !== 0 ? req.body : req.query;
       const userPosition = user?.position;
-      console.log(user)
       switch (action) {
         case "get":
           permissions = ac.can(userPosition).readAny(resource);

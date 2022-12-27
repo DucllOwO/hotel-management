@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dayjs from "dayjs"
 import {
   Table,
@@ -28,7 +28,7 @@ const InventoryTable = ({ rooms, user }) => {
   };
   const [form] = Form.useForm();
   const {item, setItem, record, setRecord} = useContext(ItemContext);
-
+  const [dataSource, setDataSource] = useState([...rooms]);
   const [searchedText, setSearchedText] = useState("");
   const areaMark = {
     10: "10",
@@ -37,13 +37,17 @@ const InventoryTable = ({ rooms, user }) => {
   const [currentRoom, setCurrentRoom] = useState({});
 
   const [filter, setFilter] = useState("");
+  useEffect(() => {
+    setDataSource(rooms);
+    console.log(rooms)  
+  }, [rooms])
 
-  const items = rooms.map((value, index) => {
-    // return {
-    //   label: "" + value.roomType.toString(),
-    //   value: "" + value.roomType.toString(),
-    // };
-  });
+  // const items = rooms.map((value, index) => {
+  //   // return {
+  //   //   label: "" + value.roomType.toString(),
+  //   //   value: "" + value.roomType.toString(),
+  //   // };
+  // });
 
   // const [dataSource, setDataSource] = useState([
   //   {
@@ -74,11 +78,12 @@ const InventoryTable = ({ rooms, user }) => {
       width: "26.6666%",
       align: "center",
       sorter: (a, b) => a.room_name.localeCompare(b.room_name),
+      render: (_,record) => {}
     },
     {
       key: "2",
       title: "Loại phòng",
-      dataIndex: "roomType",
+      dataIndex: "room_type",
       width: "26.6666%",
       align: "center",
       filteredValue: filter !== "" ? [filter] : null,
@@ -87,16 +92,16 @@ const InventoryTable = ({ rooms, user }) => {
           String(record.room_name)
             .toLocaleLowerCase()
             .includes(value.toLocaleLowerCase()) ||
-          String(record.room_type_id.name)
+          String(record.room_type)
             .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.roomType.name)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase())
+            .includes(value.toLocaleLowerCase()) 
+          // String(record.roomType.name)
+          //   .toLocaleLowerCase()
+          //   .includes(value.toLocaleLowerCase())
         );
       },
       render: (text, record) => {
-        return <p>{record.room_type_id.name}</p>;
+        // return <p>{record.room_type_id.name}</p>;
       },
       filterDropdown: ({ confirm, clearFilters }) => {
         return (
@@ -105,7 +110,7 @@ const InventoryTable = ({ rooms, user }) => {
               <div>
                 <Select
                   size="medium"
-                  options={items}
+                  // options={items}
                   showSearch
                   placeholder="Chọn loại phòng"
                   onChange={(e) => {
@@ -135,7 +140,7 @@ const InventoryTable = ({ rooms, user }) => {
     {
       key: "3",
       title: "Diện tích (m2)",
-      dataIndex: "size",
+      // dataIndex: "size",
       width: "26.6666%",
       align: "center",
       render: (text, record) => {
@@ -156,7 +161,6 @@ const InventoryTable = ({ rooms, user }) => {
               <Button
                 type="primary"
                 onClick={() => {
-                  console.log(rooms);
                 }}
               >
                 Reset
@@ -179,8 +183,8 @@ const InventoryTable = ({ rooms, user }) => {
               title="Kiểm tra phòng"
               onCheckButton={() => {
                 showModal();
-                setCurrentRoom(record.room_name);
-                form.setFieldValue("room_name", record.room_name);
+                // setCurrentRoom(record.room_name);
+                // form.setFieldValue("room_name", record.room_name);
               }}
             ></CheckButton>
             {/* <TextButton
@@ -256,7 +260,7 @@ const InventoryTable = ({ rooms, user }) => {
       </div>
       <Table
         columns={columns}
-        dataSource={rooms}
+        dataSource={dataSource}
         scroll={{ y: "60vh", x: "100%" }}
       ></Table>
     </div>

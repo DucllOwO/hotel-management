@@ -18,7 +18,7 @@ const getRoomByStatus = (status) => {
     )
     .eq("status", status);
 };
-const getUnavailableRoomID = (listBooking) => {
+const getRoomByBookingID = (listBooking) => {
   console.log(listBooking);
   return supabase
     .from("used_room")
@@ -27,7 +27,20 @@ const getUnavailableRoomID = (listBooking) => {
     .order("room_id", {ascending: true});
 };
 
-const getRoomAvailable = (listRoom) => {
+const getUsingRoom = (listBooking) => {
+  return supabase
+    .from("used_room")
+    .select(
+      `
+        booking_id,
+        room_id(room_name, room_type_id(name))
+      `
+    )
+    .in("booking_id", listBooking)
+    .order("room_id", {ascending: true});
+};
+
+const getAvailableRoom = (listRoom) => {
   // console.log(listRoom);
   return supabase
     .from(TABLE_NAME)
@@ -39,6 +52,20 @@ const getRoomAvailable = (listRoom) => {
     `
     )
     .not("id", "in", `(${listRoom})`)
+    .order("room_name", { ascending: true });
+};
+const getRoomByID = (listRoom) => {
+  // console.log(listRoom);
+  return supabase
+    .from(TABLE_NAME)
+    .select(
+    `
+      id,
+      room_name,
+      room_type_id(name)
+    `
+    )
+    .in("id", listRoom)
     .order("room_name", { ascending: true });
 };
 
@@ -67,8 +94,10 @@ const insertRoom = (room) => {
 };
 
 module.exports = {
-  getRoomAvailable,
-  getUnavailableRoomID,
+  getAvailableRoom,
+  getRoomByID,
+  getUsingRoom,
+  getRoomByBookingID,
   getAllRooms,
   updateRoom,
   insertRoom,
