@@ -27,7 +27,7 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
 
   const [searchedText, setSearchedText] = useState("");
 
-  const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState(null);
 
   const [priceFilter, setPriceFilter] = useState(null);
   const [methodFilter, setMethodFilter] = useState("");
@@ -260,40 +260,33 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
   };
 
   const handleOKModal = () => {
-    setModal(false);
+    setModal(null);
   };
 
   const handleCancelModal = () => {
-    setModal(false);
+    setModal(null);
   };
 
   const ModalDetail = () => {
     return (
       <Modal
-        title="INVOICE #123123"
+        title={"#" + receipt[modal].id}
         open={true}
         onOk={handleOKModal}
         onCancel={handleCancelModal}
         width="60%"
       >
-        <DetailForm></DetailForm>
+        <DetailForm receipt={receipt} rowIndex={modal}></DetailForm>
       </Modal>
     );
   };
 
   return (
     <div className="table">
-      {modal === true && ModalDetail()}
+      {modal !== null && ModalDetail(modal)}
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div>
-          <Button
-            onClick={() => {
-              setModal(true);
-            }}
-          >
-            Modal
-          </Button>
           <Button
             className="dateBtn"
             type={type === "year" ? "primary" : "default"}
@@ -352,6 +345,14 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
         </div>
       </div>
       <Table
+        onRow={(record, rowIndex) => {
+          return {
+            onClick: (event) => {
+              // ModalDetail(rowIndex);
+              setModal(rowIndex);
+            }, // click row
+          };
+        }}
         showSorterTooltip={false}
         columns={columns}
         dataSource={receipt}

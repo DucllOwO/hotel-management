@@ -23,6 +23,7 @@ const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
   const [roomTypes, setRoomTypes] = useState([]);
 
   const [filter, setFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
 
   const items = listType.map((item) => {
     return {
@@ -30,6 +31,25 @@ const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
       value: item.name,
     };
   });
+
+  const statusItems = [
+    {
+      label: "Trống",
+      value: "0",
+    },
+    {
+      label: "Đang sử dụng",
+      value: "1",
+    },
+    {
+      label: "Đang chờ",
+      value: "2",
+    },
+    {
+      label: "Đang dọn dẹp",
+      value: "3",
+    },
+  ];
 
   useEffect(() => {
     getAllRoomType(positionUser)
@@ -138,7 +158,6 @@ const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
                   placeholder="Chọn loại phòng"
                   onChange={(e) => {
                     setFilter(e);
-                    confirm();
                   }}
                 />
               </div>
@@ -146,9 +165,6 @@ const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
                 type="primary"
                 style={{ marginTop: "10px" }}
                 onClick={() => {
-                  const ele = "pn";
-                  const elephant = "phòng đơn";
-                  console.log(elephant.search(ele));
                   setFilter("");
                   clearFilters({ closeDropdown: true });
                 }}
@@ -164,22 +180,17 @@ const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
       },
       onFilter: (value, record) => {
         if (filter === "") {
-          return record.roomType;
+          return record.room_type_id.name;
         } else {
-          return record.roomType === value;
+          console.log(statusFilter);
+          return record.room_type_id.name === value;
         }
         // record.roomType === value;
         // console.log(value);
       },
-      // onFilter: (value, record) => {
-      //   console.log("1");
-      //   return record.roomType
-      //     .toLocaleLowerCase()
-      //     .includes(value.toLocaleLowerCase());
-      // },
     },
     {
-      key: "3",
+      key: "4",
       title: "Trạng thái",
       dataIndex: "status",
       width: "20%",
@@ -218,9 +229,81 @@ const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
             );
         }
       },
+      filteredValue: statusFilter !== "" ? [statusFilter] : null,
+      filterDropdown: ({ confirm, clearFilters }) => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div>
+                <Select
+                  style={{ width: 300 }}
+                  size="medium"
+                  options={statusItems}
+                  showSearch
+                  placeholder="Chọn trạng thái"
+                  onChange={(e) => {
+                    setStatusFilter(e);
+                    confirm();
+                    // if (e === 0) {
+                    //   setStatusFilter("0");
+                    //   confirm();
+                    //   return;
+                    // }
+                    // if (e === "Đang sử dụng") {
+                    //   setStatusFilter("1");
+                    //   confirm();
+                    //   return;
+                    // }
+                    // if (e === "Đang chờ") {
+                    //   setStatusFilter("2");
+                    //   confirm();
+                    //   return;
+                    // }
+                    // if (e === "Đang dọn dẹp") {
+                    //   setStatusFilter("3");
+                    //   confirm();
+                    //   return;
+                    // }
+                  }}
+                />
+              </div>
+              <Button
+                type="primary"
+                style={{ marginTop: "10px" }}
+                onClick={() => {
+                  console.log(statusFilter);
+                  setStatusFilter("");
+                  clearFilters({ closeDropdown: true });
+                }}
+              >
+                Reset
+              </Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
+      onFilter: (value, record) => {
+        console.log(statusFilter);
+        if (statusFilter === "") {
+          return record.status;
+        } else {
+          return record.status === value;
+        }
+        // return record.status;
+        // if (filter === "") {
+        //   return record.roomType;
+        // } else {
+        //   return record.roomType === value;
+        // }
+        // record.roomType === value;
+        // console.log(value);
+      },
     },
     {
-      key: "4",
+      key: "5",
       title: "Thao tác",
       render: (_, record) => {
         return (
@@ -349,7 +432,6 @@ const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
     form
       .validateFields()
       .then((values) => {
-        console.log(values);
         updateRoom(positionUser, editingRow, values)
           .then(({ data }) => {
             SuccessAlert("Chỉnh sửa phòng thành công.");

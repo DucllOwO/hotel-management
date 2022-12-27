@@ -1,17 +1,20 @@
-import { Form } from "antd";
+import { Button, Col, Form, Row } from "antd";
 import FormItem from "antd/es/form/FormItem";
+import Column from "antd/es/table/Column";
 import React from "react";
 import "./detailform.css";
 import DetailRoomTable from "./Tables/DetailRoomTable";
 import DetailServiceTable from "./Tables/DetailServiceTable";
 
-const DetailForm = () => {
+const DetailForm = ({ receipt, rowIndex }) => {
   return (
-    <Form>
+    <div>
       <div className="modal">
         <div className="left">
           <Form.Item label="Thời gian">
-            <span className="formItem">03 Nov 2022 12:18:00</span>
+            <span className="formItem">
+              {receipt[rowIndex].established_date}
+            </span>
           </Form.Item>
           <Form.Item label="Khách hàng">
             <span className="formItem">Thế Vĩ</span>
@@ -19,42 +22,59 @@ const DetailForm = () => {
         </div>
         <div className="right">
           <Form.Item label="Check-in">
-            <span className="formItem">01 Nov 2022 12:18:00</span>
+            <span className="formItem">{receipt[rowIndex].checkin_time}</span>
           </Form.Item>
           <Form.Item label="Check-out">
-            <span className="formItem">03 Nov 2022 12:18:00</span>
+            <span className="formItem">{receipt[rowIndex].checkout_time}</span>
           </Form.Item>
         </div>
       </div>
-      <hr />
-      <div className="modal">
+      <div>
         <DetailRoomTable></DetailRoomTable>
-        <hr />
       </div>
-      <hr />
-      <div className="modal">
+      <div>
         <DetailServiceTable></DetailServiceTable>
-        <hr />
       </div>
       <hr />
-      <div className="modal">
-        <div className="left"></div>
-        <div className="rightDetail">
-          <Form.Item className="formItem">
-            <div className="totalContainer">
-              <span className="discountTitle">Discount</span>
-              <span className="discountPrice">400.000đ</span>
-            </div>
-          </Form.Item>
-          <Form.Item className="formItem">
-            <div className="totalContainer">
-              <span className="title">Total</span>
-              <span className="price">400.000đ</span>
-            </div>
-          </Form.Item>
-        </div>
-      </div>
-    </Form>
+      <Row justify={"end"}>
+        <Col span={12}>
+          <div className="noteTitle">Ghi chú</div>
+          <div>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+          </div>
+        </Col>
+        <Col span={7}>
+          <div className="itemListContainer">
+            <div className="itemList">Tổng tiền phòng</div>
+            <div className="itemList">Tổng tiền dịch vụ</div>
+            <div className="itemList">Phụ thu</div>
+            <div className="totalTitle">Tổng cộng</div>
+          </div>
+        </Col>
+        <Col span={5}>
+          <div className="priceList">200.000đ</div>
+          <div className="priceList">200.000đ</div>
+          <div className="priceList">200.000đ</div>
+          <div className="totalText">10.000.000đ</div>
+        </Col>
+      </Row>
+      {/* <Row justify={"end"}>
+          <div className="itemList">Tổng tiền phòng</div>
+          <div>200.000đ</div>
+        </Row>
+        <Row justify={"end"}>
+          <div className="itemList">Tổng dịch vụ</div>
+          <div>200.000đ</div>
+        </Row>
+        <Row justify={"end"}>
+          <div className="itemList">Phụ thu</div>
+          <div>200.000đ</div>
+        </Row>
+        <Row justify={"end"}>
+          <div className="itemList">Giảm giá</div>
+          <div>200.00đ</div>
+        </Row> */}
+    </div>
   );
 };
 
