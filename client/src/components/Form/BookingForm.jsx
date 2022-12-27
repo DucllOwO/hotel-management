@@ -15,11 +15,13 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
   const [isSearching, setIsSearching] = useState(false);
 
   async function checkCustomerExist() {
+    const searchID = form.getFieldValue("id")
+
     try {
       setIsSearching(true);
       const { data } = await fetchCustomerByID(
         user.position,
-        form.getFieldValue("id")
+        searchID
       );
       // console.log(dayjs(data.date_of_birth));
       // console.log(form.getFieldValue("id"));
@@ -32,8 +34,11 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
         });
         setDisable(true);
       } else {
+        setCurrentCustomer({});
         setIsCustomerExist(false);
         setDisable(false);
+        form.resetFields();
+        form.setFieldsValue({id: searchID});
       }
       setIsSearching(false);
       return Promise.resolve();
@@ -74,7 +79,7 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
             message: "Vui lòng nhập tối đa 12 số"
           },
           {
-            pattern: new RegExp(/\d{12}/g),            
+            pattern: new RegExp(/\d/g),            
             message: "Vui lòng nhập đúng số CCCD"
           },
           
@@ -90,6 +95,7 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
           enterButton="Search"
           size="large"
           loading={isSearching}
+          maxLength={12}
         />
       </Form.Item>
       <div style={{ marginBottom: 24 }}>
@@ -131,7 +137,7 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
             message: "Vui lòng nhập tối đa 10 số"
           },
           {
-            pattern: new RegExp(/\d{10}/g),            
+            pattern: new RegExp(/(0)\d/g),            
             message: "Vui lòng nhập đúng số điện thoại"
           },
         ]}
@@ -142,7 +148,7 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
               `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }
           /> */}
-        <Input size="large" disabled={disable} type='tel' />
+        <Input size="large" disabled={disable} type='tel' maxLength={10}/>
       </Form.Item>
       <Form.Item 
         label="Email" 

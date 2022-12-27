@@ -13,6 +13,12 @@ export const fetchEmployeeByID = (positionUser, employeeID) => {
   });
 };
 
+export const fetchEmployeeByUsername = (positionUser, username) => {
+  return userRequest.get(`/users/employee/${username}`, {
+    params: { user: { position: positionUser }, type: "employee" },
+  });
+}
+
 export const deleteEmployee = (positionUser, employeeID) => {
   return userRequest.delete(`/users/${employeeID.trim()}`, {
     params: {

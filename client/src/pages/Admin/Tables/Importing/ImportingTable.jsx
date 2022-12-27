@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import "../index.css";
+import dayjs from "dayjs";
 import { Table, Button, Modal, Form, Input, Slider } from "antd";
 import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import ImportForm from "../../../../components/Form/ImportForm";
 import { formatDate, formatterInt } from "../../../../Utils/formatter";
 
 const ImportingTable = ({ importingRecord, setRecord }) => {
   const navigate = useNavigate();
-
-  const [editingRow, setEditingRow] = useState(null);
-
-  const [form] = Form.useForm();
-
+  const [importForm] = Form.useForm();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchedText, setSearchedText] = useState("");
 
   const [amountFilter, setAmountFilter] = useState(null);
@@ -174,91 +173,26 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
         }
       },
     },
-    // {
-    //   key: "6",
-    //   title: "Thao tác",
-    //   render: (_, record) => {
-    //     if (editingRow !== null) {
-    //       if (editingRow === record.idNum) {
-    //         return (
-    //           <>
-    //             <Button
-    //               htmlType="submit"
-    //               // onClick={() => {form.submit()}}
-    //             >
-    //               Lưu
-    //             </Button>
-    //             <Button
-    //               onClick={() => {
-    //                 setEditingRow(null);
-    //               }}
-    //             >
-    //               Huỷ
-    //             </Button>
-    //           </>
-    //         );
-    //       } else {
-    //       }
-    //     } else {
-    //       return (
-    //         <>
-    //           <Button
-    //             onClick={(e) => {
-    //               e.preventDefault();
-    //               setEditingRow(record.idNum);
-    //               form.setFieldsValue({
-    //                 date: record.date,
-    //                 total: record.total,
-    //               });
-    //             }}
-    //           >
-    //             Chỉnh sửa
-    //           </Button>
-    //           <Button
-    //             onClick={() => {
-    //               onDeleteButton(record);
-    //             }}
-    //           >
-    //             Xoá
-    //           </Button>
-    //         </>
-    //       );
-    //     }
-    //   },
-    // },
   ];
-
   const onAddButton = () => {
-    navigate("/admin/import");
+    setIsModalOpen(true);
+    console.log(isModalOpen);
   };
-
-  const onDeleteButton = (record) => {
-    Modal.confirm({
-      title: "Bạn có chắc muốn xoá dữ liệu?",
-      okText: "Yes",
-      okType: "danger",
-      onOk: () => {
-        setRecord((pre) => {
-          return pre.filter((data) => data.idNum !== record.idNum);
-        });
-      },
-    });
-  };
-
-  const onFinish = (values) => {
-    console.log(editingRow);
-    const updateDataSource = [...importingRecord];
-    updateDataSource.splice(editingRow - 1, 1, {
-      ...values,
-      idNum: editingRow,
-    });
-    console.log(updateDataSource);
-    setRecord(updateDataSource);
-    setEditingRow(null);
+  const handleOKModal = async () => {
+    const newImport = {
+      item_id: importForm.getFieldValue("item"),
+      amount: importForm.getFieldValue("quantity"),
+      established_date: dayjs(Date.now()).$d,
+      price: importForm.getFieldValue("price"),
+      total_cost: importForm.getFieldValue("total_cost"),
+      // employee_id:
+    };
+    console.log(newImport);
   };
 
   return (
     <div className="table">
+      <>{isModalOpen ? modalJSX() : null}</>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div></div>
@@ -293,6 +227,25 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
       ></Table>
     </div>
   );
+  function modalJSX() {
+    return (
+      <Modal
+        title="Nhập sản phẩm mới"
+        open={true}
+        okText="Nhập"
+        cancelText="Hủy"
+        onOk={handleOKModal}
+        onCancel={handleCancelModal}
+        width="60%"
+      >
+        <ImportForm form={importForm} width="100%" />
+      </Modal>
+    );
+  }
+  function handleCancelModal() {
+    importForm.resetFields();
+    setIsModalOpen(false);
+  }
 };
 
 export default ImportingTable;

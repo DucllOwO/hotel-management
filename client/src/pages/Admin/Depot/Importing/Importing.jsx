@@ -10,6 +10,7 @@ const Importing = () => {
 
   useEffect(() => {
     fetchRecord(user?.position).then(({ data }) => {
+      console.log(data);
       setRecord(data);
     });
   }, [record]);

@@ -6,6 +6,12 @@ export const getAllRoomType = (positionUser) => {
   });
 };
 
+export const getRoomTypeByID = (positionUser, id) => {
+  return userRequest.get(`/roomtypes/${id}`, {
+    params: { user: { position: positionUser } },
+  });
+};
+
 export const createRoomType = (positionUser, roomType) => {
   return userRequest.post(`/roomtypes`, {
     user: {

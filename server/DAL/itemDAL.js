@@ -16,11 +16,23 @@ async function getItemByID(filter) {
 async function createNewItem(newItem) {
   const { data, error } = await supabase
     .from("item")
-    .insert({newItem});
+    .insert(newItem);
+  return {data, error};
+}
+const updateItem = (newItem, itemID) => {
+  console.log(newItem)
+  return supabase
+  .from("item")
+  .update({
+    reserve_amount: newItem.reserve_amount,
+    sell_price: newItem.sell_price,
+  })
+  .eq("id", itemID);
 }
 
 module.exports = {
   getAllItem,
   getItemByID,
   createNewItem,
+  updateItem
 };

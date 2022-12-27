@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import dayjs from "dayjs"
 import {
   Table,
   Button,
@@ -11,10 +12,13 @@ import {
 } from "antd";
 import { PlusOutlined, FilterOutlined, DownOutlined } from "@ant-design/icons";
 import InventoryForm from "../../../../components/Form/InventoryForm";
+import { fetchEmployeeByUsername } from "../../../../api/EmployeeAPI";
 import TextButton from "../../../../components/TextButton/TextButton";
 import CheckButton from "../../../../components/IconButton/CheckButton/CheckButton";
+import { useContext } from "react";
+import { ItemContext } from "../../../../context/ItemContext";
 
-const InventoryTable = ({ rooms }) => {
+const InventoryTable = ({ rooms, user }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -23,20 +27,22 @@ const InventoryTable = ({ rooms }) => {
     setIsModalVisible(false);
   };
   const [form] = Form.useForm();
+  const {item, setItem, record, setRecord} = useContext(ItemContext);
 
   const [searchedText, setSearchedText] = useState("");
   const areaMark = {
     10: "10",
     60: "60",
   };
+  const [currentRoom, setCurrentRoom] = useState({});
 
   const [filter, setFilter] = useState("");
 
   const items = rooms.map((value, index) => {
-    return {
-      label: "" + value.roomType.toString(),
-      value: "" + value.roomType.toString(),
-    };
+    // return {
+    //   label: "" + value.roomType.toString(),
+    //   value: "" + value.roomType.toString(),
+    // };
   });
 
   // const [dataSource, setDataSource] = useState([
@@ -173,6 +179,7 @@ const InventoryTable = ({ rooms }) => {
               title="Kiểm tra phòng"
               onCheckButton={() => {
                 showModal();
+                setCurrentRoom(record.room_name);
                 form.setFieldValue("room_name", record.room_name);
               }}
             ></CheckButton>
@@ -197,7 +204,18 @@ const InventoryTable = ({ rooms }) => {
   ];
 
   function handleOKModalAdd() {
-    setIsModalVisible(false);
+    
+    fetchEmployeeByUsername(user?.position, user?.account.username).then(({data})=> {
+      console.log(data);
+      const newRecord = {
+        date: dayjs(Date.now()),
+        employee_id: data.id,
+        invoice_id: "1",
+        room_name: currentRoom,
+      }
+    })
+    const usedItem = form.getFieldValue("table")
+    console.log(usedItem)
   }
   function handleCancelModal() {
     setIsModalVisible(false);
@@ -212,7 +230,7 @@ const InventoryTable = ({ rooms }) => {
         onCancel={handleCancelModal}
         width="50%"
       >
-        <InventoryForm form={form} />
+        <InventoryForm form={form} record={record} setRecord={setRecord} />
       </Modal>
     );
   };

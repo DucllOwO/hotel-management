@@ -23,11 +23,11 @@ const createRoomFeature = async (req, res, next) => {
   const { RoomFeature } = req.body;
   if (!RoomFeature) return next(BadRequestError());
 
-  const { error } = await RoomFeatureDAL.insertRoomFeature(RoomFeature);
+  const { data, error } = await RoomFeatureDAL.insertRoomFeature(RoomFeature);
 
   if (error) return next(error);
 
-  res.status(201).send("Created");
+  res.status(201).send(data[0]);
 };
 
 const updateRoomFeature = async (req, res, next) => {
@@ -35,16 +35,15 @@ const updateRoomFeature = async (req, res, next) => {
   const { RoomFeature } = req.body;
 
   if (!RoomFeature) return next(BadRequestError());
-  const { id: idTemp, ...roomFeatureWithoutID } = RoomFeature;
 
-  const { error } = await RoomFeatureDAL.updateRoomFeature(
-    roomFeatureWithoutID,
+  const { data, error } = await RoomFeatureDAL.updateRoomFeature(
+    RoomFeature,
     id
   );
 
   if (error) return next(error);
 
-  res.status(204).send();
+  res.status(200).send(data[0]);
 };
 
 const deleteRoomFeature = async (req, res, next) => {

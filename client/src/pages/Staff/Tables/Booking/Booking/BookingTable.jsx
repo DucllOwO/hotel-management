@@ -11,6 +11,7 @@ import {
   Select,
   Slider,
 } from "antd";
+import dayjs from "dayjs"
 import { FilterOutlined } from "@ant-design/icons";
 import BookingForm from "../../../../../components/Form/BookingForm";
 import { createBooking, createCustomer } from "../../../../../api/BookingAPI";
@@ -246,59 +247,70 @@ const BookingTable = ({
 
   const handleOKModal = async () => {
     try {
-      const values = await customerInfoForm.validateFields();
       const isCusObjEmpty = Object.keys(currentCustomer).length === 0;
       // isCusObjEmpty === true === customer not available
+      console.log(currentCustomer)
       console.log(isCusObjEmpty);
       if (isCusObjEmpty) {
-        const newCustomer = {
-          id: customerInfoForm.getFieldValue("id"),
-          fullname: customerInfoForm.getFieldValue("fullname"),
-          phone_number: customerInfoForm.getFieldValue("phone_number"),
-          email: customerInfoForm.getFieldValue("email"),
-          date_of_birth: customerInfoForm.getFieldValue("date_of_birth"),
-        };
-        console.log(newCustomer);
-        const { data: userData } = await createCustomer(
-          user?.position,
-          newCustomer
-        );
-        const { data: bookingData } = await createBooking(
-          user?.position,
-          newCustomer,
-          selectedRooms,
-          from,
-          to
-        );
-        console.log("done");
-      } else {
-        // return;
-        const { data: bookingData } = await createBooking(
-          user?.position,
-          currentCustomer,
-          selectedRooms,
-          from,
-          to
-        );
+        customerInfoForm.validateFields()
+        .then(async (value) => {
+          const birthday = dayjs(customerInfoForm.getFieldValue("date_of_birth"));
+          const now = dayjs(Date.now());  
+          if(now.diff(birthday, "year") < 18)
+          {
+            ErrorAlert("Khách hàng chưa đủ 18 tuổi");
+            return;
+          }
+          console.log(value);
+          const newCustomer = {
+            id: value.id,
+            fullname: value.fullname,
+            phone_number: value.phone_number,
+            email: value.email,
+            date_of_birth: value.date_of_birth,
+          };
+          const { data: userData } = await createCustomer(
+            user?.position,
+            newCustomer
+          );
+          setCurrentCustomer(newCustomer);
+          booking(userData);
+        })
+        .catch((value) => {
+          ErrorAlert("Vui lòng nhập đầy đủ thông tin");
+          throw value;
+        })
       }
-      console.log(selectedRooms);
-      setRooms((pre) => {
-        return pre.filter(
-          (data) => !selectedRooms.includes(data)
-          // data.room_name !== bookingData?.room_name
-        );
-      });
-      console.log(rooms);
-      SuccessAlert("Đặt phòng thành công.");
-      setCurrentCustomer({});
-      setSelectedRooms([]);
-      setIsModalOpen(false);
-      customerInfoForm.resetFields();
+      else 
+        booking(currentCustomer);
       // setCurrentCustomer({});
     } catch (error) {
       console.log(error);
       ErrorAlert("Đặt phòng thất bại!");
     }
+  };
+  const booking = async (customer) => {
+    const { data: bookingData } = await createBooking(
+      user?.position,
+      customer,
+      selectedRooms,
+      from,
+      to
+    );
+    
+    console.log(selectedRooms);
+    setRooms((pre) => {
+      return pre.filter(
+        (data) => !selectedRooms.includes(data)
+        // data.room_name !== bookingData?.room_name
+      );
+    });
+    console.log(rooms);
+    SuccessAlert("Đặt phòng thành công.");
+    setCurrentCustomer({});
+    setSelectedRooms([]);
+    setIsModalOpen(false);
+    customerInfoForm.resetFields();
   };
 
   const openModalInfoCustomer = () => {

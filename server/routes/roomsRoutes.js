@@ -19,7 +19,7 @@ router.get(
   tryCatch(getAllRoom)
 );
 router.get(
-  "/:room_name",
+  "/:id",
   authorizeAccessToken,
   hasPermission(actionAC.GET, resourceAC.ROOM),
   tryCatch(getRoom)
@@ -33,7 +33,7 @@ router.post(
 );
 
 router.put(
-  "/:room_name",
+  "/:id",
   authorizeAccessToken,
   hasPermission(actionAC.UPDATE, resourceAC.ROOM),
   tryCatch(updateRoom)

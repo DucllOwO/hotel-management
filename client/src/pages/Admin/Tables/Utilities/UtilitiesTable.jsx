@@ -5,13 +5,19 @@ import { PlusOutlined } from "@ant-design/icons";
 import UtilitiesForm from "../../../../components/Form/UtilitiesForm";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
+import CheckButton from "../../../../components/IconButton/CheckButton/CheckButton";
+import CancelButton from "../../../../components/IconButton/CancelButton/CancelButton";
+import WarningModal from "../../../../components/WarningModal/WarningModal";
+import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
+import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
+import {
+  createRoomFeatures,
+  deleteRoomFeature,
+  updateRoomFeatures,
+} from "../../../../api/RoomFeatureAPI";
 
-const UtilitiesTable = ({ utilities, setUtilities }) => {
+const UtilitiesTable = ({ utilities, setUtilities, positionUser }) => {
   const [isModalVisible, setIsModalVisible] = useState("");
-
-  const showModalAdd = () => {
-    setIsModalVisible("add");
-  };
 
   const [editingRow, setEditingRow] = useState(null);
 
@@ -46,16 +52,17 @@ const UtilitiesTable = ({ utilities, setUtilities }) => {
       sorter: (a, b) => a.name.localeCompare(b.name),
       dataIndex: "name",
       render: (text, record) => {
-        if (editingRow === record.idNum) {
+        if (editingRow === record.id) {
           return (
             <Form.Item
               name="name"
               rules={[
                 {
                   required: true,
-                  message: "Please enter the name",
+                  message: "Vui lòng nhập tên của tiện ích",
                 },
               ]}
+              style={{ width: "30%", margin: "auto" }}
             >
               <Input />
             </Form.Item>
@@ -72,8 +79,24 @@ const UtilitiesTable = ({ utilities, setUtilities }) => {
         return (
           <>
             <div className="btnWrap">
-              <EditButton openModalEdit={() => {}}></EditButton>
-              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+              {editingRow === record.id ? (
+                <>
+                  <CheckButton onCheckButton={() => onCheckButton(record)} />
+                  <CancelButton onCancelButton={onCancelButton} />
+                </>
+              ) : (
+                <>
+                  <EditButton
+                    openModalEdit={() => {
+                      setEditingRow(record.id);
+                      form.setFieldValue("name", record.name);
+                    }}
+                  ></EditButton>
+                  <DeleteButton
+                    onDeleteButton={() => onDeleteButton(record)}
+                  ></DeleteButton>
+                </>
+              )}
             </div>
           </>
         );
@@ -81,49 +104,32 @@ const UtilitiesTable = ({ utilities, setUtilities }) => {
     },
   ];
 
-  const onDeleteButton = (record) => {
-    Modal.confirm({
-      title: "Bạn có chắc muốn xoá dữ liệu?",
-      okText: "Yes",
-      okType: "danger",
-      onOk: () => {
-        setUtilities((pre) => {
-          return pre.filter((data) => data.idNum !== record.idNum);
-        });
-      },
-    });
-  };
-
-  const ModalAddUtil = () => (
-    <Modal
-      title="Thông tin tiện ích"
-      open={true}
-      onOk={handleOkModalAdd}
-      onCancel={handleCancelModal}
-      width="60%"
-    >
-      <UtilitiesForm form={form} />
-    </Modal>
-  );
-
-  const ModalEditUtil = (Util) => {
-    return (
-      <Modal
-        title="Thông tin tiện ích"
-        open={true}
-        onOk={handleOKModalEdit}
-        onCancel={handleCancelModal}
-        width="60%"
-      >
-        <UtilitiesForm form={form} />
-      </Modal>
-    );
+  const onCheckButton = (util) => {
+    form
+      .validateFields()
+      .then((values) => {
+        updateRoomFeatures(positionUser, util.id, values.name)
+          .then(({ data }) => {
+            SuccessAlert("Chỉnh sửa tiện ích thành công.");
+            setUtilities((prev) =>
+              prev.map((roomType) => {
+                if (roomType.id == util.id) return { ...data };
+                return roomType;
+              })
+            );
+            resetValue();
+          })
+          .catch((err) => {
+            console.log(err);
+            ErrorAlert("Chỉnh sửa tiện ích thất bại!!");
+          });
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
     <div className="table">
-      <>{isModalVisible === "add" ? ModalAddUtil() : null}</>
-      <>{isModalVisible === "edit" ? <ModalEditUtil /> : null}</>
+      <>{isModalVisible === "add" ? <ModalAddUtil /> : null}</>
       <div className="buttonContainer">
         <div></div>
         <div>
@@ -158,11 +164,72 @@ const UtilitiesTable = ({ utilities, setUtilities }) => {
     </div>
   );
 
-  function handleOkModalAdd() {}
-  function handleOKModalEdit() {}
+  function ModalAddUtil() {
+    return (
+      <Modal
+        title="Thông tin tiện ích"
+        open={true}
+        onOk={handleOkModalAdd}
+        onCancel={handleCancelModal}
+        width="50%"
+      >
+        <UtilitiesForm form={form} />
+      </Modal>
+    );
+  }
 
+  function onCancelButton(record) {
+    WarningModal("Bạn có chắc muốn hủy chỉnh sửa?", cancelOK);
+  }
+
+  function cancelOK() {
+    setEditingRow(null);
+  }
+
+  function onDeleteButton(record) {
+    WarningModal("Bạn có chắc muốn xóa tiện ích?", deleteOKButton, record);
+  }
+
+  function deleteOKButton(record) {
+    deleteRoomFeature(positionUser, record.id)
+      .then((res) => {
+        SuccessAlert("Xóa tiện ích thành công.");
+        setUtilities((prev) => prev.filter((util) => util.id !== record.id));
+        resetValue();
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("Xóa tiện ích thất bại!!");
+      });
+  }
+
+  function handleOkModalAdd() {
+    form
+      .validateFields()
+      .then((values) => {
+        createRoomFeatures(positionUser, values.name).then(({ data }) => {
+          setUtilities((prev) => [...prev, data]);
+          SuccessAlert("Tạo tiện ích thành công ");
+          resetValue();
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("Tạo tiện ích không thành công!!");
+      });
+  }
+
+  function resetValue() {
+    setIsModalVisible(false);
+    form.resetFields();
+    setEditingRow(null);
+  }
   function handleCancelModal() {
-    setIsModalVisible("");
+    resetValue();
+  }
+
+  function showModalAdd() {
+    setIsModalVisible("add");
   }
 };
 

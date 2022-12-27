@@ -305,7 +305,7 @@ const columns = [
     dataIndex: "inputFormItem",
     align: "center",
     render: (text, record) => {
-      return <p>{text}</p>;
+      return <p>{text ? text.toLocaleString() : ""}</p>;
     },
   },
 ];

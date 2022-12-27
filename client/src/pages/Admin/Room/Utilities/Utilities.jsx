@@ -18,12 +18,13 @@ const Utilities = () => {
       setUtilities(data.data);
     };
     fetchUtilities();
-  }, []);
+  }, [user?.position]);
   return (
     <div className="utilitiesContainer">
       <UtilitiesTable
         utilities={utilities}
         setUtilities={setUtilities}
+        positionUser={user?.position}
       ></UtilitiesTable>
     </div>
   );

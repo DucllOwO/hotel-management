@@ -6,7 +6,7 @@ const createUsedRoom = (bookingID, roomNames) => {
   return supabase.from("used_room")
   .insert({
         booking_id: bookingID,
-        room_name: roomNames.room_name,
+        room_id: roomNames.id,
     
 });
 };

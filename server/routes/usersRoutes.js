@@ -5,6 +5,7 @@ const {
   createUser,
   updateUser,
   deleteUser,
+  getEmployeeByUsername,
 } = require("../controllers/userController.js");
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
 const { hasPermission } = require("../middlewares/roleAccessControl");
@@ -25,6 +26,13 @@ router.get(
   hasPermission(actionAC.GET, resourceAC.USER),
   tryCatch(getUser)
 );
+
+router.get(
+  "/employee/:username",
+  authorizeAccessToken,
+  hasPermission(actionAC.GET, resourceAC.USER),
+  tryCatch(getEmployeeByUsername)
+)
 
 // router.get(
 //   "/me",

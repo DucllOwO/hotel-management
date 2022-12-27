@@ -7,12 +7,8 @@ function getAllTypes() {
     .order("id", { ascending: true })
     .eq("is_active", true);
 }
-async function getTypeByID(id) {
-  const { data, error } = await supabase
-    .from("room_type")
-    .select("*")
-    .eq("id", id);
-  return { data, error };
+function getTypeByID(id) {
+  return supabase.from("room_type").select("*").eq("id", id);
 }
 function createRoomType(newRoomType) {
   return supabase.from("room_type").insert({ ...newRoomType });
