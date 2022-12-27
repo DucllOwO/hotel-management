@@ -42,7 +42,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
   const [areaFilter, setAreaFilter] = useState(null);
 
   const [priceFilter, setPriceFilter] = useState("");
-  const [sliderFilter, setSliderFilter] = useState(null);
+  const [sliderFilter, setSliderFilter] = useState([0, 5000000]);
 
   const items = [
     {
@@ -360,6 +360,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
                   size="medium"
                   options={items}
                   showSearch
+                  defaultValue="Một ngày"
                   placeholder="Chọn phân loại giá"
                   onChange={(e) => {
                     setPriceFilter(e);
