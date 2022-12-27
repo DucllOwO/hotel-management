@@ -215,6 +215,7 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
         </div>
       </div>
       <Table
+        rowKey={(row) => row.key}
         showSorterTooltip={false}
         columns={columns}
         dataSource={vouchers}

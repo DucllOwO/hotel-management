@@ -5,7 +5,7 @@ const { Text } = Typography;
 
 const ErrorMessage = ({ message }) => {
   return (
-    <Text type="danger" style={{ fontSize: 16 }}>
+    <Text type="danger" style={{ fontSize: 14 }}>
       {message}
     </Text>
   );
