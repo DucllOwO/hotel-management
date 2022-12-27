@@ -1,16 +1,27 @@
 import { DatePicker, Form, Input, InputNumber, Select } from "antd";
+import Search from "antd/es/input/Search";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useContext } from "react";
+import { fetchEmployeeByID } from "../../api/EmployeeAPI";
 import { fetchPosition } from "../../api/PositionAPI";
 import { AppContext } from "../../context/AppContext";
+import { hasWhiteSpace, isAlphaOnly, isNumberKey } from "../../Utils/helpers";
 import ErrorAlert from "../Error/Alert/ErrorAlert";
+import ErrorMessage from "../Error/ErrorMessage/ErrorMessage";
 
 const DATE_FORMAT = "DD-MM-YYYY";
 
-const HRForm = ({ form, disable = false }) => {
+const HRForm = ({
+  form,
+  disable = false,
+  isEmployeeExist,
+  setIsEmployeeExist,
+}) => {
   const { user } = useContext(AppContext);
   const [positions, setPositions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     fetchPosition(user?.position)
       .then(({ data }) => {
@@ -22,6 +33,24 @@ const HRForm = ({ form, disable = false }) => {
         ErrorAlert("Lấy dữ liệu chức vụ cho người dùng chọn thất bại!!");
       });
   }, [user?.position]);
+
+  const checkIDExist = () => {
+    setIsLoading(true);
+    fetchEmployeeByID(user.position, form.getFieldValue("id"))
+      .then(({ data }) => {
+        console.log(data);
+        if (data) {
+          setIsEmployeeExist(true);
+        } else setIsEmployeeExist(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("Kiểm tra nhân viên thất bại.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   return (
     <Form layout="vertical" form={form} name="positionForm" autoComplete="off">
@@ -35,11 +64,67 @@ const HRForm = ({ form, disable = false }) => {
                 required: true,
                 message: "Vui lòng nhập CCCD!",
               },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (value) {
+                    if (value.length === 9 || value.length === 12)
+                      return Promise.resolve();
+                    else
+                      return Promise.reject(
+                        new Error("CCCD/CMND phải là 9 hoặc 12 số")
+                      );
+                  }
+                  return Promise.resolve();
+                },
+              }),
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (value) {
+                    if (!hasWhiteSpace(value)) return Promise.resolve();
+                    else
+                      return Promise.reject(
+                        new Error("CCCD/CMND không được có khoảng trắng")
+                      );
+                  }
+                  return Promise.resolve();
+                },
+              }),
+
+              // ({ getFieldValue }) => ({
+              //   validator(_, value) {
+              //     if (value) {
+              //       const index = employees.findIndex(
+              //         (employee) => employee.id == form.getFieldValue("id")
+              //       );
+
+              //       if (index >= 0)
+              //         return Promise.reject(new Error("CCCD/CMND đã tồn tại"));
+              //       return Promise.resolve();
+              //     }
+              //     return Promise.resolve();
+              //   },
+              // }),
+              {
+                pattern: new RegExp(/\d/g),
+                message: "CMND/CCCD chỉ được nhập số",
+              },
             ]}
             tooltip="Số CMND/CCCD của khách hàng"
           >
-            <Input size="large" disabled={disable} />
+            <Search
+              onSearch={() => {
+                checkIDExist();
+              }}
+              placeholder="Nhập CCCD của khách hàng"
+              size="large"
+              maxLength={12}
+              enterButton="Kiểm tra"
+              loading={isLoading}
+            />
           </Form.Item>
+          {isEmployeeExist ? (
+            <ErrorMessage message="Đã bị trùng CCCD/CMND vui lòng kiểm tra lại." />
+          ) : null}
           <Form.Item
             label="Họ và tên"
             name="fullname"
@@ -48,9 +133,86 @@ const HRForm = ({ form, disable = false }) => {
                 required: true,
                 message: "Vui lòng nhập họ và tên!",
               },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (value) {
+                    if (isAlphaOnly(value[value.length - 1]))
+                      return Promise.resolve();
+                    else
+                      return Promise.reject(
+                        new Error("Họ tên không được nhập số")
+                      );
+                  }
+                  return Promise.resolve();
+                },
+              }),
             ]}
           >
             <Input size="large" style={{ textTransform: "capitalize" }} />
+          </Form.Item>
+          <Form.Item
+            label="Số điện thoại"
+            name="phone_number"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng nhập số điện thoại!",
+              },
+              {
+                len: 10,
+                message: "Số điện thoại bao gồm 10 số",
+              },
+              {
+                pattern: new RegExp(/\d/g),
+                message: "Số điện thoại chỉ bao gồm số",
+              },
+            ]}
+          >
+            <Input size="large" />
+          </Form.Item>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng nhập email!",
+              },
+              {
+                type: "email",
+                message: "Email không đúng định dạng",
+              },
+            ]}
+          >
+            <Input size="large" />
+          </Form.Item>
+        </div>
+        <div className="right" style={{ marginLeft: "10%", width: "30vw" }}>
+          <Form.Item
+            label="Chức vụ"
+            name="position_id"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng chọn chức vụ!",
+              },
+            ]}
+          >
+            <Select
+              size="large"
+              showSearch
+              placeholder="Chọn một chức vụ"
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                (option?.name ?? "").toLowerCase().includes(input.toLowerCase())
+              }
+              options={positions.map((position) => {
+                return {
+                  label: position?.name,
+                  value: position?.id,
+                };
+              })}
+            />
           </Form.Item>
           <Form.Item
             label="Ngày sinh"
@@ -86,54 +248,6 @@ const HRForm = ({ form, disable = false }) => {
             ]}
           >
             <DatePicker size="large" format={DATE_FORMAT} />
-          </Form.Item>
-          <Form.Item
-            label="Số điện thoại"
-            name="phone_number"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập số điện thoại!",
-              },
-              {
-                min: 10,
-                message: "Số điện thoại bao gồm 10 số",
-              },
-              {
-                max: 10,
-                message: "Số điện thoại bao gồm 10 số",
-              },
-            ]}
-          >
-            <Input size="large" />
-          </Form.Item>
-        </div>
-        <div className="right" style={{ marginLeft: "10%", width: "30vw" }}>
-          <Form.Item
-            label="Chức vụ"
-            name="position_id"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng chọn chức vụ!",
-              },
-            ]}
-          >
-            <Select
-              size="large"
-              showSearch
-              placeholder="Chọn một chức vụ"
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-                (option?.name ?? "").toLowerCase().includes(input.toLowerCase())
-              }
-              options={positions.map((position) => {
-                return {
-                  label: position?.name,
-                  value: position?.id,
-                };
-              })}
-            />
           </Form.Item>
           <Form.Item
             label="Ngày vào làm"
@@ -175,24 +289,6 @@ const HRForm = ({ form, disable = false }) => {
             ]}
           >
             <DatePicker size="large" format={DATE_FORMAT} showToday />
-          </Form.Item>
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập email!",
-              },
-              {
-                type: "email",
-                message: "Email không đúng định dạng",
-              },
-            ]}
-          >
-            <Input
-              size="large"
-            />
           </Form.Item>
         </div>
       </div>

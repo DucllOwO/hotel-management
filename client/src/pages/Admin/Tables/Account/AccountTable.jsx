@@ -3,17 +3,11 @@ import "../index.css";
 import { Table, Button, Modal, Form, Input } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import AccountForm from "../../../../components/Form/AccountForm";
-import {
-  createAccount,
-  deleteAccount,
-  updateAccount,
-} from "../../../../api/AccountAPI";
+import { updateAccount } from "../../../../api/AccountAPI";
 import { AppContext } from "../../../../context/AppContext";
 import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 import { fetchEmployee, updateEmployee } from "../../../../api/EmployeeAPI";
-import EditButton from "../../../../components/IconButton/EditButton/EditButton";
-import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const AccountTable = ({ accounts, setAccount }) => {
   const { user } = useContext(AppContext);
@@ -53,15 +47,6 @@ const AccountTable = ({ accounts, setAccount }) => {
       align: "center",
       sorter: (a, b) => a.username.localeCompare(b.username),
     },
-    // {
-    //   key: "2",
-    //   title: "Email",
-    //   dataIndex: "email",
-    //   render: (text, record) => {
-    //     return record.email ? String(record.email) : "";
-    //   },
-    // },
-
     {
       key: "2",
       title: "Thao tác",
@@ -69,25 +54,9 @@ const AccountTable = ({ accounts, setAccount }) => {
         return (
           <>
             <div className="btnWrap">
-              <EditButton
-                openModalEdit={() => {
-                  console.log("aaa");
-                  setModal("edit");
-                  const { password, ...tempData } = record;
-                  const employee = employees?.find((employee) => {
-                    return employee.username === record.username;
-                  });
-                  form.setFieldsValue({
-                    ...tempData,
-                    employeeUsername: {
-                      label: employee.username,
-                      value: employee.id,
-                    },
-                    employeeID: employee.id,
-                  });
-                }}
-              ></EditButton>
-              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+              <Button onClick={() => onChangePassword(record)}>
+                Đổi mật khẩu
+              </Button>
             </div>
           </>
         );
@@ -95,8 +64,9 @@ const AccountTable = ({ accounts, setAccount }) => {
     },
   ];
 
+  function onChangePassword(record) {}
+
   const openModalEdit = (record) => {
-    console.log("aa");
     setModal("edit");
     const { password, ...tempData } = record;
     const employee = employees?.find((employee) => {
@@ -104,39 +74,12 @@ const AccountTable = ({ accounts, setAccount }) => {
     });
     form.setFieldsValue({
       ...tempData,
-      employeeUsername: { label: employee.username, value: employee.id },
+      employeeUsername: {
+        label: employee.username,
+        value: employee.id,
+      },
       employeeID: employee.id,
     });
-  };
-
-  const handleCancelModal = () => {
-    setModal(null);
-    form.resetFields();
-  };
-
-  const handleOKModalAdd = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        onCreateAccount(values);
-      })
-      .catch((error) => console.log(error));
-  };
-
-  const onCreateAccount = async (values) => {
-    try {
-      await createAccount(positionUser, values);
-      await updateEmployee(positionUser, { username: values.username });
-      console.log(values);
-      setAccount((prev) => [...prev, values]);
-      SuccessAlert("Tạo tài khoản thành công.");
-    } catch (error) {
-      console.log(error);
-      ErrorAlert("Tạo tài khoản thất bại.");
-    }
-
-    setModal(null);
-    form.resetFields();
   };
 
   const handleOKModalEdit = () => {
@@ -171,41 +114,6 @@ const AccountTable = ({ accounts, setAccount }) => {
     form.resetFields();
   };
 
-  const onDeleteButton = (record) => {
-    Modal.confirm({
-      title:
-        "Bạn có chắc muốn xoá dữ liệu, khi xóa tài khoản dữ liệu nhân viên cũng sẽ bị xóa?",
-      okText: "Có",
-      cancelText: "Không",
-      okType: "danger",
-      onOk: () => {
-        deleteAccount(positionUser, record.username)
-          .then((res) => {
-            SuccessAlert("Xóa tài khoản thành công.");
-            setAccount((pre) => {
-              return pre.filter((data) => data.username !== record.username);
-            });
-          })
-          .catch((err) => {
-            console.log(err);
-            ErrorAlert("Xóa tài khoản thất bại!!");
-          });
-      },
-    });
-  };
-
-  const modalAddAccount = () => (
-    <Modal
-      title="Thông tin tài khoản"
-      open={true}
-      onOk={handleOKModalAdd}
-      onCancel={handleCancelModal}
-      width="40%"
-    >
-      <AccountForm employees={employees} form={form} required={true} />
-    </Modal>
-  );
-
   const modalEditAccount = () => (
     <Modal
       title="Thông tin tài khoản"
@@ -225,10 +133,7 @@ const AccountTable = ({ accounts, setAccount }) => {
 
   return (
     <div className="table">
-      <>
-        {modal === "add" && modalAddAccount()}
-        {modal === "edit" && modalEditAccount()}
-      </>
+      <>{modal === "edit" && modalEditAccount()}</>
       <div className="buttonContainer">
         <div></div>
         <div>
@@ -243,17 +148,6 @@ const AccountTable = ({ accounts, setAccount }) => {
             className="searchInput"
             style={{ width: 264 }}
           />
-          <Button
-            onClick={() => {
-              setModal("add");
-            }}
-            className="addButton"
-            type="primary"
-            ghost
-            icon={<PlusOutlined />}
-          >
-            Tạo mới
-          </Button>
         </div>
       </div>
       <Table
@@ -265,6 +159,11 @@ const AccountTable = ({ accounts, setAccount }) => {
       ></Table>
     </div>
   );
+
+  function handleCancelModal() {
+    setModal(null);
+    form.resetFields();
+  }
 };
 
 export default AccountTable;

@@ -21,13 +21,11 @@ import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteB
 const DEFAULT_PASSWORD = "123456";
 
 const HRTable = ({ employees, setEmployees }) => {
-  const [modal, setModal] = useState(null);
+  const [modal, setModal] = useState("");
   const { user } = useContext(AppContext);
   const positionUser = user?.position;
 
-  const showModal = () => {
-    setModal("add");
-  };
+  const [isEmployeeExist, setIsEmployeeExist] = useState(false);
 
   const [form] = Form.useForm();
 
@@ -128,8 +126,12 @@ const HRTable = ({ employees, setEmployees }) => {
         return (
           <>
             <div className="btnWrap">
-              <EditButton openEditModal={openEditModal}></EditButton>
-              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+              <EditButton
+                openEditModal={() => openEditModal(record)}
+              ></EditButton>
+              <DeleteButton
+                onDeleteButton={() => onDeleteButton(record)}
+              ></DeleteButton>
             </div>
           </>
         );
@@ -171,38 +173,21 @@ const HRTable = ({ employees, setEmployees }) => {
     });
   };
 
-  const handleCancelModal = () => {
-    setModal(null);
-    form.resetFields();
-  };
-
-  const modalAddEmployee = () => (
-    <Modal
-      title="Thông tin Nhân sự"
-      open={true}
-      onOk={handleOKModalAdd}
-      onCancel={handleCancelModal}
-      width="50%"
-    >
-      <HRForm form={form} />
-    </Modal>
-  );
-
   const handleOKModalAdd = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        console.log(values);
-        onCreateEmployee(values);
-      })
-      .catch((error) => console.log(error));
+    if (!isEmployeeExist)
+      form
+        .validateFields()
+        .then((values) => {
+          console.log(values);
+          onCreateEmployee(values);
+        })
+        .catch((error) => console.log(error));
   };
 
   const onCreateEmployee = async (values) => {
     try {
       const { data: accountData } = await createAccount(positionUser, {
         username: values.id,
-        email: "",
         password: DEFAULT_PASSWORD,
       });
       console.log(accountData);
@@ -226,20 +211,6 @@ const HRTable = ({ employees, setEmployees }) => {
     form.resetFields();
   };
 
-  const modalEditEmployee = () => {
-    return (
-      <Modal
-        title="Thông tin Nhân sự"
-        open={true}
-        onOk={handleOKModalEdit}
-        onCancel={handleCancelModal}
-        width="60%"
-      >
-        <HRForm form={form} disable={true} />
-      </Modal>
-    );
-  };
-
   const handleOKModalEdit = () => {
     form
       .validateFields()
@@ -252,7 +223,6 @@ const HRTable = ({ employees, setEmployees }) => {
   };
 
   const onEditEmployee = (positionUser, values) => {
-    console.log(values);
     updateEmployee(positionUser, { ...values })
       .then(({ data }) => {
         SuccessAlert("Edit employee success.");
@@ -325,6 +295,46 @@ const HRTable = ({ employees, setEmployees }) => {
       ></Table>
     </div>
   );
+
+  function modalEditEmployee() {
+    return (
+      <Modal
+        title="Thông tin Nhân sự"
+        open={true}
+        onOk={handleOKModalEdit}
+        onCancel={handleCancelModal}
+        width="60%"
+      >
+        <HRForm form={form} disable={true} />
+      </Modal>
+    );
+  }
+  function handleCancelModal() {
+    setModal(null);
+    form.resetFields();
+  }
+
+  function modalAddEmployee() {
+    return (
+      <Modal
+        title="Thông tin Nhân sự"
+        open={true}
+        onOk={handleOKModalAdd}
+        onCancel={handleCancelModal}
+        width="50%"
+      >
+        <HRForm
+          form={form}
+          isEmployeeExist={isEmployeeExist}
+          setIsEmployeeExist={setIsEmployeeExist}
+        />
+      </Modal>
+    );
+  }
+
+  function showModal() {
+    setModal("add");
+  }
 };
 
 export default HRTable;

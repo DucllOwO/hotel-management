@@ -190,6 +190,7 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
         </div>
       </div>
       <Table
+        rowKey={(row) => row.key}
         columns={columns}
         dataSource={vouchers}
         scroll={{ y: "60vh", x: "100%" }}
