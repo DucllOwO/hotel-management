@@ -214,20 +214,6 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
         }
       },
     },
-    {
-      key: "5",
-      title: "Thao tác",
-      render: (_, record) => {
-        return (
-          <>
-            <div className="btnWrap">
-              <EditButton openModalEdit={() => {}}></EditButton>
-              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
-            </div>
-          </>
-        );
-      },
-    },
   ];
 
   const onChange = (date, dateString) => {
@@ -345,6 +331,7 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
         </div>
       </div>
       <Table
+        rowKey={(row) => row.id}
         onRow={(record, rowIndex) => {
           return {
             onClick: (event) => {

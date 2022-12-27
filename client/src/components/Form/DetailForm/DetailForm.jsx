@@ -9,13 +9,6 @@ import DetailServiceTable from "./Tables/DetailServiceTable";
 const DetailForm = ({ receipt, rowIndex }) => {
   return (
     <div>
-      <Button
-        onClick={() => {
-          console.log(receipt[rowIndex]);
-        }}
-      >
-        Button
-      </Button>
       <div className="modal">
         <div className="left">
           <Form.Item label="Thời gian">
@@ -24,7 +17,11 @@ const DetailForm = ({ receipt, rowIndex }) => {
             </span>
           </Form.Item>
           <Form.Item label="Khách hàng">
-            <span className="formItem">Thế Vĩ</span>
+            <span className="formItem">
+              {receipt[rowIndex].booking_id.customer_id.fullname +
+                " | " +
+                receipt[rowIndex].booking_id.customer_id.id}
+            </span>
           </Form.Item>
         </div>
         <div className="right">

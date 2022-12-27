@@ -65,17 +65,39 @@ const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
   const columns = [
     {
       key: "1",
-      title: "Tên phòng",
+      title: "ID",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
-        return String(record.room_name)
-          .toLocaleLowerCase()
-          .search(value.toLocaleLowerCase()) !== -1 ||
-          String(record.roomType)
+        return (
+          String(record.room_name)
             .toLocaleLowerCase()
-            .search(value.toLocaleLowerCase()) !== -1
-          ? true
-          : false;
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.room_type_id)
+            .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase())
+        );
+        // return String(record.room_name)
+        //   .toLocaleLowerCase()
+        //   .search(value.toLocaleLowerCase()) !== -1 ||
+        //   String(record.roomType)
+        //     .toLocaleLowerCase()
+        //     .search(value.toLocaleLowerCase()) !== -1
+        //   ? true
+        //   : false;
         // String(record.room_name)
         //   .toLocaleLowerCase()
         //   .includes(value.toLocaleLowerCase()) ||
@@ -84,7 +106,7 @@ const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
         //   .includes(value.toLocaleLowerCase())
       },
       sorter: (a, b) => a.room_name.localeCompare(b.room_name),
-      dataIndex: "room_name",
+      dataIndex: "id",
       // width: "40%",
       align: "center",
       render: (text, record) => {

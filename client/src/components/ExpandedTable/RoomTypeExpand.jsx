@@ -57,7 +57,7 @@ const RoomTypeExpand = ({ utils = [], ...prices }) => {
                     margin: "5px 0 0 5px",
                     fontSize: 18,
                     padding: 5,
-                    border: "1px solid black",
+                    border: "1px solid",
                   }}
                 >
                   {util.room_feature.name}
