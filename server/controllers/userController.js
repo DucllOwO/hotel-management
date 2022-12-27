@@ -59,7 +59,7 @@ const getEmployeeByUsername = async (req, res, next) => {
 
   if (getEmployeeError) return next(getEmployeeError);
 
-  return res.status(200).send(employee[0]);
+  res.status(200).send(employee);
 }
 
 const createUser = async (req, res, next) => {

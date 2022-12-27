@@ -1,4 +1,4 @@
-const { getBookingByStatus } = require("../controllers/inventoryController");
+const { getBookingByStatus, getRecordByBookingID } = require("../controllers/inventoryController");
 
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
 const { tryCatch } = require("../middlewares/errorHandler");
@@ -12,6 +12,13 @@ router.get(
   authorizeAccessToken,
   hasPermission(actionAC.GET, resourceAC.INVENTORY),
   tryCatch(getBookingByStatus)
+);
+
+router.get(
+  "/record",
+  authorizeAccessToken,
+  hasPermission(actionAC.GET, resourceAC.INVENTORY),
+  tryCatch(getRecordByBookingID)
 );
 
 module.exports = router;

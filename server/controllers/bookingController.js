@@ -30,7 +30,7 @@ const getRooms = async (req, res, next) => {
   const listBookingID = booking?.map((item) => item.id);
 
   const { data: unavailableRoomID, getAvailableRoomIDError } =
-    await roomDAL.getRoomByBookingID(listBookingID);
+    await roomDAL.getRoomByBookingIDList(listBookingID);
 
     console.log(unavailableRoomID)
 
@@ -118,6 +118,12 @@ const updateBookingStatus = async (req, res, next) => {
   const {status} = req.body;
 
   if(!id || !status) return next(BadRequestError)
+
+  if(status === "1") {
+    const {error: updateTimeError} = await bookingDAL.updateCheckInTime(dayjs(Date.now()));
+    
+    if(updateTimeError) return next(updateTimeError);
+  }
 
   const {data, error} = await bookingDAL.updateBookingStatus(status, id);
 

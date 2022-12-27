@@ -18,6 +18,9 @@ const getFullBookingByStatus = (status) => {
 const updateBookingStatus = (newStatus, bookingID) => {
   return supabase.from(TABLE_NAME).update({ status: newStatus}).eq("id", bookingID);
 }
+const updateCheckInTime = (bookingID, checkInTime) => {
+  return supabase.from(TABLE_NAME).update({checkin_time: checkInTime}).eq("id", bookingID);
+}
 
 const getBookingByDate = (from, to) => {
   return supabase.from(TABLE_NAME).select("id").or(`and(book_from.lt.${from},book_to.gt.${from}),and(book_to.gt.${to},book_from.lt.${to})`);
@@ -41,5 +44,6 @@ module.exports = {
   insertBooking, 
   deleteBooking,
   getBookingByStatus,
-  updateBookingStatus
+  updateBookingStatus,
+  updateCheckInTime,
 };

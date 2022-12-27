@@ -37,9 +37,33 @@ const BookingListForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
           />
       </Form.Item>
       <Form.Item 
+        label="Phương thức thanh toán" 
+        name="method"
+        required
+        rules={[
+          {
+            required: true,
+            message: "Vui lòng chọn phương thức thanh toán"
+          }
+        ]}>
+        <Select 
+          size="large"
+          options={[
+            {
+              value: "Online",
+              label: "Online"
+            },
+            {
+              value: "Offline",
+              label: "Offline"
+            }
+          ]}  
+        />
+      </Form.Item>
+      <Form.Item 
         label="Ghi chú" 
         name="note">
-        <TextArea size="large"  />
+        <TextArea size="large" />
       </Form.Item>
     </Form>
   );
