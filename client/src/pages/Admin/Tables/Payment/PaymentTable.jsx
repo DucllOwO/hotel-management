@@ -5,6 +5,7 @@ import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import moment from "moment";
 import PaymentForm from "../../../../components/Form/PaymentForm";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const PaymentTable = ({ payment, setPayment }) => {
   const [type, setType] = useState("day");
@@ -137,6 +138,20 @@ const PaymentTable = ({ payment, setPayment }) => {
         return `${value < 0 ? "-" : ""} ${Math.abs(value)
           .toString()
           .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+      },
+    },
+    {
+      key: "5",
+      title: "Thao tác",
+      width: 100,
+      render: (_, record) => {
+        return (
+          <>
+            <div className="btnWrap">
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
+          </>
+        );
       },
     },
   ];

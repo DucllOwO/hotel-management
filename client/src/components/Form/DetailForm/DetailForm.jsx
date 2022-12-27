@@ -9,6 +9,13 @@ import DetailServiceTable from "./Tables/DetailServiceTable";
 const DetailForm = ({ receipt, rowIndex }) => {
   return (
     <div>
+      <Button
+        onClick={() => {
+          console.log(receipt[rowIndex]);
+        }}
+      >
+        Button
+      </Button>
       <div className="modal">
         <div className="left">
           <Form.Item label="Thời gian">
