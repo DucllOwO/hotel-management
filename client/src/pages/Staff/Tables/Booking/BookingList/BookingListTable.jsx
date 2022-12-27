@@ -240,7 +240,12 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
       console.log(data)
       setUsedRoom(data.data);
     })
-    
+
+    const rentCost = usedRoom.map((value) => {
+      // if(selectedBooking.book_from.diff(selectedBooking.book_to, "hour") < 6 && dayjs(selectedBooking.book_from) >9 )
+
+    })
+
     infoForm.validateFields().then( async (data) => {
       const newReceipt = {
         established_date: dayjs(Date.now()),
@@ -254,6 +259,7 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
       }
       // const {data: receipt} = await createReceipt(user?.position, newReceipt, selectedBooking, currentEmployee);
       SuccessAlert("Trả phòng thành công")
+      setServiceCost(0);
     })
     .catch((value) => {
       ErrorAlert("Vui lòng nhập đủ các thông tin");
