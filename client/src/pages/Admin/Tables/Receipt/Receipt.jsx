@@ -17,8 +17,12 @@ import DetailForm from "../../../../components/Form/DetailForm/DetailForm";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 import { formatDate, formatterInt } from "../../../../Utils/formatter";
+import { useEffect } from "react";
 
 const ReceiptTable = ({ receipt, setReceipt }) => {
+  useEffect(() => {
+    document.title = "Receipt | Parallel Shine";
+  });
   const [type, setType] = useState("day");
 
   const [editingRow, setEditingRow] = useState(null);

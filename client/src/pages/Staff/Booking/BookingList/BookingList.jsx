@@ -9,6 +9,7 @@ const BookingList = () => {
   const { user } = useContext(AppContext);
 
   useEffect(() => {
+    document.title = "Booking List | Parallel Shine";
     const fetchBooking = async () => {
       const { data } = await userRequest.get("/bookings/list", {
         params: { user: { position: user?.position }, type: "customer" },

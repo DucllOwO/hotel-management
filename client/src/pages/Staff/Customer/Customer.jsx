@@ -9,6 +9,7 @@ const Customer = () => {
   const { user } = useContext(AppContext);
 
   useEffect(() => {
+    document.title = "Customer | Parallel Shine";
     const fetchCustomer = async () => {
       const { data } = await userRequest.get("/users", {
         params: { user: { position: user?.position }, type: "customer" },

@@ -9,6 +9,7 @@ const Importing = () => {
   const { user } = useContext(AppContext);
 
   useEffect(() => {
+    document.title = "Importing | Parallel Shine";
     fetchRecord(user?.position).then(({ data }) => {
       console.log(data);
       setRecord(data);

@@ -28,6 +28,7 @@ const Dashboard = () => {
   const { user } = useContext(AppContext);
 
   useEffect(() => {
+    document.title = "Dashboard | Parallel Shine";
     switch (type) {
       case "day":
         console.log(time);

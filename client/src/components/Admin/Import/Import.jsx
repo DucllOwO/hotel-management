@@ -8,15 +8,17 @@ import { PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-const Import = ({items}) => {
+const Import = ({ items }) => {
   const navigate = useNavigate();
-  const [dataSource, setDataSource] = useState([{
-    id: 1,
-    name: "",
-    amount: "",
-    unitPrice: "",
-    total: "",
-  },]);
+  const [dataSource, setDataSource] = useState([
+    {
+      id: 1,
+      name: "",
+      amount: "",
+      unitPrice: "",
+      total: "",
+    },
+  ]);
   const [listItem, setListItem] = useState({});
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
@@ -31,11 +33,11 @@ const Import = ({items}) => {
   const calcTotalCost = () => {
     setTotalCost(quantity * price);
     // console.log(totalCost)
-  }
-  useEffect(()=> {
-    setListItem(items); 
+  };
+  useEffect(() => {
+    setListItem(items);
     calcTotalCost();
-  }, [quantity, price])
+  }, [quantity, price]);
   const columns = [
     {
       key: "1",
@@ -63,7 +65,9 @@ const Import = ({items}) => {
               //     .toLowerCase()
               //     .includes(input.toLowerCase())
               // }
-              onChange={(value) => {onItemChange(value)}}
+              onChange={(value) => {
+                onItemChange(value);
+              }}
               options={items}
             />
           </div>
@@ -103,8 +107,8 @@ const Import = ({items}) => {
               onChange={(value) => setPrice(value)}
             ></InputNumber>
           </>
-        )
-      }
+        );
+      },
     },
     {
       key: "5",
@@ -120,8 +124,8 @@ const Import = ({items}) => {
               disabled={true}
             ></InputNumber>
           </>
-        )
-      }
+        );
+      },
     },
     {
       key: "6",
@@ -139,18 +143,16 @@ const Import = ({items}) => {
               ></CancelButton>
             </div>
           </>
-        )
-      }
+        );
+      },
     },
-
   ];
   const onItemChange = (item) => {
-    setListItem((prev)=>{
-      prev.filter((value) => value === item)
-    })
-  }
+    setListItem((prev) => {
+      prev.filter((value) => value === item);
+    });
+  };
   const onAddProduct = () => {
-    
     setDataSource((pre) => {
       return [
         ...pre,
@@ -206,7 +208,9 @@ const Import = ({items}) => {
           ></Table>
         </div>
         <div>
-            <Button icon={<PlusOutlined />} onClick={onAddProduct}>Thêm</Button>
+          <Button icon={<PlusOutlined />} onClick={onAddProduct}>
+            Thêm
+          </Button>
         </div>
       </div>
     </div>

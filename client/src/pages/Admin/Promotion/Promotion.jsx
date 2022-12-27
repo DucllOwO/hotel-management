@@ -10,6 +10,7 @@ const Promotion = () => {
   const { user } = useContext(AppContext);
 
   useEffect(() => {
+    document.title = "Promotion | Parallel Shine";
     fetchVouchers(user?.position)
       .then(({ data }) => {
         setVouchers(data);

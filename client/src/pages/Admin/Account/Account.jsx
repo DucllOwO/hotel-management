@@ -10,6 +10,7 @@ const Account = () => {
   const { user } = useContext(AppContext);
 
   useEffect(() => {
+    document.title = "Account | Parallel Shine";
     fetchAccount(user?.position)
       .then(({ data }) => {
         setAccounts(data);

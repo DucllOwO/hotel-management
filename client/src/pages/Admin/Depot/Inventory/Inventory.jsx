@@ -14,6 +14,7 @@ const Inventory = () => {
   const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
+    document.title = "Checking | Parallel Shine";
     fetchRoomByStatus(user.position, CLEANING_STATUS)
       .then(({ data }) => {
         console.log(data);
@@ -31,7 +32,6 @@ const Inventory = () => {
         <InventoryTable rooms={rooms} user={user}></InventoryTable>
       </div>
     </ItemProvider>
-    
   );
 };
 
