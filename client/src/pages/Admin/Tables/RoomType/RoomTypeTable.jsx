@@ -451,7 +451,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
           <>
             <div className="btnWrap">
               <EditButton
-                openModalEdit={() => onOpenModalEdit(record)}
+                onEditButton={() => onOpenModalEdit(record)}
               ></EditButton>
               <DeleteButton
                 onDeleteButton={() => onDeleteButton(record)}

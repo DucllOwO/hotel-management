@@ -101,7 +101,7 @@ const UtilitiesTable = ({ utilities, setUtilities, positionUser }) => {
               ) : (
                 <>
                   <EditButton
-                    openModalEdit={() => {
+                    onEditButton={() => {
                       setEditingRow(record.id);
                       form.setFieldValue("name", record.name);
                     }}

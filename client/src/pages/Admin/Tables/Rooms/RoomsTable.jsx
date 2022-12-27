@@ -327,7 +327,7 @@ const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
             <div className="btnWrap">
               <>
                 <EditButton
-                  openModalEdit={() => {
+                  onEditButton={() => {
                     console.log(record);
                     setEditingRow(record.id);
                     setModal("edit");
