@@ -65,7 +65,7 @@ const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
       },
       sorter: (a, b) => a.room_name.localeCompare(b.room_name),
       dataIndex: "room_name",
-      width: "40%",
+      // width: "40%",
       align: "center",
       render: (text, record) => {
         if (editingRow === record.idNum) {
