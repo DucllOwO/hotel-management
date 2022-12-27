@@ -7,6 +7,7 @@ import CustomerForm from "../../../../components/Form/CustomerForm";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 import { formatDate } from "../../../../Utils/formatter";
+import WarningModal from "../../../../components/WarningModal/WarningModal";
 
 const CustomerTable = ({ customer, setCustomer }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -147,43 +148,8 @@ const CustomerTable = ({ customer, setCustomer }) => {
     },
   ];
 
-  const onAddButton = () => {
-    const randomNumber = parseInt(Math.random() * 1000);
-    const newData = {
-      idNum: "" + parseInt(customer.length + 1),
-      name: "Name " + randomNumber,
-      birthday: "23/03/2002",
-      address: randomNumber + " address",
-    };
-
-    setCustomer((pre) => {
-      return [...pre, newData];
-    });
-  };
-
   const onDeleteButton = (record) => {
-    Modal.confirm({
-      title: "Bạn có chắc muốn xoá dữ liệu?",
-      okText: "Yes",
-      okType: "danger",
-      onOk: () => {
-        setCustomer((pre) => {
-          return pre.filter((data) => data.idNum !== record.idNum);
-        });
-      },
-    });
-  };
-
-  const onFinish = (values) => {
-    console.log(editingRow);
-    const updateDataSource = [...customer];
-    updateDataSource.splice(editingRow - 1, 1, {
-      ...values,
-      idNum: editingRow,
-    });
-    console.log(updateDataSource);
-    setCustomer(updateDataSource);
-    setEditingRow(null);
+    WarningModal("Bạn có chắc muốn xoá khách hàng?");
   };
 
   return (
@@ -191,7 +157,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
       <>
         <Modal
           title="Thông tin khách hàng"
-          visible={isModalVisible}
+          open={isModalVisible}
           onOk={handle}
           onCancel={handle}
         >

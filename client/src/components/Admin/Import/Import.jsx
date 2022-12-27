@@ -1,41 +1,26 @@
 import React, { useState } from "react";
-import Topbar from "../../Topbar/Topbar";
-import { Input, Button, Table, Select, InputNumber, Modal } from "antd";
-import BottomBar from "../BottomBar/BottomBar";
+import { Button, Table, Select, InputNumber, Form } from "antd";
 import CancelButton from "../../IconButton/CancelButton/CancelButton";
 import "./import.css";
 import { PlusOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import WarningModal from "../../WarningModal/WarningModal";
 
-const Import = ({items}) => {
-  const navigate = useNavigate();
-  const [dataSource, setDataSource] = useState([{
-    id: 1,
-    name: "",
-    amount: "",
-    unitPrice: "",
-    total: "",
-  },]);
-  const [listItem, setListItem] = useState({});
-  const [price, setPrice] = useState(0);
-  const [quantity, setQuantity] = useState(0);
-  const [totalCost, setTotalCost] = useState(0);
-  // const onChangeSelect = (value) => {
-  //   console.log(value);
-  // };
+const Import = ({ items, setListItem, importList, setImportList }) => {
+  // const [price, setPrice] = useState(0);
 
-  // const onSearch = (value) => {
-  //   console.log("search:", value);
+  // const [quantity, setQuantity] = useState(0);
+
+  // const [totalCost, setTotalCost] = useState(0);
+
+  // const calcTotalCost = () => {
+  //   setTotalCost(quantity * price);
   // };
-  const calcTotalCost = () => {
-    setTotalCost(quantity * price);
-    // console.log(totalCost)
-  }
-  useEffect(()=> {
-    setListItem(items); 
-    calcTotalCost();
-  }, [quantity, price])
+  // useEffect(() => {
+  //   setListItem(items);
+
+  //   calcTotalCost();
+  // }, [quantity, price]);
   const columns = [
     {
       key: "1",
@@ -51,22 +36,24 @@ const Import = ({items}) => {
       align: "center",
       render: (text, record) => {
         return (
-          <div>
-            <Select
-              width={200}
-              showSearch
-              placeholder="Chọn một sản phẩm"
-              // onChange={onChangeSelect}
-              // onSearch={onSearch}
-              // filterOption={(input, option) =>
-              //   (option?.label ?? "")
-              //     .toLowerCase()
-              //     .includes(input.toLowerCase())
-              // }
-              onChange={(value) => {onItemChange(value)}}
-              options={items}
-            />
-          </div>
+          <Select
+            width={200}
+            showSearch
+            placeholder="Chọn một sản phẩm"
+            // onChange={onChangeSelect}
+            // onSearch={onSearch}
+            // filterOption={(input, option) =>
+            //   (option?.label ?? "")
+            //     .toLowerCase()
+            //     .includes(input.toLowerCase())
+            // }
+            onChange={(value) => {
+              onItemChange(value, record.id);
+            }}
+            options={items.map((item) => {
+              return item.option;
+            })}
+          />
         );
       },
     },
@@ -82,7 +69,9 @@ const Import = ({items}) => {
             <InputNumber
               defaultValue={0}
               min={0}
-              onChange={(value) => setQuantity(value)}
+              onChange={(e) => {
+                onAmountChange(e, record.id);
+              }}
             ></InputNumber>
           </>
         );
@@ -91,20 +80,30 @@ const Import = ({items}) => {
     {
       key: "4",
       title: "Đơn giá",
-      dataIndex: "price",
+      dataIndex: "unitPrice",
       align: "center",
-      render: (_, record) => {
+      render: (text, record) => {
+        const getUnitPrice = () => {
+          let temp;
+          importList.forEach((element) => {
+            if (element.id === record.id) temp = element.unitPrice;
+          });
+          console.log(temp);
+          return temp;
+        };
         return (
           <>
             <InputNumber
               defaultValue={0}
+              value={getUnitPrice().toLocaleString()}
               addonAfter={"đ"}
               min={0}
-              onChange={(value) => setPrice(value)}
+              controls={false}
+              disabled={true}
             ></InputNumber>
           </>
-        )
-      }
+        );
+      },
     },
     {
       key: "5",
@@ -112,16 +111,26 @@ const Import = ({items}) => {
       dataIndex: "total",
       align: "center",
       render: (_, record) => {
+        const getTotal = () => {
+          let temp;
+          importList.forEach((element) => {
+            if (element.id === record.id) temp = element.total;
+          });
+          console.log(temp);
+          return temp;
+        };
         return (
           <>
             <InputNumber
-              placeholder={totalCost}
+              defaultValue={0}
+              value={getTotal().toLocaleString()}
+              min={0}
               addonAfter={"đ"}
               disabled={true}
             ></InputNumber>
           </>
-        )
-      }
+        );
+      },
     },
     {
       key: "6",
@@ -135,78 +144,86 @@ const Import = ({items}) => {
             <div>
               <CancelButton
                 title="Xoá"
-                onCancelButton={onDeleteButton}
+                onCancelButton={() => onDeleteButton(record)}
               ></CancelButton>
             </div>
           </>
-        )
-      }
+        );
+      },
     },
-
   ];
-  const onItemChange = (item) => {
-    setListItem((prev)=>{
-      prev.filter((value) => value === item)
-    })
-  }
+
+  const onAmountChange = (e, importID) => {
+    setImportList((prev) => {
+      return prev.map((importTemp) => {
+        if (importTemp.id === importID) {
+          return { ...importTemp, amount: e, total: e * importTemp.unitPrice };
+        }
+        return importTemp;
+      });
+    });
+  };
+
+  function onDeleteButton(record) {}
+
+  const onItemChange = (itemID, importID) => {
+    // setListItem((prev) => {
+    //   return prev.filter((value) => value.option.value !== itemID);
+    // });
+
+    let option = items.find((item) => item.option.value === itemID);
+    console.log(option);
+    setImportList((prev) => {
+      return prev.map((importTemp) => {
+        if (importTemp.id === importID) {
+          return {
+            ...importTemp,
+            name: option.option.label,
+            unitPrice: option.unitPrice,
+          };
+        }
+        return importTemp;
+      });
+    });
+  };
   const onAddProduct = () => {
-    
-    setDataSource((pre) => {
+    setImportList((pre) => {
       return [
         ...pre,
         {
           id: pre.length + 1,
           name: "",
           amount: "1",
-          unitPrice: "",
-          total: "",
+          unitPrice: "0",
+          total: "0",
         },
       ];
     });
   };
 
-  const onDeleteButton = (record) => {
-    Modal.confirm({
-      title: "Are you sure, you want to delete this record?",
-      okText: "Yes",
-      okType: "danger",
-      onOk: () => {
-        setDataSource((pre) => {
-          const temp = pre.filter((data) => data.id !== record.id);
-          return temp.map((item, index) => {
-            return { ...item, id: index + 1 };
-          });
-        });
-      },
-    });
-  };
-
-  // const onCancel = () => {
-  //   Modal.confirm({
-  //     title: "Are you sure, you want to discard changes?",
-  //     okText: "Yes",
-  //     okType: "danger",
-  //     onOk: () => {
-  //       navigate(-1);
-  //     },
-  //   });
-  // };
-
   return (
     <div className="import">
       <div className="importContainer">
         <div>
-          <Table
-            size="small"
-            columns={columns}
-            dataSource={dataSource}
-            scroll={{ y: 350 }}
-            rowKey={(row) => row.id}
-            pagination={false}
-          ></Table>
+          <Form.Item name="duc">
+            <Table
+              size="small"
+              columns={columns}
+              dataSource={importList}
+              scroll={{ y: 350 }}
+              rowKey={(row) => row.id}
+              pagination={false}
+            ></Table>
+          </Form.Item>
         </div>
         <div>
-            <Button icon={<PlusOutlined />} onClick={onAddProduct}>Thêm</Button>
+          <Button
+            icon={<PlusOutlined />}
+            onClick={onAddProduct}
+            style={{ marginTop: 10 }}
+          >
+            Thêm
+          </Button>
         </div>
       </div>
     </div>

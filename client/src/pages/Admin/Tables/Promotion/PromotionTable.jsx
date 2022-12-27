@@ -71,7 +71,7 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
     },
     {
       key: "2",
-      title: "Tên phiếu giảm giá",
+      title: "Mã phiếu giảm giá",
       dataIndex: "name",
       width: "25%",
       align: "center",
