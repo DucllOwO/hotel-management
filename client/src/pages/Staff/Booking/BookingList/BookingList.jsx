@@ -19,7 +19,7 @@ const BookingList = () => {
   }, [status]);
   return (
     <div className="bookingContainer">
-      <BookingTable booking={booking} setStatus={setStatus} setBooking={setBooking}></BookingTable>
+      <BookingTable booking={booking} status={status} setStatus={setStatus} setBooking={setBooking}></BookingTable>
     </div>
   );
 };

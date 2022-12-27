@@ -12,13 +12,16 @@ import CheckButton from "../../../../../components/IconButton/CheckButton/CheckB
 import CancelButton from "../../../../../components/IconButton/CancelButton/CancelButton";
 import { useContext } from "react";
 import { AppContext } from "../../../../../context/AppContext";
+import { useEffect } from "react";
+import BookingListForm from "../../../../../components/Form/BookingListForm";
 
-const BookingListTable = ({ booking, setBooking, setStatus }) => {
+const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
   const [editingRow, setEditingRow] = useState(null);
-
+  const [isCheckout, setIsCheckout] = useState(false);
   const [form] = Form.useForm();
   const {user} = useContext(AppContext);
   const [searchedText, setSearchedText] = useState("");
+  const [isShowReceipt, setShowReceipt] = useState(false)
 
   const columns = [
     {
@@ -100,21 +103,75 @@ const BookingListTable = ({ booking, setBooking, setStatus }) => {
       key: "5",
       title: "Thao tác",
       render: (_, record) => {
-        return (
-          <>
-            <div className="btnWrap">
-              <CheckButton
-                title="Nhận phòng"
-                onCheckButton={() => {}}
-              ></CheckButton>
-              <CancelButton title="Hủy" onCancelButton={() => {onCancelButtonHandle(record)}}></CancelButton>
-            </div>
-          </>
-        );
+        if(status === "0")
+          return (
+            <>
+              <div className="btnWrap">
+                <CheckButton
+                  title="Nhận phòng"
+                  onCheckButton={() => {onCheckInButtonHandle(record)}}
+                ></CheckButton>
+                <CancelButton title="Hủy" onCancelButton={() => {onCancelButtonHandle(record)}}></CancelButton>
+              </div>
+            </>
+          );
+        else if (status === "1")
+            return (
+            <>
+              <div className="btnWrap">
+                <CheckButton
+                  title="Trả phòng"
+                  onCheckButton={() => {onCheckOutButtonHandle(record)}}
+                ></CheckButton>
+              </div>  
+            </>
+          )
+        else
+              return (<></>)
       },
     },
   ];
-
+  const onCheckOutButtonHandle = (record) => {
+    Modal.confirm({
+      title: "Xác nhận khách trả phòng?",
+      okText: "Đúng",
+      okType: "danger",
+      onOk: () => {
+        setIsCheckout(true);
+          // updateBookingStatus(user?.position, "2", record.id)
+          // .then((data) => {
+          //   SuccessAlert("Trả phòng thành công");
+          //   setBooking((prev) => 
+          //     prev.filter((value) => {return value.id !== record.id})
+          //   )
+          // })
+          // .catch((value) => {
+          //   ErrorAlert("Trả phòng thất bại");
+          //   throw value;
+          // })
+      },
+    });
+  }
+  const onCheckInButtonHandle = (record) => {
+    Modal.confirm({
+      title: "Xác nhận khách nhận phòng?",
+      okText: "Đúng",
+      okType: "danger",
+      onOk: () => {
+          updateBookingStatus(user?.position, "1", record.id)
+          .then((data) => {
+            SuccessAlert("Nhận phòng thành công");
+            setBooking((prev) => 
+              prev.filter((value) => {return value.id !== record.id})
+            )
+          })
+          .catch((value) => {
+            ErrorAlert("Nhận phòng thất bại");
+            throw value;
+          })
+      },
+    });
+  }
   const onCancelButtonHandle = (record) => {
     Modal.confirm({
       title: "Bạn có chắc muốn huỷ phiếu đặt phòng này?",
@@ -124,9 +181,9 @@ const BookingListTable = ({ booking, setBooking, setStatus }) => {
           updateBookingStatus(user?.position, "3", record.id)
           .then((data) => {
             SuccessAlert("Huỷ đặt phòng thành công");
-            setBooking((prev) => {
-              prev.filter((value) => value.id !== record.id)
-            })
+            setBooking((prev) => 
+              prev.filter((value) => {return value.id !== record.id})
+            )
           })
           .catch((value) => {
             ErrorAlert("Huỷ đặt phòng thất bại");
@@ -151,9 +208,32 @@ const BookingListTable = ({ booking, setBooking, setStatus }) => {
     setBooking(updateDataSource);
     setEditingRow(null);
   };
+  const handleOKModal = () => {
+
+  }
+  function modalJSX() {
+    return (
+      <Modal
+        title="Trả phòng"
+        open={true}
+        okText="Xác nhận"
+        cancelText="Hủy"
+        onOk={handleOKModal}
+        // onCancel={handleCancelModal}
+        width="40%"
+      >
+        <BookingListForm/>
+      </Modal>
+    );
+  }
+  function receiptJSX() {
+    return 
+  }
 
   return (
     <div className="bookingListTable">
+      <>{isCheckout ? modalJSX() : null}</>
+      <>{isShowReceipt ? receiptJSX() : null}</>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div className="headerButtons">
