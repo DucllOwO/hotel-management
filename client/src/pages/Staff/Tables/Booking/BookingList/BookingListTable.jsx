@@ -8,17 +8,20 @@ import SuccessAlert from "../../../../../components/Success/SusscessAlert.jsx/Su
 import { updateBookingStatus } from "../../../../../api/BookingListAPI";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DetailForm from "../../../../../components/Form/DetailForm/DetailForm"
 import CheckButton from "../../../../../components/IconButton/CheckButton/CheckButton";
 import CancelButton from "../../../../../components/IconButton/CancelButton/CancelButton";
 import { useContext } from "react";
 import { AppContext } from "../../../../../context/AppContext";
 import { useEffect } from "react";
 import BookingListForm from "../../../../../components/Form/BookingListForm";
+import { useForm } from "antd/es/form/Form";
 
 const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
   const [editingRow, setEditingRow] = useState(null);
   const [isCheckout, setIsCheckout] = useState(false);
   const [form] = Form.useForm();
+  const infoForm = useForm();
   const {user} = useContext(AppContext);
   const [searchedText, setSearchedText] = useState("");
   const [isShowReceipt, setShowReceipt] = useState(false)
@@ -210,6 +213,13 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
   };
   const handleOKModal = () => {
 
+
+    setIsCheckout(false);
+    setShowReceipt(true);
+  }
+  const handleCancelModal = () => {
+    setIsCheckout(false);
+    setShowReceipt(false);
   }
   function modalJSX() {
     return (
@@ -219,7 +229,7 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
         okText="Xác nhận"
         cancelText="Hủy"
         onOk={handleOKModal}
-        // onCancel={handleCancelModal}
+        onCancel={handleCancelModal}
         width="40%"
       >
         <BookingListForm/>
@@ -227,7 +237,19 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
     );
   }
   function receiptJSX() {
-    return 
+    return (
+      <Modal
+        title="Hoá đơn"
+        open={true}
+        okText="In hoá đơn"
+        cancelText="Hủy"
+        onOk={handleCancelModal}
+        onCancel={handleCancelModal}
+        width="40%"
+      >
+        <DetailForm/>
+      </Modal>
+    );
   }
 
   return (
