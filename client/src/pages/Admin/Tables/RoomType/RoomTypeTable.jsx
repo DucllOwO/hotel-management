@@ -52,6 +52,28 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
   const [bedfilter, setBedFilter] = useState(null);
   const [areaFilter, setAreaFilter] = useState(null);
 
+  const [priceFilter, setPriceFilter] = useState("");
+  const [sliderFilter, setSliderFilter] = useState(null);
+
+  const items = [
+    {
+      label: "Một ngày",
+      value: "Một ngày",
+    },
+    {
+      label: "Qua đêm",
+      value: "Qua đêm",
+    },
+    {
+      label: "Giờ đầu tiên",
+      value: "Giờ đầu tiên",
+    },
+    {
+      label: "Giờ tiếp theo",
+      value: "Giờ tiếp theo",
+    },
+  ];
+
   const maxCustomerMark = {
     1: "1",
     10: "10",
@@ -66,8 +88,8 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
   };
 
   const priceMark = {
-    100000: "100,000đ",
-    10000000: "10,000,000đ",
+    0: "0đ",
+    5000000: "5,000,000đ",
   };
 
   // const items = roomTypes.map((value, index) => {
@@ -110,13 +132,11 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
       dataIndex: "id",
       width: "5%",
       align: "center",
-      fixed: "left",
     },
     {
       key: "2",
       title: "Tên loại phòng",
       filteredValue: [searchedText],
-      fixed: "left",
       width: "20%",
       align: "center",
       onFilter: (value, record) => {
@@ -319,32 +339,76 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
 
     {
       key: "6",
-      title: "Giá (đ)",
-      dataIndex: "price",
+      title:
+        priceFilter !== "" ? "Giá " + priceFilter + " (đ)" : "Giá Một ngày (đ)",
+      dataIndex:
+        priceFilter === "Qua đêm"
+          ? "overnight_price"
+          : priceFilter === "Giờ đầu tiên"
+          ? "first_hour_price"
+          : priceFilter === "Giờ tiếp theo"
+          ? "hour_price"
+          : "one_day_price",
+      filteredValue: priceFilter !== "" ? [priceFilter] : null,
       align: "center",
       width: "20%",
-      sorter: (a, b) => a.price - b.price,
-      filterDropdown: () => {
+      // sorter: (a, b) => a.total_cost - b.total_cost,
+      sorter: (a, b) =>
+        priceFilter === "Qua đêm"
+          ? a.overnight_price - b.overnight_price
+          : priceFilter === "Giờ đầu tiên"
+          ? a.first_hour_price - b.first_hour_price
+          : priceFilter === "Giờ tiếp theo"
+          ? a.hour_price - b.hour_price
+          : a.one_day_price - b.one_day_price,
+      filterDropdown: ({ confirm, clearFilters }) => {
         return (
           <>
             <div className="filterContainer">
               <div className="priceSlider">
+                <Select
+                  style={{ width: 300 }}
+                  size="medium"
+                  options={items}
+                  showSearch
+                  placeholder="Chọn phân loại giá"
+                  onChange={(e) => {
+                    setPriceFilter(e);
+                  }}
+                />
                 <Slider
                   tipFormatter={(value) => {
                     return `${value < 0 ? "-" : ""} ${Math.abs(value)
                       .toString()
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
                   }}
-                  step={100000}
+                  step={10000}
                   width={0.8}
                   range
-                  min={100000}
-                  max={10000000}
+                  min={0}
+                  max={5000000}
                   marks={priceMark}
-                  defaultValue={[100000, 1000000]}
-                  onChange={(value) => {}}
+                  defaultValue={[0, 300000]}
+                  onChange={(value) => {
+                    setSliderFilter(value);
+                    if (priceFilter === "") {
+                      setPriceFilter("Một ngày");
+                    } else {
+                      const temp = priceFilter;
+                      setPriceFilter("");
+                      setPriceFilter(temp);
+                    }
+                  }}
                 />
-                <Button type="primary">Reset</Button>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setPriceFilter("");
+                    clearFilters({ closeDropdown: true });
+                  }}
+                >
+                  Reset
+                </Button>
               </div>
             </div>
           </>
@@ -353,11 +417,44 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
       filterIcon: () => {
         return <FilterOutlined />;
       },
+      onFilter: (value, record) => {
+        switch (priceFilter) {
+          case "" || "Một ngày":
+            return (
+              record.one_day_price >= sliderFilter[0] &&
+              record.one_day_price <= sliderFilter[1]
+            );
+          case "Qua đêm":
+            return (
+              record.overnight_price >= sliderFilter[0] &&
+              record.overnight_price <= sliderFilter[1]
+            );
+          case "Giờ đầu tiên":
+            return (
+              record.first_hour_price >= sliderFilter[0] &&
+              record.first_hour_price <= sliderFilter[1]
+            );
+          case "Giờ tiếp theo":
+            return (
+              record.hour_price >= sliderFilter[0] &&
+              record.hour_price <= sliderFilter[1]
+            );
+          default:
+            return (
+              record.one_day_price >= sliderFilter[0] &&
+              record.one_day_price <= sliderFilter[1]
+            );
+        }
+        // if (priceFilter === null) {
+        //   return record.one_day_price;
+        // } else {
+        //   return record.area >= value[0] && record.area <= value[1];
+        // }
+      },
     },
     {
       key: "7",
       title: "Thao tác",
-      fixed: "right",
       render: (_, record) => {
         return (
           <>
