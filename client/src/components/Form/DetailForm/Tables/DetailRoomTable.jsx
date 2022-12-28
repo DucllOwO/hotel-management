@@ -80,7 +80,7 @@ const DetailRoomTable = () => {
       },
     },
     {
-      key: "3",
+      key: "5",
       title: "Giá",
       dataIndex: "price",
       align: "center",

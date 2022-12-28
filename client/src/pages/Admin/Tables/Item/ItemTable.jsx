@@ -29,15 +29,17 @@ const ItemTable = ({ items, setItems, user }) => {
   const [priceFilter, setPriceFilter] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
+  const minPrice = Math.min(...items.map((items) => items.sell_price));
   const price = Math.max(...items.map((items) => items.sell_price));
+  const minReserve = Math.min(...items.map((items) => items.reserve_amount));
   const reserve = Math.max(...items.map((items) => items.reserve_amount));
 
   const priceMark = {
-    0: "0đ",
+    [minPrice]: minPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
     [price]: price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
   };
   const reserveMark = {
-    0: "0",
+    [minReserve]: minReserve.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     [reserve]: reserve.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
   };
 
@@ -116,7 +118,7 @@ const ItemTable = ({ items, setItems, user }) => {
               <Slider
                 range
                 max={reserve}
-                min={0}
+                min={minReserve}
                 marks={reserveMark}
                 defaultValue={[0, 20]}
                 onChange={(e) => {
@@ -178,7 +180,7 @@ const ItemTable = ({ items, setItems, user }) => {
                   width={0.8}
                   step={5000}
                   range
-                  min={0}
+                  min={minPrice}
                   max={price}
                   marks={priceMark}
                   defaultValue={[0, 100000]}
