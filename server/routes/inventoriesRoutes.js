@@ -1,4 +1,4 @@
-const { getBookingByStatus, getRecordByBookingID } = require("../controllers/inventoryController");
+const { getBookingByStatus, getRecordByBookingID, createRecord, createDetail } = require("../controllers/inventoryController");
 
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
 const { tryCatch } = require("../middlewares/errorHandler");
@@ -13,7 +13,18 @@ router.get(
   hasPermission(actionAC.GET, resourceAC.INVENTORY),
   tryCatch(getBookingByStatus)
 );
-
+router.post(
+  "/record",
+  authorizeAccessToken,
+  hasPermission(actionAC.CREATE, resourceAC.INVENTORY),
+  tryCatch(createRecord)
+);
+router.post(
+  "/detail",
+  authorizeAccessToken,
+  hasPermission(actionAC.CREATE, resourceAC.INVENTORY),
+  tryCatch(createDetail)
+);
 router.get(
   "/record",
   authorizeAccessToken,

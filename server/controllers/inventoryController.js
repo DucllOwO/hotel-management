@@ -9,6 +9,7 @@ const getAll = async (req, res, next) => {
         return next(error);
     return data;
 }
+
 const getRecordByBookingID = async (req, res, next) => {
     const {booking_id} = req.query;
     
@@ -42,21 +43,31 @@ const getRecordByBookingID = async (req, res, next) => {
     
 }
 const createRecord = async (req, res, next) => {
-    const{record, employee} = req.body;
-    const{id: employeeID} = employee?.id;
+    const{record} = req.body;
 
-    if(!employee || !record) 
+    if(!record) 
         return next(BadRequestError);
 
-    const {data, error: insertRecordError} = await inventoryDAL.createNewRecord({
-        employee_id: employee?.id,
-        ...record,
-    });
+    const {data, error: insertRecordError} = await inventoryDAL.createNewRecord({...record});
+    console.log(data)
     
     if(insertRecordError)
         return next(insertRecordError);
 
-    res.status(201).send("Created");
+    res.status(201).send(data);
+}
+const createDetail = async (req, res, next) => {
+    const{detail} = req.body;
+
+    if(!detail) 
+        return next(BadRequestError);
+
+    const {data, error: insertDetailError} = await inventoryDAL.createDetail({...detail});
+    
+    if(insertDetailError)
+        return next(insertDetailError);
+
+    res.status(201).send(data);
 }
 
 const getBookingByStatus = async (req, res, next) => {
@@ -74,7 +85,7 @@ const getBookingByStatus = async (req, res, next) => {
     const {data: listRoom, error: getUsingRoomError} = 
         await roomDAL.getUsingRoom(listBookingID);
     
-        // console.log(listRoom)
+        console.log(listRoom)
     if(getUsingRoomError) return next(getUsingRoomError)
 
     const returnList = listRoom?.map((value) => {
@@ -82,6 +93,7 @@ const getBookingByStatus = async (req, res, next) => {
             booking_id: value.booking_id,
             room_name: value.room_id.room_name,
             room_type: value.room_id.room_type_id.name,
+            area: value.room_id.room_type_id.area
         };
     });
 
@@ -90,5 +102,7 @@ const getBookingByStatus = async (req, res, next) => {
 
 module.exports = {
     getBookingByStatus,
-    getRecordByBookingID 
+    createRecord,
+    getRecordByBookingID ,
+    createDetail
 }

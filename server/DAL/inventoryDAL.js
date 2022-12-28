@@ -19,6 +19,9 @@ async function createNewRecord(newRecord)
     });
     return {data, error};
 }
+const createDetail = (newDetail) => {
+    return supabase.from("inventory_detail").insert(newDetail);
+}
 const getInventoryDetail = (recordID) => {
     return supabase
     .from("inventory_detail")
@@ -35,4 +38,5 @@ module.exports = {
     createNewRecord,
     getInventoryByBookingID,
     getInventoryDetail,
+    createDetail
 }

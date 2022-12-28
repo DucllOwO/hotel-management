@@ -17,6 +17,9 @@ import TextButton from "../../../../components/TextButton/TextButton";
 import CheckButton from "../../../../components/IconButton/CheckButton/CheckButton";
 import { useContext } from "react";
 import { ItemContext } from "../../../../context/ItemContext";
+import { createInventoryDetail, createInventoryRecord } from "../../../../api/InventoryAPI";
+import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
+import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 
 const InventoryTable = ({ rooms, user }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -28,13 +31,13 @@ const InventoryTable = ({ rooms, user }) => {
   };
   const [form] = Form.useForm();
   const { item, setItem, record, setRecord } = useContext(ItemContext);
+  const [selectedRoom, setSelectedRoom] = useState({});
 
   const [searchedText, setSearchedText] = useState("");
   const areaMark = {
     10: "10",
     60: "60",
   };
-  const [currentRoom, setCurrentRoom] = useState({});
 
   const [filter, setFilter] = useState("");
   useEffect(() => {
@@ -78,7 +81,7 @@ const InventoryTable = ({ rooms, user }) => {
       width: "26.6666%",
       align: "center",
       sorter: (a, b) => a.room_name.localeCompare(b.room_name),
-      render: (_,record) => {}
+      // render: (_,record) => {}
     },
     {
       key: "2",
@@ -121,9 +124,9 @@ const InventoryTable = ({ rooms, user }) => {
             .includes(value.toLocaleLowerCase())
         );
       },
-      render: (text, record) => {
-        // return <p>{record.room_type_id.name}</p>;
-      },
+      // render: (text, record) => {
+      //   // return <p>{record.room_type_id.name}</p>;
+      // },
       filterDropdown: ({ confirm, clearFilters }) => {
         return (
           <>
@@ -161,12 +164,12 @@ const InventoryTable = ({ rooms, user }) => {
     {
       key: "3",
       title: "Diện tích (m2)",
-      // dataIndex: "size",
+      dataIndex: "area",
       width: "26.6666%",
       align: "center",
-      render: (text, record) => {
-        return <p>{text}</p>;
-      },
+      // render: (text, record) => {
+      //   // return <p>{text}</p>;
+      // },
       filterDropdown: () => {
         return (
           <>
@@ -204,7 +207,8 @@ const InventoryTable = ({ rooms, user }) => {
               title="Kiểm tra phòng"
               onCheckButton={() => {
                 showModal();
-                // setCurrentRoom(record.room_name);
+                console.log(record);
+                setSelectedRoom(record);
                 // form.setFieldValue("room_name", record.room_name);
               }}
             ></CheckButton>
@@ -235,9 +239,26 @@ const InventoryTable = ({ rooms, user }) => {
         const newRecord = {
           date: dayjs(Date.now()),
           employee_id: data.id,
-          invoice_id: "1",
-          room_name: currentRoom,
+          booking_id: selectedRoom.booking_id,
+          room_id: selectedRoom.room_id,
         };
+        createInventoryRecord(user?.position, newRecord).then((value) => {
+          console.log(value)
+          record.forEach((item) => {
+            const newDetail = {
+              item_id: item.id,
+              price: item.price,
+              amount: item.amount,
+              record_id: value.data[0].id
+            }
+            createInventoryDetail(user?.position, newDetail).then(() => {
+              SuccessAlert("Kiểm phòng hoàn tất");
+            }).catch((error) => {
+              ErrorAlert("Đã xảy ra lỗi");
+              throw error;
+            })
+          })
+        })
       }
     );
     const usedItem = form.getFieldValue("table");
@@ -245,6 +266,8 @@ const InventoryTable = ({ rooms, user }) => {
   }
   function handleCancelModal() {
     setIsModalVisible(false);
+    setRecord([]);
+    form.resetFields();
   }
 
   const modalForm = () => {
@@ -256,7 +279,7 @@ const InventoryTable = ({ rooms, user }) => {
         onCancel={handleCancelModal}
         width="50%"
       >
-        <InventoryForm form={form} record={record} setRecord={setRecord} />
+        <InventoryForm form={form} record={record} setRecord={setRecord} room_name={selectedRoom.room_name}/>
       </Modal>
     );
   };
@@ -283,7 +306,7 @@ const InventoryTable = ({ rooms, user }) => {
       <Table
         showSorterTooltip={false}
         columns={columns}
-        // dataSource={dataSource}
+        dataSource={rooms}
         scroll={{ y: "60vh", x: "100%" }}
       ></Table>
     </div>

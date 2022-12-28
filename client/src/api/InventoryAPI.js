@@ -5,3 +5,13 @@ export const fetchBookingByStatus = (positionUser, status) => {
       params: { user: { position: positionUser }, status: status },
     });
   }
+export const createInventoryRecord = (positionUser, newRecord) => {
+  return userRequest.post("/inventory/record", {
+    user: {position: positionUser}, record: newRecord
+  })
+}
+export const createInventoryDetail = (positionUser, newDetail) => {
+  return userRequest.post("/inventory/detail", {
+    user: {position: positionUser}, detail: newDetail
+  })
+}
