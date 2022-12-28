@@ -60,6 +60,8 @@ const getRoomByBookingID = async (req, res, next) => {
     else
       return {
         room_name: value.room_id.room_name,
+        room_type: roomType[0].name,
+        area: roomType[0].area,
         first_hour_price: roomType[0].first_hour_price,
         hour_price: roomType[0].hour_price,
         overnight_price: roomType[0].overnight_price,

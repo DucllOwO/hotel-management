@@ -13,23 +13,27 @@ const DetailForm = ({ receipt, rowIndex }) => {
         <div className="left">
           <Form.Item label="Thời gian">
             <span className="formItem">
-              {receipt[rowIndex].established_date}
+              {/* {receipt[rowIndex].established_date} */}
             </span>
           </Form.Item>
           <Form.Item label="Khách hàng">
             <span className="formItem">
-              {receipt[rowIndex].booking_id.customer_id.fullname +
+              {/* {receipt[rowIndex].booking_id.customer_id.fullname +
                 " | " +
-                receipt[rowIndex].booking_id.customer_id.id}
+                receipt[rowIndex].booking_id.customer_id.id} */}
             </span>
           </Form.Item>
         </div>
         <div className="right">
           <Form.Item label="Check-in">
-            <span className="formItem">{receipt[rowIndex].checkin_time}</span>
+            <span className="formItem">
+              {/* {receipt[rowIndex].checkin_time} */}
+              </span>
           </Form.Item>
           <Form.Item label="Check-out">
-            <span className="formItem">{receipt[rowIndex].checkout_time}</span>
+            <span className="formItem">
+              {/* {receipt[rowIndex].checkout_time} */}
+            </span>
           </Form.Item>
         </div>
       </div>

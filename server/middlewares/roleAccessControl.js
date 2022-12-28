@@ -16,6 +16,7 @@ const initGrantList = async () => {
           resource: permission?.feature_id.resource,
         };
       });
+      // console.log(grantList)
       //console.log(JSON.stringify(grantList) + " 16");
       return grantList;
     } else {
