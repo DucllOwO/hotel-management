@@ -30,10 +30,10 @@ const BookingListForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
         <InputNumber
           controls={false}
           size="large"
-            addonAfter={String("đ")}
-            formatter={(value) =>
-              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            }
+          addonAfter={String("đ")}
+          formatter={(value) =>
+            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          }
           />
       </Form.Item>
       <Form.Item 

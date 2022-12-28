@@ -1,44 +1,44 @@
 import React from "react";
 import { Table } from "antd";
 
-const DetailServiceTable = () => {
-  const dataSource = [
-    {
-      no: "1",
-      service: "Cocacola",
-      amount: "3",
-      unitPrice: "15000",
-      total: "45000",
-    },
-    {
-      no: "1",
-      service: "Cocacola",
-      amount: "3",
-      unitPrice: "15000",
-      total: "45000",
-    },
-    {
-      no: "1",
-      service: "Cocacola",
-      amount: "3",
-      unitPrice: "15000",
-      total: "45000",
-    },
-    {
-      no: "1",
-      service: "Cocacola",
-      amount: "3",
-      unitPrice: "15000",
-      total: "45000",
-    },
-    {
-      no: "1",
-      service: "Cocacola",
-      amount: "3",
-      unitPrice: "15000",
-      total: "45000",
-    },
-  ];
+const DetailServiceTable = ({dataSource}) => {
+  // const dataSource = [
+  //   {
+  //     no: "1",
+  //     service: "Cocacola",
+  //     amount: "3",
+  //     unitPrice: "15000",
+  //     total: "45000",
+  //   },
+  //   {
+  //     no: "1",
+  //     service: "Cocacola",
+  //     amount: "3",
+  //     unitPrice: "15000",
+  //     total: "45000",
+  //   },
+  //   {
+  //     no: "1",
+  //     service: "Cocacola",
+  //     amount: "3",
+  //     unitPrice: "15000",
+  //     total: "45000",
+  //   },
+  //   {
+  //     no: "1",
+  //     service: "Cocacola",
+  //     amount: "3",
+  //     unitPrice: "15000",
+  //     total: "45000",
+  //   },
+  //   {
+  //     no: "1",
+  //     service: "Cocacola",
+  //     amount: "3",
+  //     unitPrice: "15000",
+  //     total: "45000",
+  //   },
+  // ];
 
   const columns = [
     {
@@ -53,10 +53,10 @@ const DetailServiceTable = () => {
     {
       key: "2",
       title: "Tên dịch vụ",
-      dataIndex: "service",
+      dataIndex: "item_name",
       align: "center",
       render: (text, record) => {
-        return record.service ? String(record.service) : "";
+        return record.item_name ? String(record.item_name) : "";
       },
     },
     {
@@ -71,19 +71,19 @@ const DetailServiceTable = () => {
     {
       key: "4",
       title: "Đơn giá",
-      dataIndex: "unitPrice",
+      dataIndex: "price",
       align: "center",
       render: (text, record) => {
-        return record.unitPrice ? String(record.unitPrice) : "";
+        return record.price ? String(record.price) : "";
       },
     },
     {
       key: "5",
       title: "Tổng cộng",
-      dataIndex: "total",
+      dataIndex: "total_cost",
       align: "center",
       render: (text, record) => {
-        return record.total ? String(record.total) : "";
+        return record.total_cost ? String(record.total_cost) : "";
       },
     },
   ];

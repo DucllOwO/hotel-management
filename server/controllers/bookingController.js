@@ -1,5 +1,6 @@
 const bookingDAL = require("../DAL/bookingDAL");
 const roomDAL = require("../DAL/roomDAL");
+const dayjs = require("dayjs")
 const usedRoomDAL = require("../DAL/usedRoomDAL");
 const customerDAL = require("../DAL/customerDAL");
 const { BadRequestError } = require("../middlewares/errorHandler");
@@ -120,7 +121,7 @@ const updateBookingStatus = async (req, res, next) => {
   if(!id || !status) return next(BadRequestError)
 
   if(status === "1") {
-    const {error: updateTimeError} = await bookingDAL.updateCheckInTime(dayjs(Date.now()));
+    const {error: updateTimeError} = await bookingDAL.updateCheckInTime(id, dayjs(Date.now()));
     
     if(updateTimeError) return next(updateTimeError);
   }

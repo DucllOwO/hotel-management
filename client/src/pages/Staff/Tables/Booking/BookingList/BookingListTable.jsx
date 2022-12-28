@@ -25,10 +25,10 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
   const [currentEmployee, setCurrentEmployee] = useState({});
   const [selectedBooking, setSelectedBooking] = useState({});
   const [usedRoom, setUsedRoom] = useState([]);
-  const [serviceCost, setServiceCost] = useState(0);
-  const [rentCost, setRentCost] = useState(0);
+  const [usedService, setUsedService] = useState([]);
   // const [form] = Form.useForm();
   const [infoForm] = Form.useForm();
+  const [receipt, setReceipt] = useState({});
   const {user} = useContext(AppContext);
   const [searchedText, setSearchedText] = useState("");
   const [isShowReceipt, setShowReceipt] = useState(false)
@@ -259,37 +259,103 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
     setEditingRow(null);
   };
   const handleOKModal = async () => {
-    fetchEmployeeByUsername(user?.position, user?.account.username).then((data) => {
+    //Fetch employee information
+    let serviceCost = 0;
+    let rentCost = 0;
+    await fetchEmployeeByUsername(user?.position, user?.account.username).then((data) => {
       setCurrentEmployee(data.data);
       console.log(data.data)
+    }).catch(() => {
+      ErrorAlert("Lấy dữ liệu nhân viên không thành công");
     });
 
     console.log(selectedBooking)
-    getInventory(user?.position, selectedBooking.id).then((data) => {
+    //fetch service used 
+    await getInventory(user?.position, selectedBooking.id).then(async (data) => {
       console.log(data.data)
-      data.data.forEach((value) => {
-        setServiceCost((prev) => { 
-          return prev + (value.price * value.amount);
-        });
-      });
+      if(data.data)
+      {
+        setUsedService(data.data.map((value) => {
+          const newServiceCost = value.price * value.amount
+          serviceCost = serviceCost + newServiceCost;
+          return {
+            item_name: value.item_name,
+            amount: value.amount, 
+            price: value.price,
+            total_cost: newServiceCost,
+          }
+        }));
+      }; 
     })
     .catch(() => {
       ErrorAlert("Lấy dữ liệu dịch vụ thất bại")
     });
 
-    console.log(serviceCost)
-
+    //fetch room information (contains all price);
     await getRoomByBookingID(user?.position, selectedBooking.id).then((data) => {
-      console.log(data)
-      setUsedRoom(data.data);
-    })
+      console.log(data.data);
+      const rentRoomArray = calcRentCost(data.data)
+          console.log(rentRoomArray);
+          console.log(serviceCost);
+          rentRoomArray.forEach((value) => {
+            console.log(value);
+            rentCost = rentCost + value.price;
+          });
+          setUsedRoom(rentRoomArray);
 
-    
-    Promise.all(usedRoom.map((value) => {
+    });
+
+    // calculate rent cost
+    console.log(serviceCost);
+    console.log(rentCost);
+    await createReceiptFunc(rentCost, serviceCost);
+  }
+  const createReceiptFunc = async (rentCost, serviceCost) => {
+    let totalCost = rentCost + serviceCost;
+    infoForm.validateFields().then( async (data) => {
+      if(data.surcharge)
+        totalCost = totalCost + data.surcharge;
+      const newReceipt = {
+        established_date: dayjs(Date.now()),
+        payment_method: data.method,
+        checkout_time: dayjs(Date.now()),
+        note: data.note,
+        surcharge: data.surcharge,
+        service_cost: serviceCost,
+        rent_cost: rentCost,
+        total_cost: totalCost,
+      }
+      await createReceipt(user?.position, newReceipt, selectedBooking, currentEmployee).then((data) => {
+        setReceipt(data.data[0]);
+        console.log(data.data);
+        SuccessAlert("Trả phòng thành công");
+        setBooking((prev) => prev.filter((value) => value !== selectedBooking));
+        setIsCheckout(false);
+        setShowReceipt(true);
+        infoForm.resetFields();
+        updateBookingStatus(user?.position, "2", selectedBooking.id);
+        console.log(usedRoom);
+        console.log(usedService);
+      })
+      .catch((error) => {
+        ErrorAlert("Đã xảy ra lỗi khi tạo hoá đơn");
+        throw error
+      });
+    })
+    .catch((value) => {
+      ErrorAlert("Vui lòng nhập đủ các thông tin");
+      throw value
+    })
+  };
+  const calcRentCost = (usedRoom) => {
+    console.log(usedRoom)
+    return usedRoom.map((value) => {
+      //hour price
       if(dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "hour") < 7)
       {
-        console.log("giờ")
+        console.log("giá giờ")
         const price = value.first_hour_price + (dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "hour") - 1) * value.hour_price
+        console.log(price)
         return {
           room_name: value.room_name,
           room_type: value.room_type,
@@ -297,13 +363,16 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
           price: price
         }
       }
-      else 
+      else //day or overnight price
       {
+        //day checkin before 12
         if (dayjs(selectedBooking.checkin_time).hour() >=6 && dayjs(selectedBooking.checkin_time).hour() < 12)
         { 
-          console.log("ngày")
+          console.log("giá ngày checkin sớm")
+          //day checkout before 12
           if(dayjs(Date.now()).hour() <12)
           {
+            console.log("giá ngày checkout sớm")
             const price = (12 - dayjs(selectedBooking.checkin_time).hour()) * value.hour_price + Math.round(dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day")) * value.one_day_price;
             return {
               room_name: value.room_name,
@@ -312,8 +381,10 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
               price: price
             }
           }
+          //day after 12 and before 17 (surcharge)
           else if(dayjs(Date.now()).hour() >= 12 && dayjs(Date.now()).hour() < 17)
           {
+            console.log("giá ngày checkout trễ phụ thu")
             const price = ((12 - dayjs(selectedBooking.checkin_time).hour()) + (dayjs(Date.now()).hour() - 12))* value.hour_price + Math.round(dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day")) * value.one_day_price;
             return {
               room_name: value.room_name,
@@ -322,8 +393,10 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
               price: price
             }
           }
+          //day after 17 (add 1 more day)
           else
           {
+            console.log("giá ngày checkout trễ thêm 1 ngày")
             const price = (12 - dayjs(selectedBooking.checkin_time).hour()) * value.hour_price + Math.round(dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day") + 1) * value.one_day_price;
             return {
               room_name: value.room_name,
@@ -333,11 +406,15 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
             }
           } 
         }
+        //day checkin after 12
         else if(dayjs(selectedBooking.checkin_time).hour() >= 12 && dayjs(selectedBooking.checkin_time).hour() < 17)
         {
-          
+          console.log("ngày checkin đúng")
+          //day checkout ontime
           if(dayjs(Date.now()).hour() <12)
           {
+            console.log("giá ngày checkout sớm")
+
             const price = Math.round(dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day")) * value.one_day_price;
             return {
               room_name: value.room_name,
@@ -346,9 +423,14 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
               price: price
             }
           }
+          //day checkout late with surcharge
           else if(dayjs(Date.now()).hour() >= 12 && dayjs(Date.now()).hour() < 17)
           {
-            const price = (dayjs(Date.now()).hour() - 12) * value.hour_price + Math.round(dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day")) * value.one_day_price;
+            console.log("giá ngày checkout trễ phụ thu")
+            console.log((dayjs(Date.now()).hour() - 12) * value.hour_price)
+            console.log(dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day") * value.one_day_price)
+            const price = (dayjs(Date.now()).hour() - 12) * value.hour_price + dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day") * value.one_day_price;
+            console.log(price)
             return {
               room_name: value.room_name,
               room_type: value.room_type,
@@ -356,8 +438,11 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
               price: price
             }
           }
+          //day checkout late add 1 more day
           else
           {
+            console.log("giá ngày checkout trễ thêm 1 ngày")
+
             const price = Math.round(dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day") + 1) * value.one_day_price;
             return {
               room_name: value.room_name,
@@ -367,13 +452,18 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
             }
           }
         }
+        //overnight
         else
         {
-          console.log("đêm")
+          console.log("giá đêm")
+          //night ontime
           if(dayjs(selectedBooking.checkin_time).hour() >= 21)
           {
+            console.log("đêm sau checkin đúng")
+            //night checkout ontime
             if(dayjs(Date.now()).hour() <12)
             {
+              console.log("trả đúng")
               const price = Math.round(dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day")) * value.overnight_price;
               return {
                 room_name: value.room_name,
@@ -382,8 +472,12 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
                 price: price
               }
             }
+            //night checkout late with surcharge
+            
             else if(dayjs(Date.now()).hour() >= 12 && dayjs(Date.now()).hour() < 17)
             {
+              console.log("trả trễ phụ thu")
+
               const price = (dayjs(Date.now()).hour() - 12) * value.hour_price + Math.round(dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day")) * value.overnight_price;
               return {
                 room_name: value.room_name,
@@ -392,9 +486,12 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
                 price: price
               }
             }
+            //night checkout late become 1 day
             else
             {
-              const price = Math.round(dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day")) * value.one_day_price + value.overnight_price;
+              console.log("trả trễ 1 ngày")
+
+              const price = Math.round(dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day")) * value.one_day_price;
               return {
                 room_name: value.room_name,
                 room_type: value.room_type,
@@ -403,10 +500,15 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
               }
             }
           }
+          //night checkout before 21
           else
           {
+            console.log("đêm sớm")
+
+            // night checkin soon and checkout ontime
             if(dayjs(Date.now()).hour() <12)
             {
+              console.log("đêm trả phòng đúng")
               const price = (21 - dayjs(selectedBooking.checkin_time).hour()) * value.hour_price +  Math.round(dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day")) * value.overnight_price;
               return {
                 room_name: value.room_name,
@@ -415,8 +517,11 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
                 price: price
               }
             }
+            //night checkin soon and checkout late with surcharge
             else if(dayjs(Date.now()).hour() >= 12 && dayjs(Date.now()).hour() < 17)
             {
+              console.log("trả trễ phụ thu")
+
               const price = ((21 - dayjs(selectedBooking.checkin_time).hour()) + (dayjs(Date.now()) - 12)) +  Math.round(dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day")) * value.overnight_price;
               return {
                 room_name: value.room_name,
@@ -425,8 +530,11 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
                 price: price
               }
             }
+            //night checkin soon and check out late, become 1 day full
             else
             {
+              console.log("trả trễ 1 ngày")
+
               const price = ((21 - dayjs(selectedBooking.checkin_time).hour()) + (dayjs(Date.now()) - 12)) +  Math.round(dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day")) * value.one_day_price + value.overnight_price;
               return {
                 room_name: value.room_name,
@@ -438,52 +546,12 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
           }
         }
       }
-    })).then((data) => {
-      console.log(data)
-
-      data.forEach((value) => {
-        setRentCost((prev) => prev + value.price)
-      })
-    })
-
-    
-    console.log(rentCost)
-
-    infoForm.validateFields().then( async (data) => {
-      console.log("creating")
-      const totalCost = rentCost + serviceCost + data.surcharge;
-      const newReceipt = {
-        established_date: dayjs(Date.now()),
-        payment_method: data.method,
-        checkout_time: dayjs(Date.now()),
-        note: data.note,
-        surcharge: data.surcharge,
-        service_cost: serviceCost,
-        rent_cost: rentCost,
-        total_cost: totalCost,
-      }
-      createReceipt(user?.position, newReceipt, selectedBooking, currentEmployee).then((data) => {
-        SuccessAlert("Trả phòng thành công");
-        setBooking((prev) => prev.filter((value) => value !== selectedBooking));
-        setIsCheckout(false);
-        setShowReceipt(true);
-        infoForm.resetFields();
-        setServiceCost(0);
-        setRentCost(0);
-        // updateBookingStatus(user?.position,s "2");
-      })
-      .catch((error) => {
-        ErrorAlert("Đã xảy ra lỗi khi tạo hoá đơn");
-        throw error
-      });
-    })
-    .catch((value) => {
-      ErrorAlert("Vui lòng nhập đủ các thông tin");
-      throw value
-    })
-    
+    });
   }
+
   const handleCancelModal = () => {
+    setUsedRoom([]);
+    setUsedService([]);
     setIsCheckout(false);
     setShowReceipt(false);
   }
@@ -513,7 +581,7 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
         onCancel={handleCancelModal}
         width="40%"
       >
-        <DetailForm/>
+        <DetailForm receipt={receipt} usedRoom={usedRoom} usedService={usedService} rowIndex={0}/>
       </Modal>
     );
   }
