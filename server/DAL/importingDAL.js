@@ -1,15 +1,17 @@
 const supabase = require("../database");
+const dayjs = require("dayjs");
 
-async function getAllRecords() {
+function getAllRecords() {
   return supabase
     .from("purchase")
-    .select(`
+    .select(
+      `
       id, 
-      amount,
-      item_id(name),
       total_cost,
-      established_date
-    `)
+      established_date,
+      employee_id (fullname)
+    `
+    )
     .order("id", { ascending: true });
 }
 async function getRecordByID(filter) {
@@ -19,15 +21,22 @@ async function getRecordByID(filter) {
     .eq("id", filter);
   return { data, error };
 }
-async function createNewRecord(newRecord) {
-  const { data, error } = await supabase.from("purchase").insert({
-    item_id: newRecord.item_id,
-    amount: newRecord.amount,
-    price: newRecord.price,
-    total_cost: newRecord.total_cost,
-    employee_id: newRecord.employee_id,
-  });
-  return { data, error };
+function createNewRecord(newRecord) {
+  return supabase
+    .from("purchase")
+    .insert({
+      total_cost: newRecord.total_cost,
+      employee_id: newRecord.employee_id,
+      established_date: dayjs(Date.now()),
+    })
+    .select(
+      `
+      id, 
+      total_cost,
+      established_date,
+      employee_id (fullname)
+    `
+    );
 }
 
 module.exports = {

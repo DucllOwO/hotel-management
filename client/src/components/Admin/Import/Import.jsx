@@ -9,30 +9,23 @@ import WarningModal from "../../WarningModal/WarningModal";
 const initialValue = [
   {
     id: 1,
+    item_id: "",
     name: "",
-    amount: "",
-    unitPrice: "",
-    total: "",
+    amount: 0,
+    unitPrice: 0,
+    total: 0,
   },
 ];
 
-const Import = ({ items, setListItem, importList, setImportList }) => {
-  // const [price, setPrice] = useState(0);
-
-  // const [quantity, setQuantity] = useState(0);
-
-  // const [totalCost, setTotalCost] = useState(0);
-
-  // const calcTotalCost = () => {
-  //   setTotalCost(quantity * price);
-  // };
-  // useEffect(() => {
-  //   setListItem(items);
-
-  //   calcTotalCost();
-  // }, [quantity, price]);
-
+const Import = ({
+  items,
+  setListItem,
+  importList,
+  setImportList,
+  setTotalPrice,
+}) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
+
   const columns = [
     {
       key: "1",
@@ -70,14 +63,15 @@ const Import = ({ items, setListItem, importList, setImportList }) => {
     {
       key: "3",
       title: "Số lượng",
-      dataIndex: "quantity",
+      dataIndex: "amount",
       width: 100,
       align: "center",
-      render: (_, record) => {
+      render: (text, record) => {
         return (
           <>
             <InputNumber
               defaultValue={0}
+              value={text}
               min={0}
               onChange={(e) => {
                 onAmountChange(e, record.id);
@@ -162,7 +156,7 @@ const Import = ({ items, setListItem, importList, setImportList }) => {
 
   const onAmountChange = (e, importID) => {
     setImportList((prev) => {
-      return prev.map((importTemp, index) => {
+      const importListTemp = prev.map((importTemp, index) => {
         if (importTemp.id === importID) {
           return {
             ...importTemp,
@@ -173,6 +167,12 @@ const Import = ({ items, setListItem, importList, setImportList }) => {
         }
         return { ...importTemp, id: index + 1 };
       });
+
+      setTotalPrice(
+        importListTemp.reduce((total, value) => total + value.total, 0)
+      );
+
+      return importListTemp;
     });
   };
 
@@ -189,14 +189,13 @@ const Import = ({ items, setListItem, importList, setImportList }) => {
       const idSorted = filter.map((importTemp, index) => {
         return { ...importTemp, id: index + 1 };
       });
-      return idSorted.length >= 1 ? idSorted : initialValue;
+      if (idSorted.length >= 1) {
+        setTotalPrice(
+          idSorted.reduce((total, value) => total + value.total, 0)
+        );
+        return idSorted;
+      } else return initialValue;
     });
-    //reset id column
-    // setImportList((prev) => {
-    //   return prev.map((importTemp, index) => {
-    //     return { ...importTemp, id: index + 1 };
-    //   });
-    // });
   }
 
   const onItemChange = (itemID, importID, optionSelect) => {
@@ -240,6 +239,7 @@ const Import = ({ items, setListItem, importList, setImportList }) => {
         if (importTemp.id === importID) {
           return {
             ...importTemp,
+            item_id: option.option.value,
             name: option.option.label,
             unitPrice: option.unitPrice,
           };
@@ -254,10 +254,11 @@ const Import = ({ items, setListItem, importList, setImportList }) => {
         ...pre,
         {
           id: pre.length + 1,
+          item_id: "",
           name: "",
-          amount: "1",
-          unitPrice: "0",
-          total: "0",
+          amount: 0,
+          unitPrice: 0,
+          total: 0,
         },
       ];
     });

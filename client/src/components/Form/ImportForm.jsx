@@ -6,8 +6,15 @@ import { useContext } from "react";
 import Import from "../Admin/Import/Import";
 import { AppContext } from "../../context/AppContext";
 import ErrorAlert from "../Error/Alert/ErrorAlert";
+import ErrorMessage from "../Error/ErrorMessage/ErrorMessage";
 
-const ImportForm = ({ form, data, setData }) => {
+const ImportForm = ({
+  data,
+  setData,
+  amountError,
+  totalPrice,
+  setTotalPrice,
+}) => {
   const { user } = useContext(AppContext);
 
   const [listItem, setListItem] = useState([]);
@@ -25,30 +32,39 @@ const ImportForm = ({ form, data, setData }) => {
   }, [user?.position]);
 
   return (
-    <Form layout="vertical" form={form} name="positionForm" autoComplete="off">
-      <div className="modal">
-        <div style={{ width: "60vw" }}>
-          <Form.Item
-            label="Nhân viên"
-            name="id"
-            tooltip="Số CMND của nhân viên đang làm việc"
-          >
-            <Input
-              size="large"
-              disabled={true}
-              defaultValue={user?.account.fullname}
-            />
-          </Form.Item>
+    <div className="modal">
+      <div style={{ width: "60vw" }}>
+        <Input
+          size="large"
+          disabled={true}
+          defaultValue={user?.account.fullname}
+        />
 
-          <Import
-            items={listItem}
-            setListItem={setListItem}
-            importList={data}
-            setImportList={setData}
-          ></Import>
+        <Import
+          items={listItem}
+          setListItem={setListItem}
+          importList={data}
+          setImportList={setData}
+          setTotalPrice={setTotalPrice}
+        ></Import>
+        {amountError ? (
+          <div style={{ marginTop: 10 }}>
+            <p>
+              <ErrorMessage message="Vui lòng kiểm tra lại như sau:" />
+            </p>
+            <p>
+              <ErrorMessage message="-Số lượng của các sản phẩm (tất cả phải lớn hơn 0)" />
+            </p>
+            <p>
+              <ErrorMessage message="-Không được để sản phẩm nào trống (nếu không muốn tạo vui lòng xóa)" />
+            </p>
+          </div>
+        ) : null}
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <h2>Tổng tiền: {totalPrice.toLocaleString()}</h2>
         </div>
       </div>
-    </Form>
+    </div>
   );
 
   function createOptionSelect(arr) {

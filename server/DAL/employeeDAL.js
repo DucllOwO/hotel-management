@@ -14,6 +14,7 @@ const getEmployeePositionByUsername = (username) => {
     .from(TABLE_NAME)
     .select(
       `
+      id,
       fullname,
       position_id:position(
     name, id
@@ -66,5 +67,5 @@ module.exports = {
   deleteEmployee,
   getEmployeePositionByUsername,
   getEmployeePositionByEmail,
-  getEmployeeByUsername
+  getEmployeeByUsername,
 };
