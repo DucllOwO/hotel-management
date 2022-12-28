@@ -18,6 +18,7 @@ import { createBooking, createCustomer } from "../../../../../api/BookingAPI";
 import SuccessAlert from "../../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import ErrorAlert from "../../../../../components/Error/Alert/ErrorAlert";
 import BottomBar from "../../../../../components/Admin/BottomBar/BottomBar";
+import BookingExpand from "../../../../../components/ExpandedTable/BookingExpand";
 const { RangePicker } = DatePicker;
 
 const BookingTable = ({
@@ -42,6 +43,9 @@ const BookingTable = ({
   const [filter, setFilter] = useState("");
   const [areaFilter, setAreaFilter] = useState(null);
 
+  const [priceFilter, setPriceFilter] = useState("");
+  const [sliderFilter, setSliderFilter] = useState([0, 5000000]);
+
   const items = listType.map((item) => {
     return {
       label: "" + item.name.toString(),
@@ -49,14 +53,33 @@ const BookingTable = ({
     };
   });
 
+  const priceItems = [
+    {
+      label: "Một ngày",
+      value: "Một ngày",
+    },
+    {
+      label: "Qua đêm",
+      value: "Qua đêm",
+    },
+    {
+      label: "Giờ đầu tiên",
+      value: "Giờ đầu tiên",
+    },
+    {
+      label: "Giờ tiếp theo",
+      value: "Giờ tiếp theo",
+    },
+  ];
+
   const areaMark = {
     10: "10",
     100: "100",
   };
 
   const priceMark = {
-    100000: "100,000đ",
-    10000000: "10,000,000đ",
+    0: "0đ",
+    5000000: "5,000,000đ",
   };
 
   const columns = [
@@ -113,9 +136,9 @@ const BookingTable = ({
               <div>
                 <Select
                   size="medium"
-                  options={items}
+                  options={priceItems}
                   showSearch
-                  placeholder="Chọn loại phòng"
+                  placeholder="Chọn loại giá"
                   onChange={(e) => {
                     setFilter(e);
                     clearFilters();
@@ -194,34 +217,114 @@ const BookingTable = ({
     },
     {
       key: "4",
-      title: "Giá (đ)",
+      title:
+        priceFilter !== "" ? "Giá " + priceFilter + " (đ)" : "Giá Một ngày (đ)",
+      dataIndex:
+        priceFilter === "Qua đêm"
+          ? "overnight_price"
+          : priceFilter === "Giờ đầu tiên"
+          ? "first_hour_price"
+          : priceFilter === "Giờ tiếp theo"
+          ? "hour_price"
+          : "one_day_price",
+      filteredValue: priceFilter !== "" ? [priceFilter] : null,
       dataIndex: "price",
       width: "17%",
       align: "center",
-      sorter: (a, b) => a.price - b.price,
-      // filterDropdown: () => {
-      //   return (
-      //     <>
-      //       <div className="filterContainer">
-      //         <div className="priceSlider">
-      //           <Slider
-      //             width={0.8}
-      //             range
-      //             min={100000}
-      //             max={10000000}
-      //             marks={priceMark}
-      //             defaultValue={[100000, 1000000]}
-      //             onChange={(value) => {}}
-      //           />
-      //           <Button type="primary">Reset</Button>
-      //         </div>
-      //       </div>
-      //     </>
-      //   );
-      // },
-      // filterIcon: () => {
-      //   return <FilterOutlined />;
-      // },
+      sorter: (a, b) =>
+        priceFilter === "Qua đêm"
+          ? a.overnight_price - b.overnight_price
+          : priceFilter === "Giờ đầu tiên"
+          ? a.first_hour_price - b.first_hour_price
+          : priceFilter === "Giờ tiếp theo"
+          ? a.hour_price - b.hour_price
+          : a.one_day_price - b.one_day_price,
+      filterDropdown: ({ confirm, clearFilters }) => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div className="priceSlider">
+                <Select
+                  style={{ width: 300 }}
+                  size="medium"
+                  options={priceItems}
+                  showSearch
+                  defaultValue="Một ngày"
+                  placeholder="Chọn phân loại giá"
+                  onChange={(e) => {
+                    setPriceFilter(e);
+                  }}
+                />
+                <Slider
+                  tipFormatter={(value) => {
+                    return `${value < 0 ? "-" : ""} ${Math.abs(value)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+                  }}
+                  step={10000}
+                  width={0.8}
+                  range
+                  min={0}
+                  max={5000000}
+                  marks={priceMark}
+                  defaultValue={[0, 300000]}
+                  onChange={(value) => {
+                    setSliderFilter(value);
+                    if (priceFilter === "") {
+                      setPriceFilter("Một ngày");
+                    } else {
+                      const temp = priceFilter;
+                      setPriceFilter("");
+                      setPriceFilter(temp);
+                    }
+                  }}
+                />
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setPriceFilter("");
+                    clearFilters({ closeDropdown: true });
+                  }}
+                >
+                  Reset
+                </Button>
+              </div>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
+      onFilter: (value, record) => {
+        switch (priceFilter) {
+          case "" || "Một ngày":
+            return (
+              record.one_day_price >= sliderFilter[0] &&
+              record.one_day_price <= sliderFilter[1]
+            );
+          case "Qua đêm":
+            return (
+              record.overnight_price >= sliderFilter[0] &&
+              record.overnight_price <= sliderFilter[1]
+            );
+          case "Giờ đầu tiên":
+            return (
+              record.first_hour_price >= sliderFilter[0] &&
+              record.first_hour_price <= sliderFilter[1]
+            );
+          case "Giờ tiếp theo":
+            return (
+              record.hour_price >= sliderFilter[0] &&
+              record.hour_price <= sliderFilter[1]
+            );
+          default:
+            return (
+              record.one_day_price >= sliderFilter[0] &&
+              record.one_day_price <= sliderFilter[1]
+            );
+        }
+      },
       render: (value) => {
         return `${value < 0 ? "-" : ""} ${Math.abs(value)
           .toString()
@@ -365,6 +468,11 @@ const BookingTable = ({
           dataSource={rooms}
           scroll={{ y: "60vh", x: "100%" }}
           rowKey={(row) => row.room_name}
+          expandable={{
+            expandedRowRender: (record) => {
+              return <BookingExpand />;
+            },
+          }}
         ></Table>
       </Form>
       <BottomBar>

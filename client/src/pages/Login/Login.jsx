@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./login.css";
 import logo from "../../assets/images/LogoWhite.png";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
@@ -11,6 +11,9 @@ import ErrorAlert from "../../components/Error/Alert/ErrorAlert";
 import { loginAPI } from "../../api/AuthAPI";
 
 const Login = () => {
+  useEffect(() => {
+    document.title = "Login | Parallel Shine";
+  });
   const { setUser } = useContext(AppContext);
   const userLocal = LocalStorage.getItem("user");
   const [isLoading, setIsLoading] = useState(false);

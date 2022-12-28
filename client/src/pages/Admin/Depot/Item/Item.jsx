@@ -10,10 +10,10 @@ const Item = () => {
   const { user } = useContext(AppContext);
 
   useEffect(() => {
-    fetchItems(user?.position)
-    .then(({data})=> {
+    document.title = "Product | Parallel Shine";
+    fetchItems(user?.position).then(({ data }) => {
       setItems(data);
-    })
+    });
   }, []);
   return (
     <div className="itemContainer">

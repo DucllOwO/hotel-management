@@ -11,6 +11,7 @@ const BookingList = () => {
   const [status, setStatus] = useState("0");
 
   useEffect(() => {
+    document.title = "Booking List | Parallel Shine";
     fetchBookingByStatus(user?.position, status)
     .then(({data}) => {
       setBooking(data);

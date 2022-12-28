@@ -11,6 +11,7 @@ const Position = () => {
   const [positions, setPositions] = useState(null);
   const { user } = useContext(AppContext);
   useEffect(() => {
+    document.title = "Position | Parallel Shine";
     fetchPosition(user?.position)
       .then(({ data }) => {
         setPositions(data);

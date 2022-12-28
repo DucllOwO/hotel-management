@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import "../../index.css";
-import { Table, Button, Modal, Form, Input, Tooltip, Slider } from "antd";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  Tooltip,
+  Slider,
+  DatePicker,
+} from "antd";
 import "./bookingListtable.css";
 import dayjs from "dayjs";
 import { FilterOutlined } from "@ant-design/icons";
@@ -32,6 +41,8 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
   const {user} = useContext(AppContext);
   const [searchedText, setSearchedText] = useState("");
   const [isShowReceipt, setShowReceipt] = useState(false)
+
+  const dateFormat = "DD-MM-YYYY";
 
   const columns = [
     {
@@ -600,6 +611,12 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
           <Button className="headerBtn" onClick={()=>{setStatus("3")}}>Đã huỷ</Button>
         </div>
         <div>
+          <DatePicker
+            onChange={(values) => {}}
+            picker="date"
+            format={dateFormat}
+            style={{ marginRight: "5px" }}
+          ></DatePicker>
           <Input.Search
             onSearch={(value) => {
               setSearchedText(value);
@@ -623,10 +640,16 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
         </div>
       </div>
       <Table
+        rowKey={(row) => row.id}
         showSorterTooltip={false}
         columns={columns}
         dataSource={booking}
         scroll={{ y: "60vh", x: "100%" }}
+        expandable={{
+          expandedRowRender: (record) => {
+            return <BookingListExpand />;
+          },
+        }}
       ></Table>
     </div>
   );

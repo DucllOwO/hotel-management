@@ -16,19 +16,18 @@ const Booking = () => {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [listType, setListType] = useState([])
-
+  const [listType, setListType] = useState([]);
 
   useEffect(() => {
-    if(listType)
-    {
-      getAllRoomType(user?.position)
-      .then(({data}) => {
-        console.log(data)
-        setListType(data)
-    })}
-    console.log(from)
-    console.log(to)
+    document.title = "Booking | Parallel Shine";
+    if (listType) {
+      getAllRoomType(user?.position).then(({ data }) => {
+        console.log(data);
+        setListType(data);
+      });
+    }
+    console.log(from);
+    console.log(to);
     if (from && to) {
       setIsLoading(true);
       fetchBookingByDate(user?.position, from, to)
