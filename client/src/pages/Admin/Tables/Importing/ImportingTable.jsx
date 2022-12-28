@@ -7,12 +7,23 @@ import { useNavigate } from "react-router-dom";
 import ImportForm from "../../../../components/Form/ImportForm";
 import { formatDate, formatterInt } from "../../../../Utils/formatter";
 
+const initialValue = [
+  {
+    id: 1,
+    name: "",
+    amount: "",
+    unitPrice: "",
+    total: "",
+  },
+];
+
 const ImportingTable = ({ importingRecord, setRecord }) => {
   const navigate = useNavigate();
   const [importForm] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchedText, setSearchedText] = useState("");
-
+  const [data, setData] = useState(initialValue);
+  const [options, setOptions] = useState([]);
   const [amountFilter, setAmountFilter] = useState(null);
   const [priceFilter, setPriceFilter] = useState(null);
 
@@ -192,17 +203,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
     setIsModalOpen(true);
     console.log(isModalOpen);
   };
-  const handleOKModal = async () => {
-    const newImport = {
-      item_id: importForm.getFieldValue("item"),
-      amount: importForm.getFieldValue("quantity"),
-      established_date: dayjs(Date.now()).$d,
-      price: importForm.getFieldValue("price"),
-      total_cost: importForm.getFieldValue("total_cost"),
-      // employee_id:
-    };
-    console.log(newImport);
-  };
+  const handleOKModal = async () => {};
 
   return (
     <div className="table">
@@ -252,13 +253,19 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
         onCancel={handleCancelModal}
         width="60%"
       >
-        <ImportForm form={importForm} width="100%" />
+        <ImportForm
+          form={importForm}
+          data={data}
+          setData={setData}
+          width="100%"
+        />
       </Modal>
     );
   }
   function handleCancelModal() {
     importForm.resetFields();
     setIsModalOpen(false);
+    setData(initialValue);
   }
 };
 

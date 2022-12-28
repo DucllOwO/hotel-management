@@ -1,4 +1,14 @@
-import { Card, DatePicker, Form, Input, InputNumber, message, Select, Tag, Typography } from "antd";
+import {
+  Card,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  message,
+  Select,
+  Tag,
+  Typography,
+} from "antd";
 import React, { useState } from "react";
 import { useContext } from "react";
 import { fetchCustomerByID } from "../../api/CustomerAPI";
@@ -15,14 +25,11 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
   const [isSearching, setIsSearching] = useState(false);
 
   async function checkCustomerExist() {
-    const searchID = form.getFieldValue("id")
+    const searchID = form.getFieldValue("id");
 
     try {
       setIsSearching(true);
-      const { data } = await fetchCustomerByID(
-        user.position,
-        searchID
-      );
+      const { data } = await fetchCustomerByID(user.position, searchID);
       // console.log(dayjs(data.date_of_birth));
       // console.log(form.getFieldValue("id"));
       if (data) {
@@ -38,7 +45,7 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
         setIsCustomerExist(false);
         setDisable(false);
         form.resetFields();
-        form.setFieldsValue({id: searchID});
+        form.setFieldsValue({ id: searchID });
       }
       setIsSearching(false);
       return Promise.resolve();
@@ -74,15 +81,23 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
             required: true,
             message: "Vui lòng nhập CCCD/CMND",
           },
+          ({ getFieldValue }) => ({
+            validator(_, value) {
+              if (value) {
+                if (value.length === 9 || value.length === 12)
+                  return Promise.resolve();
+                else
+                  return Promise.reject(
+                    new Error("CCCD/CMND phải là 9 hoặc 12 số")
+                  );
+              }
+              return Promise.resolve();
+            },
+          }),
           {
-            max: 12,
-            message: "Vui lòng nhập tối đa 12 số"
+            pattern: new RegExp(/\d/g),
+            message: "Vui lòng nhập đúng số CCCD",
           },
-          {
-            pattern: new RegExp(/\d/g),            
-            message: "Vui lòng nhập đúng số CCCD"
-          },
-          
         ]}
         tooltip="Nếu khách hàng mới thì nhập thông tin khách, khách hàng cũ thì sẽ tự lấy thông tin"
         style={{ marginBottom: 0 }}
@@ -92,7 +107,7 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
             checkCustomerExist();
           }}
           placeholder="Nhập CCCD của khách hàng"
-          enterButton="Search"
+          enterButton="Kiểm tra"
           size="large"
           loading={isSearching}
           maxLength={12}
@@ -134,11 +149,11 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
           },
           {
             max: 10,
-            message: "Vui lòng nhập tối đa 10 số"
+            message: "Vui lòng nhập tối đa 10 số",
           },
           {
-            pattern: new RegExp(/(0)\d/g),            
-            message: "Vui lòng nhập đúng số điện thoại"
+            pattern: new RegExp(/(0)\d/g),
+            message: "Vui lòng nhập đúng số điện thoại",
           },
         ]}
       >
@@ -148,17 +163,18 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
               `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }
           /> */}
-        <Input size="large" disabled={disable} type='tel' maxLength={10}/>
+        <Input size="large" disabled={disable} type="tel" maxLength={10} />
       </Form.Item>
-      <Form.Item 
-        label="Email" 
+      <Form.Item
+        label="Email"
         name="email"
         rules={[
           {
-            type: 'email',
-            message: "Vui lòng nhập đúng định dạng email"
-          }
-        ]}>
+            type: "email",
+            message: "Vui lòng nhập đúng định dạng email",
+          },
+        ]}
+      >
         <Input size="large" disabled={disable} />
       </Form.Item>
       <Form.Item

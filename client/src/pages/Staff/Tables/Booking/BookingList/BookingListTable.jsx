@@ -1,12 +1,22 @@
 import React, { useState } from "react";
 import "../../index.css";
-import { Table, Button, Modal, Form, Input, Tooltip, Slider } from "antd";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  Tooltip,
+  Slider,
+  DatePicker,
+} from "antd";
 import "./bookingListtable.css";
 import { FilterOutlined } from "@ant-design/icons";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CheckButton from "../../../../../components/IconButton/CheckButton/CheckButton";
 import CancelButton from "../../../../../components/IconButton/CancelButton/CancelButton";
+import BookingListExpand from "../../../../../components/ExpandedTable/BookingListExpand";
 
 const BookingListTable = ({ booking, setBooking }) => {
   const [editingRow, setEditingRow] = useState(null);
@@ -14,6 +24,8 @@ const BookingListTable = ({ booking, setBooking }) => {
   const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
+
+  const dateFormat = "DD-MM-YYYY";
 
   const columns = [
     {
@@ -176,6 +188,12 @@ const BookingListTable = ({ booking, setBooking }) => {
           <Button className="headerBtn">Đã huỷ</Button>
         </div>
         <div>
+          <DatePicker
+            onChange={(values) => {}}
+            picker="date"
+            format={dateFormat}
+            style={{ marginRight: "5px" }}
+          ></DatePicker>
           <Input.Search
             onSearch={(value) => {
               setSearchedText(value);
@@ -199,10 +217,16 @@ const BookingListTable = ({ booking, setBooking }) => {
         </div>
       </div>
       <Table
+        rowKey={(row) => row.id}
         showSorterTooltip={false}
         columns={columns}
         dataSource={booking}
         scroll={{ y: "60vh", x: "100%" }}
+        expandable={{
+          expandedRowRender: (record) => {
+            return <BookingListExpand />;
+          },
+        }}
       ></Table>
     </div>
   );

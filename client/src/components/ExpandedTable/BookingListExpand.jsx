@@ -3,7 +3,7 @@ import CheckableTag from "antd/es/tag/CheckableTag";
 import React from "react";
 import UtilitiesButton from "../Button/UtilitiesButton/UtilitiesButton";
 
-const RoomTypeExpand = ({ utils = [], ...prices }) => {
+const BookingListExpand = ({ utils = [], ...prices }) => {
   const priceTypes = {
     firstHourPrice: "Giờ đầu tiên",
     overNightPrice: "Qua đêm",
@@ -35,8 +35,48 @@ const RoomTypeExpand = ({ utils = [], ...prices }) => {
     },
   ];
 
+  const roomTypeColumns = [
+    {
+      key: "1",
+      title: "ID",
+      dataIndex: "id",
+      width: "5%",
+      align: "center",
+    },
+    {
+      key: "2",
+      title: "Loại phòng",
+      width: "20%",
+      align: "center",
+    },
+    {
+      key: "3",
+      title: "Số lượng khách",
+      dataIndex: "max_customers",
+      align: "center",
+      render: (text, record) => {
+        return <p>{text}</p>;
+      },
+    },
+    {
+      key: "4",
+      title: "Số giường",
+      dataIndex: "bed_amount",
+      align: "center",
+      render: (text, record) => {
+        return <p>{text}</p>;
+      },
+    },
+    {
+      key: "5",
+      title: "Diện tích (m2)",
+      dataIndex: "area",
+      align: "center",
+    },
+  ];
+
   return (
-    <div id="roomTypeExpandContainer">
+    <div id="BookingListExpandContainer">
       <Row justify="space-around">
         <Col xs={24} xl={8}>
           <Table
@@ -47,26 +87,12 @@ const RoomTypeExpand = ({ utils = [], ...prices }) => {
           ></Table>
         </Col>
         <Col xs={24} xl={8}>
-          <Card title="Tiện ích" bordered={true} style={{ width: "30vw" }}>
-            {utils.length > 0 ? (
-              utils.map((util) => (
-                <CheckableTag
-                  key={util.id}
-                  checked={true}
-                  style={{
-                    margin: "5px 0 0 5px",
-                    fontSize: 18,
-                    padding: 5,
-                    border: "1px solid",
-                  }}
-                >
-                  {util.room_feature.name}
-                </CheckableTag>
-              ))
-            ) : (
-              <Empty description={"Không có dữ liệu tiện ích của phòng"} />
-            )}
-          </Card>
+          <Table
+            dataSource={createDataSource(prices)}
+            columns={roomTypeColumns}
+            pagination={false}
+            bordered={true}
+          ></Table>
         </Col>
       </Row>
     </div>
@@ -81,4 +107,4 @@ const RoomTypeExpand = ({ utils = [], ...prices }) => {
   }
 };
 
-export default RoomTypeExpand;
+export default BookingListExpand;

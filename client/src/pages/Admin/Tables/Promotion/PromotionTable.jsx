@@ -71,7 +71,7 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
     },
     {
       key: "2",
-      title: "Tên phiếu giảm giá",
+      title: "Mã phiếu giảm giá",
       dataIndex: "name",
       width: "25%",
       align: "center",
@@ -215,6 +215,7 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
         </div>
       </div>
       <Table
+        rowKey={(row) => row.key}
         showSorterTooltip={false}
         columns={columns}
         dataSource={vouchers}

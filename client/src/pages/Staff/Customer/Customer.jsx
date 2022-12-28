@@ -20,6 +20,7 @@ const Customer = () => {
     };
     fetchCustomer();
   }, [user?.position]);
+
   return (
     <div className="customerContainer">
       <CustomerTable customer={customer}></CustomerTable>

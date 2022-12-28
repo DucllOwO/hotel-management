@@ -101,9 +101,15 @@ const UtilitiesTable = ({ utilities, setUtilities, positionUser }) => {
               ) : (
                 <>
                   <EditButton
-                    openModalEdit={() => {
-                      setEditingRow(record.id);
-                      form.setFieldValue("name", record.name);
+                    onEditButton={() => {
+                      if (!editingRow) {
+                        console.log(record);
+                        setEditingRow(record.id);
+                        form.setFieldValue("name", record.name);
+                      } else {
+                        onCancelButton();
+                        setEditingRow(null);
+                      }
                     }}
                   ></EditButton>
                   <DeleteButton
@@ -169,12 +175,15 @@ const UtilitiesTable = ({ utilities, setUtilities, positionUser }) => {
           </Button>
         </div>
       </div>
-      <Table
-        showSorterTooltip={false}
-        columns={columns}
-        dataSource={utilities}
-        scroll={{ y: "60vh", x: "100%" }}
-      ></Table>
+      <Form form={form}>
+        <Table
+          rowKey={(row) => row.id}
+          showSorterTooltip={false}
+          columns={columns}
+          dataSource={utilities}
+          scroll={{ y: "60vh", x: "100%" }}
+        ></Table>
+      </Form>
     </div>
   );
 

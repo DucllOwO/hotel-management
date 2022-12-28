@@ -3,7 +3,7 @@ import CheckableTag from "antd/es/tag/CheckableTag";
 import React from "react";
 import UtilitiesButton from "../Button/UtilitiesButton/UtilitiesButton";
 
-const RoomTypeExpand = ({ utils = [], ...prices }) => {
+const BookingExpand = ({ utils = [], ...prices }) => {
   const priceTypes = {
     firstHourPrice: "Giờ đầu tiên",
     overNightPrice: "Qua đêm",
@@ -36,7 +36,7 @@ const RoomTypeExpand = ({ utils = [], ...prices }) => {
   ];
 
   return (
-    <div id="roomTypeExpandContainer">
+    <div id="BookingExpandContainer">
       <Row justify="space-around">
         <Col xs={24} xl={8}>
           <Table
@@ -81,4 +81,4 @@ const RoomTypeExpand = ({ utils = [], ...prices }) => {
   }
 };
 
-export default RoomTypeExpand;
+export default BookingExpand;

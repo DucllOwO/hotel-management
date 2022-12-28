@@ -233,12 +233,6 @@ const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
             );
           case "2":
             return (
-              <Tag color="warning" style={{ fontSize: 14 }}>
-                Đang chờ
-              </Tag>
-            );
-          case "3":
-            return (
               <Tag color="processing" style={{ fontSize: 14 }}>
                 Đang dọn dẹp
               </Tag>
@@ -333,7 +327,7 @@ const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
             <div className="btnWrap">
               <>
                 <EditButton
-                  openModalEdit={() => {
+                  onEditButton={() => {
                     console.log(record);
                     setEditingRow(record.id);
                     setModal("edit");

@@ -23,9 +23,11 @@ const PaymentTable = ({ payment, setPayment }) => {
   const dateFormat = "DD-MM-YYYY";
   const monthFormat = "MM-YYYY";
 
+  const price = Math.max(...payment.map((payment) => payment.total_cost));
+
   const priceMark = {
     0: "0đ",
-    50000000: "50,000,000đ",
+    [price]: price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
   };
 
   const columns = [
@@ -102,7 +104,7 @@ const PaymentTable = ({ payment, setPayment }) => {
                   step={500000}
                   range
                   min={0}
-                  max={50000000}
+                  max={price}
                   marks={priceMark}
                   defaultValue={[0, 1000000]}
                   onChange={(e) => {

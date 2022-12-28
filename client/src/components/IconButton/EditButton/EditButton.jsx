@@ -4,10 +4,10 @@ import { Button } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 
 const EditButton = (props) => {
-  const { openModalEdit } = props;
+  const { onEditButton } = props;
   return (
     <div className="editBtn">
-      <Button onClick={openModalEdit}>
+      <Button onClick={onEditButton}>
         <EditOutlined></EditOutlined>
       </Button>
     </div>
