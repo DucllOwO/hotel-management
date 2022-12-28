@@ -18,6 +18,9 @@ import { createBooking, createCustomer } from "../../../../../api/BookingAPI";
 import SuccessAlert from "../../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import ErrorAlert from "../../../../../components/Error/Alert/ErrorAlert";
 import BottomBar from "../../../../../components/Admin/BottomBar/BottomBar";
+import RoomTypeExpand from "../../../../../components/ExpandedTable/RoomTypeExpand";
+import { getRoomUtilsByRoomTypeID } from "../../../../../api/hasRoomFeatures";
+import { getRoomTypeByID } from "../../../../../api/RoomTypeAPI";
 const { RangePicker } = DatePicker;
 
 const BookingTable = ({
@@ -30,6 +33,7 @@ const BookingTable = ({
   from,
   to,
   listType,
+  positionUser,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState({});
@@ -365,6 +369,36 @@ const BookingTable = ({
           dataSource={rooms}
           scroll={{ y: "60vh", x: "100%" }}
           rowKey={(row) => row.room_name}
+          expandable={{
+            expandedRowRender: (record) => {
+              return (
+                <RoomTypeExpand
+                  utils={record.utils}
+                  firstHourPrice={record.room_type_id.first_hour_price}
+                  overNightPrice={record.room_type_id.overnight_price}
+                  oneDayPrice={record.room_type_id.one_day_price}
+                  hourPrice={record.room_type_id.hour_price}
+                />
+              );
+            },
+            onExpand: (expanded, record) => {
+              getRoomUtilsByRoomTypeID(positionUser, record.room_type_id.id)
+                .then(({ data }) => {
+                  setRooms((prev) => {
+                    return prev.map((room) => {
+                      if (record.id === room.id) {
+                        return { ...room, utils: data };
+                      }
+                      return room;
+                    });
+                  });
+                })
+                .catch((error) => {
+                  console.log(error);
+                  ErrorAlert("Lấy dữ liệu tiện ích của loại phòng thất bại!!");
+                });
+            },
+          }}
         ></Table>
       </Form>
       <BottomBar>

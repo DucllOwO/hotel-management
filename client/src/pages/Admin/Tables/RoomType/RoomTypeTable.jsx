@@ -81,39 +81,6 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
     5000000: "5,000,000đ",
   };
 
-  // const items = roomTypes.map((value, index) => {
-  //   return {
-  //     label: "" + value.name.toString(),
-  //     value: "" + value.name.toString(),
-  //   };
-  // });
-  // {
-  //   label: "Loại 1",
-  //   key: "1",
-  // },
-  // {
-  //   label: "Luxury",
-  //   key: "2",
-  // },
-  // {
-  //   label: "President",
-  //   key: "3",
-  // },
-
-  // const items = [
-  //   {
-  //     label: "Loại 1",
-  //     key: "1",
-  //   },
-  //   {
-  //     label: "Luxury",
-  //     key: "2",
-  //   },
-  //   {
-  //     label: "President",
-  //     key: "3",
-  //   },
-  // ];
   const columns = [
     {
       key: "1",
