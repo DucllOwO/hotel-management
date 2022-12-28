@@ -1,18 +1,29 @@
 import React, { useState } from "react";
 import "../index.css";
-import dayjs from "dayjs"
+import dayjs from "dayjs";
 import { Table, Button, Modal, Form, Input, Slider } from "antd";
 import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import ImportForm from "../../../../components/Form/ImportForm";
 import { formatDate, formatterInt } from "../../../../Utils/formatter";
 
+const initialValue = [
+  {
+    id: 1,
+    name: "",
+    amount: "",
+    unitPrice: "",
+    total: "",
+  },
+];
+
 const ImportingTable = ({ importingRecord, setRecord }) => {
   const navigate = useNavigate();
   const [importForm] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchedText, setSearchedText] = useState("");
-
+  const [data, setData] = useState(initialValue);
+  const [options, setOptions] = useState([]);
   const [amountFilter, setAmountFilter] = useState(null);
   const [priceFilter, setPriceFilter] = useState(null);
 
@@ -43,9 +54,23 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
         return (
           String(record.established_date)
             .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase()) ||
           String(record.item)
             .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase())
         );
       },
@@ -175,20 +200,10 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
     },
   ];
   const onAddButton = () => {
-    setIsModalOpen(true);  
-    console.log(isModalOpen)
-  };    
-  const handleOKModal = async () => {
-    const newImport = {
-      item_id: importForm.getFieldValue("item"),
-      amount: importForm.getFieldValue("quantity"),
-      established_date: dayjs(Date.now()).$d,
-      price: importForm.getFieldValue("price"),
-      total_cost: importForm.getFieldValue("total_cost")
-      // employee_id:  
-    }
-    console.log(newImport);
-  }
+    setIsModalOpen(true);
+    console.log(isModalOpen);
+  };
+  const handleOKModal = async () => {};
 
   return (
     <div className="table">
@@ -219,11 +234,12 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
           </Button>
         </div>
       </div>
-        <Table
-          columns={columns}
-          dataSource={importingRecord}
-          scroll={{ y: "60vh  ", x: "100%" }}
-        ></Table>
+      <Table
+        showSorterTooltip={false}
+        columns={columns}
+        dataSource={importingRecord}
+        scroll={{ y: "60vh  ", x: "100%" }}
+      ></Table>
     </div>
   );
   function modalJSX() {
@@ -239,6 +255,8 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
       >
         <ImportForm
           form={importForm}
+          data={data}
+          setData={setData}
           width="100%"
         />
       </Modal>
@@ -247,6 +265,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
   function handleCancelModal() {
     importForm.resetFields();
     setIsModalOpen(false);
+    setData(initialValue);
   }
 };
 

@@ -9,8 +9,9 @@
     overflow: hidden;
 }
 
-.logo {
-    background-color: transparent;
+.logoImg {
+  height: 10vh;
+  /* object-fit:contain; */
 }
 
 .form {

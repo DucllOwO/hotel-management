@@ -1,5 +1,5 @@
 .table {
-    width: 100%;
+    width: 80vw;
     align-items: center;
     margin-top: 16px;
     padding-right: 5px;
@@ -36,4 +36,9 @@
 .priceSlider{
     width: 300px;
     padding: 5px 35px;
+}
+
+.rightSearchBar {
+    display: flex;
+    align-items: center;
 }

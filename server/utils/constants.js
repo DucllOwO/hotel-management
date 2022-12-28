@@ -37,14 +37,13 @@ const resourceAC = {
 
 const roomStatus = {
   AVAILABLE: 0,
-  BOOKED: 1,
-  WAITING: 2,
-  CLEANING: 3,
+  USING: 1,
+  CLEANING: 2,
 };
 
 const bookingStatus = {
   WAITING: 0,
-  BOOKED: 1,
+  USING: 1,
   COMPLETE: 2,
   CANCEL: 3,
 };

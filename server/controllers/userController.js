@@ -59,15 +59,14 @@ const getEmployeeByUsername = async (req, res, next) => {
 
   if (getEmployeeError) return next(getEmployeeError);
 
-  res.status(200).send(employee);
-}
+  return res.status(200).send(employee[0]);
+};
 
 const createUser = async (req, res, next) => {
-  console.log("called")
-  // const { type } = req.params;
-  const { userInfo: userInfo, type: type } = req.body;
+  const { type } = req.query;
+  const { userInfo: userInfo } = req.body;
   console.log(userInfo);
-  console.log(type)
+  console.log(type);
 
   if (!type || !userInfo) return next(BadRequestError());
 
@@ -155,5 +154,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
-  getEmployeeByUsername
+  getEmployeeByUsername,
 };

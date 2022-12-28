@@ -11,7 +11,7 @@ import {
   Select,
   Slider,
 } from "antd";
-import dayjs from "dayjs"
+import dayjs from "dayjs";
 import { FilterOutlined } from "@ant-design/icons";
 import BookingForm from "../../../../../components/Form/BookingForm";
 import { createBooking, createCustomer } from "../../../../../api/BookingAPI";
@@ -71,15 +71,23 @@ const BookingTable = ({
         return (
           String(record.room_name)
             .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase()) ||
           String(record.roomType)
             .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.area)
-            .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.price)
-            .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase())
         );
       },
@@ -249,40 +257,40 @@ const BookingTable = ({
     try {
       const isCusObjEmpty = Object.keys(currentCustomer).length === 0;
       // isCusObjEmpty === true === customer not available
-      console.log(currentCustomer)
+      console.log(currentCustomer);
       console.log(isCusObjEmpty);
       if (isCusObjEmpty) {
-        customerInfoForm.validateFields()
-        .then(async (value) => {
-          const birthday = dayjs(customerInfoForm.getFieldValue("date_of_birth"));
-          const now = dayjs(Date.now());  
-          if(now.diff(birthday, "year") < 18)
-          {
-            ErrorAlert("Khách hàng chưa đủ 18 tuổi");
-            return;
-          }
-          console.log(value);
-          const newCustomer = {
-            id: value.id,
-            fullname: value.fullname,
-            phone_number: value.phone_number,
-            email: value.email,
-            date_of_birth: value.date_of_birth,
-          };
-          const { data: userData } = await createCustomer(
-            user?.position,
-            newCustomer
-          );
-          setCurrentCustomer(newCustomer);
-          booking(userData);
-        })
-        .catch((value) => {
-          ErrorAlert("Vui lòng nhập đầy đủ thông tin");
-          throw value;
-        })
-      }
-      else 
-        booking(currentCustomer);
+        customerInfoForm
+          .validateFields()
+          .then(async (value) => {
+            const birthday = dayjs(
+              customerInfoForm.getFieldValue("date_of_birth")
+            );
+            const now = dayjs(Date.now());
+            if (now.diff(birthday, "year") < 18) {
+              ErrorAlert("Khách hàng chưa đủ 18 tuổi");
+              return;
+            }
+            console.log(value);
+            const newCustomer = {
+              id: value.id,
+              fullname: value.fullname,
+              phone_number: value.phone_number,
+              email: value.email,
+              date_of_birth: value.date_of_birth,
+            };
+            const { data: userData } = await createCustomer(
+              user?.position,
+              newCustomer
+            );
+            setCurrentCustomer(newCustomer);
+            booking(userData);
+          })
+          .catch((value) => {
+            ErrorAlert("Vui lòng nhập đầy đủ thông tin");
+            throw value;
+          });
+      } else booking(currentCustomer);
       // setCurrentCustomer({});
     } catch (error) {
       console.log(error);
@@ -297,7 +305,7 @@ const BookingTable = ({
       from,
       to
     );
-    
+
     console.log(selectedRooms);
     setRooms((pre) => {
       return pre.filter(
@@ -319,7 +327,7 @@ const BookingTable = ({
   };
 
   return (
-    <div className="bookingTable">
+    <div className="table">
       <>{isModalOpen ? modalJSX() : null}</>
       <div className="buttonContainer">
         <div className="header">
@@ -351,6 +359,7 @@ const BookingTable = ({
       </div>
       <Form form={roomForm}>
         <Table
+          showSorterTooltip={false}
           loading={isLoading}
           columns={columns}
           dataSource={rooms}

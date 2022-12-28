@@ -27,8 +27,8 @@ const InventoryTable = ({ rooms, user }) => {
     setIsModalVisible(false);
   };
   const [form] = Form.useForm();
-  const {item, setItem, record, setRecord} = useContext(ItemContext);
-  const [dataSource, setDataSource] = useState([...rooms]);
+  const { item, setItem, record, setRecord } = useContext(ItemContext);
+
   const [searchedText, setSearchedText] = useState("");
   const areaMark = {
     10: "10",
@@ -38,7 +38,7 @@ const InventoryTable = ({ rooms, user }) => {
 
   const [filter, setFilter] = useState("");
   useEffect(() => {
-    setDataSource(rooms);
+    // setDataSource(rooms);
     console.log(rooms)  
   }, [rooms])
 
@@ -91,13 +91,34 @@ const InventoryTable = ({ rooms, user }) => {
         return (
           String(record.room_name)
             .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase()) ||
           String(record.room_type)
             .toLocaleLowerCase()
-            .includes(value.toLocaleLowerCase()) 
-          // String(record.roomType.name)
-          //   .toLocaleLowerCase()
-          //   .includes(value.toLocaleLowerCase())
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.roomType.name)
+            .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase())
         );
       },
       render: (text, record) => {
@@ -208,18 +229,19 @@ const InventoryTable = ({ rooms, user }) => {
   ];
 
   function handleOKModalAdd() {
-    
-    fetchEmployeeByUsername(user?.position, user?.account.username).then(({data})=> {
-      console.log(data);
-      const newRecord = {
-        date: dayjs(Date.now()),
-        employee_id: data.id,
-        invoice_id: "1",
-        room_name: currentRoom,
+    fetchEmployeeByUsername(user?.position, user?.account.username).then(
+      ({ data }) => {
+        console.log(data);
+        const newRecord = {
+          date: dayjs(Date.now()),
+          employee_id: data.id,
+          invoice_id: "1",
+          room_name: currentRoom,
+        };
       }
-    })
-    const usedItem = form.getFieldValue("table")
-    console.log(usedItem)
+    );
+    const usedItem = form.getFieldValue("table");
+    console.log(usedItem);
   }
   function handleCancelModal() {
     setIsModalVisible(false);
@@ -259,8 +281,9 @@ const InventoryTable = ({ rooms, user }) => {
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         columns={columns}
-        dataSource={dataSource}
+        // dataSource={dataSource}
         scroll={{ y: "60vh", x: "100%" }}
       ></Table>
     </div>

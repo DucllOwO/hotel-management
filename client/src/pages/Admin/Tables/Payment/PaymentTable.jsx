@@ -4,6 +4,8 @@ import { Table, Button, Modal, Form, Input, DatePicker, Slider } from "antd";
 import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import moment from "moment";
+import PaymentForm from "../../../../components/Form/PaymentForm";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const PaymentTable = ({ payment, setPayment }) => {
   const [type, setType] = useState("day");
@@ -15,6 +17,8 @@ const PaymentTable = ({ payment, setPayment }) => {
   const [searchedText, setSearchedText] = useState("");
 
   const [priceFilter, setPriceFilter] = useState(null);
+
+  const [modal, setModal] = useState(false);
 
   const dateFormat = "DD-MM-YYYY";
   const monthFormat = "MM-YYYY";
@@ -136,6 +140,20 @@ const PaymentTable = ({ payment, setPayment }) => {
           .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
       },
     },
+    {
+      key: "5",
+      title: "Thao tác",
+      width: 100,
+      render: (_, record) => {
+        return (
+          <>
+            <div className="btnWrap">
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
+          </>
+        );
+      },
+    },
   ];
 
   const onChange = (date, dateString) => {
@@ -181,8 +199,30 @@ const PaymentTable = ({ payment, setPayment }) => {
     setEditingRow(null);
   };
 
+  const modalAddPayment = () => (
+    <Modal
+      title="Thông tin phiếu chi"
+      open={true}
+      onOk={handleOKModalAdd}
+      onCancel={handleCancelModal}
+      width="40%"
+    >
+      <PaymentForm></PaymentForm>
+    </Modal>
+  );
+
+  const handleCancelModal = () => {
+    setModal(false);
+    form.resetFields();
+  };
+
+  const handleOKModalAdd = () => {
+    setModal(false);
+  };
+
   return (
     <div className="table">
+      <>{modal === true && modalAddPayment()}</>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div>
@@ -214,7 +254,7 @@ const PaymentTable = ({ payment, setPayment }) => {
             Ngày
           </Button>
         </div>
-        <div>
+        <div className="rightSearchBar">
           {type === "day" && (
             <DatePicker
               onChange={onChange}
@@ -238,9 +278,24 @@ const PaymentTable = ({ payment, setPayment }) => {
               picker="year"
             ></DatePicker>
           )}
+          <div>
+            <Button
+              onClick={() => {
+                setModal(true);
+              }}
+              style={{ marginLeft: "10px" }}
+              className="addButton"
+              type="primary"
+              ghost
+              icon={<PlusOutlined />}
+            >
+              Tạo mới
+            </Button>
+          </div>
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         columns={columns}
         dataSource={payment}
         scroll={{ y: "60vh", x: "100%" }}

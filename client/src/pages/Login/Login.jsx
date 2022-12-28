@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import "./login.css";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/LogoWhite.png";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import { useNavigate, Navigate } from "react-router-dom";
 import { userRequest } from "../../api/api";
@@ -31,7 +31,7 @@ const Login = () => {
       onKeyDownCapture={(e) => e.key === "Enter" && login(e)}
     >
       {userLocal && <Navigate to="/admin" replace={true} />}
-      <div className="logo">
+      <div>
         <img src={logo} alt="logo" className="logoImg" />
       </div>
 

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import "../index.css";
-import AppContext from "antd/es/app/context";
+
 import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import { Table, Button, Modal, Form, Input, Slider } from "antd";
 import { createItem, updateItem } from "../../../../api/ItemAPI";
@@ -22,7 +22,7 @@ const ItemTable = ({ items, setItems, user }) => {
   const [editingRow, setEditingRow] = useState(null);
   // const {user} = useContext(AppContext);
   const [itemForm] = Form.useForm();
-  const [newItem, setNewItem] =useState({});
+  const [newItem, setNewItem] = useState({});
   const [searchedText, setSearchedText] = useState("");
   const [selectedItem, setSelectedItem] = useState({});
   const [reserveFilter, setReserveFilter] = useState(null);
@@ -51,9 +51,28 @@ const ItemTable = ({ items, setItems, user }) => {
       title: "Tên sản phẩm",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
-        return String(record.name)
-          .toLocaleLowerCase()
-          .includes(value.toLocaleLowerCase());
+        return (
+          String(record.name)
+            .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.id)
+            .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase())
+        );
       },
       width: "30%",
       align: "center",
@@ -203,10 +222,12 @@ const ItemTable = ({ items, setItems, user }) => {
         return (
           <>
             <div className="btnWrap">
-              <EditButton openModalEdit={() => {    
-                setSelectedItem(record); 
-                onEditButton(record)
-              }}></EditButton>
+              <EditButton
+                openModalEdit={() => {
+                  setSelectedItem(record);
+                  onEditButton(record);
+                }}
+              ></EditButton>
             </div>
           </>
         );
@@ -215,16 +236,14 @@ const ItemTable = ({ items, setItems, user }) => {
   ];
   const onEditButton = async (record) => {
     setIsEditing(true);
-    itemForm.setFieldValue("name",record.name);
-    itemForm.setFieldValue("reserve_amount",record.reserve_amount);
-    itemForm.setFieldValue("sell_price",record.sell_price);
+    itemForm.setFieldValue("name", record.name);
+    itemForm.setFieldValue("reserve_amount", record.reserve_amount);
+    itemForm.setFieldValue("sell_price", record.sell_price);
     setIsModalVisible(true);
-      // reserve_amount: selectedItem.reserve_amount,
-      // sell_price: selectedItem.sell_price
+    // reserve_amount: selectedItem.reserve_amount,
+    // sell_price: selectedItem.sell_price
     // })
-  }
-
-  
+  };
 
   const onFinish = (values) => {
     console.log(editingRow);
@@ -241,67 +260,66 @@ const ItemTable = ({ items, setItems, user }) => {
     setIsModalVisible(false);
     setIsEditing(false);
     itemForm.resetFields();
-  }
+  };
   const handleOKModal = () => {
-      itemForm.validateFields()
-        .then(async (value) => {
-          console.log(value)
-          if(isEditing){
-            setSelectedItem((prev) =>{
-              return {
-                ...prev,
-                reserve_amount: value.reserve_amount,
-                sell_price: value.sell_price
-              }
-            })
-            try {
-              console.log(selectedItem)
-              const {data: editedData} = await updateItem(user?.position, selectedItem.id, value);
-              setItems((prev) => {
-                prev.map((item) => {
-                  if(item.id === selectedItem.id)
-                  {
-                    setSelectedItem((prev) =>{
-                      return {
-                        ...prev,
-                        reserve_amount: value.reserve_amount,
-                        sell_price: value.sell_price
-                      }
-                    })
-                  }
-                })
+    itemForm
+      .validateFields()
+      .then(async (value) => {
+        console.log(value);
+        if (isEditing) {
+          setSelectedItem((prev) => {
+            return {
+              ...prev,
+              reserve_amount: value.reserve_amount,
+              sell_price: value.sell_price,
+            };
+          });
+          try {
+            console.log(selectedItem);
+            const { data: editedData } = await updateItem(
+              user?.position,
+              selectedItem.id,
+              value
+            );
+            setItems((prev) => {
+              prev.map((item) => {
+                if (item.id === selectedItem.id) {
+                  setSelectedItem((prev) => {
+                    return {
+                      ...prev,
+                      reserve_amount: value.reserve_amount,
+                      sell_price: value.sell_price,
+                    };
+                  });
+                }
               });
-              SuccessAlert("Cập nhật sản phẩm thành công")
-              setIsModalVisible(false);
-              itemForm.resetFields();
-            }
-            catch{
-              ErrorAlert("Đã xảy ra lỗi khi cập nhật sản phẩm");
-            }  
+            });
+            SuccessAlert("Cập nhật sản phẩm thành công");
+            setIsModalVisible(false);
+            itemForm.resetFields();
+          } catch {
+            ErrorAlert("Đã xảy ra lỗi khi cập nhật sản phẩm");
           }
-          else{
-            try{
-              const {data: itemData} = await createItem(user?.position, value);    
-              setItems((prev) => {
+        } else {
+          try {
+            const { data: itemData } = await createItem(user?.position, value);
+            setItems((prev) => {
               console.log(itemData);
-              return [
-                ...prev,
-                itemData.data[0]
-              ]})
-              SuccessAlert("Tạo sản phẩm mới thành công");
-              itemForm.resetFields();
-              setIsModalVisible(false)
-            }
-            catch{
-              ErrorAlert("Đã xảy ra lỗi khi tạo sản phẩm");
-            }  
-          }})
-          .catch((value)=> {
-
-            ErrorAlert("Vui lòng nhập dữ liệu");
-            throw value;
-          }); 
-  }
+              return [...prev, itemData.data[0]];
+            });
+            SuccessAlert("Tạo sản phẩm mới thành công");
+            itemForm.resetFields();
+            setIsModalVisible(false);
+          } catch {
+            ErrorAlert("Đã xảy ra lỗi khi tạo sản phẩm");
+          }
+        }
+      })
+      .catch((value) => {
+        ErrorAlert("Vui lòng nhập dữ liệu");
+        throw value;
+      });
+  };
 
   return (
     <div className="table">
@@ -312,7 +330,7 @@ const ItemTable = ({ items, setItems, user }) => {
           onOk={handleOKModal}
           onCancel={handleCancelModal}
         >
-          <ItemForm form={itemForm} item={selectedItem} isEditing={isEditing}/>
+          <ItemForm form={itemForm} item={selectedItem} isEditing={isEditing} />
         </Modal>
       </>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
@@ -342,6 +360,7 @@ const ItemTable = ({ items, setItems, user }) => {
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         columns={columns}
         dataSource={items}
         scroll={{ y: "60vh", x: "100%" }}

@@ -42,11 +42,36 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
       },
       width: "10%",
       align: "center",
-      sorter: (a, b) => a.id - b.id,
+      filter: (a, b) => a.id - b.id,
+      filteredValue: [searchedText],
+      onFilter: (value, record) => {
+        return (
+          String(record.id)
+            .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.name)
+            .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase())
+        );
+      },
     },
     {
       key: "2",
-      title: "Tên phiếu giảm giá",
+      title: "Mã phiếu giảm giá",
       dataIndex: "name",
       width: "25%",
       align: "center",
@@ -153,7 +178,7 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
   // };
 
   return (
-    <div className="promotionTable">
+    <div className="table">
       <>
         <Modal
           title="Thông tin sản phẩm"
@@ -174,7 +199,7 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
             onChange={(e) => {
               setSearchedText(e.target.value);
             }}
-            placeholder="input search text"
+            placeholder="Tìm kiếm"
             className="searchInput"
             style={{ width: 264 }}
           />
@@ -190,6 +215,8 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
         </div>
       </div>
       <Table
+        rowKey={(row) => row.key}
+        showSorterTooltip={false}
         columns={columns}
         dataSource={vouchers}
         scroll={{ y: "60vh", x: "100%" }}

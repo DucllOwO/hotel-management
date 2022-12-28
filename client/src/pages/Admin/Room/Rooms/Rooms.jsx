@@ -9,24 +9,26 @@ import "./rooms.css";
 const Rooms = () => {
   const [rooms, setRooms] = useState([]);
   const { user } = useContext(AppContext);
-  const [listType, setListType] = useState([])
+  const [listType, setListType] = useState([]);
 
   useEffect(() => {
-    fetchRoom(user?.position)
-    .then(({data}) => {
+    fetchRoom(user?.position).then(({ data }) => {
       console.log(data);
       setRooms(data);
     });
-    getAllRoomType(user?.position)
-    .then(({data}) => {
-      console.log(data)
-      setListType(data)
-    })
-    
+    getAllRoomType(user?.position).then(({ data }) => {
+      console.log(data);
+      setListType(data);
+    });
   }, []);
   return (
     <div className="roomsContainer">
-      <RoomsTable rooms={rooms} listType={listType}></RoomsTable>
+      <RoomsTable
+        rooms={rooms}
+        positionUser={user.position}
+        setRoom={setRooms}
+        listType={listType}
+      ></RoomsTable>
     </div>
   );
 };

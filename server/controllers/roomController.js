@@ -21,22 +21,22 @@ const getAllRoom = async (req, res, next) => {
   }
 
   const { data: tempRooms, error } = await roomDAL.getAllRooms();
-  const rooms = tempRooms.map((item) => {
-    return {
-      roomType: item.room_type.name,
-      ...item,
-    };
-  });
-  console.log(rooms);
+  // const rooms = tempRooms.map((item) => {
+  //   return {
+  //     ...item,
+  //     roomType: item.room_type.name,
+  //   };
+  // });
+  console.log(tempRooms);
   if (error) return next(error);
 
-  res.status(200).send(rooms);
+  res.status(200).send(tempRooms);
 };
 
 const getRoom = async (req, res, next) => {
-  const { room_name } = req.params;
+  const { id } = req.params;
 
-  const { data: room, error } = await roomDAL.getRoomByName(room_name);
+  const { data: room, error } = await roomDAL.getRoomByName(id);
 
   if (error) return next(error);
 
@@ -70,23 +70,16 @@ const getRoomByBookingID = async (req, res, next) => {
 } 
 const updateRoom = async (req, res, next) => {
   const { room } = req.body;
-  const { room_name } = req.params;
+  const { id } = req.params;
 
   if (!room) return next(BadRequestError());
 
-  // to ensure room obj don't have primary key
-  const { room_name: romeName, ...roomWithoutID } = room;
-  console.log(roomWithoutID);
-
-  const { error: updateRoomError } = await roomDAL.updateRoom(
-    roomWithoutID,
-    room_name
-  );
+  const { data, error: updateRoomError } = await roomDAL.updateRoom(room, id);
 
   console.log(updateRoomError);
   if (updateRoomError) return next(updateRoomError);
 
-  res.status(204).send();
+  res.status(200).send(data[0]);
 };
 
 const createRoom = async (req, res, next) => {
@@ -94,11 +87,11 @@ const createRoom = async (req, res, next) => {
 
   if (!room) return next(BadRequestError());
 
-  const { error } = await roomDAL.insertRoom(room);
+  const { data, error } = await roomDAL.insertRoom(room);
 
   if (error) return next(error);
 
-  res.status(201).send("Created");
+  res.status(200).send(data[0]);
 };
 
 // const hideRoom = (req, res) => {

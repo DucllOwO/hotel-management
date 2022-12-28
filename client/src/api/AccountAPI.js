@@ -6,10 +6,10 @@ export const fetchAccount = (positionUser) => {
   });
 };
 
-export const createAccount = (positionUser, { username, password, email }) => {
+export const createAccount = (positionUser, { username, password }) => {
   return userRequest.post("/accounts", {
     user: { position: positionUser },
-    account: { username: username, password, email },
+    account: { username: username, password },
   });
 };
 
@@ -19,9 +19,9 @@ export const deleteAccount = (positionUser, positionUsername) => {
   });
 };
 
-export const updateAccount = (positionUser, username, password, email) => {
+export const updateAccount = (positionUser, username, password) => {
   return userRequest.put(`/accounts/${username}`, {
     user: { position: positionUser },
-    account: { password, email },
+    account: { password },
   });
 };

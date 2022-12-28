@@ -135,23 +135,35 @@ const Dashboard = () => {
           <Row gutter={16}>
             <Col span={8}>
               <Card title="Tổng doanh thu">
-                {report[0]
-                  ? report[0]?.income.toLocaleString("en-US") + " đ"
-                  : 0 + " đ"}
+                {
+                  <div className="sumaryDetail income">
+                    {report[0]
+                      ? report[0]?.income.toLocaleString("en-US") + " đ"
+                      : 0 + " đ"}
+                  </div>
+                }
               </Card>
             </Col>
             <Col span={8}>
               <Card title="Tổng chi phí">
-                {report[0]
-                  ? report[0]?.outcome.toLocaleString("en-US") + " đ"
-                  : 0 + " đ"}
+                {
+                  <div className="sumaryDetail payment">
+                    {report[0]
+                      ? report[0]?.outcome.toLocaleString("en-US") + " đ"
+                      : 0 + " đ"}
+                  </div>
+                }
               </Card>
             </Col>
             <Col span={8}>
               <Card title="Tổng lợi nhuận">
-                {report[0]
-                  ? report[0]?.profit.toLocaleString("en-US") + " đ"
-                  : 0 + " đ"}
+                {
+                  <div className="sumaryDetail benifit">
+                    {report[0]
+                      ? report[0]?.profit.toLocaleString("en-US") + " đ"
+                      : 0 + " đ"}
+                  </div>
+                }
               </Card>
             </Col>
           </Row>
@@ -159,6 +171,7 @@ const Dashboard = () => {
         {type === "day" && (
           <div>
             <Button
+              type={semiType === "income" ? "primary" : "default"}
               className="dateBtn"
               onClick={() => {
                 setSemiType("income");
@@ -167,6 +180,7 @@ const Dashboard = () => {
               Thu
             </Button>
             <Button
+              type={semiType === "outcome" ? "primary" : "default"}
               className="dateBtn"
               onClick={() => {
                 setSemiType("outcome");

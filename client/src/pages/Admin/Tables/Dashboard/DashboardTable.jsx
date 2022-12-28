@@ -33,7 +33,6 @@ const DashboardTable = ({ data, setData }) => {
       key: "1",
       title: "ID",
       dataIndex: "id",
-      width: "10%",
       align: "center",
       sorter: (a, b) => a.id - b.id,
     },
@@ -88,16 +87,13 @@ const DashboardTable = ({ data, setData }) => {
   ];
 
   return (
-    <div>
-      <div className="table">
-        <Table
-          columns={columns}
-          dataSource={data}
-          scroll={{ y: 350 }}
-          rowKey={(row) => row.idNum}
-          style={{ width: "100%" }}
-        ></Table>
-      </div>
+    <div className="table">
+      <Table
+        columns={columns}
+        dataSource={data}
+        scroll={{ y: 350 }}
+        rowKey={(row) => row.idNum}
+      ></Table>
     </div>
   );
 };

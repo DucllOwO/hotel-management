@@ -11,14 +11,11 @@ const getRoomFeature = (id) => {
 };
 
 const insertRoomFeature = (RoomFeature) => {
-  return supabase.from(TABLE_NAME).insert(RoomFeature);
+  return supabase.from(TABLE_NAME).insert({ name: RoomFeature });
 };
 
 const updateRoomFeature = (RoomFeature, id) => {
-  return supabase
-    .from(TABLE_NAME)
-    .update({ ...RoomFeature })
-    .eq("id", id);
+  return supabase.from(TABLE_NAME).update({ name: RoomFeature }).eq("id", id);
 };
 
 const deleteRoomFeature = (id) => {

@@ -7,12 +7,13 @@ const getAll = async (req, res, next) => {
   if (getRoomTypesError) return next(getRoomTypesError);
   else res.status(200).send(roomTypes);
 };
-const getByID = (req, res, next) => {
+const getByID = async (req, res, next) => {
   const { id: typeID } = req.params;
   const { data: roomType, error: getRoomTypeError } =
-    roomTypeDAL.getTypeByID(typeID);
+    await roomTypeDAL.getTypeByID(typeID);
+  console.log(roomType);
   if (getRoomTypeError) return next(getRoomTypeError);
-  else res.status(200).send(roomType);
+  else res.status(200).send(roomType[0]);
 };
 const createType = async (req, res, next) => {
   const { roomType } = req.body;
