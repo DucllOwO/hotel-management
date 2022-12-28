@@ -21,6 +21,26 @@ const getRoomByStatus = (status) => {
     .eq("status", status)
     .eq("is_active", true);
 };
+const getInfoByBookingIDList = (listBooking) => {
+  console.log(listBooking);
+  return supabase
+    .from("used_room")
+    .select(`
+      booking_id,
+      room_id(
+        room_name,
+        room_type_id(
+          id,
+          name, 
+          max_customers, 
+          bed_amount, 
+          area,
+          one_day_price
+        ))
+    `)
+    .in("booking_id", listBooking)
+    .order("room_id", { ascending: true });
+};
 const getRoomByBookingIDList = (listBooking) => {
   console.log(listBooking);
   return supabase
@@ -30,7 +50,13 @@ const getRoomByBookingIDList = (listBooking) => {
     .eq("is_active", true)
     .order("room_id", { ascending: true });
 };
-
+const getRoomByIDList = (listRoom) => {
+  return supabase
+    .from("room")
+    .select()
+    .in("id", listRoom)
+    .order("id", { ascending: true });
+}
 const getRoomByBookingID = (bookingID) => {
   return supabase
     .from("used_room")
@@ -39,7 +65,7 @@ const getRoomByBookingID = (bookingID) => {
       room_id(room_name, room_type_id)
     `
     )
-    .eq("booking_id", bookingID)
+    .in("booking_id", bookingID)
     .order("room_id", {ascending: true});
 }
 const getUsingRoom = (listBooking) => {
@@ -137,7 +163,9 @@ module.exports = {
   getAvailableRoom,
   getRoomByID,
   getUsingRoom,
+  getRoomByIDList,
   getRoomByBookingIDList,
+  getInfoByBookingIDList,
   getRoomByBookingID,
   getAllRooms,
   updateRoom,

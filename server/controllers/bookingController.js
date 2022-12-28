@@ -13,25 +13,49 @@ const getBookingByStatus = async (req, res, next) => {
 
   const { data: bookingList, error: getBookingError } = await bookingDAL.getFullBookingByStatus(status);
   if (getBookingError) return next(getBookingError);
-  console.log(bookingList);
+  const listBookingID = bookingList.map((item) => item.id)
+  // console.log(bookingList);
 
-  const middleArray = bookingList.map(async (value) => {
-    const {data: usedRoom, error: getUsedRoomError} = await roomDAL.getRoomByBookingID(value.id);
-    if(getUsedRoomError) return next(getUsedRoomError);
+  const {data: roomTypeList, error: getRoomIDError} = await roomDAL.getInfoByBookingIDList(listBookingID);
+  if(getRoomIDError) return next(getRoomIDError);
+
+  const roomType = roomTypeList.map((value) => {
+    return {
+      booking_id: value.booking_id,
+      room_name: value.room_id.room_name,
+      room_type: value.room_id.room_type_id.name,
+      area: value.room_id.room_type_id.area,
+      bed_amount: value.room_id.room_type_id.bed_amount,
+      room_type_id: value.room_id.room_type_id.id,
+      max_customers: value.room_id.room_type_id.max_customers,
+      one_day_price: value.room_id.room_type_id.one_day_price,
+    }
+  })
+
+  const returnArray = bookingList.map((value) => {
     return {
       ...value,
-      room: usedRoom
-    }
-  });
-  console.log(middleArray);
-  // console.log(middleArray);
-  // const roomTypeList = usedRoom.map(async(value) => {
-  //   const {data: roomType, error: getRoomTypeError} = await roomTypeDAL.getTypeByID(value.room_id.room_type_id);
-  //   if(getRoomTypeError) return next(getRoomTypeError);
-    
-    // console.log(roomType);
+      room_type: [...roomType.filter((item) => item.booking_id === value.id)]
+    } 
+    });
+  // const {data: roomList, error: getRoomError } = await roomDAL.getRoomByIDList(roomIDList);
+  // if(getRoomError) return next(getRoomError);
 
-  res.status(200).send(middleArray);
+
+
+  // // if(getUsedRoomError) return next(getUsedRoomError);
+    
+  //   // console.log(usedRoom)
+  //   // })
+  
+  // // console.log(middleArray);
+  // // const roomTypeList = usedRoom.map(async(value) => {
+  // //   const {data: roomType, error: getRoomTypeError} = await roomTypeDAL.getTypeByID(value.room_id.room_type_id);
+  // //   if(getRoomTypeError) return next(getRoomTypeError);
+    
+  //   // console.log(roomType);
+
+  res.status(200).send(returnArray);
 };
 const getRooms = async (req, res, next) => {
   const { from: from, to: to } = req.query;

@@ -649,7 +649,7 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
         scroll={{ y: "60vh", x: "100%" }}
         expandable={{
           expandedRowRender: (record) => {
-            return <BookingListExpand />;
+            return <BookingListExpand roomTypeSource={record.room_type} />;
           },
         }}
       ></Table>

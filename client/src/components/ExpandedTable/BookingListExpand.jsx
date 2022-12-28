@@ -3,7 +3,7 @@ import CheckableTag from "antd/es/tag/CheckableTag";
 import React from "react";
 import UtilitiesButton from "../Button/UtilitiesButton/UtilitiesButton";
 
-const BookingListExpand = ({ utils = [], ...prices }) => {
+const BookingListExpand = ({ utils = [], roomTypeSource, ...prices}) => {
   const priceTypes = {
     firstHourPrice: "Giờ đầu tiên",
     overNightPrice: "Qua đêm",
@@ -39,13 +39,14 @@ const BookingListExpand = ({ utils = [], ...prices }) => {
     {
       key: "1",
       title: "ID",
-      dataIndex: "id",
+      dataIndex: "room_type_id",
       width: "5%",
       align: "center",
     },
     {
       key: "2",
-      title: "Loại phòng",
+      title: "Tên phòng",
+      dataIndex: "room_name",
       width: "20%",
       align: "center",
     },
@@ -54,18 +55,18 @@ const BookingListExpand = ({ utils = [], ...prices }) => {
       title: "Số lượng khách",
       dataIndex: "max_customers",
       align: "center",
-      render: (text, record) => {
-        return <p>{text}</p>;
-      },
+      // render: (text, record) => {
+      //   return <p>{text}</p>;
+      // },
     },
     {
       key: "4",
       title: "Số giường",
       dataIndex: "bed_amount",
       align: "center",
-      render: (text, record) => {
-        return <p>{text}</p>;
-      },
+      // render: (text, record) => {
+      //   return <p>{text}</p>;
+      // },
     },
     {
       key: "5",
@@ -73,22 +74,28 @@ const BookingListExpand = ({ utils = [], ...prices }) => {
       dataIndex: "area",
       align: "center",
     },
+    {
+      key: "6",
+      title: "Giá ngày",
+      dataIndex: "one_day_price",
+      align: "center",
+    },
   ];
 
   return (
     <div id="BookingListExpandContainer">
       <Row justify="space-around">
-        <Col xs={24} xl={8}>
+        {/* <Col xs={24} xl={8}>
           <Table
             dataSource={createDataSource(prices)}
             columns={columns}
             pagination={false}
             bordered={true}
           ></Table>
-        </Col>
+        </Col> */}
         <Col xs={24} xl={8}>
           <Table
-            dataSource={createDataSource(prices)}
+            dataSource={roomTypeSource}
             columns={roomTypeColumns}
             pagination={false}
             bordered={true}
