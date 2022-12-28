@@ -170,7 +170,6 @@ const BookingListTable = ({ booking, setBooking }) => {
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div className="headerButtons">
-          <FontAwesomeIcon icon={faSort} className="icon"></FontAwesomeIcon>
           <Button className="headerBtn">Đang đợi</Button>
           <Button className="headerBtn">Đang phục vụ</Button>
           <Button className="headerBtn">Hoàn thành</Button>
