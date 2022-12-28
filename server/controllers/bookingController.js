@@ -2,36 +2,19 @@ const bookingDAL = require("../DAL/bookingDAL");
 const roomDAL = require("../DAL/roomDAL");
 const dayjs = require("dayjs")
 const usedRoomDAL = require("../DAL/usedRoomDAL");
-const roomTypeDAL = require("../DAL/roomTypeDAL")
 const customerDAL = require("../DAL/customerDAL");
 const { BadRequestError } = require("../middlewares/errorHandler");
+const supabase = require("../database");
 
 const getBookingByStatus = async (req, res, next) => {
   const {status} = req.query;
 
   if(!status) return next(BadRequestError);
 
-  const { data: bookingList, error: getBookingError } = await bookingDAL.getFullBookingByStatus(status);
-  if (getBookingError) return next(getBookingError);
-  console.log(bookingList);
+  const { data, error } = await bookingDAL.getFullBookingByStatus(status);
+  if (error) return next(error);
 
-  const middleArray = bookingList.map(async (value) => {
-    const {data: usedRoom, error: getUsedRoomError} = await roomDAL.getRoomByBookingID(value.id);
-    if(getUsedRoomError) return next(getUsedRoomError);
-    return {
-      ...value,
-      room: usedRoom
-    }
-  });
-  console.log(middleArray);
-  // console.log(middleArray);
-  // const roomTypeList = usedRoom.map(async(value) => {
-  //   const {data: roomType, error: getRoomTypeError} = await roomTypeDAL.getTypeByID(value.room_id.room_type_id);
-  //   if(getRoomTypeError) return next(getRoomTypeError);
-    
-    // console.log(roomType);
-
-  res.status(200).send(middleArray);
+  res.status(200).send(data);
 };
 const getRooms = async (req, res, next) => {
   const { from: from, to: to } = req.query;
