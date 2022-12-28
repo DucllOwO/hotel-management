@@ -17,8 +17,12 @@ import DetailForm from "../../../../components/Form/DetailForm/DetailForm";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 import { formatDate, formatterInt } from "../../../../Utils/formatter";
+import { useEffect } from "react";
 
 const ReceiptTable = ({ receipt, setReceipt }) => {
+  useEffect(() => {
+    document.title = "Receipt | Parallel Shine";
+  });
   const [type, setType] = useState("day");
 
   const [editingRow, setEditingRow] = useState(null);
@@ -35,9 +39,12 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
   const dateFormat = "DD-MM-YYYY";
   const monthFormat = "MM-YYYY";
 
+  const price = Math.max(...receipt.map((receipt) => receipt.total_cost));
+  const minPrice = Math.min(...receipt.map((receipt) => receipt.total_cost));
+
   const priceMark = {
-    0: "0đ",
-    50000000: "50,000,000đ",
+    [minPrice]: minPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
+    [price]: price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
   };
 
   const columns = [
@@ -85,8 +92,8 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
                   width={0.8}
                   step={500000}
                   range
-                  min={0}
-                  max={50000000}
+                  min={minPrice}
+                  max={price}
                   marks={priceMark}
                   defaultValue={[0, 1000000]}
                   onChange={(e) => {

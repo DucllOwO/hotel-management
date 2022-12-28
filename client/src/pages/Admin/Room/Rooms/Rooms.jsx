@@ -12,6 +12,7 @@ const Rooms = () => {
   const [listType, setListType] = useState([]);
 
   useEffect(() => {
+    document.title = "Room List | Parallel Shine";
     fetchRoom(user?.position).then(({ data }) => {
       console.log(data);
       setRooms(data);

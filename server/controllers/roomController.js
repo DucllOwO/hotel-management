@@ -1,4 +1,5 @@
 const roomDAL = require("../DAL/roomDAL");
+const roomTypeDAL = require("../DAL/roomTypeDAL");
 const { BadRequestError } = require("../middlewares/errorHandler");
 
 /**
@@ -42,6 +43,33 @@ const getRoom = async (req, res, next) => {
   res.status(200).send({ room: room[0] });
 };
 
+const getRoomByBookingID = async (req, res, next) => {
+  const {bookingID} = req.query;
+
+  if(!bookingID) return next(BadRequestError)
+
+  const {data: listRoom, error: getRoomError} = await roomDAL.getRoomByBookingID(bookingID);
+  console.log(listRoom)
+
+  if(getRoomError) return next(getRoomError)
+
+  const returnList = Promise.all(listRoom.map(async (value) => {
+    const {data: roomType, error: getRoomTypeError} = await roomTypeDAL.getTypeByID(value.room_id.room_type_id);
+    console.log(value.room_id.room_type_id)
+    if(getRoomTypeError) return next(getRoomTypeError);
+    else
+      return {
+        room_name: value.room_id.room_name,
+        room_type: roomType[0].name,
+        area: roomType[0].area,
+        first_hour_price: roomType[0].first_hour_price,
+        hour_price: roomType[0].hour_price,
+        overnight_price: roomType[0].overnight_price,
+        one_day_price: roomType[0].one_day_price,
+      }
+  }))
+  returnList.then((data) => res.status(200).send(data))
+} 
 const updateRoom = async (req, res, next) => {
   const { room } = req.body;
   const { id } = req.params;
@@ -78,4 +106,5 @@ module.exports = {
   createRoom,
   updateRoom,
   getRoom,
+  getRoomByBookingID
 };

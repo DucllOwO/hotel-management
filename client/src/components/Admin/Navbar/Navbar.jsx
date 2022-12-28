@@ -81,20 +81,6 @@ const Navbar = () => {
                       ],
                     }
                   : null,
-                permission.includes("Nhân sự")
-                  ? {
-                      label: "Nhân sự",
-                      key: "/admin/hr",
-                      icon: <TeamOutlined></TeamOutlined>,
-                    }
-                  : null,
-                permission.includes("Tài khoản")
-                  ? {
-                      label: "Tài khoản",
-                      key: "/admin/account",
-                      icon: <FileProtectOutlined></FileProtectOutlined>,
-                    }
-                  : null,
                 permission.includes("Danh mục phòng") ||
                 permission.includes("Loại phòng") ||
                 permission.includes("Tiện ích")
@@ -111,6 +97,43 @@ const Navbar = () => {
                           : null,
                         permission.includes("Tiện ích")
                           ? { label: "Tiện ích", key: "/admin/utilities" }
+                          : null,
+                      ],
+                    }
+                  : null,
+                permission.includes("Nhân sự")
+                  ? {
+                      label: "Nhân sự",
+                      key: "/admin/hr",
+                      icon: <TeamOutlined></TeamOutlined>,
+                    }
+                  : null,
+                permission.includes("Tài khoản")
+                  ? {
+                      label: "Tài khoản",
+                      key: "/admin/account",
+                      icon: <FileProtectOutlined></FileProtectOutlined>,
+                    }
+                  : null,
+                permission.includes("Khách hàng")
+                  ? {
+                      label: "Khách hàng",
+                      key: "/admin/customer",
+                      icon: <UserSwitchOutlined></UserSwitchOutlined>,
+                    }
+                  : null,
+                permission.includes("Hóa đơn") ||
+                permission.includes("Phiếu chi")
+                  ? {
+                      label: "Doanh số",
+                      key: "/admin/receipt",
+                      icon: <PieChartOutlined></PieChartOutlined>,
+                      children: [
+                        permission.includes("Hóa đơn")
+                          ? { label: "Hoá đơn", key: "/admin/receipt" }
+                          : null,
+                        permission.includes("Phiếu chi")
+                          ? { label: "Phiếu chi", key: "/admin/payment" }
                           : null,
                       ],
                     }
@@ -135,20 +158,11 @@ const Navbar = () => {
                       ],
                     }
                   : null,
-                permission.includes("Hóa đơn") ||
-                permission.includes("Phiếu chi")
+                permission.includes("Phiếu giảm giá")
                   ? {
-                      label: "Doanh số",
-                      key: "/admin/receipt",
-                      icon: <PieChartOutlined></PieChartOutlined>,
-                      children: [
-                        permission.includes("Hóa đơn")
-                          ? { label: "Hoá đơn", key: "/admin/receipt" }
-                          : null,
-                        permission.includes("Phiếu chi")
-                          ? { label: "Phiếu chi", key: "/admin/payment" }
-                          : null,
-                      ],
+                      label: "Phiếu giảm giá",
+                      key: "/admin/promotion",
+                      icon: <DiffOutlined></DiffOutlined>,
                     }
                   : null,
                 permission.includes("Chức vụ")
@@ -156,20 +170,6 @@ const Navbar = () => {
                       label: "Chức vụ",
                       key: "/admin/position",
                       icon: <UserOutlined />,
-                    }
-                  : null,
-                permission.includes("Khách hàng")
-                  ? {
-                      label: "Khách hàng",
-                      key: "/admin/customer",
-                      icon: <UserSwitchOutlined></UserSwitchOutlined>,
-                    }
-                  : null,
-                permission.includes("Phiếu giảm giá")
-                  ? {
-                      label: "Phiếu giảm giá",
-                      key: "/admin/promotion",
-                      icon: <DiffOutlined></DiffOutlined>,
                     }
                   : null,
                 {

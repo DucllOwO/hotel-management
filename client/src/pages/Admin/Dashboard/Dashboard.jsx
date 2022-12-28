@@ -28,6 +28,7 @@ const Dashboard = () => {
   const { user } = useContext(AppContext);
 
   useEffect(() => {
+    document.title = "Dashboard | Parallel Shine";
     switch (type) {
       case "day":
         console.log(time);
@@ -174,6 +175,7 @@ const Dashboard = () => {
               type={semiType === "income" ? "primary" : "default"}
               className="dateBtn"
               onClick={() => {
+                console.log(report);
                 setSemiType("income");
               }}
             >

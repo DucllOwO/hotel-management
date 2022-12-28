@@ -54,7 +54,7 @@ const AccountTable = ({ accounts, setAccount }) => {
           .includes(value.toLocaleLowerCase());
       },
       align: "center",
-      sorter: (a, b) => a.username.localeCompare(b.username),
+
       render: (text, record) => {
         if (editingRow === record.id)
           return (

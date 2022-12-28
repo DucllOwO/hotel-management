@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./admin.css";
 import Navbar from "../../components/Admin/Navbar/Navbar";
 import Topbar from "../../components/Topbar/Topbar";
@@ -8,6 +8,9 @@ import { userRequest } from "../../api/api";
 import ErrorBoundary from "../../components/Error/ErrorBoundary/ErrorBoundary";
 
 const Admin = () => {
+  useEffect(() => {
+    document.title = "Admin | Parallel Shine";
+  });
   const user = LocalStorage.getItem("user");
 
   userRequest.defaults.headers.common[

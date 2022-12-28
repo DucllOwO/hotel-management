@@ -1,52 +1,51 @@
 import React, { useState } from "react";
 import { Table } from "antd";
 
-const DetailRoomTable = () => {
+const DetailRoomTable = ({dataSource}) => {
   //   const [dataSource, setDataSource] = useState();
 
-  const dataSource = [
-    {
-      no: "1",
-      roomID: "Room01",
-      roomType: "President",
-      area: "200",
-      price: "2000000",
-    },
-    {
-      no: "1",
-      roomID: "Room01",
-      roomType: "President",
-      area: "200",
-      price: "2000000",
-    },
-    {
-      no: "1",
-      roomID: "Room01",
-      roomType: "President",
-      area: "200",
-      price: "2000000",
-    },
-    {
-      no: "1",
-      roomID: "Room01",
-      roomType: "President",
-      area: "200",
-      price: "2000000",
-    },
-    {
-      no: "1",
-      roomID: "Room01",
-      roomType: "President",
-      area: "200",
-      price: "2000000",
-    },
-  ];
+  // const dataSource = [
+  //   {
+  //     no: "1",
+  //     roomID: "Room01",
+  //     roomType: "President",
+  //     area: "200",
+  //     price: "2000000",
+  //   },
+  //   {
+  //     no: "1",
+  //     roomID: "Room01",
+  //     roomType: "President",
+  //     area: "200",
+  //     price: "2000000",
+  //   },
+  //   {
+  //     no: "1",
+  //     roomID: "Room01",
+  //     roomType: "President",
+  //     area: "200",
+  //     price: "2000000",
+  //   },
+  //   {
+  //     no: "1",
+  //     roomID: "Room01",
+  //     roomType: "President",
+  //     area: "200",
+  //     price: "2000000",
+  //   },
+  //   {
+  //     no: "1",
+  //     roomID: "Room01",
+  //     roomType: "President",
+  //     area: "200",
+  //     price: "2000000",
+  //   },
+  // ];
 
   const columns = [
     {
       key: "1",
       title: "STT",
-      dataIndex: "No",
       align: "center",
       render: (text, record) => {
         return String(record.no);
@@ -55,19 +54,19 @@ const DetailRoomTable = () => {
     {
       key: "2",
       title: "Số Phòng",
-      dataIndex: "roomID",
+      dataIndex: "room_name",
       align: "center",
       render: (text, record) => {
-        return record.roomID ? String(record.roomID) : "";
+        return record.room_name ? String(record.room_name) : "";
       },
     },
     {
       key: "3",
       title: "Loại phòng",
-      dataIndex: "roomType",
+      dataIndex: "room_type",
       align: "center",
       render: (text, record) => {
-        return record.roomType ? String(record.roomType) : "";
+        return record.room_type ? String(record.room_type) : "";
       },
     },
     {
@@ -80,7 +79,7 @@ const DetailRoomTable = () => {
       },
     },
     {
-      key: "3",
+      key: "5",
       title: "Giá",
       dataIndex: "price",
       align: "center",

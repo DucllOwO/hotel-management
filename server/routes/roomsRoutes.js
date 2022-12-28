@@ -4,6 +4,7 @@ const {
   createRoom,
   updateRoom,
   getRoom,
+  getRoomByBookingID,
 } = require("../controllers/roomController");
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
 const { hasPermission } = require("../middlewares/roleAccessControl");
@@ -17,6 +18,18 @@ router.get(
   authorizeAccessToken,
   hasPermission(actionAC.GET, resourceAC.ROOM),
   tryCatch(getAllRoom)
+);
+router.get(
+  "/booking",
+  authorizeAccessToken,
+  hasPermission(actionAC.GET, resourceAC.ROOM),
+  tryCatch(getRoomByBookingID)
+);
+router.get(
+  "/booking",
+  authorizeAccessToken,
+  hasPermission(actionAC.GET, resourceAC.ROOM),
+  tryCatch(getRoomByBookingID)
 );
 router.get(
   "/:id",

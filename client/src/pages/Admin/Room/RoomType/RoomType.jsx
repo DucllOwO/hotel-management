@@ -13,6 +13,7 @@ const RoomType = () => {
   const { user } = useContext(AppContext);
 
   useEffect(() => {
+    document.title = "Room Type | Parallel Shine";
     Promise.all([
       getAllRoomType(user.position),
       getAllRoomFeature(user.position),

@@ -9,6 +9,8 @@ const data = [];
 const DashboardTable = ({ data, setData }) => {
   const [type, setType] = useState("income");
 
+  const [methodFilter, setMethodFilter] = useState("");
+
   const items = [
     {
       label: "Offline",
@@ -60,25 +62,67 @@ const DashboardTable = ({ data, setData }) => {
       title: "Phương thức",
       dataIndex: "payment_method",
       align: "center",
-      filterDropdown: () => {
+      filteredValue: methodFilter !== "" ? [methodFilter] : null,
+      filterDropdown: ({ confirm, clearFilters }) => {
         return (
           <>
             <div className="filterContainer">
               <div>
                 <Select
+                  style={{ width: 150 }}
+                  defaultValue={"Offline"}
+                  placeholder="Chọn phương thức"
+                  options={[
+                    {
+                      value: "Offline",
+                      label: "Offline",
+                    },
+                    {
+                      value: "Online",
+                      label: "Online",
+                    },
+                  ]}
+                  onChange={(e) => {
+                    setMethodFilter(e);
+                    confirm();
+                  }}
+                />
+                {/* <Select
+                  style={{ width: 200 }}
                   size="medium"
                   options={items}
                   showSearch
-                  placeholder="Chọn hình thức"
-                  onChange={(e) => {}}
-                />
+                  placeholder="Chọn phương thức"
+                  onChange={(e) => {
+                    console.log(e);
+                    setMethodFilter(e);
+                    confirm();
+                  }}
+                /> */}
               </div>
-              <Button type="primary" style={{ marginTop: "10px" }}>
+              <Button
+                type="primary"
+                style={{ marginTop: "10px" }}
+                onClick={() => {
+                  setMethodFilter("");
+                  clearFilters({ closeDropdown: true });
+                }}
+              >
                 Reset
               </Button>
             </div>
           </>
         );
+      },
+      onFilter: (value, record) => {
+        console.log(value);
+        if (methodFilter === "") {
+          return record.payment_method;
+        } else {
+          return record.payment_method === value;
+        }
+        // record.roomType === value;
+        // console.log(value);
       },
       filterIcon: () => {
         return <FilterOutlined />;
@@ -91,7 +135,7 @@ const DashboardTable = ({ data, setData }) => {
       <Table
         columns={columns}
         dataSource={data}
-        scroll={{ y: 350 }}
+        scroll={{ y: "30vh" }}
         rowKey={(row) => row.idNum}
       ></Table>
     </div>

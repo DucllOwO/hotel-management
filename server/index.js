@@ -13,6 +13,7 @@ const authRoute = require("./routes/authRoute");
 const bookingsRoutes = require("./routes/bookingsRoutes");
 const vouchersRoutes = require("./routes/vouchersRoutes");
 const roomsRoutes = require("./routes/roomsRoutes");
+const inventoriesRoutes = require("./routes/inventoriesRoutes"); 
 const roomFeaturesRoutes = require("./routes/roomFeaturesRoutes");
 const accountsRoutes = require("./routes/accountsRoutes");
 //const customersRoutes = require("./routes/customersRoutes");
@@ -48,6 +49,7 @@ app.use("/api/accounts", accountsRoutes);
 app.use("/api/roomtypes", roomTypesRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/positions", positionsRoutes);
+app.use("/api/inventory", inventoriesRoutes)
 app.use("/api/payment", paymentsRoutes);
 app.use("/api/items", itemRoutes);
 app.use("/api/importing", importingsRoutes);

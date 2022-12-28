@@ -9,6 +9,7 @@ const HR = () => {
   const { user } = useContext(AppContext);
 
   useEffect(() => {
+    document.title = "HR | Parallel Shine";
     fetchEmployee(user?.position)
       .then(({ data }) => {
         console.log(data);

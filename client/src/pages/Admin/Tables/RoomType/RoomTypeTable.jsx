@@ -44,6 +44,38 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
   const [priceFilter, setPriceFilter] = useState("");
   const [sliderFilter, setSliderFilter] = useState([0, 5000000]);
 
+  const maxCustomer = Math.max(
+    ...roomTypes.map((roomTypes) => roomTypes.max_customers)
+  );
+  const bedAmount = Math.max(
+    ...roomTypes.map((roomTypes) => roomTypes.bed_amount)
+  );
+  const area = Math.max(...roomTypes.map((roomTypes) => roomTypes.area));
+  const price =
+    priceFilter === "Qua đêm"
+      ? Math.max(...roomTypes.map((roomTypes) => roomTypes.overnight_price))
+      : priceFilter === "Giờ đầu tiên"
+      ? Math.max(...roomTypes.map((roomTypes) => roomTypes.first_hour_price))
+      : priceFilter === "Giờ tiếp theo"
+      ? Math.max(...roomTypes.map((roomTypes) => roomTypes.hour_price))
+      : Math.max(...roomTypes.map((roomTypes) => roomTypes.one_day_price));
+
+  const minCustomer = Math.min(
+    ...roomTypes.map((roomTypes) => roomTypes.max_customers)
+  );
+  const minBedAmount = Math.min(
+    ...roomTypes.map((roomTypes) => roomTypes.bed_amount)
+  );
+  const minArea = Math.min(...roomTypes.map((roomTypes) => roomTypes.area));
+  const minPrice =
+    priceFilter === "Qua đêm"
+      ? Math.min(...roomTypes.map((roomTypes) => roomTypes.overnight_price))
+      : priceFilter === "Giờ đầu tiên"
+      ? Math.min(...roomTypes.map((roomTypes) => roomTypes.first_hour_price))
+      : priceFilter === "Giờ tiếp theo"
+      ? Math.min(...roomTypes.map((roomTypes) => roomTypes.hour_price))
+      : Math.min(...roomTypes.map((roomTypes) => roomTypes.one_day_price));
+
   const items = [
     {
       label: "Một ngày",
@@ -64,21 +96,23 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
   ];
 
   const maxCustomerMark = {
-    1: "1",
-    10: "10",
+    [maxCustomer]: maxCustomer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    [minCustomer]: minCustomer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
   };
   const bedAmountMark = {
-    1: "1",
-    5: "5",
+    [minBedAmount]: minBedAmount
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    [bedAmount]: bedAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
   };
   const areaMark = {
-    10: "10",
-    100: "100",
+    [minArea]: minArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    [area]: area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
   };
 
   const priceMark = {
-    0: "0đ",
-    5000000: "5,000,000đ",
+    [minPrice]: minPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
+    [price]: price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
   };
 
   const columns = [
@@ -88,11 +122,14 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
       dataIndex: "id",
       width: "5%",
       align: "center",
+      fixed: "left",
+      sorter: (a, b) => a.id - b.id,
     },
     {
       key: "2",
       title: "Tên loại phòng",
       filteredValue: [searchedText],
+      sorter: (a, b) => a.name.localeCompare(b.name),
       width: "20%",
       align: "center",
       onFilter: (value, record) => {
@@ -159,9 +196,9 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
             <div className="filterContainer">
               <Slider
                 range
-                max={10}
-                min={1}
-                defaultValue={[1, 4]}
+                max={maxCustomer}
+                min={minCustomer}
+                defaultValue={[1, 3]}
                 marks={maxCustomerMark}
                 onChange={(e) => {
                   setCustomerFilter("");
@@ -212,8 +249,8 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
               <Slider
                 range
                 defaultValue={[1, 2]}
-                max={5}
-                min={1}
+                max={bedAmount}
+                min={minBedAmount}
                 marks={bedAmountMark}
                 onChange={(e) => {
                   setBedFilter(null);
@@ -258,8 +295,8 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
             <div className="filterContainer">
               <Slider
                 range
-                max={100}
-                min={10}
+                max={area}
+                min={minArea}
                 step={10}
                 marks={areaMark}
                 defaultValue={[10, 30]}
@@ -342,8 +379,8 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
                   step={10000}
                   width={0.8}
                   range
-                  min={0}
-                  max={5000000}
+                  min={minPrice}
+                  max={price}
                   marks={priceMark}
                   defaultValue={[0, 300000]}
                   onChange={(value) => {
@@ -600,7 +637,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
         showSorterTooltip={false}
         columns={columns}
         dataSource={roomTypes}
-        scroll={{ y: "60vh", x: 1000 }}
+        scroll={{ y: "60vh", x: "90vw" }}
         rowKey={(row) => row.id}
         expandable={{
           expandedRowRender: (record) => {
