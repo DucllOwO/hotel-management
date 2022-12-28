@@ -12,7 +12,6 @@ const Importing = () => {
   useEffect(() => {
     fetchRecord(user?.position)
       .then(({ data }) => {
-        console.log(data);
         setRecord(data);
       })
       .catch((err) => {
@@ -22,7 +21,12 @@ const Importing = () => {
   }, [user?.position]);
   return (
     <div className="importingContainer">
-      <ImportingTable importingRecord={record}></ImportingTable>
+      <ImportingTable
+        importingRecord={record}
+        setRecord={setRecord}
+        positionUser={user.position}
+        userID={user.account.id}
+      ></ImportingTable>
     </div>
   );
 };

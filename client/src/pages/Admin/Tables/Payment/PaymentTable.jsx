@@ -24,9 +24,10 @@ const PaymentTable = ({ payment, setPayment }) => {
   const monthFormat = "MM-YYYY";
 
   const price = Math.max(...payment.map((payment) => payment.total_cost));
+  const minPrice = Math.min(...payment.map((payment) => payment.total_cost));
 
   const priceMark = {
-    0: "0đ",
+    [minPrice]: minPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
     [price]: price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
   };
 
@@ -103,7 +104,7 @@ const PaymentTable = ({ payment, setPayment }) => {
                   width={0.8}
                   step={500000}
                   range
-                  min={0}
+                  min={minPrice}
                   max={price}
                   marks={priceMark}
                   defaultValue={[0, 1000000]}

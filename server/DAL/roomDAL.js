@@ -89,8 +89,7 @@ const getAvailableRoom = (listRoom) => {
       `
       id,
       room_name,
-      room_type_id(id,
-        name)
+      room_type_id(*)
     `
     )
     .not("room_name", "in", `(${listRoom})`)

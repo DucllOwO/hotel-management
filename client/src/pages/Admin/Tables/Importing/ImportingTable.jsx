@@ -3,29 +3,40 @@ import "../index.css";
 import dayjs from "dayjs";
 import { Table, Button, Modal, Form, Input, Slider } from "antd";
 import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
 import ImportForm from "../../../../components/Form/ImportForm";
-import { formatDate, formatterInt } from "../../../../Utils/formatter";
+import { formatDate } from "../../../../Utils/formatter";
+import { createRecord } from "../../../../api/ImportAPI";
+import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
+import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 
 const initialValue = [
   {
     id: 1,
+    item_id: "",
     name: "",
-    amount: "",
-    unitPrice: "",
-    total: "",
+    amount: 0,
+    unitPrice: 0,
+    total: 0,
   },
 ];
 
-const ImportingTable = ({ importingRecord, setRecord }) => {
-  const navigate = useNavigate();
-  const [importForm] = Form.useForm();
+const ImportingTable = ({
+  importingRecord,
+  setRecord,
+  positionUser,
+  userID,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [searchedText, setSearchedText] = useState("");
+
   const [data, setData] = useState(initialValue);
-  const [options, setOptions] = useState([]);
-  const [amountFilter, setAmountFilter] = useState(null);
+
+  const [amountError, setAmountError] = useState(null);
+
+  const [totalPrice, setTotalPrice] = useState(0);
+
   const [priceFilter, setPriceFilter] = useState(null);
+  const [amountFilter, setAmountFilter] = useState(null);
+  const [searchedText, setSearchedText] = useState("");
 
   const amountMark = {
     0: "0",
@@ -47,6 +58,17 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
     },
     {
       key: "2",
+      title: "Người lập",
+      dataIndex: "employee_id.name",
+      width: "30%",
+      align: "center",
+      render: (_, record) => {
+        // record.emloyee_id
+        return String(record.employee_id.fullname);
+      },
+    },
+    {
+      key: "3",
       title: "Ngày lập",
       filteredValue: [searchedText],
       align: "center",
@@ -78,64 +100,6 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
       sorter: (a, b) => a.established_date.localeCompare(b.established_date),
       render: (text, record) => {
         return String(formatDate(record.established_date));
-      },
-    },
-    {
-      key: "3",
-      title: "Tên sản phẩm",
-      dataIndex: "item",
-      align: "center",
-      sorter: (a, b) => a.item.localeCompare(b.item),
-    },
-    {
-      key: "4",
-      title: "Số lượng",
-      dataIndex: "amount",
-      align: "center",
-      sorter: (a, b) => a.amount - b.amount,
-      filteredValue: amountFilter !== null ? [amountFilter] : null,
-      filterDropdown: ({ clearFilters }) => {
-        return (
-          <>
-            <div className="filterContainer">
-              <Slider
-                range
-                max={200}
-                min={0}
-                marks={amountMark}
-                defaultValue={[0, 20]}
-                onChange={(e) => {
-                  setAmountFilter(null);
-                  setAmountFilter(e);
-                }}
-              />
-              <Button
-                type="primary"
-                onClick={() => {
-                  setAmountFilter(null);
-                  clearFilters({ closeDropdown: true });
-                }}
-              >
-                Reset
-              </Button>
-            </div>
-          </>
-        );
-      },
-      filterIcon: () => {
-        return <FilterOutlined />;
-      },
-      render: (value) => {
-        return `${value < 0 ? "-" : ""} ${Math.abs(value)
-          .toString()
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-      },
-      onFilter: (value, record) => {
-        if (amountFilter === null) {
-          return record.amount;
-        } else {
-          return record.amount >= value[0] && record.amount <= value[1];
-        }
       },
     },
     {
@@ -203,12 +167,43 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
     setIsModalOpen(true);
     console.log(isModalOpen);
   };
-  const handleOKModal = async () => {};
+  const handleOKModal = async () => {
+    // check amount, empty data
+    console.log(data);
+    const isDataValid = data.every(
+      (value) => value.amount > 0 && value.name !== ""
+    );
+
+    if (isDataValid) {
+      setAmountError(false);
+      createRecord(
+        positionUser,
+        { employee_id: userID, total_cost: totalPrice },
+        createPurchaseDetailArr(data)
+      )
+        .then(({ data }) => {
+          setRecord((prev) => [...prev, data]);
+          SuccessAlert("Lập phiếu nhập sản phẩm thành công.");
+          resetValue();
+        })
+        .catch((err) => {
+          console.log(err);
+          ErrorAlert("Lập phiếu nhập sản phẩm thất bại!!");
+        });
+    } else setAmountError(true);
+  };
+
+  function createPurchaseDetailArr(importData) {
+    return importData.map((value) => ({
+      item_id: value.item_id,
+      amount: value.amount,
+      unit_price: value.unitPrice,
+    }));
+  }
 
   return (
     <div className="table">
       <>{isModalOpen ? modalJSX() : null}</>
-      {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div></div>
         <div>
@@ -235,6 +230,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
         </div>
       </div>
       <Table
+        rowKey={(row) => row.id}
         showSorterTooltip={false}
         columns={columns}
         dataSource={importingRecord}
@@ -254,18 +250,24 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
         width="60%"
       >
         <ImportForm
-          form={importForm}
           data={data}
           setData={setData}
           width="100%"
+          amountError={amountError}
+          totalPrice={totalPrice}
+          setTotalPrice={setTotalPrice}
         />
       </Modal>
     );
   }
-  function handleCancelModal() {
-    importForm.resetFields();
+  function resetValue() {
     setIsModalOpen(false);
     setData(initialValue);
+    setTotalPrice(0);
+    setAmountError(null);
+  }
+  function handleCancelModal() {
+    resetValue();
   }
 };
 

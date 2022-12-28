@@ -6,23 +6,26 @@ import { PlusOutlined } from "@ant-design/icons";
 import { useEffect } from "react";
 import WarningModal from "../../WarningModal/WarningModal";
 
-const Import = ({ items, setListItem, importList, setImportList }) => {
-  // const [price, setPrice] = useState(0);
+const initialValue = [
+  {
+    id: 1,
+    item_id: "",
+    name: "",
+    amount: 0,
+    unitPrice: 0,
+    total: 0,
+  },
+];
 
-  // const [quantity, setQuantity] = useState(0);
-
-  // const [totalCost, setTotalCost] = useState(0);
-
-  // const calcTotalCost = () => {
-  //   setTotalCost(quantity * price);
-  // };
-  // useEffect(() => {
-  //   setListItem(items);
-
-  //   calcTotalCost();
-  // }, [quantity, price]);
-
+const Import = ({
+  items,
+  setListItem,
+  importList,
+  setImportList,
+  setTotalPrice,
+}) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
+
   const columns = [
     {
       key: "1",
@@ -39,22 +42,20 @@ const Import = ({ items, setListItem, importList, setImportList }) => {
       render: (text, record) => {
         return (
           <Select
-            width={200}
+            width={300}
             showSearch
+            value={text ? text : null}
             placeholder="Chọn một sản phẩm"
-            // onChange={onChangeSelect}
-            // onSearch={onSearch}
-            // filterOption={(input, option) =>
-            //   (option?.label ?? "")
-            //     .toLowerCase()
-            //     .includes(input.toLowerCase())
-            // }
-            onChange={(value) => {
-              onItemChange(value, record.id);
+            onChange={(value, option) => {
+              onItemChange(value, record.id, option);
             }}
-            options={items.map((item) => {
-              return item.option;
-            })}
+            options={
+              items.length > 0
+                ? items.map((item) => {
+                    return item?.option;
+                  })
+                : []
+            }
           />
         );
       },
@@ -62,14 +63,15 @@ const Import = ({ items, setListItem, importList, setImportList }) => {
     {
       key: "3",
       title: "Số lượng",
-      dataIndex: "quantity",
+      dataIndex: "amount",
       width: 100,
       align: "center",
-      render: (_, record) => {
+      render: (text, record) => {
         return (
           <>
             <InputNumber
               defaultValue={0}
+              value={text}
               min={0}
               onChange={(e) => {
                 onAmountChange(e, record.id);
@@ -90,7 +92,6 @@ const Import = ({ items, setListItem, importList, setImportList }) => {
           importList.forEach((element) => {
             if (element.id === record.id) temp = element.unitPrice;
           });
-          console.log(temp);
           return temp;
         };
         return (
@@ -118,7 +119,6 @@ const Import = ({ items, setListItem, importList, setImportList }) => {
           importList.forEach((element) => {
             if (element.id === record.id) temp = element.total;
           });
-          console.log(temp);
           return temp;
         };
         return (
@@ -156,7 +156,7 @@ const Import = ({ items, setListItem, importList, setImportList }) => {
 
   const onAmountChange = (e, importID) => {
     setImportList((prev) => {
-      return prev.map((importTemp, index) => {
+      const importListTemp = prev.map((importTemp, index) => {
         if (importTemp.id === importID) {
           return {
             ...importTemp,
@@ -167,44 +167,79 @@ const Import = ({ items, setListItem, importList, setImportList }) => {
         }
         return { ...importTemp, id: index + 1 };
       });
+
+      setTotalPrice(
+        importListTemp.reduce((total, value) => total + value.total, 0)
+      );
+
+      return importListTemp;
     });
   };
 
   function onDeleteButton(record) {
-    setListItem((prev) => [
-      ...prev,
-      selectedOptions.find((option) => option.option.label === record.name),
-    ]);
-
-    setImportList((prev) =>
-      prev.filter((importTemp) => importTemp.name !== record.name)
+    const itemDeleted = selectedOptions.find(
+      (option) => option.option.label === record.name
     );
-    //reset id column
+    if (itemDeleted) setListItem((prev) => [...prev, itemDeleted]);
+
     setImportList((prev) => {
-      return prev.map((importTemp, index) => {
+      const filter = prev.filter(
+        (importTemp) => importTemp.name !== record.name
+      );
+      const idSorted = filter.map((importTemp, index) => {
         return { ...importTemp, id: index + 1 };
       });
+      if (idSorted.length >= 1) {
+        setTotalPrice(
+          idSorted.reduce((total, value) => total + value.total, 0)
+        );
+        return idSorted;
+      } else return initialValue;
     });
   }
 
-  const onItemChange = (itemID, importID) => {
+  const onItemChange = (itemID, importID, optionSelect) => {
     let option = items.find((item) => item.option.value === itemID);
-    setSelectedOptions((prev) => [...prev, option]);
-    setListItem((prev) => {
-      return prev.filter((value) => {
-        if (value.option.value !== itemID) {
-          return true;
-        }
-        return false;
-      });
-    });
+    let importToCheck = importList.find(
+      (importTemp) => importTemp.id === importID
+    );
 
-    console.log(option);
+    if (importToCheck.name.length === 0) {
+      setSelectedOptions((prev) => [...prev, option]);
+      setListItem((prev) => {
+        return prev.filter((value) => {
+          if (value.option.value !== itemID) {
+            return true;
+          }
+          return false;
+        });
+      });
+    } else {
+      let prevOption = selectedOptions.find(
+        (value) => value.option.label === importToCheck.name
+      );
+      setSelectedOptions((prev) =>
+        prev.map((value) => {
+          if (value.option.label === prevOption.option.label) return option;
+          return value;
+        })
+      );
+      setListItem((prev) => {
+        return prev.map((value) => {
+          if (value.option.value === itemID) {
+            return prevOption;
+          }
+          return value;
+        });
+      });
+    }
+
     setImportList((prev) => {
       return prev.map((importTemp) => {
         if (importTemp.id === importID) {
           return {
             ...importTemp,
+            item_id: option.option.value,
             name: option.option.label,
             unitPrice: option.unitPrice,
           };
@@ -219,10 +254,11 @@ const Import = ({ items, setListItem, importList, setImportList }) => {
         ...pre,
         {
           id: pre.length + 1,
+          item_id: "",
           name: "",
-          amount: "1",
-          unitPrice: "0",
-          total: "0",
+          amount: 0,
+          unitPrice: 0,
+          total: 0,
         },
       ];
     });
@@ -232,16 +268,14 @@ const Import = ({ items, setListItem, importList, setImportList }) => {
     <div className="import">
       <div className="importContainer">
         <div>
-          <Form.Item name="duc">
-            <Table
-              size="small"
-              columns={columns}
-              dataSource={importList}
-              scroll={{ y: 350 }}
-              rowKey={(row) => row.id}
-              pagination={false}
-            ></Table>
-          </Form.Item>
+          <Table
+            size="small"
+            columns={columns}
+            dataSource={importList || initialValue}
+            scroll={{ y: 350 }}
+            rowKey={(row) => row.id}
+            pagination={false}
+          ></Table>
         </div>
         <div>
           <Button

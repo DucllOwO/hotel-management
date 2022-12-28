@@ -2,9 +2,9 @@ const bookingDAL = require("../DAL/bookingDAL");
 const roomDAL = require("../DAL/roomDAL");
 const dayjs = require("dayjs")
 const usedRoomDAL = require("../DAL/usedRoomDAL");
-const roomTypeDAL = require("../DAL/roomTypeDAL")
 const customerDAL = require("../DAL/customerDAL");
 const { BadRequestError } = require("../middlewares/errorHandler");
+const supabase = require("../database");
 
 const getBookingByStatus = async (req, res, next) => {
   const {status} = req.query;
@@ -57,6 +57,7 @@ const getBookingByStatus = async (req, res, next) => {
 
   res.status(200).send(returnArray);
 };
+
 const getRooms = async (req, res, next) => {
   const { from: from, to: to } = req.query;
 
@@ -65,7 +66,7 @@ const getRooms = async (req, res, next) => {
   const { data: booking, error: getBookingError } =
     await bookingDAL.getBookingByDate(from, to);
 
-    console.log(booking)
+  console.log(booking);
 
   if (getBookingError) return next(getBookingError);
 
@@ -74,12 +75,12 @@ const getRooms = async (req, res, next) => {
   const { data: unavailableRoomID, getAvailableRoomIDError } =
     await roomDAL.getRoomByBookingIDList(listBookingID);
 
-    console.log(unavailableRoomID)
+  console.log(unavailableRoomID);
 
   if (getAvailableRoomIDError) return next(getAvailableRoomIDError);
 
   const listRoomID = unavailableRoomID?.map((item) => item.room_id);
-  console.log(listRoomID)
+  console.log(listRoomID);
 
   const { data, error } = await roomDAL.getAvailableRoom(listRoomID);
 
@@ -107,7 +108,7 @@ const getBooking = async (req, res, next) => {
 // tao booking khong can check phong trong vi chi co status available moi co nut dat phong
 const createBooking = async (req, res, next) => {
   const { booking, rooms } = req.body;
-  console.log(rooms)
+  console.log(rooms);
 
   if (!booking || !rooms) return next(BadRequestError());
 
@@ -126,18 +127,15 @@ const createBooking = async (req, res, next) => {
     await bookingDAL.insertBooking({
       ...booking,
     });
-    
+
   if (insertBookingError) return next(insertBookingError);
-  console.log(bookingRes)
-  console.log(rooms)
+  console.log(bookingRes);
+  console.log(rooms);
   rooms.forEach(async (values) => {
-    const {data: roomRes, error: insertUsedRoomError} = await usedRoomDAL.createUsedRoom(
-      bookingRes[0]?.id,
-      values,
-  );
-      if(insertUsedRoomError) return next(insertUsedRoomError);
-})
-  
+    const { data: roomRes, error: insertUsedRoomError } =
+      await usedRoomDAL.createUsedRoom(bookingRes[0]?.id, values);
+    if (insertUsedRoomError) return next(insertUsedRoomError);
+  });
 
   // if(insertUsedRoomError)
   //   return next(insertUsedRoomError);

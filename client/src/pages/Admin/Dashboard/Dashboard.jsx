@@ -175,6 +175,7 @@ const Dashboard = () => {
               type={semiType === "income" ? "primary" : "default"}
               className="dateBtn"
               onClick={() => {
+                console.log(report);
                 setSemiType("income");
               }}
             >

@@ -60,6 +60,22 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
       ? Math.max(...roomTypes.map((roomTypes) => roomTypes.hour_price))
       : Math.max(...roomTypes.map((roomTypes) => roomTypes.one_day_price));
 
+  const minCustomer = Math.min(
+    ...roomTypes.map((roomTypes) => roomTypes.max_customers)
+  );
+  const minBedAmount = Math.min(
+    ...roomTypes.map((roomTypes) => roomTypes.bed_amount)
+  );
+  const minArea = Math.min(...roomTypes.map((roomTypes) => roomTypes.area));
+  const minPrice =
+    priceFilter === "Qua đêm"
+      ? Math.min(...roomTypes.map((roomTypes) => roomTypes.overnight_price))
+      : priceFilter === "Giờ đầu tiên"
+      ? Math.min(...roomTypes.map((roomTypes) => roomTypes.first_hour_price))
+      : priceFilter === "Giờ tiếp theo"
+      ? Math.min(...roomTypes.map((roomTypes) => roomTypes.hour_price))
+      : Math.min(...roomTypes.map((roomTypes) => roomTypes.one_day_price));
+
   const items = [
     {
       label: "Một ngày",
@@ -81,55 +97,24 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
 
   const maxCustomerMark = {
     [maxCustomer]: maxCustomer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-    1: "1",
+    [minCustomer]: minCustomer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
   };
   const bedAmountMark = {
-    1: "1",
+    [minBedAmount]: minBedAmount
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     [bedAmount]: bedAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
   };
   const areaMark = {
-    10: "10",
+    [minArea]: minArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
     [area]: area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
   };
 
   const priceMark = {
-    0: "0đ",
+    [minPrice]: minPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
     [price]: price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
   };
 
-  // const items = roomTypes.map((value, index) => {
-  //   return {
-  //     label: "" + value.name.toString(),
-  //     value: "" + value.name.toString(),
-  //   };
-  // });
-  // {
-  //   label: "Loại 1",
-  //   key: "1",
-  // },
-  // {
-  //   label: "Luxury",
-  //   key: "2",
-  // },
-  // {
-  //   label: "President",
-  //   key: "3",
-  // },
-
-  // const items = [
-  //   {
-  //     label: "Loại 1",
-  //     key: "1",
-  //   },
-  //   {
-  //     label: "Luxury",
-  //     key: "2",
-  //   },
-  //   {
-  //     label: "President",
-  //     key: "3",
-  //   },
-  // ];
   const columns = [
     {
       key: "1",
@@ -137,11 +122,14 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
       dataIndex: "id",
       width: "5%",
       align: "center",
+      fixed: "left",
+      sorter: (a, b) => a.id - b.id,
     },
     {
       key: "2",
       title: "Tên loại phòng",
       filteredValue: [searchedText],
+      sorter: (a, b) => a.name.localeCompare(b.name),
       width: "20%",
       align: "center",
       onFilter: (value, record) => {
@@ -209,7 +197,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
               <Slider
                 range
                 max={maxCustomer}
-                min={1}
+                min={minCustomer}
                 defaultValue={[1, 3]}
                 marks={maxCustomerMark}
                 onChange={(e) => {
@@ -262,7 +250,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
                 range
                 defaultValue={[1, 2]}
                 max={bedAmount}
-                min={1}
+                min={minBedAmount}
                 marks={bedAmountMark}
                 onChange={(e) => {
                   setBedFilter(null);
@@ -308,7 +296,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
               <Slider
                 range
                 max={area}
-                min={10}
+                min={minArea}
                 step={10}
                 marks={areaMark}
                 defaultValue={[10, 30]}
@@ -391,7 +379,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
                   step={10000}
                   width={0.8}
                   range
-                  min={0}
+                  min={minPrice}
                   max={price}
                   marks={priceMark}
                   defaultValue={[0, 300000]}
@@ -649,7 +637,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
         showSorterTooltip={false}
         columns={columns}
         dataSource={roomTypes}
-        scroll={{ y: "60vh", x: 1000 }}
+        scroll={{ y: "60vh", x: "90vw" }}
         rowKey={(row) => row.id}
         expandable={{
           expandedRowRender: (record) => {
