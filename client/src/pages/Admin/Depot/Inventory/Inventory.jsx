@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";
-import { fetchRoomByStatus } from "../../../../api/RoomAPI";
+import { fetchBookingByStatus } from "../../../../api/InventoryAPI";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 import { AppContext } from "../../../../context/AppContext";
 import { ItemProvider } from "../../../../context/ItemContext";
 import InventoryTable from "../../Tables/Inventory/InventoryTable";
 import "./inventory.css";
 
-const CLEANING_STATUS = 3;
+const USING_STATUS = 1;
 
 const Inventory = () => {
   const { user } = useContext(AppContext);
@@ -15,7 +15,7 @@ const Inventory = () => {
 
   useEffect(() => {
     document.title = "Checking | Parallel Shine";
-    fetchRoomByStatus(user.position, CLEANING_STATUS)
+    fetchBookingByStatus(user.position, "1")
       .then(({ data }) => {
         console.log(data);
         setRooms(data);

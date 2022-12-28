@@ -6,60 +6,68 @@ import "./detailform.css";
 import DetailRoomTable from "./Tables/DetailRoomTable";
 import DetailServiceTable from "./Tables/DetailServiceTable";
 
-const DetailForm = ({ receipt, rowIndex }) => {
+const DetailForm = ({ receipt, usedRoom, usedService }) => {
   return (
     <div>
       <div className="modal">
         <div className="left">
           <Form.Item label="Thời gian">
             <span className="formItem">
-              {receipt[rowIndex].established_date}
+              {receipt.established_date}
             </span>
           </Form.Item>
           <Form.Item label="Khách hàng">
             <span className="formItem">
-              {receipt[rowIndex].booking_id.customer_id.fullname +
+              {/* {receipt.booking_id.customer_id.fullname +
                 " | " +
-                receipt[rowIndex].booking_id.customer_id.id}
+                receipt.booking_id.customer_id.id} */}
             </span>
           </Form.Item>
         </div>
         <div className="right">
           <Form.Item label="Check-in">
-            <span className="formItem">{receipt[rowIndex].checkin_time}</span>
+            <span className="formItem">
+              {receipt.checkin_time}
+              </span>
           </Form.Item>
           <Form.Item label="Check-out">
-            <span className="formItem">{receipt[rowIndex].checkout_time}</span>
+            <span className="formItem">
+              {receipt.checkout_time}
+            </span>
           </Form.Item>
         </div>
       </div>
       <div>
-        <DetailRoomTable></DetailRoomTable>
+        <DetailRoomTable
+          dataSource={usedRoom}
+        ></DetailRoomTable>
       </div>
       <div>
-        <DetailServiceTable></DetailServiceTable>
+        <DetailServiceTable
+          dataSource={usedService}
+        ></DetailServiceTable>
       </div>
       <hr />
       <Row justify={"end"}>
         <Col span={12}>
           <div className="noteTitle">Ghi chú</div>
           <div>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
+            {receipt?.note}
           </div>
         </Col>
         <Col span={7}>
           <div className="itemListContainer">
-            <div className="itemList">Tổng tiền phòng</div>
+            <div className="itemList">Tổng tiền phòng: </div>
             <div className="itemList">Tổng tiền dịch vụ</div>
             <div className="itemList">Phụ thu</div>
             <div className="totalTitle">Tổng cộng</div>
           </div>
         </Col>
         <Col span={5}>
-          <div className="priceList">200.000đ</div>
-          <div className="priceList">200.000đ</div>
-          <div className="priceList">200.000đ</div>
-          <div className="totalText">10.000.000đ</div>
+          <div className="priceList">{receipt.rent_cost}</div>
+          <div className="priceList">{receipt.service_cost}</div>
+          <div className="priceList">{receipt.surcharge ?  receipt.surcharge : "0"}</div>
+          <div className="totalText">{receipt.total_cost}</div>
         </Col>
       </Row>
       {/* <Row justify={"end"}>
