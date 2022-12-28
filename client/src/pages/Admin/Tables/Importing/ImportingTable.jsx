@@ -203,7 +203,9 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
     setIsModalOpen(true);
     console.log(isModalOpen);
   };
-  const handleOKModal = async () => {};
+  const handleOKModal = async () => {
+    console.log(data);
+  };
 
   return (
     <div className="table">
