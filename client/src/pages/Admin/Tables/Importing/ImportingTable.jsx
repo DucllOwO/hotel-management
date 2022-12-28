@@ -203,25 +203,7 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
     setIsModalOpen(true);
     console.log(isModalOpen);
   };
-  const handleOKModal = async () => {
-    // const newImport = {
-    //   item_id: importForm.getFieldValue("item"),
-    //   amount: importForm.getFieldValue("quantity"),
-    //   established_date: dayjs(Date.now()).$d,
-    //   price: importForm.getFieldValue("price"),
-    //   total_cost: importForm.getFieldValue("total_cost"),
-    //   // employee_id:
-    // };
-    // console.log(newImport);
-    // importForm
-    //   .validateFields()
-    //   .then((values) => {
-    //     console.log(values);
-    //   })
-    //   .catch((err) => console.log(err));
-    console.log(data);
-    setData(initialValue);
-  };
+  const handleOKModal = async () => {};
 
   return (
     <div className="table">
