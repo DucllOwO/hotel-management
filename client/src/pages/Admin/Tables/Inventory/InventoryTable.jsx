@@ -252,17 +252,22 @@ const InventoryTable = ({ rooms, user }) => {
               record_id: value.data[0].id
             }
             createInventoryDetail(user?.position, newDetail).then(() => {
-              SuccessAlert("Kiểm phòng hoàn tất");
+              
             }).catch((error) => {
               ErrorAlert("Đã xảy ra lỗi");
               throw error;
             })
-          })
+          });
+          SuccessAlert("Kiểm phòng hoàn tất");
+        }).catch((error)=> {
+          ErrorAlert("Đã xảy ra lỗi");
+          throw error;
         })
       }
     );
-    const usedItem = form.getFieldValue("table");
-    console.log(usedItem);
+    setIsModalVisible(false);
+    form.resetFields();
+    setRecord([]);
   }
   function handleCancelModal() {
     setIsModalVisible(false);
