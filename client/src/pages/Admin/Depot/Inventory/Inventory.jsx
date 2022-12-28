@@ -15,7 +15,7 @@ const Inventory = () => {
 
   useEffect(() => {
     document.title = "Checking | Parallel Shine";
-    fetchRoomByStatus(user.position, CLEANING_STATUS)
+    fetchBookingByStatus(user.position, "1")
       .then(({ data }) => {
         console.log(data);
         setRooms(data);
