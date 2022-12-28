@@ -241,9 +241,12 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
       setUsedRoom(data.data);
     })
 
+    
     const rentCost = usedRoom.map((value) => {
-      // if(selectedBooking.book_from.diff(selectedBooking.book_to, "hour") < 6 && dayjs(selectedBooking.book_from) >9 )
-
+      if(selectedBooking.book_from.diff(selectedBooking.book_to, "hour") < 6 && dayjs(selectedBooking.book_from).hour() >9 )
+      {
+        
+      }
     })
 
     infoForm.validateFields().then( async (data) => {
