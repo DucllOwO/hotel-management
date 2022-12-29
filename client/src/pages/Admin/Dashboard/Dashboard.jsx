@@ -136,10 +136,11 @@ const Dashboard = () => {
           <Row gutter={16}>
             <Col span={8}>
               <Card title="Tổng doanh thu">
+                {console.log(report[0])}
                 {
                   <div className="sumaryDetail income">
-                    {report[0]
-                      ? report[0]?.income.toLocaleString("en-US") + " đ"
+                    {report[0]?.income
+                      ? report[0]?.income?.toLocaleString() + " đ"
                       : 0 + " đ"}
                   </div>
                 }
@@ -149,7 +150,7 @@ const Dashboard = () => {
               <Card title="Tổng chi phí">
                 {
                   <div className="sumaryDetail payment">
-                    {report[0]
+                    {report[0]?.outcome
                       ? report[0]?.outcome.toLocaleString("en-US") + " đ"
                       : 0 + " đ"}
                   </div>
@@ -160,7 +161,7 @@ const Dashboard = () => {
               <Card title="Tổng lợi nhuận">
                 {
                   <div className="sumaryDetail benifit">
-                    {report[0]
+                    {report[0]?.profit
                       ? report[0]?.profit.toLocaleString("en-US") + " đ"
                       : 0 + " đ"}
                   </div>
