@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
-import { userRequest } from "../../../../api/api";
 import { AppContext } from "../../../../context/AppContext";
-import ReceiptTable from "../../Tables/Receipt/Receipt";
+import ReceiptTable from "../../Tables/Receipt/ReceiptTable";
 import "./receipt.css";
 import dayjs from "dayjs";
 import {
@@ -10,7 +9,6 @@ import {
   getYearReceipt,
 } from "../../../../api/receiptAPI";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
-import { getMonth, getYear } from "../../../../Utils/helpers";
 
 const DATE_FORMAT = "DD-MM-YYYY";
 
@@ -68,6 +66,7 @@ const Receipt = () => {
         receipt={receipt}
         type={type}
         setType={setType}
+        positionUser={user.position}
       ></ReceiptTable>
     </div>
   );

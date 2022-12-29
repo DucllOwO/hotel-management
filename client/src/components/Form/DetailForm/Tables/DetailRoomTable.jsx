@@ -1,63 +1,24 @@
 import React, { useState } from "react";
 import { Table } from "antd";
+import DetailServiceTable from "./DetailServiceTable";
 
-const DetailRoomTable = ({dataSource}) => {
-  //   const [dataSource, setDataSource] = useState();
-
-  // const dataSource = [
-  //   {
-  //     no: "1",
-  //     roomID: "Room01",
-  //     roomType: "President",
-  //     area: "200",
-  //     price: "2000000",
-  //   },
-  //   {
-  //     no: "1",
-  //     roomID: "Room01",
-  //     roomType: "President",
-  //     area: "200",
-  //     price: "2000000",
-  //   },
-  //   {
-  //     no: "1",
-  //     roomID: "Room01",
-  //     roomType: "President",
-  //     area: "200",
-  //     price: "2000000",
-  //   },
-  //   {
-  //     no: "1",
-  //     roomID: "Room01",
-  //     roomType: "President",
-  //     area: "200",
-  //     price: "2000000",
-  //   },
-  //   {
-  //     no: "1",
-  //     roomID: "Room01",
-  //     roomType: "President",
-  //     area: "200",
-  //     price: "2000000",
-  //   },
-  // ];
-
+const DetailRoomTable = ({ dataSource }) => {
   const columns = [
-    {
-      key: "1",
-      title: "STT",
-      align: "center",
-      render: (text, record) => {
-        return String(record.no);
-      },
-    },
+    // {
+    //   key: "1",
+    //   title: "STT",
+    //   align: "center",
+    //   render: (text, record) => {
+    //     return String(record.room_id);
+    //   },
+    // },
     {
       key: "2",
-      title: "Số Phòng",
+      title: "Tên Phòng",
       dataIndex: "room_name",
       align: "center",
       render: (text, record) => {
-        return record.room_name ? String(record.room_name) : "";
+        return String(record.roomInfo.room_name);
       },
     },
     {
@@ -66,27 +27,16 @@ const DetailRoomTable = ({dataSource}) => {
       dataIndex: "room_type",
       align: "center",
       render: (text, record) => {
-        return record.room_type ? String(record.room_type) : "";
+        return String(record.roomInfo.room_type_id.name);
       },
     },
     {
       key: "4",
-      title: "Diện tích (m2)",
-      dataIndex: "area",
-      align: "center",
-      render: (text, record) => {
-        return record.area ? String(record.area) : "";
-      },
-    },
-    {
-      key: "5",
       title: "Giá",
       dataIndex: "price",
       align: "center",
-      render: (value) => {
-        return `${value < 0 ? "-" : ""} ${Math.abs(value)
-          .toString()
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+      render: (value, record) => {
+        return String(record.roomInfo.price.toLocaleString());
       },
     },
   ];
@@ -98,8 +48,22 @@ const DetailRoomTable = ({dataSource}) => {
         columns={columns}
         dataSource={dataSource}
         style={{ width: "100%" }}
-        scroll={{ y: 150 }}
-        rowKey={(row) => row.no}
+        scroll={{ y: "100%" }}
+        rowKey={(row) => {
+          return row.room_id;
+        }}
+        expandable={{
+          expandedRowRender: (record) => {
+            return (
+              <DetailServiceTable
+                dataSource={
+                  record?.inventory_detail ? record?.inventory_detail : []
+                }
+              ></DetailServiceTable>
+            );
+          },
+        }}
+        bordered={true}
       ></Table>
     </div>
   );

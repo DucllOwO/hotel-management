@@ -15,10 +15,11 @@ const getUsedRoomByBookingID = (bookingID) => {
     .select(
       `
         id,
+        price,
+        booking_id,
         room_id (
           id, 
           room_name,
-          price,
           room_type_id (
             id,
             name

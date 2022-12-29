@@ -57,7 +57,7 @@ app.use("/api/importing", importingsRoutes);
 app.use("/api/features", featuresRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/receipts", receiptRoutes);
-app.use("api/used_room", usedRoomRoute);
+app.use("/api/used_room", usedRoomRoute);
 app.use("/api/has_room_features", hasRoomFeatureRoutes);
 
 app.use("*", handle404Error);

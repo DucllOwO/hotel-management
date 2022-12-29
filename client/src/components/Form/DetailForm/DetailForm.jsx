@@ -7,16 +7,64 @@ import DetailRoomTable from "./Tables/DetailRoomTable";
 import DetailServiceTable from "./Tables/DetailServiceTable";
 import dayjs from "dayjs";
 import { useEffect } from "react";
+import { getUsedRoomByBookingID } from "../../../api/UsedRoomAPI";
+import { fetchInventoryDetailByBookingID } from "../../../api/InventoryAPI";
+import ErrorAlert from "../../Error/Alert/ErrorAlert";
 
 const DATE_FORMAT = "HH:mm, DD-MM-YYYY";
 
-const DetailForm = ({ receipt }) => {
+const DetailForm = ({ receipt, positionUser }) => {
   const [usedRooms, setUsedRoom] = useState([]);
-  const [itemsUsed, setItemUsed] = useState([]);
 
   useEffect(() => {
     // GET UESD_ROom
+    const usedRoomRes = getUsedRoomByBookingID(
+      positionUser,
+      receipt.booking_id.id
+    );
     // GET INVETORY_RECORD
+    const inventoryDetailRes = fetchInventoryDetailByBookingID(
+      positionUser,
+      receipt.booking_id.id
+    );
+
+    Promise.all([usedRoomRes, inventoryDetailRes])
+      .then((res) => {
+        const usedRooms = res[0].data;
+        const inventoryDetail = res[1].data;
+
+        const usedRoomTemp = usedRooms.map((usedRoom) => {
+          const invenDetailTemp = inventoryDetail.find(
+            (value) => value.room_id === usedRoom.room_id.id
+          );
+
+          if (invenDetailTemp) {
+            return {
+              ...invenDetailTemp,
+              roomInfo: {
+                ...usedRoom.room_id,
+                price: usedRoom.price,
+              },
+            };
+          } else {
+            return {
+              room_id: usedRoom.room_id.id,
+              roomInfo: {
+                ...usedRoom.room_id,
+                price: usedRoom.price,
+              },
+            };
+          }
+        });
+
+        setUsedRoom(usedRoomTemp);
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert(
+          "Lấy dữ liệu phòng và sản phẩm sử dụng của hóa đơn thất bại!!"
+        );
+      });
   }, []);
 
   return (
@@ -39,25 +87,26 @@ const DetailForm = ({ receipt }) => {
         <div className="right">
           <Form.Item label="Check-in">
             <span className="formItem">
-              {dayjs(convertToValidDateString(receipt?.checkin_time)).format(
-                DATE_FORMAT
-              )}
+              {receipt?.checkin_time
+                ? dayjs(convertToValidDateString(receipt?.checkin_time)).format(
+                    DATE_FORMAT
+                  )
+                : ""}
             </span>
           </Form.Item>
           <Form.Item label="Check-out">
             <span className="formItem">
-              {dayjs(convertToValidDateString(receipt?.checkout_time)).format(
-                DATE_FORMAT
-              )}
+              {receipt?.checkout_time
+                ? dayjs(
+                    convertToValidDateString(receipt?.checkout_time)
+                  ).format(DATE_FORMAT)
+                : ""}
             </span>
           </Form.Item>
         </div>
       </div>
       <div>
         <DetailRoomTable dataSource={usedRooms}></DetailRoomTable>
-      </div>
-      <div>
-        <DetailServiceTable dataSource={itemsUsed}></DetailServiceTable>
       </div>
       <hr />
       <Row justify={"end"}>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "antd";
 
-const DetailServiceTable = ({dataSource}) => {
+const DetailServiceTable = ({ dataSource }) => {
   // const dataSource = [
   //   {
   //     no: "1",
@@ -41,22 +41,22 @@ const DetailServiceTable = ({dataSource}) => {
   // ];
 
   const columns = [
-    {
-      key: "1",
-      title: "STT",
-      dataIndex: "No",
-      align: "center",
-      render: (text, record) => {
-        return String(record.no);
-      },
-    },
+    // {
+    //   key: "1",
+    //   title: "STT",
+    //   dataIndex: "No",
+    //   align: "center",
+    //   render: (text, record) => {
+    //     return String(record.item_id.id);
+    //   },
+    // },
     {
       key: "2",
       title: "Tên dịch vụ",
       dataIndex: "item_name",
       align: "center",
       render: (text, record) => {
-        return record.item_name ? String(record.item_name) : "";
+        return record.item_id.name ? String(record.item_id.name) : "";
       },
     },
     {
@@ -65,7 +65,7 @@ const DetailServiceTable = ({dataSource}) => {
       dataIndex: "amount",
       align: "center",
       render: (text, record) => {
-        return record.amount ? String(record.amount) : "";
+        return record.amount ? String(record.amount.toLocaleString()) : "";
       },
     },
     {
@@ -74,7 +74,7 @@ const DetailServiceTable = ({dataSource}) => {
       dataIndex: "price",
       align: "center",
       render: (text, record) => {
-        return record.price ? String(record.price) : "";
+        return record.price ? String(record.price.toLocaleString()) : "";
       },
     },
     {
@@ -83,7 +83,7 @@ const DetailServiceTable = ({dataSource}) => {
       dataIndex: "total_cost",
       align: "center",
       render: (text, record) => {
-        return record.total_cost ? String(record.total_cost) : "";
+        return (record.price * record.amount).toLocaleString();
       },
     },
   ];
@@ -96,7 +96,8 @@ const DetailServiceTable = ({dataSource}) => {
         dataSource={dataSource}
         style={{ width: "100%" }}
         scroll={{ y: 150 }}
-        rowKey={(row) => row.no}
+        rowKey={(row) => row}
+        bordered={true}
       ></Table>
     </div>
   );

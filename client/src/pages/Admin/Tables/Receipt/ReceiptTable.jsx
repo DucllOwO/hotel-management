@@ -19,7 +19,14 @@ import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteB
 import { formatDate, formatterInt } from "../../../../Utils/formatter";
 import { useEffect } from "react";
 
-const ReceiptTable = ({ setTime, receipt, setReceipt, type, setType }) => {
+const ReceiptTable = ({
+  setTime,
+  receipt,
+  setReceipt,
+  type,
+  setType,
+  positionUser,
+}) => {
   useEffect(() => {
     document.title = "Receipt | Parallel Shine";
   });
@@ -316,7 +323,11 @@ const ReceiptTable = ({ setTime, receipt, setReceipt, type, setType }) => {
         footer={null}
         width="60%"
       >
-        <DetailForm receipt={record} rowIndex={record.id}></DetailForm>
+        <DetailForm
+          receipt={record}
+          rowIndex={record.id}
+          positionUser={positionUser}
+        ></DetailForm>
       </Modal>
     );
   }
