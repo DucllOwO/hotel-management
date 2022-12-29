@@ -6,6 +6,12 @@ const createUsedRoom = (bookingID, roomNames) => {
   return supabase.from("used_room").insert({
     booking_id: bookingID,
     room_id: roomNames.id,
+    price: {
+      first_hour_price: roomNames.room_type_id.first_hour_price,
+      hour_price: roomNames.room_type_id.hour_price,
+      one_day_price: roomNames.room_type_id.one_day_price,
+      overnight_price: roomNames.room_type_id.overnight_price,
+    },
   });
 };
 

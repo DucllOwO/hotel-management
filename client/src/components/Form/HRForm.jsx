@@ -156,22 +156,6 @@ const HRForm = ({
           >
             <Input size="large" />
           </Form.Item>
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập email!",
-              },
-              {
-                type: "email",
-                message: "Email không đúng định dạng",
-              },
-            ]}
-          >
-            <Input size="large" />
-          </Form.Item>
         </div>
         <div className="right" style={{ marginLeft: "10%", width: "30vw" }}>
           <Form.Item
