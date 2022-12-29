@@ -13,7 +13,6 @@ import {
 import "./bookingListtable.css";
 import dayjs from "dayjs";
 import BookingListExpand from "../../../../../components/ExpandedTable/BookingListExpand";
-import { FilterOutlined } from "@ant-design/icons";
 import ErrorAlert from "../../../../../components/Error/Alert/ErrorAlert";
 import SuccessAlert from "../../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import {
@@ -24,16 +23,15 @@ import {
 } from "../../../../../api/BookingListAPI";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { fetchBookingByStatus } from "../../../../../api/BookingListAPI";
 import DetailForm from "../../../../../components/Form/DetailForm/DetailForm";
 import CheckButton from "../../../../../components/IconButton/CheckButton/CheckButton";
 import CancelButton from "../../../../../components/IconButton/CancelButton/CancelButton";
 import { useContext } from "react";
 import { AppContext } from "../../../../../context/AppContext";
-import { useEffect } from "react";
 import BookingListForm from "../../../../../components/Form/BookingListForm";
-import { useForm } from "antd/es/form/Form";
 import { fetchEmployeeByUsername } from "../../../../../api/EmployeeAPI";
+
+const DATE_FORMAT = "HH:mm, DD-MM-YYYY";
 
 const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
   const [editingRow, setEditingRow] = useState(null);
@@ -150,6 +148,9 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
       width: "20%",
       align: "center",
       sorter: (a, b) => a.book_from.localeCompare(b.book_from),
+      render: (text, record) => {
+        return dayjs(convertToValidDateString(text)).format(DATE_FORMAT);
+      },
     },
     {
       key: "4",
@@ -158,6 +159,9 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
       width: "20%",
       align: "center",
       sorter: (a, b) => a.book_to.localeCompare(b.book_to),
+      render: (text, record) => {
+        return dayjs(convertToValidDateString(text)).format(DATE_FORMAT);
+      },
     },
     {
       key: "5",
@@ -292,10 +296,12 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
     //Fetch employee information
     let serviceCost = 0;
     let rentCost = 0;
+    let tempEmployee;
     await fetchEmployeeByUsername(user?.position, user?.account.username)
       .then((data) => {
         setCurrentEmployee(data.data);
         console.log(data.data);
+        tempEmployee = JSON.parse(JSON.stringify(data.data));
       })
       .catch(() => {
         ErrorAlert("Lấy dữ liệu nhân viên không thành công");
@@ -343,9 +349,13 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
     // calculate rent cost
     console.log(serviceCost);
     console.log(rentCost);
-    await createReceiptFunc(rentCost, serviceCost);
+    await createReceiptFunc(rentCost, serviceCost, tempEmployee);
   };
-  const createReceiptFunc = async (rentCost, serviceCost) => {
+  const createReceiptFunc = async (
+    rentCost,
+    serviceCost,
+    currentEmployeeTemp
+  ) => {
     let totalCost = rentCost + serviceCost;
     infoForm
       .validateFields()
@@ -365,7 +375,7 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
           user?.position,
           newReceipt,
           selectedBooking,
-          currentEmployee
+          currentEmployeeTemp
         )
           .then((data) => {
             setReceipt(data.data[0]);
@@ -733,8 +743,7 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
       <Modal
         title="Hoá đơn"
         open={true}
-        okText="In hoá đơn"
-        cancelText="Hủy"
+        footer={null}
         onOk={handleCancelModal}
         onCancel={handleCancelModal}
         width="40%"
@@ -833,6 +842,10 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
       ></Table>
     </div>
   );
+
+  function convertToValidDateString(date) {
+    return date.replace("T", " ");
+  }
 };
 
 export default BookingListTable;

@@ -36,6 +36,7 @@ const DetailRoomTable = ({ dataSource }) => {
       dataIndex: "price",
       align: "center",
       render: (value, record) => {
+        console.log(record);
         return String(record.roomInfo.price.toLocaleString());
       },
     },

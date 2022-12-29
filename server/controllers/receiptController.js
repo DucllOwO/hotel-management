@@ -50,11 +50,11 @@ const createReceipt = async (req, res, next) => {
 
   const { data: newReceipt, error: insertReceiptError } =
     await receiptDAL.createReceipt({
+      ...receipt,
       employee_id: employee?.id,
       booking_id: booking?.id,
       employee_name: employee?.name,
       checkin_time: booking?.checkin_time,
-      ...receipt,
     });
 
   if (insertReceiptError) return next(insertReceiptError);

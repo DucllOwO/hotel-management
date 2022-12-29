@@ -117,7 +117,31 @@ const getReceiptByYear = (firstDay, lastDay) => {
 };
 
 const createReceipt = async (receipt) => {
-  const { data, error } = await supabase.from(TABLE_NAME).insert(receipt);
+  const { data, error } = await supabase
+    .from(TABLE_NAME)
+    .insert(receipt)
+    .select(
+      `
+    id,
+    established_date,
+    payment_method,
+    checkin_time,
+    checkout_time,
+    service_cost,
+    rent_cost,
+    surcharge,
+    total_cost,
+    note,
+    booking_id (
+      id,
+      customer_id (
+        id, 
+        fullname
+      )
+    ),
+    employee_name
+    `
+    );
   return { data, error };
 };
 

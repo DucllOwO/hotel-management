@@ -25,11 +25,6 @@ router.post(
   hasPermission(actionAC.CREATE, resourceAC.INVENTORY),
   tryCatch(createDetail)
 );
-router.get(
-  "/record",
-  authorizeAccessToken,
-  hasPermission(actionAC.GET, resourceAC.INVENTORY),
-  tryCatch(getRecordByBookingID)
-);
+router.get("/record", authorizeAccessToken, tryCatch(getRecordByBookingID));
 
 module.exports = router;

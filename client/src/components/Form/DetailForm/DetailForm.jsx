@@ -4,7 +4,6 @@ import Column from "antd/es/table/Column";
 import React, { useState } from "react";
 import "./detailform.css";
 import DetailRoomTable from "./Tables/DetailRoomTable";
-import DetailServiceTable from "./Tables/DetailServiceTable";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import { getUsedRoomByBookingID } from "../../../api/UsedRoomAPI";
@@ -14,15 +13,15 @@ import ErrorAlert from "../../Error/Alert/ErrorAlert";
 const DATE_FORMAT = "HH:mm, DD-MM-YYYY";
 
 const DetailForm = ({ receipt, positionUser }) => {
+  console.log(receipt);
   const [usedRooms, setUsedRoom] = useState([]);
 
   useEffect(() => {
-    // GET UESD_ROom
     const usedRoomRes = getUsedRoomByBookingID(
       positionUser,
       receipt.booking_id.id
     );
-    // GET INVETORY_RECORD
+
     const inventoryDetailRes = fetchInventoryDetailByBookingID(
       positionUser,
       receipt.booking_id.id
