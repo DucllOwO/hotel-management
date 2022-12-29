@@ -10,18 +10,8 @@ const { actionAC, resourceAC } = require("../utils/constants");
 const { route } = require("./bookingsRoutes");
 const router = require("express").Router();
 
-router.get(
-  "/",
-  authorizeAccessToken,
-  hasPermission(actionAC.GET, resourceAC.PAYMENT),
-  tryCatch(getAllPayment)
-);
-router.get(
-  "/:id",
-  authorizeAccessToken,
-  hasPermission(actionAC.GET, resourceAC.PAYMENT),
-  tryCatch(getByID)
-);
+router.get("/", authorizeAccessToken, tryCatch(getAllPayment));
+router.get("/:id", authorizeAccessToken, tryCatch(getByID));
 router.post(
   "/",
   authorizeAccessToken,

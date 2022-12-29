@@ -10,24 +10,9 @@ const { hasPermission } = require("../middlewares/roleAccessControl");
 const { actionAC, resourceAC } = require("../utils/constants");
 const router = require("express").Router();
 
-router.get(
-  "/daily_report",
-  authorizeAccessToken,
-  hasPermission(actionAC.GET, resourceAC.DAILYREPORT),
-  tryCatch(getDailyReport)
-);
+router.get("/daily_report", authorizeAccessToken, tryCatch(getDailyReport));
 
-router.get(
-  "/monthly_report",
-  authorizeAccessToken,
-  hasPermission(actionAC.GET, resourceAC.MONTHLYREPORT),
-  tryCatch(getMonthlyReport)
-);
-router.get(
-  "/yearly_report",
-  authorizeAccessToken,
-  hasPermission(actionAC.GET, resourceAC.YEARLYREPORT),
-  tryCatch(getYearlyReport)
-);
+router.get("/monthly_report", authorizeAccessToken, tryCatch(getMonthlyReport));
+router.get("/yearly_report", authorizeAccessToken, tryCatch(getYearlyReport));
 
 module.exports = router;

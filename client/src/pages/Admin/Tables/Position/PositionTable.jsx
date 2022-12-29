@@ -209,7 +209,7 @@ const PositionTable = ({ positions, setPositions }) => {
           <>
             <div className="btnWrap">
               <EditButton
-                openModalEdit={() => {
+                onEditButton={() => {
                   setModal("edit");
                   form.setFieldValue("posName", record.name);
                   setCurrentPosition(record);
@@ -228,8 +228,8 @@ const PositionTable = ({ positions, setPositions }) => {
   return (
     <div className="table">
       <>
-        {modal === "add" && modalAddPosition()}
-        {modal === "edit" && modalEditPosition(currentPosition)}
+        {modal === "add" ? modalAddPosition() : null}
+        {modal === "edit" ? modalEditPosition(currentPosition) : null}
       </>
       <div className="buttonContainer">
         <div></div>
