@@ -231,12 +231,6 @@ const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
                 Đang sử dụng
               </Tag>
             );
-          case "2":
-            return (
-              <Tag color="processing" style={{ fontSize: 14 }}>
-                Đang dọn dẹp
-              </Tag>
-            );
           default:
             return (
               <Tag style={{ fontSize: 14 }} color="#8A2BE2">

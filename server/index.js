@@ -43,7 +43,6 @@ initAccessControl();
 
 app.use("/api/auth", authRoute);
 app.use("/api/bookings", bookingsRoutes);
-app.use("/api/vouchers", vouchersRoutes);
 app.use("/api/rooms", roomsRoutes);
 app.use("/api/room_features", roomFeaturesRoutes);
 app.use("/api/accounts", accountsRoutes);

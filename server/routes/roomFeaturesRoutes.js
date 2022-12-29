@@ -12,19 +12,9 @@ const { actionAC, resourceAC } = require("../utils/constants");
 const { tryCatch } = require("../middlewares/errorHandler");
 const router = require("express").Router();
 
-router.get(
-  "/",
-  authorizeAccessToken,
-  hasPermission(actionAC.GET, resourceAC.ROOM_FEATURE),
-  tryCatch(getAllRoomFeatures)
-);
+router.get("/", authorizeAccessToken, tryCatch(getAllRoomFeatures));
 
-router.get(
-  "/:id",
-  authorizeAccessToken,
-  hasPermission(actionAC.GET, resourceAC.ROOM_FEATURE),
-  tryCatch(getRoomFeature)
-);
+router.get("/:id", authorizeAccessToken, tryCatch(getRoomFeature));
 
 router.post(
   "/",

@@ -12,19 +12,9 @@ const { actionAC, resourceAC } = require("../utils/constants");
 const { tryCatch } = require("../middlewares/errorHandler");
 const router = require("express").Router();
 
-router.get(
-  "/",
-  authorizeAccessToken,
-  hasPermission(actionAC.GET, resourceAC.ACCOUNT),
-  tryCatch(getAllAccounts)
-);
+router.get("/", authorizeAccessToken, tryCatch(getAllAccounts));
 
-router.get(
-  "/:username",
-  authorizeAccessToken,
-  hasPermission(actionAC.GET, resourceAC.ACCOUNT),
-  tryCatch(getAccount)
-);
+router.get("/:username", authorizeAccessToken, tryCatch(getAccount));
 
 router.post(
   "/",

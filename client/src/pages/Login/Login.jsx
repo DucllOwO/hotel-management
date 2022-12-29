@@ -105,7 +105,12 @@ const Login = () => {
 
   async function login(e) {
     e.preventDefault();
-    if (!isLoading) {
+    if (isLoading === false) {
+      if (!username || !password) {
+        ErrorAlert("Vui lòng nhập đầy đủ thông tin");
+        return;
+      }
+
       setIsLoading(true);
       loginAPI(username.trim(), password.trim())
         .then(({ data }) => {
@@ -132,10 +137,10 @@ const Login = () => {
           }
         })
         .catch((err) => {
-          setIsLoading(false);
           console.log(err);
           ErrorAlert("Đăng nhập không thành công!!");
-        });
+        })
+        .finally(() => setIsLoading(false));
     }
   }
 };
