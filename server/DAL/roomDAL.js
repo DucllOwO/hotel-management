@@ -64,7 +64,8 @@ const getRoomByBookingID = (bookingID) => {
     .from("used_room")
     .select(
       `
-      room_id(room_name, room_type_id)
+      room_id(room_name, room_type_id),
+      price
     `
     )
     .eq("booking_id", bookingID)

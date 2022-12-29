@@ -470,7 +470,7 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
         {
           console.log("giá đêm")
           //night ontime
-          if(dayjs(selectedBooking.checkin_time).hour() >= 21)
+          if(dayjs(selectedBooking.checkin_time).hour() >= 21 && dayjs(selectedBooking.checkin_time).hour() < 2)
           {
             console.log("đêm sau checkin đúng")
             //night checkout ontime
@@ -522,7 +522,9 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
             if(dayjs(Date.now()).hour() <12)
             {
               console.log("đêm trả phòng đúng")
-              const price = (21 - dayjs(selectedBooking.checkin_time).hour()) * value.hour_price +  Math.round(dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day")) * value.overnight_price;
+              console.log(dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day"));
+              console.log(dayjs(selectedBooking.checkin_time).hour());
+              const price = (21 - dayjs(selectedBooking.checkin_time).hour()) * value.hour_price +  dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "day") * value.overnight_price;
               return {
                 room_name: value.room_name,
                 room_type: value.room_type,
