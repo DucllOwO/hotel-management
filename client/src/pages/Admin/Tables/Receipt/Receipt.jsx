@@ -19,11 +19,10 @@ import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteB
 import { formatDate, formatterInt } from "../../../../Utils/formatter";
 import { useEffect } from "react";
 
-const ReceiptTable = ({ receipt, setReceipt }) => {
+const ReceiptTable = ({ setTime, receipt, setReceipt, type, setType }) => {
   useEffect(() => {
     document.title = "Receipt | Parallel Shine";
   });
-  const [type, setType] = useState("day");
 
   const [editingRow, setEditingRow] = useState(null);
 
@@ -222,62 +221,10 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
       },
     },
   ];
-
-  const onChange = (date, dateString) => {
-    console.log(date, dateString);
-  };
-
-  const onDeleteButton = (record) => {
-    Modal.confirm({
-      title: "Bạn có chắc muốn xoá dữ liệu?",
-      okText: "Yes",
-      okType: "danger",
-      onOk: () => {
-        setReceipt((pre) => {
-          return pre.filter((data) => data.idNum !== record.idNum);
-        });
-      },
-    });
-  };
-
-  const onFinish = (values) => {
-    console.log(editingRow);
-    const updateDataSource = [...receipt];
-    updateDataSource.splice(editingRow - 1, 1, {
-      ...values,
-      idNum: editingRow,
-    });
-    console.log(updateDataSource);
-    setReceipt(updateDataSource);
-    setEditingRow(null);
-  };
-
-  const handleOKModal = () => {
-    setModal(null);
-  };
-
-  const handleCancelModal = () => {
-    setModal(null);
-  };
-
-  const ModalDetail = () => {
-    return (
-      <Modal
-        title={"#" + receipt[modal].id}
-        open={true}
-        onOk={handleOKModal}
-        onCancel={handleCancelModal}
-        width="60%"
-      >
-        <DetailForm receipt={receipt} rowIndex={modal}></DetailForm>
-      </Modal>
-    );
-  };
-
   return (
     <div className="table">
       {modal !== null && ModalDetail(modal)}
-      {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
+
       <div className="buttonContainer">
         <div>
           <Button
@@ -314,7 +261,7 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
             {type === "day" && (
               <DatePicker
                 onChange={onChange}
-                defaultValue={moment()}
+                defaultValue={dayjs(Date.now())}
                 picker="date"
                 format={dateFormat}
               ></DatePicker>
@@ -342,9 +289,8 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
         onRow={(record, rowIndex) => {
           return {
             onClick: (event) => {
-              // ModalDetail(rowIndex);
-              setModal(rowIndex);
-            }, // click row
+              setModal(record);
+            },
           };
         }}
         showSorterTooltip={false}
@@ -354,6 +300,26 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
       ></Table>
     </div>
   );
+  function onChange(date, dateString) {
+    setTime(dayjs(date));
+  }
+
+  function onCancel() {
+    setModal(null);
+  }
+  function ModalDetail(record) {
+    return (
+      <Modal
+        title={"#" + record.id}
+        open={true}
+        onCancel={onCancel}
+        footer={null}
+        width="60%"
+      >
+        <DetailForm receipt={record} rowIndex={record.id}></DetailForm>
+      </Modal>
+    );
+  }
 };
 
 export default ReceiptTable;

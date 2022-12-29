@@ -166,18 +166,6 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
         <Input size="large" disabled={disable} type="tel" maxLength={10} />
       </Form.Item>
       <Form.Item
-        label="Email"
-        name="email"
-        rules={[
-          {
-            type: "email",
-            message: "Vui lòng nhập đúng định dạng email",
-          },
-        ]}
-      >
-        <Input size="large" disabled={disable} />
-      </Form.Item>
-      <Form.Item
         label="Chọn ngày sinh"
         name="date_of_birth"
         rules={[

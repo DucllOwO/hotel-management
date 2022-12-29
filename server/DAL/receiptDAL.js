@@ -2,11 +2,9 @@ const supabase = require("../database");
 
 const TABLE_NAME = "invoice";
 
-const getAllReceipt = (from, to) => {
-  return supabase
-    .from(TABLE_NAME)
-    .select(
-      `
+const getAllReceipt = () => {
+  return supabase.from(TABLE_NAME).select(
+    `
       id,
       established_date,
       payment_method,
@@ -23,10 +21,99 @@ const getAllReceipt = (from, to) => {
       employee_id (),
       employee_name
       `
-    )
-    .range(from, to);
+  );
   //console.log("fetch all Permission data " + JSON.stringify(data));
   //console.log("error " + JSON.stringify(error));
+};
+
+const getReceiptByDay = (day) => {
+  return supabase
+    .from(TABLE_NAME)
+    .select(
+      `
+    id,
+    established_date,
+    payment_method,
+    checkin_time,
+    checkout_time,
+    service_cost,
+    rent_cost,
+    surcharge,
+    total_cost,
+    note,
+    booking_id (
+      id,
+      customer_id (
+        id, 
+        fullname
+      )
+    ),
+    employee_name
+    `
+    )
+    .eq("established_date", day)
+    .order("id", { ascending: true });
+};
+const getReceiptByMonth = (firstDay, lastDay) => {
+  return supabase
+    .from(TABLE_NAME)
+    .select(
+      `
+    id,
+    established_date,
+    payment_method,
+    checkin_time,
+    checkout_time,
+    service_cost,
+    rent_cost,
+    surcharge,
+    total_cost,
+    note,
+    booking_id (
+      id,
+      customer_id (
+        id, 
+        fullname
+      )
+    ),
+    employee_name
+    `
+    )
+    .lt("established_date", lastDay)
+    .gt("established_date", firstDay)
+    .order("id", { ascending: true });
+};
+const getReceiptByYear = (firstDay, lastDay) => {
+  return (
+    supabase
+      .from(TABLE_NAME)
+      .select(
+        `
+    id,
+    established_date,
+    payment_method,
+    checkin_time,
+    checkout_time,
+    service_cost,
+    rent_cost,
+    surcharge,
+    total_cost,
+    note,
+    booking_id (
+      id,
+      customer_id (
+        id, 
+        fullname
+      )
+    ),
+    employee_name
+    `
+      )
+      .lt("established_date", lastDay)
+      .gt("established_date", firstDay)
+      // .rangeLte("established_date", [firstDay, lastDay])
+      .order("id", { ascending: true })
+  );
 };
 
 const createReceipt = async (receipt) => {
@@ -37,4 +124,7 @@ const createReceipt = async (receipt) => {
 module.exports = {
   getAllReceipt,
   createReceipt,
+  getReceiptByDay,
+  getReceiptByMonth,
+  getReceiptByYear,
 };

@@ -29,7 +29,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
       key: "1",
       title: "CCCD",
       dataIndex: "id",
-      // width: "15%",
+      width: "15%",
       fixed: "left",
     },
     {
@@ -121,31 +121,6 @@ const CustomerTable = ({ customer, setCustomer }) => {
         return text ? String(text) : "";
       },
     },
-    {
-      key: "5",
-      title: "Email",
-      dataIndex: "email",
-      // width: "20%",
-      align: "center",
-      render: (text, record) => {
-        return text ? String(text) : "";
-      },
-    },
-    {
-      key: "6",
-      title: "Thao tác",
-      fixed: "right",
-      render: (_, record) => {
-        return (
-          <>
-            <div className="btnWrap">
-              <EditButton openModalEdit={() => {}}></EditButton>
-              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
-            </div>
-          </>
-        );
-      },
-    },
   ];
 
   const onDeleteButton = (record) => {
@@ -164,7 +139,6 @@ const CustomerTable = ({ customer, setCustomer }) => {
           <CustomerForm />
         </Modal>
       </>
-      {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div></div>
         <div>
@@ -179,15 +153,6 @@ const CustomerTable = ({ customer, setCustomer }) => {
             className="searchInput"
             style={{ width: 264 }}
           />
-          <Button
-            onClick={showModal}
-            className="addButton"
-            type="primary"
-            ghost
-            icon={<PlusOutlined />}
-          >
-            Tạo mới
-          </Button>
         </div>
       </div>
       <Table

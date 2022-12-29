@@ -45,7 +45,6 @@ const Dashboard = () => {
         }
         break;
       case "month":
-        // console.log(time);
         fetchMonthlyReport(user?.position, getMonth(time)).then(({ data }) => {
           setData(data.data);
           setReport(data.report);

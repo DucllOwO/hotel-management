@@ -377,12 +377,10 @@ const BookingTable = ({
               ErrorAlert("Khách hàng chưa đủ 18 tuổi");
               return;
             }
-            console.log(value);
             const newCustomer = {
               id: value.id,
               fullname: value.fullname,
               phone_number: value.phone_number,
-              email: value.email,
               date_of_birth: value.date_of_birth,
             };
             const { data: userData } = await createCustomer(
