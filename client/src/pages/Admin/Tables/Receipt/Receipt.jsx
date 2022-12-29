@@ -19,7 +19,7 @@ import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteB
 import { formatDate, formatterInt } from "../../../../Utils/formatter";
 import { useEffect } from "react";
 
-const ReceiptTable = ({ receipt, setReceipt }) => {
+const ReceiptTable = ({ receipt, setReceipt, isLoading }) => {
   useEffect(() => {
     document.title = "Receipt | Parallel Shine";
   });
@@ -338,6 +338,7 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
         </div>
       </div>
       <Table
+        loading={isLoading}
         rowKey={(row) => row.id}
         onRow={(record, rowIndex) => {
           return {

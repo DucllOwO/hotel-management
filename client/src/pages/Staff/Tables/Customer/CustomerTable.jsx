@@ -9,7 +9,7 @@ import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteB
 import { formatDate } from "../../../../Utils/formatter";
 import WarningModal from "../../../../components/WarningModal/WarningModal";
 
-const CustomerTable = ({ customer, setCustomer }) => {
+const CustomerTable = ({ customer, setCustomer, isLoading }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -191,6 +191,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
         </div>
       </div>
       <Table
+        loading={isLoading}
         showSorterTooltip={false}
         tableLayout="auto"
         columns={columns}

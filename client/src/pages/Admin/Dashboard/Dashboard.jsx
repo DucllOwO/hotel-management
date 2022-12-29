@@ -194,7 +194,7 @@ const Dashboard = () => {
         )}
         {/* {type === "day" ? <DashboardTable /> : <MultiLineChart />} */}
         {type === "day" ? (
-          <DashboardTable data={data}></DashboardTable>
+          <DashboardTable data={data} revenue={semiType}></DashboardTable>
         ) : (
           <MultiLineChart reportData={data} />
         )}

@@ -56,7 +56,7 @@ const AccountTable = ({ accounts, setAccount }) => {
       align: "center",
 
       render: (text, record) => {
-        if (editingRow === record.id)
+        if (editingRow === record.username)
           return (
             <Form.Item
               name="password"
@@ -92,14 +92,21 @@ const AccountTable = ({ accounts, setAccount }) => {
         return (
           <>
             <div className="btnWrap">
-              {editingRow === record.id ? (
+              {editingRow === record.username ? (
                 <>
                   <CheckButton onCheckButton={() => onCheckButton(record)} />
                   <CancelButton onCancelButton={onCancelButton} />
                 </>
               ) : (
                 <>
-                  <Button onClick={onChangePassword}> Đổi mật khẩu</Button>
+                  <Button
+                    onClick={() => {
+                      onChangePassword(record);
+                    }}
+                  >
+                    {" "}
+                    Đổi mật khẩu
+                  </Button>
                 </>
               )}
             </div>

@@ -11,7 +11,13 @@ import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 import { createRoom, hideRoom, updateRoom } from "../../../../api/RoomAPI";
 import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 
-const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
+const RoomsTable = ({
+  rooms,
+  setRoom,
+  positionUser,
+  listType = [],
+  isLoading,
+}) => {
   const [editingRow, setEditingRow] = useState(null);
 
   const [form] = Form.useForm();
@@ -27,8 +33,8 @@ const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
 
   const items = listType.map((item) => {
     return {
-      label: item.name,
-      value: item.name,
+      label: item.name.toString(),
+      value: item.name.toString(),
     };
   });
 
@@ -381,6 +387,7 @@ const RoomsTable = ({ rooms, setRoom, positionUser, listType = [] }) => {
         </div>
       </div>
       <Table
+        loading={isLoading}
         rowKey={(row) => row.id}
         showSorterTooltip={false}
         columns={columns}

@@ -12,8 +12,10 @@ const USING_STATUS = 1;
 const Inventory = () => {
   const { user } = useContext(AppContext);
   const [rooms, setRooms] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     document.title = "Checking | Parallel Shine";
     fetchBookingByStatus(user?.position, "1")
       .then(({ data }) => {
@@ -21,15 +23,21 @@ const Inventory = () => {
         setRooms(data);
       })
       .catch((err) => {
+        setIsLoading(false);
         console.log(err);
         ErrorAlert("Lấy dữ liệu phòng chưa dọn dẹp thất bại!");
-      });
+      })
+      .finally(() => setIsLoading(false));
   }, [user.position]);
 
   return (
     <ItemProvider>
       <div className="inventoryContainer">
-        <InventoryTable rooms={rooms} user={user}></InventoryTable>
+        <InventoryTable
+          rooms={rooms}
+          user={user}
+          isLoading={isLoading}
+        ></InventoryTable>
       </div>
     </ItemProvider>
   );

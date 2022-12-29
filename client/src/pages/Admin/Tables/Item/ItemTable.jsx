@@ -10,7 +10,7 @@ import EditButton from "../../../../components/IconButton/EditButton/EditButton"
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 
-const ItemTable = ({ items, setItems, user }) => {
+const ItemTable = ({ items, setItems, user, isLoading }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -365,6 +365,7 @@ const ItemTable = ({ items, setItems, user }) => {
         </div>
       </div>
       <Table
+        loading={isLoading}
         showSorterTooltip={false}
         columns={columns}
         dataSource={items}

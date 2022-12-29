@@ -7,7 +7,7 @@ import moment from "moment";
 import PaymentForm from "../../../../components/Form/PaymentForm";
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
-const PaymentTable = ({ payment, setPayment }) => {
+const PaymentTable = ({ payment, setPayment, isLoading }) => {
   const [type, setType] = useState("day");
 
   const [editingRow, setEditingRow] = useState(null);
@@ -298,6 +298,7 @@ const PaymentTable = ({ payment, setPayment }) => {
         </div>
       </div>
       <Table
+        loading={isLoading}
         showSorterTooltip={false}
         columns={columns}
         dataSource={payment}
