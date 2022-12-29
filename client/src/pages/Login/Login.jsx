@@ -1,6 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./login.css";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/LogoWhite.png";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import { useNavigate, Navigate } from "react-router-dom";
 import { userRequest } from "../../api/api";
@@ -11,6 +11,9 @@ import ErrorAlert from "../../components/Error/Alert/ErrorAlert";
 import { loginAPI } from "../../api/AuthAPI";
 
 const Login = () => {
+  useEffect(() => {
+    document.title = "Login | Parallel Shine";
+  });
   const { setUser } = useContext(AppContext);
   const userLocal = LocalStorage.getItem("user");
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +34,7 @@ const Login = () => {
       onKeyDownCapture={(e) => e.key === "Enter" && login(e)}
     >
       {userLocal && <Navigate to="/admin" replace={true} />}
-      <div className="logo">
+      <div>
         <img src={logo} alt="logo" className="logoImg" />
       </div>
 

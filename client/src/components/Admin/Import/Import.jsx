@@ -1,30 +1,38 @@
 import React, { useState } from "react";
-import Topbar from "../../Topbar/Topbar";
-import { Input, Button, Table, Select, InputNumber, Modal } from "antd";
-import BottomBar from "../BottomBar/BottomBar";
+import { Button, Table, Select, InputNumber, Form } from "antd";
+import CancelButton from "../../IconButton/CancelButton/CancelButton";
 import "./import.css";
 import { PlusOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import WarningModal from "../../WarningModal/WarningModal";
 
-const Import = () => {
-  const navigate = useNavigate();
+const initialValue = [
+  {
+    id: 1,
+    item_id: "",
+    name: "",
+    amount: 0,
+    unitPrice: 0,
+    total: 0,
+  },
+];
 
-  const onChangeSelect = (value) => {
-    console.log(value);
-  };
-
-  const onSearch = (value) => {
-    console.log("search:", value);
-  };
-
-  const [dataSource, setDataSource] = useState([]);
+const Import = ({
+  items,
+  setListItem,
+  importList,
+  setImportList,
+  setTotalPrice,
+}) => {
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
   const columns = [
     {
       key: "1",
-      title: "No",
+      title: "STT",
       dataIndex: "id",
       align: "center",
+      width: 50,
     },
     {
       key: "2",
@@ -33,29 +41,22 @@ const Import = () => {
       align: "center",
       render: (text, record) => {
         return (
-          <div className="inputCon">
-            <Select
-              showSearch
-              placeholder="Chọn một sản phẩm"
-              onChange={onChangeSelect}
-              onSearch={onSearch}
-              filterOption={(input, option) =>
-                (option?.label ?? "")
-                  .toLowerCase()
-                  .includes(input.toLowerCase())
-              }
-              options={[
-                {
-                  value: "president",
-                  label: "President",
-                },
-                {
-                  value: "luxury",
-                  label: "Luxury",
-                },
-              ]}
-            />
-          </div>
+          <Select
+            width={300}
+            showSearch
+            value={text ? text : null}
+            placeholder="Chọn một sản phẩm"
+            onChange={(value, option) => {
+              onItemChange(value, record.id, option);
+            }}
+            options={
+              items.length > 0
+                ? items.map((item) => {
+                    return item?.option;
+                  })
+                : []
+            }
+          />
         );
       },
     },
@@ -63,14 +64,18 @@ const Import = () => {
       key: "3",
       title: "Số lượng",
       dataIndex: "amount",
+      width: 100,
       align: "center",
-      render: (_, record) => {
+      render: (text, record) => {
         return (
           <>
             <InputNumber
-              defaultValue={1}
-              min={1}
-              onChange={() => {}}
+              defaultValue={0}
+              value={text}
+              min={0}
+              onChange={(e) => {
+                onAmountChange(e, record.id);
+              }}
             ></InputNumber>
           </>
         );
@@ -81,119 +86,207 @@ const Import = () => {
       title: "Đơn giá",
       dataIndex: "unitPrice",
       align: "center",
+      render: (text, record) => {
+        const getUnitPrice = () => {
+          let temp;
+          importList.forEach((element) => {
+            if (element.id === record.id) temp = element.unitPrice;
+          });
+          return temp;
+        };
+        return (
+          <>
+            <InputNumber
+              defaultValue={0}
+              value={getUnitPrice().toLocaleString()}
+              addonAfter={"đ"}
+              min={0}
+              controls={false}
+              disabled={true}
+            ></InputNumber>
+          </>
+        );
+      },
     },
     {
       key: "5",
       title: "Thành tiền",
       dataIndex: "total",
       align: "center",
+      render: (_, record) => {
+        const getTotal = () => {
+          let temp;
+          importList.forEach((element) => {
+            if (element.id === record.id) temp = element.total;
+          });
+          return temp;
+        };
+        return (
+          <>
+            <InputNumber
+              defaultValue={0}
+              value={getTotal().toLocaleString()}
+              min={0}
+              addonAfter={"đ"}
+              disabled={true}
+            ></InputNumber>
+          </>
+        );
+      },
     },
     {
       key: "6",
       title: "Thao tác",
+      dataIndex: "action",
+      width: 80,
       align: "center",
       render: (_, record) => {
         return (
           <>
-            <Button
-              onClick={() => {
-                onDeleteButton(record);
-              }}
-            >
-              delete
-            </Button>
+            <div>
+              <CancelButton
+                onCancelButton={() => onDeleteButton(record)}
+              ></CancelButton>
+            </div>
           </>
         );
       },
     },
   ];
 
+  const onAmountChange = (e, importID) => {
+    setImportList((prev) => {
+      const importListTemp = prev.map((importTemp, index) => {
+        if (importTemp.id === importID) {
+          return {
+            ...importTemp,
+            id: index + 1,
+            amount: e,
+            total: e * importTemp.unitPrice,
+          };
+        }
+        return { ...importTemp, id: index + 1 };
+      });
+
+      setTotalPrice(
+        importListTemp.reduce((total, value) => total + value.total, 0)
+      );
+
+      return importListTemp;
+    });
+  };
+
+  function onDeleteButton(record) {
+    const itemDeleted = selectedOptions.find(
+      (option) => option.option.label === record.name
+    );
+    if (itemDeleted) setListItem((prev) => [...prev, itemDeleted]);
+
+    setImportList((prev) => {
+      const filter = prev.filter(
+        (importTemp) => importTemp.name !== record.name
+      );
+      const idSorted = filter.map((importTemp, index) => {
+        return { ...importTemp, id: index + 1 };
+      });
+      if (idSorted.length >= 1) {
+        setTotalPrice(
+          idSorted.reduce((total, value) => total + value.total, 0)
+        );
+        return idSorted;
+      } else return initialValue;
+    });
+  }
+
+  const onItemChange = (itemID, importID, optionSelect) => {
+    let option = items.find((item) => item.option.value === itemID);
+    let importToCheck = importList.find(
+      (importTemp) => importTemp.id === importID
+    );
+
+    if (importToCheck.name.length === 0) {
+      setSelectedOptions((prev) => [...prev, option]);
+      setListItem((prev) => {
+        return prev.filter((value) => {
+          if (value.option.value !== itemID) {
+            return true;
+          }
+          return false;
+        });
+      });
+    } else {
+      let prevOption = selectedOptions.find(
+        (value) => value.option.label === importToCheck.name
+      );
+      setSelectedOptions((prev) =>
+        prev.map((value) => {
+          if (value.option.label === prevOption.option.label) return option;
+          return value;
+        })
+      );
+      setListItem((prev) => {
+        return prev.map((value) => {
+          if (value.option.value === itemID) {
+            return prevOption;
+          }
+          return value;
+        });
+      });
+    }
+
+    setImportList((prev) => {
+      return prev.map((importTemp) => {
+        if (importTemp.id === importID) {
+          return {
+            ...importTemp,
+            item_id: option.option.value,
+            name: option.option.label,
+            unitPrice: option.unitPrice,
+          };
+        }
+        return importTemp;
+      });
+    });
+  };
   const onAddProduct = () => {
-    setDataSource((pre) => {
+    setImportList((pre) => {
       return [
         ...pre,
         {
           id: pre.length + 1,
+          item_id: "",
           name: "",
-          amount: "1",
-          unitPrice: "",
-          total: "",
+          amount: 0,
+          unitPrice: 0,
+          total: 0,
         },
       ];
     });
   };
 
-  const onDeleteButton = (record) => {
-    Modal.confirm({
-      title: "Are you sure, you want to delete this record?",
-      okText: "Yes",
-      okType: "danger",
-      onOk: () => {
-        setDataSource((pre) => {
-          const temp = pre.filter((data) => data.id !== record.id);
-          return temp.map((item, index) => {
-            return { ...item, id: index + 1 };
-          });
-        });
-      },
-    });
-  };
-
-  const onCancel = () => {
-    Modal.confirm({
-      title: "Are you sure, you want to discard changes?",
-      okText: "Yes",
-      okType: "danger",
-      onOk: () => {
-        navigate(-1);
-      },
-    });
-  };
-
   return (
     <div className="import">
-      <Topbar
-        name="Huỳnh Thế Vĩ"
-        img="https://12ax7web.s3.amazonaws.com/accounts/1/products/1986199880924/Boba-Stitch_800x800_SEPS-1000x1000.jpg"
-        position="Manager"
-      ></Topbar>
-
       <div className="importContainer">
-        <div className="inputCon">
-          <div className="label">ID: </div>
-          <Input placeholder="ID" disabled="true"></Input>
-        </div>
-
         <div>
           <Table
             size="small"
             columns={columns}
-            dataSource={dataSource}
+            dataSource={importList || initialValue}
             scroll={{ y: 350 }}
-            rowKey={(row) => row.idNum}
+            rowKey={(row) => row.id}
             pagination={false}
           ></Table>
         </div>
-      </div>
-
-      <BottomBar>
-        <div className="bottomBar">
-          <div>
-            <Button icon={<PlusOutlined />}>Thêm</Button>
-          </div>
-          <div>
-            <Button
-              onClick={() => {
-                onCancel();
-              }}
-              style={{ marginRight: "10px" }}
-            >
-              Hủy
-            </Button>
-            <Button type="primary">Xong</Button>
-          </div>
+        <div>
+          <Button
+            icon={<PlusOutlined />}
+            onClick={onAddProduct}
+            style={{ marginTop: 10 }}
+          >
+            Thêm
+          </Button>
         </div>
-      </BottomBar>
+      </div>
     </div>
   );
 };

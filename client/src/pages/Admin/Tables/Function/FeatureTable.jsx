@@ -14,7 +14,7 @@ const FeatureTable = ({
   return (
     <Table
       dataSource={features}
-      scroll={{ y: 350 }}
+      scroll={{ y: "28vh" }}
       mobileBreakPoint={800}
       align="center"
       size="small"

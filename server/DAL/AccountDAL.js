@@ -9,18 +9,6 @@ async function getAccountByUsername(username) {
     .eq("username", username);
   return { user: data[0], error };
 }
-async function getAccountByEmail(email) {
-  const { data, error } = await supabase
-    .from(TABLE_NAME)
-    .select("*")
-    .eq("email", email);
-  if (error) {
-    console.log(error);
-    return null;
-  } else {
-    return newAccount[0];
-  }
-}
 
 const getAllAccount = () => {
   return supabase
@@ -50,7 +38,6 @@ const deleteAccount = (username) => {
 
 module.exports = {
   getAccountByUsername,
-  getAccountByEmail,
   getAccount,
   getAllAccount,
   insertAccount,

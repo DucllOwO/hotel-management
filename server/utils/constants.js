@@ -25,7 +25,7 @@ const resourceAC = {
   CUSTOMER: "customer",
   ROOMTYPE: "room_type",
   USER: "user",
-  INVENTORY: "inventory",
+  INVENTORY: "inventory_record",
   SERVICE: "service",
   DAILYREPORT: "daily_report",
   MONTHLYREPORT: "monthly_report",
@@ -37,13 +37,13 @@ const resourceAC = {
 
 const roomStatus = {
   AVAILABLE: 0,
-  BOOKED: 1,
-  WAITING: 2,
+  USING: 1,
+  CLEANING: 2,
 };
 
 const bookingStatus = {
   WAITING: 0,
-  BOOKED: 1,
+  USING: 1,
   COMPLETE: 2,
   CANCEL: 3,
 };

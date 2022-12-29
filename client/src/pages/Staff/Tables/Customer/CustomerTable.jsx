@@ -6,6 +6,8 @@ import "./customertable.css";
 import CustomerForm from "../../../../components/Form/CustomerForm";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
+import { formatDate } from "../../../../Utils/formatter";
+import WarningModal from "../../../../components/WarningModal/WarningModal";
 
 const CustomerTable = ({ customer, setCustomer }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -27,25 +29,68 @@ const CustomerTable = ({ customer, setCustomer }) => {
       key: "1",
       title: "CCCD",
       dataIndex: "id",
-      width: "15%",
+      // width: "15%",
+      fixed: "left",
     },
     {
       key: "2",
       title: "Họ và tên",
-      width: "25%",
+      width: "30%",
       align: "center",
+      fixed: "left",
       sorter: (a, b) => a.fullname.localeCompare(b.fullname),
       filteredValue: [searchedText],
       onFilter: (value, record) => {
         return (
+          String(record.id)
+            .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase()) ||
           String(record.name)
             .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase()) ||
           String(record.birthday)
             .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase()) ||
           String(record.phone)
             .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.email)
+            .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase())
         );
       },
@@ -58,11 +103,11 @@ const CustomerTable = ({ customer, setCustomer }) => {
       key: "3",
       title: "Ngày sinh",
       dataIndex: "date_of_birth",
-      width: "15%",
+      width: "20%",
       align: "center",
       sorter: (a, b) => a.date_of_birth.localeCompare(b.date_of_birth),
       render: (text, record) => {
-        return text ? String(text) : "";
+        return String(formatDate(record.date_of_birth));
       },
     },
     {
@@ -80,7 +125,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
       key: "5",
       title: "Email",
       dataIndex: "email",
-      width: "25%",
+      // width: "20%",
       align: "center",
       render: (text, record) => {
         return text ? String(text) : "";
@@ -89,6 +134,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
     {
       key: "6",
       title: "Thao tác",
+      fixed: "right",
       render: (_, record) => {
         return (
           <>
@@ -102,43 +148,8 @@ const CustomerTable = ({ customer, setCustomer }) => {
     },
   ];
 
-  const onAddButton = () => {
-    const randomNumber = parseInt(Math.random() * 1000);
-    const newData = {
-      idNum: "" + parseInt(customer.length + 1),
-      name: "Name " + randomNumber,
-      birthday: "23/03/2002",
-      address: randomNumber + " address",
-    };
-
-    setCustomer((pre) => {
-      return [...pre, newData];
-    });
-  };
-
   const onDeleteButton = (record) => {
-    Modal.confirm({
-      title: "Bạn có chắc muốn xoá dữ liệu?",
-      okText: "Yes",
-      okType: "danger",
-      onOk: () => {
-        setCustomer((pre) => {
-          return pre.filter((data) => data.idNum !== record.idNum);
-        });
-      },
-    });
-  };
-
-  const onFinish = (values) => {
-    console.log(editingRow);
-    const updateDataSource = [...customer];
-    updateDataSource.splice(editingRow - 1, 1, {
-      ...values,
-      idNum: editingRow,
-    });
-    console.log(updateDataSource);
-    setCustomer(updateDataSource);
-    setEditingRow(null);
+    WarningModal("Bạn có chắc muốn xoá khách hàng?");
   };
 
   return (
@@ -146,7 +157,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
       <>
         <Modal
           title="Thông tin khách hàng"
-          visible={isModalVisible}
+          open={isModalVisible}
           onOk={handle}
           onCancel={handle}
         >
@@ -180,10 +191,11 @@ const CustomerTable = ({ customer, setCustomer }) => {
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         tableLayout="auto"
         columns={columns}
         dataSource={customer}
-        scroll={{ x: "60vh", y: "100%" }}
+        scroll={{ x: 1000, y: "60vh" }}
       ></Table>
     </div>
   );

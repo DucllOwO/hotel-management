@@ -1,6 +1,6 @@
 const {
-  getAllBookings,
-  getBooking,
+  getBookingByStatus,
+  updateBookingStatus,
   createBooking,
   deleteBooking,
   getRooms
@@ -16,14 +16,14 @@ router.get(
   "/list",
   authorizeAccessToken,
   hasPermission(actionAC.GET, resourceAC.BOOKING),
-  tryCatch(getAllBookings)
+  tryCatch(getBookingByStatus)
 );
 
-router.get(
+router.put(
   "/list/:id",
   authorizeAccessToken,
   hasPermission(actionAC.GET, resourceAC.BOOKING),
-  tryCatch(getBooking)
+  tryCatch(updateBookingStatus)
 );
 router.get(
   "/room",

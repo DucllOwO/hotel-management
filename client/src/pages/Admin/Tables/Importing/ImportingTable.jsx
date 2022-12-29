@@ -1,21 +1,51 @@
 import React, { useState } from "react";
 import "../index.css";
+import dayjs from "dayjs";
 import { Table, Button, Modal, Form, Input, Slider } from "antd";
 import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import ImportForm from "../../../../components/Form/ImportForm";
+import { formatDate } from "../../../../Utils/formatter";
+import { createRecord } from "../../../../api/ImportAPI";
+import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
+import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 
-const ImportingTable = ({ importingRecord, setRecord }) => {
-  const navigate = useNavigate();
+const initialValue = [
+  {
+    id: 1,
+    item_id: "",
+    name: "",
+    amount: 0,
+    unitPrice: 0,
+    total: 0,
+  },
+];
 
-  const [editingRow, setEditingRow] = useState(null);
+const ImportingTable = ({
+  importingRecord,
+  setRecord,
+  positionUser,
+  userID,
+}) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [form] = Form.useForm();
+  const [data, setData] = useState(initialValue);
 
+  const [amountError, setAmountError] = useState(null);
+
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const [priceFilter, setPriceFilter] = useState(null);
+  const [amountFilter, setAmountFilter] = useState(null);
   const [searchedText, setSearchedText] = useState("");
 
   const amountMark = {
-    1: "1",
+    0: "0",
     200: "200",
+  };
+
+  const priceMark = {
+    100000: "100,000đ",
+    10000000: "10,000,000đ",
   };
 
   const columns = [
@@ -28,6 +58,18 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
     },
     {
       key: "2",
+      title: "Người lập",
+      dataIndex: "employee_id.name",
+      width: "30%",
+      align: "center",
+      render: (_, record) => {
+        // record.emloyee_id
+        console.log(record);
+        return String(record?.employee_id?.fullname);
+      },
+    },
+    {
+      key: "3",
       title: "Ngày lập",
       filteredValue: [searchedText],
       align: "center",
@@ -35,62 +77,77 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
         return (
           String(record.established_date)
             .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase()) ||
           String(record.item)
             .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase())
         );
       },
       dataIndex: "established_date",
       sorter: (a, b) => a.established_date.localeCompare(b.established_date),
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="date"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the date",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return String(formatDate(record.established_date));
       },
     },
     {
-      key: "3",
-      title: "Tên sản phẩm",
-      dataIndex: "item",
+      key: "5",
+      title: "Tổng tiền (đ)",
+      dataIndex: "total_cost",
       align: "center",
-      sorter: (a, b) => a.item.localeCompare(b.item),
-    },
-    {
-      key: "4",
-      title: "Số lượng",
-      dataIndex: "amount",
-      align: "center",
-      sorter: (a, b) => a.amount - b.amount,
-      filterDropdown: () => {
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+      },
+      sorter: (a, b) => a.total_cost - b.total_cost,
+      filteredValue: priceFilter !== null ? [priceFilter] : null,
+      filterDropdown: ({ clearFilters }) => {
         return (
           <>
             <div className="filterContainer">
-              <Slider
-                range
-                max={200}
-                min={1}
-                marks={amountMark}
-                defaultValue={[10, 20]}
-                onChange={(value) => {
-                  console.log(value);
-                }}
-              />
-              <Button type="primary">Reset</Button>
+              <div className="priceSlider">
+                <Slider
+                  tipFormatter={(value) => {
+                    return `${value < 0 ? "-" : ""} ${Math.abs(value)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+                  }}
+                  step={100000}
+                  width={0.8}
+                  range
+                  min={100000}
+                  max={10000000}
+                  marks={priceMark}
+                  defaultValue={[100000, 1000000]}
+                  onChange={(e) => {
+                    setPriceFilter(null);
+                    setPriceFilter(e);
+                  }}
+                />
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setPriceFilter(null);
+                    clearFilters({ closeDropdown: true });
+                  }}
+                >
+                  Reset
+                </Button>
+              </div>
             </div>
           </>
         );
@@ -98,100 +155,56 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
       filterIcon: () => {
         return <FilterOutlined />;
       },
-    },
-    {
-      key: "5",
-      title: "Thành tiền",
-      dataIndex: "total",
-      align: "center",
-      // sorter: (a, b) => a.total.localeCompare(b.total),
-    },
-    // {
-    //   key: "6",
-    //   title: "Thao tác",
-    //   render: (_, record) => {
-    //     if (editingRow !== null) {
-    //       if (editingRow === record.idNum) {
-    //         return (
-    //           <>
-    //             <Button
-    //               htmlType="submit"
-    //               // onClick={() => {form.submit()}}
-    //             >
-    //               Lưu
-    //             </Button>
-    //             <Button
-    //               onClick={() => {
-    //                 setEditingRow(null);
-    //               }}
-    //             >
-    //               Huỷ
-    //             </Button>
-    //           </>
-    //         );
-    //       } else {
-    //       }
-    //     } else {
-    //       return (
-    //         <>
-    //           <Button
-    //             onClick={(e) => {
-    //               e.preventDefault();
-    //               setEditingRow(record.idNum);
-    //               form.setFieldsValue({
-    //                 date: record.date,
-    //                 total: record.total,
-    //               });
-    //             }}
-    //           >
-    //             Chỉnh sửa
-    //           </Button>
-    //           <Button
-    //             onClick={() => {
-    //               onDeleteButton(record);
-    //             }}
-    //           >
-    //             Xoá
-    //           </Button>
-    //         </>
-    //       );
-    //     }
-    //   },
-    // },
-  ];
-
-  const onAddButton = () => {
-    navigate("/admin/import");
-  };
-
-  const onDeleteButton = (record) => {
-    Modal.confirm({
-      title: "Bạn có chắc muốn xoá dữ liệu?",
-      okText: "Yes",
-      okType: "danger",
-      onOk: () => {
-        setRecord((pre) => {
-          return pre.filter((data) => data.idNum !== record.idNum);
-        });
+      onFilter: (value, record) => {
+        if (priceFilter === null) {
+          return record.total_cost;
+        } else {
+          return record.total_cost >= value[0] && record.total_cost <= value[1];
+        }
       },
-    });
+    },
+  ];
+  const onAddButton = () => {
+    setIsModalOpen(true);
+    console.log(isModalOpen);
+  };
+  const handleOKModal = async () => {
+    // check amount, empty data
+    console.log(data);
+    const isDataValid = data.every(
+      (value) => value.amount > 0 && value.name !== ""
+    );
+
+    if (isDataValid) {
+      setAmountError(false);
+      createRecord(
+        positionUser,
+        { employee_id: userID, total_cost: totalPrice },
+        createPurchaseDetailArr(data)
+      )
+        .then(({ data }) => {
+          setRecord((prev) => [...prev, data]);
+          SuccessAlert("Lập phiếu nhập sản phẩm thành công.");
+          resetValue();
+        })
+        .catch((err) => {
+          console.log(err);
+          ErrorAlert("Lập phiếu nhập sản phẩm thất bại!!");
+        });
+    } else setAmountError(true);
   };
 
-  const onFinish = (values) => {
-    console.log(editingRow);
-    const updateDataSource = [...importingRecord];
-    updateDataSource.splice(editingRow - 1, 1, {
-      ...values,
-      idNum: editingRow,
-    });
-    console.log(updateDataSource);
-    setRecord(updateDataSource);
-    setEditingRow(null);
-  };
+  function createPurchaseDetailArr(importData) {
+    return importData.map((value) => ({
+      item_id: value.item_id,
+      amount: value.amount,
+      unit_price: value.unitPrice,
+    }));
+  }
 
   return (
     <div className="table">
-      {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
+      <>{isModalOpen ? modalJSX() : null}</>
       <div className="buttonContainer">
         <div></div>
         <div>
@@ -218,12 +231,45 @@ const ImportingTable = ({ importingRecord, setRecord }) => {
         </div>
       </div>
       <Table
+        rowKey={(row) => row.id}
+        showSorterTooltip={false}
         columns={columns}
         dataSource={importingRecord}
-        scroll={{ y: "60vh", x: "100%" }}
+        scroll={{ y: "60vh  ", x: "100%" }}
       ></Table>
     </div>
   );
+  function modalJSX() {
+    return (
+      <Modal
+        title="Nhập sản phẩm mới"
+        open={true}
+        okText="Nhập"
+        cancelText="Hủy"
+        onOk={handleOKModal}
+        onCancel={handleCancelModal}
+        width="60%"
+      >
+        <ImportForm
+          data={data}
+          setData={setData}
+          width="100%"
+          amountError={amountError}
+          totalPrice={totalPrice}
+          setTotalPrice={setTotalPrice}
+        />
+      </Modal>
+    );
+  }
+  function resetValue() {
+    setIsModalOpen(false);
+    setData(initialValue);
+    setTotalPrice(0);
+    setAmountError(null);
+  }
+  function handleCancelModal() {
+    resetValue();
+  }
 };
 
 export default ImportingTable;

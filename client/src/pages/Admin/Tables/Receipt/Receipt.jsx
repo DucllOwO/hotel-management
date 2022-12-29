@@ -1,14 +1,28 @@
 import React, { useState } from "react";
 import "../index.css";
-import { Table, Button, Modal, Form, Input, DatePicker, Select } from "antd";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  DatePicker,
+  Select,
+  Slider,
+} from "antd";
 import dayjs from "dayjs";
 import { FilterOutlined } from "@ant-design/icons";
 import moment from "moment";
 import DetailForm from "../../../../components/Form/DetailForm/DetailForm";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
+import { formatDate, formatterInt } from "../../../../Utils/formatter";
+import { useEffect } from "react";
 
 const ReceiptTable = ({ receipt, setReceipt }) => {
+  useEffect(() => {
+    document.title = "Receipt | Parallel Shine";
+  });
   const [type, setType] = useState("day");
 
   const [editingRow, setEditingRow] = useState(null);
@@ -17,21 +31,21 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
 
   const [searchedText, setSearchedText] = useState("");
 
-  const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState(null);
+
+  const [priceFilter, setPriceFilter] = useState(null);
+  const [methodFilter, setMethodFilter] = useState("");
 
   const dateFormat = "DD-MM-YYYY";
   const monthFormat = "MM-YYYY";
 
-  const items = [
-    {
-      label: "Offline",
-      key: "1",
-    },
-    {
-      label: "Online",
-      key: "2",
-    },
-  ];
+  const price = Math.max(...receipt.map((receipt) => receipt.total_cost));
+  const minPrice = Math.min(...receipt.map((receipt) => receipt.total_cost));
+
+  const priceMark = {
+    [minPrice]: minPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
+    [price]: price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
+  };
 
   const columns = [
     {
@@ -53,31 +67,68 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
       },
       sorter: (a, b) => a.established_date.localeCompare(b.established_date),
       dataIndex: "established_date",
+      render: (text, record) => {
+        return String(formatDate(record.established_date));
+      },
     },
     {
       key: "3",
-      title: "Tổng tiền",
+      title: "Tổng tiền (đ)",
       align: "center",
       dataIndex: "total_cost",
       sorter: (a, b) => a.total_cost - b.total_cost,
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="total"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the total",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
+      filteredValue: priceFilter !== null ? [priceFilter] : null,
+      filterDropdown: ({ clearFilters }) => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div className="priceSlider">
+                <Slider
+                  tipFormatter={(value) => {
+                    return `${value < 0 ? "-" : ""} ${Math.abs(value)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+                  }}
+                  width={0.8}
+                  step={500000}
+                  range
+                  min={minPrice}
+                  max={price}
+                  marks={priceMark}
+                  defaultValue={[0, 1000000]}
+                  onChange={(e) => {
+                    setPriceFilter(null);
+                    setPriceFilter(e);
+                  }}
+                />
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setPriceFilter(null);
+                    clearFilters({ closeDropdown: true });
+                  }}
+                >
+                  Reset
+                </Button>
+              </div>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
+      onFilter: (value, record) => {
+        if (priceFilter === null) {
+          return record.total_cost;
         } else {
-          return <p>{text}</p>;
+          return record.total_cost >= value[0] && record.total_cost <= value[1];
         }
+      },
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
       },
     },
     {
@@ -85,25 +136,67 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
       title: "Phương thức",
       align: "center",
       dataIndex: "payment_method",
-      filterDropdown: () => {
+      filteredValue: methodFilter !== "" ? [methodFilter] : null,
+      filterDropdown: ({ confirm, clearFilters }) => {
         return (
           <>
             <div className="filterContainer">
               <div>
                 <Select
+                  style={{ width: 150 }}
+                  defaultValue={"Offline"}
+                  placeholder="Chọn phương thức"
+                  options={[
+                    {
+                      value: "Offline",
+                      label: "Offline",
+                    },
+                    {
+                      value: "Online",
+                      label: "Online",
+                    },
+                  ]}
+                  onChange={(e) => {
+                    setMethodFilter(e);
+                    confirm();
+                  }}
+                />
+                {/* <Select
+                  style={{ width: 200 }}
                   size="medium"
                   options={items}
                   showSearch
-                  placeholder="Chọn hình thức"
-                  onChange={(e) => {}}
-                />
+                  placeholder="Chọn phương thức"
+                  onChange={(e) => {
+                    console.log(e);
+                    setMethodFilter(e);
+                    confirm();
+                  }}
+                /> */}
               </div>
-              <Button type="primary" style={{ marginTop: "10px" }}>
+              <Button
+                type="primary"
+                style={{ marginTop: "10px" }}
+                onClick={() => {
+                  setMethodFilter("");
+                  clearFilters({ closeDropdown: true });
+                }}
+              >
                 Reset
               </Button>
             </div>
           </>
         );
+      },
+      onFilter: (value, record) => {
+        console.log(value);
+        if (methodFilter === "") {
+          return record.payment_method;
+        } else {
+          return record.payment_method === value;
+        }
+        // record.roomType === value;
+        // console.log(value);
       },
       filterIcon: () => {
         return <FilterOutlined />;
@@ -126,20 +219,6 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
         } else {
           return <p>{text}</p>;
         }
-      },
-    },
-    {
-      key: "5",
-      title: "Thao tác",
-      render: (_, record) => {
-        return (
-          <>
-            <div className="btnWrap">
-              <EditButton openModalEdit={() => {}}></EditButton>
-              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
-            </div>
-          </>
-        );
       },
     },
   ];
@@ -174,40 +253,33 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
   };
 
   const handleOKModal = () => {
-    setModal(false);
+    setModal(null);
   };
 
   const handleCancelModal = () => {
-    setModal(false);
+    setModal(null);
   };
 
   const ModalDetail = () => {
     return (
       <Modal
-        title="INVOICE #123123"
+        title={"#" + receipt[modal].id}
         open={true}
         onOk={handleOKModal}
         onCancel={handleCancelModal}
         width="60%"
       >
-        <DetailForm></DetailForm>
+        <DetailForm receipt={receipt} rowIndex={modal}></DetailForm>
       </Modal>
     );
   };
 
   return (
     <div className="table">
-      {modal === true && ModalDetail()}
+      {modal !== null && ModalDetail(modal)}
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div>
-          <Button
-            onClick={() => {
-              setModal(true);
-            }}
-          >
-            Modal
-          </Button>
           <Button
             className="dateBtn"
             type={type === "year" ? "primary" : "default"}
@@ -266,6 +338,16 @@ const ReceiptTable = ({ receipt, setReceipt }) => {
         </div>
       </div>
       <Table
+        rowKey={(row) => row.id}
+        onRow={(record, rowIndex) => {
+          return {
+            onClick: (event) => {
+              // ModalDetail(rowIndex);
+              setModal(rowIndex);
+            }, // click row
+          };
+        }}
+        showSorterTooltip={false}
         columns={columns}
         dataSource={receipt}
         scroll={{ y: "60vh", x: "100%" }}

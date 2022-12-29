@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../index.css";
-import { Table, Button, Modal, Form, Input, Slider } from "antd";
 
+import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
+import { Table, Button, Modal, Form, Input, Slider } from "antd";
+import { createItem, updateItem } from "../../../../api/ItemAPI";
 import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import ItemForm from "../../../../components/Form/ItemForm";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
+import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 
-const ItemTable = ({ items, setItems }) => {
+const ItemTable = ({ items, setItems, user }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -17,14 +20,27 @@ const ItemTable = ({ items, setItems }) => {
   };
 
   const [editingRow, setEditingRow] = useState(null);
-
-  const [form] = Form.useForm();
-
+  // const {user} = useContext(AppContext);
+  const [itemForm] = Form.useForm();
+  const [newItem, setNewItem] = useState({});
   const [searchedText, setSearchedText] = useState("");
+  const [selectedItem, setSelectedItem] = useState({});
+  const [reserveFilter, setReserveFilter] = useState(null);
+  const [priceFilter, setPriceFilter] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const minPrice = Math.min(...items.map((items) => items.sell_price));
+  const price = Math.max(...items.map((items) => items.sell_price));
+  const minReserve = Math.min(...items.map((items) => items.reserve_amount));
+  const reserve = Math.max(...items.map((items) => items.reserve_amount));
 
   const priceMark = {
-    100000: "100,000đ",
-    10000000: "10,000,000đ",
+    [minPrice]: minPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
+    [price]: price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
+  };
+  const reserveMark = {
+    [minReserve]: minReserve.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    [reserve]: reserve.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
   };
 
   const columns = [
@@ -40,9 +56,28 @@ const ItemTable = ({ items, setItems }) => {
       title: "Tên sản phẩm",
       filteredValue: [searchedText],
       onFilter: (value, record) => {
-        return String(record.name)
-          .toLocaleLowerCase()
-          .includes(value.toLocaleLowerCase());
+        return (
+          String(record.name)
+            .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.id)
+            .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase())
+        );
       },
       width: "30%",
       align: "center",
@@ -75,48 +110,94 @@ const ItemTable = ({ items, setItems }) => {
       width: "20%",
       align: "center",
       sorter: (a, b) => a.reserve_amount - b.reserve_amount,
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="minimum"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the minimum",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
+      filteredValue: reserveFilter !== null ? [reserveFilter] : null,
+      filterDropdown: ({ clearFilters }) => {
+        return (
+          <>
+            <div className="filterContainer">
+              <Slider
+                range
+                max={reserve}
+                min={minReserve}
+                marks={reserveMark}
+                defaultValue={[0, 20]}
+                onChange={(e) => {
+                  setReserveFilter(null);
+                  setReserveFilter(e);
+                }}
+              />
+              <Button
+                type="primary"
+                onClick={() => {
+                  setReserveFilter(null);
+                  clearFilters({ closeDropdown: true });
+                }}
+              >
+                Reset
+              </Button>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
+      onFilter: (value, record) => {
+        if (reserveFilter === null) {
+          return record.reserve_amount;
         } else {
-          return <p>{text}</p>;
+          return (
+            record.reserve_amount >= value[0] &&
+            record.reserve_amount <= value[1]
+          );
         }
+      },
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
       },
     },
     {
       key: "4",
-      title: "Giá",
+      title: "Giá (đ)",
       dataIndex: "sell_price",
       width: "20%",
       align: "center",
       sorter: (a, b) => a.sell_price - b.sell_price,
-      filterDropdown: () => {
+      filteredValue: priceFilter !== null ? [priceFilter] : null,
+      filterDropdown: ({ clearFilters }) => {
         return (
           <>
             <div className="filterContainer">
               <div className="priceSlider">
                 <Slider
+                  tipFormatter={(value) => {
+                    return `${value < 0 ? "-" : ""} ${Math.abs(value)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+                  }}
                   width={0.8}
+                  step={5000}
                   range
-                  min={100000}
-                  max={10000000}
+                  min={minPrice}
+                  max={price}
                   marks={priceMark}
-                  defaultValue={[100000, 1000000]}
-                  onChange={(value) => {}}
+                  defaultValue={[0, 100000]}
+                  onChange={(e) => {
+                    setPriceFilter(null);
+                    setPriceFilter(e);
+                  }}
                 />
-                <Button type="primary">Reset</Button>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setPriceFilter(null);
+                    clearFilters({ closeDropdown: true });
+                  }}
+                >
+                  Reset
+                </Button>
               </div>
             </div>
           </>
@@ -125,53 +206,48 @@ const ItemTable = ({ items, setItems }) => {
       filterIcon: () => {
         return <FilterOutlined />;
       },
-      render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="price"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the minimum",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
+      onFilter: (value, record) => {
+        if (priceFilter === null) {
+          return record.sell_price;
         } else {
-          return <p>{text}</p>;
+          return record.sell_price >= value[0] && record.sell_price <= value[1];
         }
+      },
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
       },
     },
     {
       key: "5",
       title: "Thao tác",
+      align: "center",
       render: (_, record) => {
         return (
           <>
             <div className="btnWrap">
-              <EditButton openEditModal={() => {}}></EditButton>
-              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+              <EditButton
+                openModalEdit={() => {
+                  setSelectedItem(record);
+                  onEditButton(record);
+                }}
+              ></EditButton>
             </div>
           </>
         );
       },
     },
   ];
-
-  const onDeleteButton = (record) => {
-    Modal.confirm({
-      title: "Bạn có chắc muốn xoá dữ liệu?",
-      okText: "Yes",
-      okType: "danger",
-      onOk: () => {
-        setItems((pre) => {
-          return pre.filter((data) => data.idNum !== record.idNum);
-        });
-      },
-    });
+  const onEditButton = async (record) => {
+    setIsEditing(true);
+    itemForm.setFieldValue("name", record.name);
+    itemForm.setFieldValue("reserve_amount", record.reserve_amount);
+    itemForm.setFieldValue("sell_price", record.sell_price);
+    setIsModalVisible(true);
+    // reserve_amount: selectedItem.reserve_amount,
+    // sell_price: selectedItem.sell_price
+    // })
   };
 
   const onFinish = (values) => {
@@ -185,6 +261,70 @@ const ItemTable = ({ items, setItems }) => {
     setItems(upnameDataSource);
     setEditingRow(null);
   };
+  const handleCancelModal = () => {
+    setIsModalVisible(false);
+    setIsEditing(false);
+    itemForm.resetFields();
+  };
+  const handleOKModal = () => {
+    itemForm
+      .validateFields()
+      .then(async (value) => {
+        console.log(value);
+        if (isEditing) {
+          setSelectedItem((prev) => {
+            return {
+              ...prev,
+              reserve_amount: value.reserve_amount,
+              sell_price: value.sell_price,
+            };
+          });
+          try {
+            console.log(selectedItem);
+            const { data: editedData } = await updateItem(
+              user?.position,
+              selectedItem.id,
+              value
+            );
+            setItems((prev) => {
+              prev.map((item) => {
+                if (item.id === selectedItem.id) {
+                  setSelectedItem((prev) => {
+                    return {
+                      ...prev,
+                      reserve_amount: value.reserve_amount,
+                      sell_price: value.sell_price,
+                    };
+                  });
+                }
+              });
+            });
+            SuccessAlert("Cập nhật sản phẩm thành công");
+            setIsModalVisible(false);
+            itemForm.resetFields();
+          } catch {
+            ErrorAlert("Đã xảy ra lỗi khi cập nhật sản phẩm");
+          }
+        } else {
+          try {
+            const { data: itemData } = await createItem(user?.position, value);
+            setItems((prev) => {
+              console.log(itemData);
+              return [...prev, itemData.data[0]];
+            });
+            SuccessAlert("Tạo sản phẩm mới thành công");
+            itemForm.resetFields();
+            setIsModalVisible(false);
+          } catch {
+            ErrorAlert("Đã xảy ra lỗi khi tạo sản phẩm");
+          }
+        }
+      })
+      .catch((value) => {
+        ErrorAlert("Vui lòng nhập dữ liệu");
+        throw value;
+      });
+  };
 
   return (
     <div className="table">
@@ -192,10 +332,10 @@ const ItemTable = ({ items, setItems }) => {
         <Modal
           title="Thông tin sản phẩm"
           visible={isModalVisible}
-          onOk={handle}
-          onCancel={handle}
+          onOk={handleOKModal}
+          onCancel={handleCancelModal}
         >
-          <ItemForm />
+          <ItemForm form={itemForm} item={selectedItem} isEditing={isEditing} />
         </Modal>
       </>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
@@ -225,6 +365,7 @@ const ItemTable = ({ items, setItems }) => {
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         columns={columns}
         dataSource={items}
         scroll={{ y: "60vh", x: "100%" }}

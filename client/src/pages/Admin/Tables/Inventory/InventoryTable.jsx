@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import dayjs from "dayjs"
 import {
   Table,
   Button,
@@ -11,10 +12,16 @@ import {
 } from "antd";
 import { PlusOutlined, FilterOutlined, DownOutlined } from "@ant-design/icons";
 import InventoryForm from "../../../../components/Form/InventoryForm";
+import { fetchEmployeeByUsername } from "../../../../api/EmployeeAPI";
 import TextButton from "../../../../components/TextButton/TextButton";
 import CheckButton from "../../../../components/IconButton/CheckButton/CheckButton";
+import { useContext } from "react";
+import { ItemContext } from "../../../../context/ItemContext";
+import { createInventoryDetail, createInventoryRecord } from "../../../../api/InventoryAPI";
+import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
+import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 
-const InventoryTable = ({ rooms }) => {
+const InventoryTable = ({ rooms, user }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -23,6 +30,8 @@ const InventoryTable = ({ rooms }) => {
     setIsModalVisible(false);
   };
   const [form] = Form.useForm();
+  const { item, setItem, record, setRecord } = useContext(ItemContext);
+  const [selectedRoom, setSelectedRoom] = useState({});
 
   const [searchedText, setSearchedText] = useState("");
   const areaMark = {
@@ -30,41 +39,39 @@ const InventoryTable = ({ rooms }) => {
     60: "60",
   };
 
-  const items = [
-    {
-      label: "Loại 1",
-      key: "1",
-    },
-    {
-      label: "Luxury",
-      key: "2",
-    },
-    {
-      label: "President",
-      key: "3",
-    },
-  ];
+  const [filter, setFilter] = useState("");
+  useEffect(() => {
+    // setDataSource(rooms);
+    console.log(rooms)  
+  }, [rooms])
 
-  const [dataSource, setDataSource] = useState([
-    {
-      id: 1,
-      name: "Bàn chải đánh răng",
-      amount: "10",
-      price: "20000",
-    },
-    {
-      id: 2,
-      name: "Ly",
-      amount: "1",
-      price: "20000",
-    },
-    {
-      id: 3,
-      name: "Giường",
-      amount: "1",
-      price: "20000",
-    },
-  ]);
+  // const items = rooms.map((value, index) => {
+  //   // return {
+  //   //   label: "" + value.roomType.toString(),
+  //   //   value: "" + value.roomType.toString(),
+  //   // };
+  // });
+
+  // const [dataSource, setDataSource] = useState([
+  //   {
+  //     id: 1,
+  //     name: "Bàn chải đánh răng",
+  //     amount: "10",
+  //     price: "20000",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Ly",
+  //     amount: "1",
+  //     price: "20000",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Giường",
+  //     amount: "1",
+  //     price: "20000",
+  //   },
+  // ]);
 
   const columns = [
     {
@@ -74,41 +81,76 @@ const InventoryTable = ({ rooms }) => {
       width: "26.6666%",
       align: "center",
       sorter: (a, b) => a.room_name.localeCompare(b.room_name),
+      // render: (_,record) => {}
     },
     {
       key: "2",
       title: "Loại phòng",
-      dataIndex: "roomType",
+      dataIndex: "room_type",
       width: "26.6666%",
       align: "center",
-      filteredValue: [searchedText],
+      filteredValue: filter !== "" ? [filter] : null,
       onFilter: (value, record) => {
         return (
           String(record.room_name)
             .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase()) ||
-          String(record.room_type_id.name)
+          String(record.room_type)
             .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.roomType.name)
+            .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase())
         );
       },
-      render: (text, record) => {
-        return <p>{record.room_type_id.name}</p>;
-      },
-      filterDropdown: () => {
+      // render: (text, record) => {
+      //   // return <p>{record.room_type_id.name}</p>;
+      // },
+      filterDropdown: ({ confirm, clearFilters }) => {
         return (
           <>
             <div className="filterContainer">
               <div>
                 <Select
-                  size="large"
-                  options={items}
+                  size="medium"
+                  // options={items}
                   showSearch
                   placeholder="Chọn loại phòng"
-                  onChange={(e) => {}}
+                  onChange={(e) => {
+                    setFilter(e);
+                    clearFilters();
+                  }}
                 />
               </div>
-              <Button type="primary" style={{ marginTop: "10px" }}>
+              <Button
+                type="primary"
+                style={{ marginTop: "10px" }}
+                onClick={() => {
+                  setFilter("");
+                  clearFilters();
+                }}
+              >
                 Reset
               </Button>
             </div>
@@ -122,12 +164,12 @@ const InventoryTable = ({ rooms }) => {
     {
       key: "3",
       title: "Diện tích (m2)",
-      dataIndex: "size",
+      dataIndex: "area",
       width: "26.6666%",
       align: "center",
-      render: (text, record) => {
-        return <p>{text}</p>;
-      },
+      // render: (text, record) => {
+      //   // return <p>{text}</p>;
+      // },
       filterDropdown: () => {
         return (
           <>
@@ -138,11 +180,15 @@ const InventoryTable = ({ rooms }) => {
                 min={10}
                 marks={areaMark}
                 defaultValue={[10, 20]}
-                onChange={(value) => {
-                  console.log(value);
-                }}
+                onChange={(value) => {}}
               />
-              <Button type="primary">Reset</Button>
+              <Button
+                type="primary"
+                onClick={() => {
+                }}
+              >
+                Reset
+              </Button>
             </div>
           </>
         );
@@ -161,7 +207,9 @@ const InventoryTable = ({ rooms }) => {
               title="Kiểm tra phòng"
               onCheckButton={() => {
                 showModal();
-                form.setFieldValue("room_name", record.room_name);
+                console.log(record);
+                setSelectedRoom(record);
+                // form.setFieldValue("room_name", record.room_name);
               }}
             ></CheckButton>
             {/* <TextButton
@@ -185,10 +233,46 @@ const InventoryTable = ({ rooms }) => {
   ];
 
   function handleOKModalAdd() {
+    fetchEmployeeByUsername(user?.position, user?.account.username).then(
+      ({ data }) => {
+        console.log(data);
+        const newRecord = {
+          date: dayjs(Date.now()),
+          employee_id: data.id,
+          booking_id: selectedRoom.booking_id,
+          room_id: selectedRoom.room_id,
+        };
+        createInventoryRecord(user?.position, newRecord).then((value) => {
+          console.log(value)
+          record.forEach((item) => {
+            const newDetail = {
+              item_id: item.id,
+              price: item.price,
+              amount: item.amount,
+              record_id: value.data[0].id
+            }
+            createInventoryDetail(user?.position, newDetail).then(() => {
+              
+            }).catch((error) => {
+              ErrorAlert("Đã xảy ra lỗi");
+              throw error;
+            })
+          });
+          SuccessAlert("Kiểm phòng hoàn tất");
+        }).catch((error)=> {
+          ErrorAlert("Đã xảy ra lỗi");
+          throw error;
+        })
+      }
+    );
     setIsModalVisible(false);
+    form.resetFields();
+    setRecord([]);
   }
   function handleCancelModal() {
     setIsModalVisible(false);
+    setRecord([]);
+    form.resetFields();
   }
 
   const modalForm = () => {
@@ -200,7 +284,7 @@ const InventoryTable = ({ rooms }) => {
         onCancel={handleCancelModal}
         width="50%"
       >
-        <InventoryForm form={form} />
+        <InventoryForm form={form} record={record} setRecord={setRecord} room_name={selectedRoom.room_name}/>
       </Modal>
     );
   };
@@ -225,6 +309,7 @@ const InventoryTable = ({ rooms }) => {
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         columns={columns}
         dataSource={rooms}
         scroll={{ y: "60vh", x: "100%" }}

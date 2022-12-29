@@ -14,6 +14,7 @@ const getEmployeePositionByUsername = (username) => {
     .from(TABLE_NAME)
     .select(
       `
+      id,
       fullname,
       position_id:position(
     name, id
@@ -35,6 +36,10 @@ const getEmployeePositionByEmail = (email) => {
 
 const getEmployeeByID = (EmployeeID) => {
   return supabase.from(TABLE_NAME).select().eq("id", EmployeeID);
+};
+
+const getEmployeeByUsername = (username) => {
+  return supabase.from(TABLE_NAME).select().eq("username", username);
 };
 
 const insertEmployee = (Employee) => {
@@ -62,4 +67,5 @@ module.exports = {
   deleteEmployee,
   getEmployeePositionByUsername,
   getEmployeePositionByEmail,
+  getEmployeeByUsername,
 };

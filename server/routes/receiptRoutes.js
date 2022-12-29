@@ -10,8 +10,6 @@ const {
   const permissionsRoutes = require("./permissionsRotues.js");
   const router = require("express").Router();
   
-
-
   
   router.get(
     "/",

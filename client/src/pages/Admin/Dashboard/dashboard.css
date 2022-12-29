@@ -1,5 +1,6 @@
 .sumary{
     padding-bottom: 16px;
+    width: 80vw;
 }
 .dashboardContainer {
     display: flex;
@@ -10,4 +11,14 @@
     width: 100%;
     height: 85vh;
     justify-content: start;
+}
+
+.sumaryDetail {
+    font-size: var(--fs-18);
+    font-weight: var(--fw-bold);
+    color: var(--light-blue);
+}
+
+.income, .payment {
+    color: var(--dark-grey)
 }

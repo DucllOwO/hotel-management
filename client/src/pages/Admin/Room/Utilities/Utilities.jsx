@@ -10,6 +10,7 @@ const Utilities = () => {
   const { user } = useContext(AppContext);
 
   useEffect(() => {
+    document.title = "Utilities | Parallel Shine";
     const fetchUtilities = async () => {
       const { data } = await userRequest.get("/room_features", {
         params: { user: { position: user?.position } },
@@ -18,12 +19,13 @@ const Utilities = () => {
       setUtilities(data.data);
     };
     fetchUtilities();
-  }, []);
+  }, [user?.position]);
   return (
     <div className="utilitiesContainer">
       <UtilitiesTable
         utilities={utilities}
         setUtilities={setUtilities}
+        positionUser={user?.position}
       ></UtilitiesTable>
     </div>
   );

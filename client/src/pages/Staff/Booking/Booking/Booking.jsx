@@ -1,8 +1,8 @@
-import { Button } from "antd";
 import React, { useState, useContext, useEffect } from "react";
-import { userRequest } from "../../../../api/api";
+import { getAllRoomType } from "../../../../api/RoomTypeAPI";
+
 import { fetchBookingByDate } from "../../../../api/BookingAPI";
-import BottomBar from "../../../../components/Admin/BottomBar/BottomBar";
+
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 import { AppContext } from "../../../../context/AppContext";
 import BookingTable from "../../Tables/Booking/Booking/BookingTable";
@@ -15,12 +15,20 @@ const Booking = () => {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [listType, setListType] = useState([]);
 
   useEffect(() => {
-    console.log(from)
-    console.log(to)
+    setIsLoading(true);
+    if (listType) {
+      getAllRoomType(user?.position)
+        .then(({ data }) => {
+          console.log(data);
+          setListType(data);
+        })
+        .finally(() => setIsLoading(false));
+    }
+
     if (from && to) {
-      setIsLoading(true);
       fetchBookingByDate(user?.position, from, to)
         .then(({ data }) => {
           setIsLoading(false);
@@ -30,21 +38,26 @@ const Booking = () => {
           console.log(err);
           setIsLoading(false);
           ErrorAlert("Lỗi khi lấy dữ liệu phòng.");
-        });
+        })
+        .finally(() => setIsLoading(false));
     }
   }, [user?.position, from, to]);
   return (
-    <div className="bookingContainer">
-      <BookingTable
-        setRooms={setRooms}
-        rooms={rooms}
-        from={from}
-        to={to}
-        setFrom={setFrom}
-        setTo={setTo}
-        isLoading={isLoading}
-        user={user}
-      ></BookingTable>
+    <div className="container">
+      <div className="bookingContainer">
+        <BookingTable
+          isLoading={isLoading}
+          user={user}
+          rooms={rooms}
+          setRooms={setRooms}
+          setFrom={setFrom}
+          from={from}
+          listType={listType}
+          setTo={setTo}
+          to={to}
+          positionUser={user.position}
+        ></BookingTable>
+      </div>
     </div>
   );
 };

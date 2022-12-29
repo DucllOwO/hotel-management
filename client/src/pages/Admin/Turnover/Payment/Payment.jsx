@@ -10,6 +10,7 @@ const Payment = () => {
   const { user } = useContext(AppContext);
 
   useEffect(() => {
+    document.title = "Payment | Parallel Shine";
     const fetchPayment = async () => {
       const { data } = await userRequest.get("/payment", {
         params: { user: { position: user?.position } },

@@ -1,26 +1,32 @@
 import React, { useState, useContext, useEffect } from "react";
-import { userRequest } from "../../../../api/api";
 import { AppContext } from "../../../../context/AppContext";
 import ImportingTable from "../../Tables/Importing/ImportingTable";
+import { fetchRecord } from "../../../../api/ImportAPI";
 import "./importing.css";
+import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 
 const Importing = () => {
   const [record, setRecord] = useState([]);
   const { user } = useContext(AppContext);
 
   useEffect(() => {
-    const fetchRecord = async () => {
-      const { data } = await userRequest.get("/importing", {
-        params: { user: { position: user?.position } },
+    fetchRecord(user?.position)
+      .then(({ data }) => {
+        setRecord(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("Lấy dữ liệu nhập hàng thất bại!!");
       });
-      console.log(data);
-      setRecord(data);
-    };
-    fetchRecord();
-  }, []);
+  }, [user?.position]);
   return (
     <div className="importingContainer">
-      <ImportingTable importingRecord={record}></ImportingTable>
+      <ImportingTable
+        importingRecord={record}
+        setRecord={setRecord}
+        positionUser={user.position}
+        userID={user.account.id}
+      ></ImportingTable>
     </div>
   );
 };

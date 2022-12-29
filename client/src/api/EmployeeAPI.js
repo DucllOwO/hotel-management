@@ -13,6 +13,12 @@ export const fetchEmployeeByID = (positionUser, employeeID) => {
   });
 };
 
+export const fetchEmployeeByUsername = (positionUser, username) => {
+  return userRequest.get(`/users/employee/${username}`, {
+    params: { user: { position: positionUser }, type: "employee" },
+  });
+};
+
 export const deleteEmployee = (positionUser, employeeID) => {
   return userRequest.delete(`/users/${employeeID.trim()}`, {
     params: {
@@ -35,6 +41,7 @@ export const createEmployee = async (
     salary,
     position_id,
     username,
+    email,
   }
 ) => {
   return userRequest.post(`/users?type=employee`, {
@@ -52,13 +59,22 @@ export const createEmployee = async (
       salary: salary,
       position_id: position_id,
       username: username,
+      email: email,
     },
   });
 };
 
 export const updateEmployee = (
   positionUser,
-  { id, fullname, date_of_birth, phone_number, start_working_date, position_id }
+  {
+    id,
+    fullname,
+    date_of_birth,
+    phone_number,
+    start_working_date,
+    position_id,
+    email,
+  }
 ) => {
   return userRequest.put(`/users/${id.trim()}?type=employee`, {
     user: {
@@ -70,6 +86,7 @@ export const updateEmployee = (
       phone_number: phone_number,
       start_working_date: new Date(start_working_date),
       position_id: position_id,
+      email: email,
     },
   });
 };

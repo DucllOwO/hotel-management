@@ -1,14 +1,14 @@
 const supabase = require("../database");
 
 const createUsedRoom = (bookingID, roomNames) => {
-  return supabase.from("used_room").insert(
-    roomNames.map((roomName) => {
-      return {
+  console.log(bookingID)
+  console.log(roomNames)
+  return supabase.from("used_room")
+  .insert({
         booking_id: bookingID,
-        room_name: roomName,
-      };
-    })
-  );
+        room_id: roomNames.id,
+    
+});
 };
 
 module.exports = {

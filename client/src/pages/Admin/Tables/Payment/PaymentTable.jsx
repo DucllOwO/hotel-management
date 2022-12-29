@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import "../index.css";
-import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Table, Button, Modal, Form, Input, DatePicker, Slider } from "antd";
+import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import moment from "moment";
+import PaymentForm from "../../../../components/Form/PaymentForm";
+import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 
 const PaymentTable = ({ payment, setPayment }) => {
   const [type, setType] = useState("day");
@@ -14,8 +16,20 @@ const PaymentTable = ({ payment, setPayment }) => {
 
   const [searchedText, setSearchedText] = useState("");
 
+  const [priceFilter, setPriceFilter] = useState(null);
+
+  const [modal, setModal] = useState(false);
+
   const dateFormat = "DD-MM-YYYY";
   const monthFormat = "MM-YYYY";
+
+  const price = Math.max(...payment.map((payment) => payment.total_cost));
+  const minPrice = Math.min(...payment.map((payment) => payment.total_cost));
+
+  const priceMark = {
+    [minPrice]: minPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
+    [price]: price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
+  };
 
   const columns = [
     {
@@ -71,10 +85,77 @@ const PaymentTable = ({ payment, setPayment }) => {
     },
     {
       key: "4",
-      title: "Thành tiền",
+      title: "Tổng tiền (đ)",
       align: "center",
-      dataIndex: "cost",
-      sorter: (a, b) => a.cost - b.cost,
+      dataIndex: "total_cost",
+      sorter: (a, b) => a.total_cost - b.total_cost,
+      filteredValue: priceFilter !== null ? [priceFilter] : null,
+      filterDropdown: ({ clearFilters }) => {
+        return (
+          <>
+            <div className="filterContainer">
+              <div className="priceSlider">
+                <Slider
+                  tipFormatter={(value) => {
+                    return `${value < 0 ? "-" : ""} ${Math.abs(value)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+                  }}
+                  width={0.8}
+                  step={500000}
+                  range
+                  min={minPrice}
+                  max={price}
+                  marks={priceMark}
+                  defaultValue={[0, 1000000]}
+                  onChange={(e) => {
+                    setPriceFilter(null);
+                    setPriceFilter(e);
+                  }}
+                />
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setPriceFilter(null);
+                    clearFilters({ closeDropdown: true });
+                  }}
+                >
+                  Reset
+                </Button>
+              </div>
+            </div>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <FilterOutlined />;
+      },
+      onFilter: (value, record) => {
+        if (priceFilter === null) {
+          return record.total_cost;
+        } else {
+          return record.total_cost >= value[0] && record.total_cost <= value[1];
+        }
+      },
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+      },
+    },
+    {
+      key: "5",
+      title: "Thao tác",
+      width: 100,
+      render: (_, record) => {
+        return (
+          <>
+            <div className="btnWrap">
+              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+            </div>
+          </>
+        );
+      },
     },
   ];
 
@@ -121,8 +202,30 @@ const PaymentTable = ({ payment, setPayment }) => {
     setEditingRow(null);
   };
 
+  const modalAddPayment = () => (
+    <Modal
+      title="Thông tin phiếu chi"
+      open={true}
+      onOk={handleOKModalAdd}
+      onCancel={handleCancelModal}
+      width="40%"
+    >
+      <PaymentForm></PaymentForm>
+    </Modal>
+  );
+
+  const handleCancelModal = () => {
+    setModal(false);
+    form.resetFields();
+  };
+
+  const handleOKModalAdd = () => {
+    setModal(false);
+  };
+
   return (
     <div className="table">
+      <>{modal === true && modalAddPayment()}</>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div>
@@ -154,7 +257,7 @@ const PaymentTable = ({ payment, setPayment }) => {
             Ngày
           </Button>
         </div>
-        <div>
+        <div className="rightSearchBar">
           {type === "day" && (
             <DatePicker
               onChange={onChange}
@@ -178,9 +281,24 @@ const PaymentTable = ({ payment, setPayment }) => {
               picker="year"
             ></DatePicker>
           )}
+          <div>
+            <Button
+              onClick={() => {
+                setModal(true);
+              }}
+              style={{ marginLeft: "10px" }}
+              className="addButton"
+              type="primary"
+              ghost
+              icon={<PlusOutlined />}
+            >
+              Tạo mới
+            </Button>
+          </div>
         </div>
       </div>
       <Table
+        showSorterTooltip={false}
         columns={columns}
         dataSource={payment}
         scroll={{ y: "60vh", x: "100%" }}
