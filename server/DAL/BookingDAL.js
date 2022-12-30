@@ -41,7 +41,7 @@ const getBookingByDate = (from, to) => {
     .from(TABLE_NAME)
     .select("id")
     .or(
-      `and(book_from.lt.${from},book_to.gt.${from}),and(book_to.gt.${to},book_from.lt.${to})`
+      `and(book_from.lt.${from},book_to.gt.${from}),and(book_to.gt.${to},book_from.lt.${to}),and(book_from.gt.${from},book_to.lt.${to})`
     );
 };
 

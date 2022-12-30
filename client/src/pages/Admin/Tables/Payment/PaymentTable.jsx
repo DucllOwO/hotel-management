@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import "../index.css";
-import { Table, Button, Modal, Form, Input, DatePicker, Slider } from "antd";
+import { Table, Button, Modal, Form, DatePicker, Slider } from "antd";
 import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
-import moment from "moment";
 import PaymentForm from "../../../../components/Form/PaymentForm";
-import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 import { createPayment } from "../../../../api/PaymentAPI";
 import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";

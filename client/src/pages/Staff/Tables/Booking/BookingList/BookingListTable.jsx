@@ -13,6 +13,7 @@ import {
 import "./bookingListtable.css";
 import dayjs from "dayjs";
 import BookingListExpand from "../../../../../components/ExpandedTable/BookingListExpand";
+import { FilterOutlined } from "@ant-design/icons";
 import ErrorAlert from "../../../../../components/Error/Alert/ErrorAlert";
 import SuccessAlert from "../../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import {
@@ -31,9 +32,15 @@ import { AppContext } from "../../../../../context/AppContext";
 import BookingListForm from "../../../../../components/Form/BookingListForm";
 import { fetchEmployeeByUsername } from "../../../../../api/EmployeeAPI";
 
-const DATE_FORMAT = "HH:mm, DD-MM-YYYY";
+const DATE_FORMAT = "HH:mm DD-MM-YYYY";
 
-const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
+const BookingListTable = ({
+  booking,
+  setBooking,
+  setStatus,
+  status,
+  isLoading,
+}) => {
   const [editingRow, setEditingRow] = useState(null);
   const [isCheckout, setIsCheckout] = useState(false);
   const [currentEmployee, setCurrentEmployee] = useState({});
@@ -54,14 +61,14 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
       key: "1",
       title: "ID",
       dataIndex: "id",
-      width: "10%",
+      // width: "10%",
       align: "center",
       sorter: (a, b) => a.id - b.id,
     },
     {
       key: "2",
       title: "Khách hàng",
-      width: "20%",
+      // width: "20%",
       align: "center",
       filteredValue: [searchedText],
       // sorter: (a, b) => a.customer_id.localeCompare(b.customer_id),
@@ -145,7 +152,7 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
       key: "3",
       title: "Từ ngày",
       dataIndex: "book_from",
-      width: "20%",
+      // width: "20%",
       align: "center",
       sorter: (a, b) => a.book_from.localeCompare(b.book_from),
       render: (text, record) => {
@@ -156,12 +163,9 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
       key: "4",
       title: "Đến ngày",
       dataIndex: "book_to",
-      width: "20%",
+      // width: "20%",
       align: "center",
       sorter: (a, b) => a.book_to.localeCompare(b.book_to),
-      render: (text, record) => {
-        return dayjs(convertToValidDateString(text)).format(DATE_FORMAT);
-      },
     },
     {
       key: "5",
@@ -170,6 +174,20 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
       align: "center",
       sorter: (a, b) => a.room_id.localeCompare(b.room_id),
     },
+    // {
+    //   key: "5",
+    //   title: "Phòng",
+    //   dataIndex: "room_id",
+    //   align: "center",
+    //   sorter: (a, b) => a.room_id.localeCompare(b.room_id),
+    // },
+    // {
+    //   key: "5",
+    //   title: "Phòng",
+    //   dataIndex: "room_id",
+    //   align: "center",
+    //   sorter: (a, b) => a.room_id.localeCompare(b.room_id),
+    // },
     {
       key: "6",
       title: "Thao tác",
@@ -210,6 +228,113 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
       },
     },
   ];
+
+  const columnsNoAction = [
+    {
+      key: "1",
+      title: "ID",
+      dataIndex: "id",
+      align: "center",
+      sorter: (a, b) => a.id - b.id,
+    },
+    {
+      key: "2",
+      title: "Khách hàng",
+      align: "center",
+      filteredValue: [searchedText],
+      // sorter: (a, b) => a.customer_id.localeCompare(b.customer_id),
+      sorter: (a, b) => a.customer_id - b.customer_id,
+      onFilter: (value, record) => {
+        return (
+          String(record.id)
+            .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.customer_id)
+            .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.book_from)
+            .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.book_to)
+            .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase()) ||
+          String(record.room_id)
+            .toLocaleLowerCase()
+            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
+            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+            .replace(/đ/g, "d")
+            .includes(value.toLocaleLowerCase())
+        );
+      },
+      dataIndex: "customer_id",
+      render: (text, record) => {
+        if (editingRow === record.idNum) {
+          return (
+            <Form.Item
+              name="customer"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter the customer",
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          );
+        } else {
+          return <p>{text}</p>;
+        }
+      },
+    },
+    {
+      key: "3",
+      title: "Từ ngày",
+      dataIndex: "book_from",
+      align: "center",
+      sorter: (a, b) => a.book_from.localeCompare(b.book_from),
+    },
+    {
+      key: "4",
+      title: "Đến ngày",
+      dataIndex: "book_to",
+      align: "center",
+      sorter: (a, b) => a.book_to.localeCompare(b.book_to),
+    },
+  ];
+
   const onCheckOutButtonHandle = (record) => {
     Modal.confirm({
       title: "Xác nhận khách trả phòng?",
@@ -759,14 +884,14 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
   }
 
   return (
-    <div className="bookingListTable">
+    <div className="table">
       <>{isCheckout ? modalJSX() : null}</>
       <>{isShowReceipt ? receiptJSX() : null}</>
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div className="headerButtons">
-          <FontAwesomeIcon icon={faSort} className="icon"></FontAwesomeIcon>
           <Button
+            type={status === "0" ? "primary" : "default"}
             className="headerBtn"
             onClick={() => {
               setStatus("0");
@@ -775,6 +900,7 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
             Đang đợi
           </Button>
           <Button
+            type={status === "1" ? "primary" : "default"}
             className="headerBtn"
             onClick={() => {
               setStatus("1");
@@ -783,6 +909,7 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
             Đang phục vụ
           </Button>
           <Button
+            type={status === "2" ? "primary" : "default"}
             className="headerBtn"
             onClick={() => {
               setStatus("2");
@@ -791,6 +918,7 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
             Hoàn thành
           </Button>
           <Button
+            type={status === "3" ? "primary" : "default"}
             className="headerBtn"
             onClick={() => {
               setStatus("3");
@@ -800,7 +928,13 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
           </Button>
         </div>
         <div>
+          {/* <Button
+            onClick={() => {
+              console.log(status === "2");
+            }}
+          ></Button> */}
           <DatePicker
+            placeholder="Chọn thời gian"
             onChange={(values) => {}}
             picker="date"
             format={dateFormat}
@@ -829,9 +963,10 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
         </div>
       </div>
       <Table
+        loading={isLoading}
         rowKey={(row) => row.id}
         showSorterTooltip={false}
-        columns={columns}
+        columns={status === "2" || status === "3" ? columnsNoAction : columns}
         dataSource={booking}
         scroll={{ y: "60vh", x: "100%" }}
         expandable={{

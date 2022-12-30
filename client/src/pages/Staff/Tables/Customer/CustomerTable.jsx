@@ -9,7 +9,7 @@ import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteB
 import { formatDate } from "../../../../Utils/formatter";
 import WarningModal from "../../../../components/WarningModal/WarningModal";
 
-const CustomerTable = ({ customer, setCustomer }) => {
+const CustomerTable = ({ customer, setCustomer, isLoading }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -52,7 +52,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
             .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
             .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase()) ||
-          String(record.name)
+          String(record.fullname)
             .toLocaleLowerCase()
             .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
             .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
@@ -62,7 +62,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
             .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
             .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase()) ||
-          String(record.birthday)
+          String(record.date_of_birth)
             .toLocaleLowerCase()
             .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
             .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
@@ -72,17 +72,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
             .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
             .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase()) ||
-          String(record.phone)
-            .toLocaleLowerCase()
-            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
-            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
-            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
-            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
-            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
-            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
-            .replace(/đ/g, "d")
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.email)
+          String(record.phone_number)
             .toLocaleLowerCase()
             .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
             .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
@@ -156,6 +146,7 @@ const CustomerTable = ({ customer, setCustomer }) => {
         </div>
       </div>
       <Table
+        loading={isLoading}
         showSorterTooltip={false}
         tableLayout="auto"
         columns={columns}

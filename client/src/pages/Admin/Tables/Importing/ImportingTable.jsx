@@ -25,6 +25,7 @@ const ImportingTable = ({
   setRecord,
   positionUser,
   userID,
+  isLoading,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -231,6 +232,7 @@ const ImportingTable = ({
         </div>
       </div>
       <Table
+        loading={isLoading}
         rowKey={(row) => row.id}
         showSorterTooltip={false}
         columns={columns}

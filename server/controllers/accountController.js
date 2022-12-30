@@ -57,7 +57,7 @@ const updateAccount = async (req, res, next) => {
   const { username } = req.params;
   const { account } = req.body;
 
-  if (!account) return next(BadRequestError());
+  if (!account?.password) return next(BadRequestError());
 
   const hashPassword = await bcrypt.hash(account?.password, BCRYPT_SALT);
 

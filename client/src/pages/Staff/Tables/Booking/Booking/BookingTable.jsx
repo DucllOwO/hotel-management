@@ -50,6 +50,27 @@ const BookingTable = ({
   const [priceFilter, setPriceFilter] = useState("");
   const [sliderFilter, setSliderFilter] = useState([0, 5000000]);
 
+  const minPrice =
+    priceFilter === "Qua đêm"
+      ? Math.min(...rooms.map((rooms) => rooms.room_type_id.overnight_price))
+      : priceFilter === "Giờ đầu tiên"
+      ? Math.min(...rooms.map((rooms) => rooms.room_type_id.first_hour_price))
+      : priceFilter === "Giờ tiếp theo"
+      ? Math.min(...rooms.map((rooms) => rooms.room_type_id.hour_price))
+      : Math.min(...rooms.map((rooms) => rooms.room_type_id.one_day_price));
+
+  const price =
+    priceFilter === "Qua đêm"
+      ? Math.max(...rooms.map((rooms) => rooms.room_type_id.overnight_price))
+      : priceFilter === "Giờ đầu tiên"
+      ? Math.max(...rooms.map((rooms) => rooms.room_type_id.first_hour_price))
+      : priceFilter === "Giờ tiếp theo"
+      ? Math.max(...rooms.map((rooms) => rooms.room_type_id.hour_price))
+      : Math.max(...rooms.map((rooms) => rooms.room_type_id.one_day_price));
+
+  const minArea = Math.min(...rooms.map((rooms) => rooms.room_type_id.area));
+  const area = Math.max(...rooms.map((rooms) => rooms.room_type_id.area));
+
   const items = listType.map((item) => {
     return {
       label: "" + item.name.toString(),
@@ -77,13 +98,13 @@ const BookingTable = ({
   ];
 
   const areaMark = {
-    10: "10",
-    100: "100",
+    [minArea]: minArea.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    [area]: area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
   };
 
   const priceMark = {
-    0: "0đ",
-    5000000: "5,000,000đ",
+    [minPrice]: minPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
+    [price]: price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
   };
 
   const columns = [
@@ -139,13 +160,14 @@ const BookingTable = ({
             <div className="filterContainer">
               <div>
                 <Select
+                  style={{ width: 300 }}
                   size="medium"
-                  options={priceItems}
+                  options={items}
                   showSearch
-                  placeholder="Chọn loại giá"
+                  placeholder="Chọn loại phòng"
                   onChange={(e) => {
                     setFilter(e);
-                    clearFilters();
+                    clearFilters({ closeDropdown: true });
                   }}
                 />
               </div>
@@ -154,7 +176,7 @@ const BookingTable = ({
                 style={{ marginTop: "10px" }}
                 onClick={() => {
                   setFilter("");
-                  clearFilters();
+                  clearFilters({ closeDropdown: true });
                 }}
               >
                 Reset
@@ -170,6 +192,15 @@ const BookingTable = ({
           />
         );
       },
+      onFilter: (value, record) => {
+        if (filter === "") {
+          return record.room_type_id.name;
+        } else {
+          return record.room_type_id.name === value;
+        }
+        // record.roomType === value;
+        // console.log(value);
+      },
     },
     {
       key: "3",
@@ -177,6 +208,9 @@ const BookingTable = ({
       dataIndex: "area",
       width: "17%",
       align: "center",
+      render: (text, record) => {
+        return <p>{record.room_type_id.area}</p>;
+      },
       sorter: (a, b) => a.area - b.area,
       filteredValue: areaFilter !== null ? [areaFilter] : null,
       filterDropdown: ({ clearFilters }) => {
@@ -185,8 +219,8 @@ const BookingTable = ({
             <div className="filterContainer">
               <Slider
                 range
-                max={100}
-                min={10}
+                max={area}
+                min={minArea}
                 step={10}
                 marks={areaMark}
                 defaultValue={[10, 30]}
@@ -213,9 +247,12 @@ const BookingTable = ({
       },
       onFilter: (value, record) => {
         if (areaFilter === null) {
-          return record.area;
+          return record.room_type_id.area;
         } else {
-          return record.area >= value[0] && record.area <= value[1];
+          return (
+            record.room_type_id.area >= value[0] &&
+            record.room_type_id.area <= value[1]
+          );
         }
       },
     },
@@ -232,9 +269,42 @@ const BookingTable = ({
           ? "hour_price"
           : "one_day_price",
       filteredValue: priceFilter !== "" ? [priceFilter] : null,
-      dataIndex: "price",
       width: "17%",
       align: "center",
+      render: (text, record) => {
+        return priceFilter === "Qua đêm" ? (
+          <p>
+            {record.room_type_id.overnight_price
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </p>
+        ) : priceFilter === "Giờ đầu tiên" ? (
+          <p>
+            {record.room_type_id.first_hour_price
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </p>
+        ) : priceFilter === "Giờ tiếp theo" ? (
+          <p>
+            {record.room_type_id.hour_price
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </p>
+        ) : (
+          <p>
+            {record.room_type_id.one_day_price
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </p>
+        );
+        // return (
+        //   <p>
+        //     {record.room_type_id.one_day_price
+        //       .toString()
+        //       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+        //   </p>
+        // );
+      },
       sorter: (a, b) =>
         priceFilter === "Qua đêm"
           ? a.overnight_price - b.overnight_price
@@ -268,10 +338,10 @@ const BookingTable = ({
                   step={10000}
                   width={0.8}
                   range
-                  min={0}
-                  max={5000000}
+                  min={minPrice}
+                  max={price}
                   marks={priceMark}
-                  defaultValue={[0, 300000]}
+                  defaultValue={[0, 100000]}
                   onChange={(value) => {
                     setSliderFilter(value);
                     if (priceFilter === "") {
@@ -304,36 +374,36 @@ const BookingTable = ({
         switch (priceFilter) {
           case "" || "Một ngày":
             return (
-              record.one_day_price >= sliderFilter[0] &&
-              record.one_day_price <= sliderFilter[1]
+              record.room_type_id.one_day_price >= sliderFilter[0] &&
+              record.room_type_id.one_day_price <= sliderFilter[1]
             );
           case "Qua đêm":
             return (
-              record.overnight_price >= sliderFilter[0] &&
-              record.overnight_price <= sliderFilter[1]
+              record.room_type_id.overnight_price >= sliderFilter[0] &&
+              record.room_type_id.overnight_price <= sliderFilter[1]
             );
           case "Giờ đầu tiên":
             return (
-              record.first_hour_price >= sliderFilter[0] &&
-              record.first_hour_price <= sliderFilter[1]
+              record.room_type_id.first_hour_price >= sliderFilter[0] &&
+              record.room_type_id.first_hour_price <= sliderFilter[1]
             );
           case "Giờ tiếp theo":
             return (
-              record.hour_price >= sliderFilter[0] &&
-              record.hour_price <= sliderFilter[1]
+              record.room_type_id.hour_price >= sliderFilter[0] &&
+              record.room_type_id.hour_price <= sliderFilter[1]
             );
           default:
             return (
-              record.one_day_price >= sliderFilter[0] &&
-              record.one_day_price <= sliderFilter[1]
+              record.room_type_id.one_day_price >= sliderFilter[0] &&
+              record.room_type_id.one_day_price <= sliderFilter[1]
             );
         }
       },
-      render: (value) => {
-        return `${value < 0 ? "-" : ""} ${Math.abs(value)
-          .toString()
-          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-      },
+      // render: (value) => {
+      // return `${value < 0 ? "-" : ""} ${Math.abs(value)
+      //   .toString()
+      //   .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+      // },
     },
     {
       key: "5",
@@ -431,6 +501,28 @@ const BookingTable = ({
     else ErrorAlert("Vui lòng chọn phòng cần đặt");
   };
 
+  const disabledDate = (current) => {
+    // Can not select days before today and today
+    return current < dayjs().startOf("day");
+  };
+
+  const range = (start, end) => {
+    const result = [];
+    for (let i = start; i < end; i++) {
+      result.push(i);
+    }
+    return result;
+  };
+
+  const disabledRangeTime = (_, type) => {
+    if (type === "start") {
+      return {
+        disabledHours: () => range(0, 24).splice(0, dayjs().hour() - 1),
+        disabledMinutes: () => range(0, dayjs().minute()),
+      };
+    }
+  };
+
   return (
     <div className="table">
       <>{isModalOpen ? modalJSX() : null}</>
@@ -438,7 +530,11 @@ const BookingTable = ({
         <div className="header">
           <div>
             <RangePicker
-              showTime
+              disabledTime={disabledRangeTime}
+              disabledDate={disabledDate}
+              showTime={{
+                hideDisabledOptions: true,
+              }}
               format={"DD/MM/YYYY hh:mm:ss"}
               onChange={(value) => {
                 console.log(value);
@@ -449,6 +545,11 @@ const BookingTable = ({
           </div>
         </div>
         <div>
+          {/* <Button
+            onClick={() => {
+              console.log(price);
+            }}
+          ></Button> */}
           <Input.Search
             onSearch={(value) => {
               setSearchedText(value);
@@ -468,7 +569,9 @@ const BookingTable = ({
           loading={isLoading}
           columns={columns}
           dataSource={rooms}
-          scroll={{ y: "60vh", x: "100%" }}
+          scroll={{
+            y: document.documentElement.clientHeight - 330,
+          }}
           rowKey={(row) => row.room_name}
           expandable={{
             expandedRowRender: (record) => {

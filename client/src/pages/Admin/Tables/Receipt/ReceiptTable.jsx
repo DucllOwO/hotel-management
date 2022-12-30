@@ -26,6 +26,7 @@ const ReceiptTable = ({
   type,
   setType,
   positionUser,
+  isLoading,
 }) => {
   useEffect(() => {
     document.title = "Receipt | Parallel Shine";
@@ -292,6 +293,7 @@ const ReceiptTable = ({
         </div>
       </div>
       <Table
+        loading={isLoading}
         rowKey={(row) => row.id}
         onRow={(record, rowIndex) => {
           return {
