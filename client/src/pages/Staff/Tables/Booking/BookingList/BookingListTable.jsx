@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../index.css";
 import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
 import "./bookingListtable.css";
@@ -30,7 +30,13 @@ const BookingListTable = ({
   status,
   isLoading,
 }) => {
-  const [bookingSearchDay, setBookingSearchDay] = useState(booking);
+  const [bookingSearchDay, setBookingSearchDay] = useState(
+    booking.map((value) => value)
+  );
+  useEffect(() => {
+    setBookingSearchDay(booking.map((value) => value));
+  }, [booking.length]);
+
   const [isCheckout, setIsCheckout] = useState(false);
   const [currentEmployee, setCurrentEmployee] = useState({});
   const [selectedBooking, setSelectedBooking] = useState({});
@@ -872,6 +878,8 @@ const BookingListTable = ({
           <DatePicker
             placeholder="Chọn thời gian"
             onChange={(dayjsObj) => {
+              console.log(bookingSearchDay);
+              console.log(dayjsObj);
               if (dayjsObj)
                 setBookingSearchDay(
                   booking.filter((value) => {
