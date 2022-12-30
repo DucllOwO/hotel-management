@@ -72,22 +72,8 @@ const deleteAccount = async (req, res, next) => {
   const { username } = req.params;
 
   const { data: users, error } = await AccountDAL.deleteAccount(username);
+
   if (error) return next(error);
-
-  const email = users[0]?.email;
-
-  if (email) {
-    const { data: users, error: getAllError } = await usersAuthDAL.getAllUser();
-    if (getAllError) return next(getAllError);
-
-    const user = users.find((user) => user.email === email);
-
-    if (user) {
-      const { error: updateError } = await usersAuthDAL.deleteUser(user.id);
-
-      if (updateError) return next(updateError);
-    }
-  }
 
   res.status(204).send();
 };
