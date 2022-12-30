@@ -88,6 +88,14 @@ const Receipt = () => {
   function getFirstAndLastDayOfYear(date) {
     return [dayjs(date).startOf("year"), dayjs(date).endOf("year")];
   }
+
+  function getFirstAndLastDayOfMonth(date) {
+    return [dayjs(date).startOf("month"), dayjs(date).endOf("month")];
+  }
+
+  function getFirstAndLastDayOfYear(date) {
+    return [dayjs(date).startOf("year"), dayjs(date).endOf("year")];
+  }
 };
 
 export default Receipt;

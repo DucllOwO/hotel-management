@@ -32,7 +32,7 @@ import { AppContext } from "../../../../../context/AppContext";
 import BookingListForm from "../../../../../components/Form/BookingListForm";
 import { fetchEmployeeByUsername } from "../../../../../api/EmployeeAPI";
 
-const DATE_FORMAT = "HH:mm, DD-MM-YYYY";
+const DATE_FORMAT = "HH:mm DD-MM-YYYY";
 
 const BookingListTable = ({
   booking,
@@ -167,6 +167,13 @@ const BookingListTable = ({
       align: "center",
       sorter: (a, b) => a.book_to.localeCompare(b.book_to),
     },
+    {
+      key: "5",
+      title: "Phòng",
+      dataIndex: "room_id",
+      align: "center",
+      sorter: (a, b) => a.room_id.localeCompare(b.room_id),
+    },
     // {
     //   key: "5",
     //   title: "Phòng",
@@ -182,43 +189,42 @@ const BookingListTable = ({
     //   sorter: (a, b) => a.room_id.localeCompare(b.room_id),
     // },
     {
-      key: "5",
+      key: "6",
       title: "Thao tác",
       render: (_, record) => {
         if (status === "0")
-          if (status === "0")
-            return (
-              <>
-                <div className="btnWrap">
-                  <CheckButton
-                    title="Nhận phòng"
-                    onCheckButton={() => {
-                      onCheckInButtonHandle(record);
-                    }}
-                  ></CheckButton>
-                  <CancelButton
-                    title="Hủy"
-                    onCancelButton={() => {
-                      onCancelButtonHandle(record);
-                    }}
-                  ></CancelButton>
-                </div>
-              </>
-            );
-          else if (status === "1")
-            return (
-              <>
-                <div className="btnWrap">
-                  <CheckButton
-                    title="Trả phòng"
-                    onCheckButton={() => {
-                      onCheckOutButtonHandle(record);
-                    }}
-                  ></CheckButton>
-                </div>
-              </>
-            );
-          else return <></>;
+          return (
+            <>
+              <div className="btnWrap">
+                <CheckButton
+                  title="Nhận phòng"
+                  onCheckButton={() => {
+                    onCheckInButtonHandle(record);
+                  }}
+                ></CheckButton>
+                <CancelButton
+                  title="Hủy"
+                  onCancelButton={() => {
+                    onCancelButtonHandle(record);
+                  }}
+                ></CancelButton>
+              </div>
+            </>
+          );
+        else if (status === "1")
+          return (
+            <>
+              <div className="btnWrap">
+                <CheckButton
+                  title="Trả phòng"
+                  onCheckButton={() => {
+                    onCheckOutButtonHandle(record);
+                  }}
+                ></CheckButton>
+              </div>
+            </>
+          );
+        else return <></>;
       },
     },
   ];
@@ -351,22 +357,15 @@ const BookingListTable = ({
       },
     });
   };
-
   const onCheckInButtonHandle = (record) => {
     Modal.confirm({
       title: "Xác nhận khách nhận phòng?",
       okText: "Đúng",
       okType: "danger",
       onOk: () => {
-        updateBookingStatus(user?.position, "1", record.id);
         updateBookingStatus(user?.position, "1", record.id)
           .then((data) => {
             SuccessAlert("Nhận phòng thành công");
-            setBooking((prev) =>
-              prev.filter((value) => {
-                return value.id !== record.id;
-              })
-            );
             setBooking((prev) =>
               prev.filter((value) => {
                 return value.id !== record.id;
@@ -386,15 +385,9 @@ const BookingListTable = ({
       okText: "Đúng",
       okType: "danger",
       onOk: () => {
-        updateBookingStatus(user?.position, "3", record.id);
         updateBookingStatus(user?.position, "3", record.id)
           .then((data) => {
             SuccessAlert("Huỷ đặt phòng thành công");
-            setBooking((prev) =>
-              prev.filter((value) => {
-                return value.id !== record.id;
-              })
-            );
             setBooking((prev) =>
               prev.filter((value) => {
                 return value.id !== record.id;
@@ -438,38 +431,7 @@ const BookingListTable = ({
       .catch(() => {
         ErrorAlert("Lấy dữ liệu nhân viên không thành công");
       });
-    await fetchEmployeeByUsername(user?.position, user?.account.username)
-      .then((data) => {
-        setCurrentEmployee(data.data);
-        console.log(data.data);
-      })
-      .catch(() => {
-        ErrorAlert("Lấy dữ liệu nhân viên không thành công");
-      });
 
-    console.log(selectedBooking);
-    //fetch service used
-    await getInventory(user?.position, selectedBooking.id)
-      .then(async (data) => {
-        console.log(data.data);
-        if (data.data) {
-          setUsedService(
-            data.data.map((value) => {
-              const newServiceCost = value.price * value.amount;
-              serviceCost = serviceCost + newServiceCost;
-              return {
-                item_name: value.item_name,
-                amount: value.amount,
-                price: value.price,
-                total_cost: newServiceCost,
-              };
-            })
-          );
-        }
-      })
-      .catch(() => {
-        ErrorAlert("Lấy dữ liệu dịch vụ thất bại");
-      });
     console.log(selectedBooking);
     //fetch service used
     await getInventory(user?.position, selectedBooking.id)
