@@ -29,7 +29,7 @@ const CustomerTable = ({ customer, setCustomer, isLoading }) => {
       key: "1",
       title: "CCCD",
       dataIndex: "id",
-      // width: "15%",
+      width: "15%",
       fixed: "left",
     },
     {
@@ -52,7 +52,7 @@ const CustomerTable = ({ customer, setCustomer, isLoading }) => {
             .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
             .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase()) ||
-          String(record.name)
+          String(record.fullname)
             .toLocaleLowerCase()
             .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
             .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
@@ -62,7 +62,7 @@ const CustomerTable = ({ customer, setCustomer, isLoading }) => {
             .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
             .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase()) ||
-          String(record.birthday)
+          String(record.date_of_birth)
             .toLocaleLowerCase()
             .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
             .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
@@ -72,17 +72,7 @@ const CustomerTable = ({ customer, setCustomer, isLoading }) => {
             .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
             .replace(/đ/g, "d")
             .includes(value.toLocaleLowerCase()) ||
-          String(record.phone)
-            .toLocaleLowerCase()
-            .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
-            .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
-            .replace(/ì|í|ị|ỉ|ĩ/g, "i")
-            .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
-            .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
-            .replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
-            .replace(/đ/g, "d")
-            .includes(value.toLocaleLowerCase()) ||
-          String(record.email)
+          String(record.phone_number)
             .toLocaleLowerCase()
             .replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
             .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
@@ -121,31 +111,6 @@ const CustomerTable = ({ customer, setCustomer, isLoading }) => {
         return text ? String(text) : "";
       },
     },
-    {
-      key: "5",
-      title: "Email",
-      dataIndex: "email",
-      // width: "20%",
-      align: "center",
-      render: (text, record) => {
-        return text ? String(text) : "";
-      },
-    },
-    {
-      key: "6",
-      title: "Thao tác",
-      fixed: "right",
-      render: (_, record) => {
-        return (
-          <>
-            <div className="btnWrap">
-              <EditButton openModalEdit={() => {}}></EditButton>
-              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
-            </div>
-          </>
-        );
-      },
-    },
   ];
 
   const onDeleteButton = (record) => {
@@ -164,7 +129,6 @@ const CustomerTable = ({ customer, setCustomer, isLoading }) => {
           <CustomerForm />
         </Modal>
       </>
-      {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div></div>
         <div>
@@ -179,15 +143,6 @@ const CustomerTable = ({ customer, setCustomer, isLoading }) => {
             className="searchInput"
             style={{ width: 264 }}
           />
-          <Button
-            onClick={showModal}
-            className="addButton"
-            type="primary"
-            ghost
-            icon={<PlusOutlined />}
-          >
-            Tạo mới
-          </Button>
         </div>
       </div>
       <Table

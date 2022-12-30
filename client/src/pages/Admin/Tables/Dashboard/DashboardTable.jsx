@@ -6,7 +6,7 @@ import { FilterOutlined } from "@ant-design/icons";
 
 const data = [];
 
-const DashboardTable = ({ data, setData, revenue }) => {
+const DashboardTable = ({ data, setData, revenue, isLoading }) => {
   const [type, setType] = useState("income");
 
   const [methodFilter, setMethodFilter] = useState("");
@@ -163,6 +163,7 @@ const DashboardTable = ({ data, setData, revenue }) => {
   return (
     <div className="table">
       <Table
+        loading={isLoading}
         columns={revenue === "income" ? columns : columnsNoMethod}
         dataSource={data}
         scroll={{ y: "30vh" }}

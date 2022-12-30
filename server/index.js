@@ -13,7 +13,7 @@ const authRoute = require("./routes/authRoute");
 const bookingsRoutes = require("./routes/bookingsRoutes");
 const vouchersRoutes = require("./routes/vouchersRoutes");
 const roomsRoutes = require("./routes/roomsRoutes");
-const inventoriesRoutes = require("./routes/inventoriesRoutes"); 
+const inventoriesRoutes = require("./routes/inventoriesRoutes");
 const roomFeaturesRoutes = require("./routes/roomFeaturesRoutes");
 const accountsRoutes = require("./routes/accountsRoutes");
 //const customersRoutes = require("./routes/customersRoutes");
@@ -27,6 +27,7 @@ const importingsRoutes = require("./routes/importingsRoutes");
 const featuresRoutes = require("./routes/featuresRoutes");
 const reportRoutes = require("./routes/reportRoutes");
 const hasRoomFeatureRoutes = require("./routes/hasRoomFeaturesRoutes");
+const usedRoomRoute = require("./routes/usedRoomRoutes");
 
 const app = express();
 
@@ -42,20 +43,20 @@ initAccessControl();
 
 app.use("/api/auth", authRoute);
 app.use("/api/bookings", bookingsRoutes);
-app.use("/api/vouchers", vouchersRoutes);
 app.use("/api/rooms", roomsRoutes);
 app.use("/api/room_features", roomFeaturesRoutes);
 app.use("/api/accounts", accountsRoutes);
 app.use("/api/roomtypes", roomTypesRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/positions", positionsRoutes);
-app.use("/api/inventory", inventoriesRoutes)
+app.use("/api/inventory", inventoriesRoutes);
 app.use("/api/payment", paymentsRoutes);
 app.use("/api/items", itemRoutes);
 app.use("/api/importing", importingsRoutes);
 app.use("/api/features", featuresRoutes);
 app.use("/api/reports", reportRoutes);
-app.use("/api/receipt", receiptRoutes);
+app.use("/api/receipts", receiptRoutes);
+app.use("/api/used_room", usedRoomRoute);
 app.use("/api/has_room_features", hasRoomFeatureRoutes);
 
 app.use("*", handle404Error);

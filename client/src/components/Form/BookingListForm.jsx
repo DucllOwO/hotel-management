@@ -1,4 +1,14 @@
-import { Card, DatePicker, Form, Input, InputNumber, message, Select, Tag, Typography } from "antd";
+import {
+  Card,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  message,
+  Select,
+  Tag,
+  Typography,
+} from "antd";
 import React, { useState } from "react";
 import { useContext } from "react";
 import { fetchCustomerByID } from "../../api/CustomerAPI";
@@ -18,15 +28,31 @@ const BookingListForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
   return (
     <Form form={form} layout="vertical">
       <Form.Item
-        label="Mã giảm giá"
-        name="voucher"
+        label="Phương thức thanh toán"
+        name="method"
+        required
+        rules={[
+          {
+            required: true,
+            message: "Vui lòng chọn phương thức thanh toán",
+          },
+        ]}
       >
-        <Input size="large"/>
+        <Select
+          size="large"
+          options={[
+            {
+              value: "Online",
+              label: "Online",
+            },
+            {
+              value: "Offline",
+              label: "Offline",
+            },
+          ]}
+        />
       </Form.Item>
-      <Form.Item
-        label="Phụ thu"
-        name="surcharge"
-      >
+      <Form.Item label="Phụ thu" name="surcharge">
         <InputNumber
           controls={false}
           size="large"
@@ -34,35 +60,10 @@ const BookingListForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
           formatter={(value) =>
             `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
           }
-          />
-      </Form.Item>
-      <Form.Item 
-        label="Phương thức thanh toán" 
-        name="method"
-        required
-        rules={[
-          {
-            required: true,
-            message: "Vui lòng chọn phương thức thanh toán"
-          }
-        ]}>
-        <Select 
-          size="large"
-          options={[
-            {
-              value: "Online",
-              label: "Online"
-            },
-            {
-              value: "Offline",
-              label: "Offline"
-            }
-          ]}  
         />
       </Form.Item>
-      <Form.Item 
-        label="Ghi chú" 
-        name="note">
+
+      <Form.Item label="Ghi chú" name="note">
         <TextArea size="large" />
       </Form.Item>
     </Form>

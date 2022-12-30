@@ -141,15 +141,6 @@ const HRTable = ({ employees, setEmployees }) => {
     },
     {
       key: "6",
-      title: "Email",
-      dataIndex: "email",
-      align: "center",
-      render: (text, record) => {
-        return String(record.email);
-      },
-    },
-    {
-      key: "7",
       title: "Hành động",
       fixed: "right",
       render: (_, record) => {

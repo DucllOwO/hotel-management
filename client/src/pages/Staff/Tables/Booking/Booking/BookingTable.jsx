@@ -447,12 +447,10 @@ const BookingTable = ({
               ErrorAlert("Khách hàng chưa đủ 18 tuổi");
               return;
             }
-            console.log(value);
             const newCustomer = {
               id: value.id,
               fullname: value.fullname,
               phone_number: value.phone_number,
-              email: value.email,
               date_of_birth: value.date_of_birth,
             };
             const { data: userData } = await createCustomer(
@@ -502,6 +500,28 @@ const BookingTable = ({
     else ErrorAlert("Vui lòng chọn phòng cần đặt");
   };
 
+  const disabledDate = (current) => {
+    // Can not select days before today and today
+    return current < dayjs().startOf("day");
+  };
+
+  const range = (start, end) => {
+    const result = [];
+    for (let i = start; i < end; i++) {
+      result.push(i);
+    }
+    return result;
+  };
+
+  const disabledRangeTime = (_, type) => {
+    if (type === "start") {
+      return {
+        disabledHours: () => range(0, 24).splice(0, dayjs().hour() - 1),
+        disabledMinutes: () => range(0, dayjs().minute()),
+      };
+    }
+  };
+
   return (
     <div className="table">
       <>{isModalOpen ? modalJSX() : null}</>
@@ -509,7 +529,11 @@ const BookingTable = ({
         <div className="header">
           <div>
             <RangePicker
-              showTime
+              disabledTime={disabledRangeTime}
+              disabledDate={disabledDate}
+              showTime={{
+                hideDisabledOptions: true,
+              }}
               format={"DD/MM/YYYY hh:mm:ss"}
               onChange={(value) => {
                 console.log(value);

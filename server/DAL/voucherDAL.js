@@ -3,7 +3,11 @@ const supabase = require("../database");
 const TABLE_NAME = "voucher";
 
 const getAllVoucher = () => {
-  return supabase.from(TABLE_NAME).select("*").order("id", { ascending: true });
+  return supabase
+    .from(TABLE_NAME)
+    .select("*")
+    .order("id", { ascending: true })
+    .eq("is_active", true);
 };
 
 const getVoucher = (id) => {

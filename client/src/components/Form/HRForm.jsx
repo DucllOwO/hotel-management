@@ -9,6 +9,7 @@ import { AppContext } from "../../context/AppContext";
 import { hasWhiteSpace, isAlphaOnly, isNumberKey } from "../../Utils/helpers";
 import ErrorAlert from "../Error/Alert/ErrorAlert";
 import ErrorMessage from "../Error/ErrorMessage/ErrorMessage";
+import dayjs from "dayjs";
 
 const DATE_FORMAT = "DD-MM-YYYY";
 
@@ -156,22 +157,6 @@ const HRForm = ({
           >
             <Input size="large" />
           </Form.Item>
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập email!",
-              },
-              {
-                type: "email",
-                message: "Email không đúng định dạng",
-              },
-            ]}
-          >
-            <Input size="large" />
-          </Form.Item>
         </div>
         <div className="right" style={{ marginLeft: "10%", width: "30vw" }}>
           <Form.Item
@@ -227,6 +212,20 @@ const HRForm = ({
                         "Chọn ngày hôm nay hoặc tương lai là ngày sinh không hợp lệ!"
                       )
                     );
+                  }
+                  return Promise.resolve();
+                },
+              }),
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (value) {
+                    const birthday = dayjs(value);
+                    const now = dayjs(Date.now());
+                    if (now.diff(birthday, "year") < 18) {
+                      return Promise.reject(
+                        new Error("Nhân viên chưa đủ 18 tuổi.")
+                      );
+                    }
                   }
                   return Promise.resolve();
                 },

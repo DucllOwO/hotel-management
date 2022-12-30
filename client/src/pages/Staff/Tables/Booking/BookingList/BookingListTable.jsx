@@ -24,16 +24,15 @@ import {
 } from "../../../../../api/BookingListAPI";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { fetchBookingByStatus } from "../../../../../api/BookingListAPI";
 import DetailForm from "../../../../../components/Form/DetailForm/DetailForm";
 import CheckButton from "../../../../../components/IconButton/CheckButton/CheckButton";
 import CancelButton from "../../../../../components/IconButton/CancelButton/CancelButton";
 import { useContext } from "react";
 import { AppContext } from "../../../../../context/AppContext";
-import { useEffect } from "react";
 import BookingListForm from "../../../../../components/Form/BookingListForm";
-import { useForm } from "antd/es/form/Form";
 import { fetchEmployeeByUsername } from "../../../../../api/EmployeeAPI";
+
+const DATE_FORMAT = "HH:mm, DD-MM-YYYY";
 
 const BookingListTable = ({
   booking,
@@ -156,6 +155,9 @@ const BookingListTable = ({
       // width: "20%",
       align: "center",
       sorter: (a, b) => a.book_from.localeCompare(b.book_from),
+      render: (text, record) => {
+        return dayjs(convertToValidDateString(text)).format(DATE_FORMAT);
+      },
     },
     {
       key: "4",
@@ -172,43 +174,51 @@ const BookingListTable = ({
     //   align: "center",
     //   sorter: (a, b) => a.room_id.localeCompare(b.room_id),
     // },
+    // {
+    //   key: "5",
+    //   title: "Phòng",
+    //   dataIndex: "room_id",
+    //   align: "center",
+    //   sorter: (a, b) => a.room_id.localeCompare(b.room_id),
+    // },
     {
       key: "5",
       title: "Thao tác",
       render: (_, record) => {
         if (status === "0")
-          return (
-            <>
-              <div className="btnWrap">
-                <CheckButton
-                  title="Nhận phòng"
-                  onCheckButton={() => {
-                    onCheckInButtonHandle(record);
-                  }}
-                ></CheckButton>
-                <CancelButton
-                  title="Hủy"
-                  onCancelButton={() => {
-                    onCancelButtonHandle(record);
-                  }}
-                ></CancelButton>
-              </div>
-            </>
-          );
-        else if (status === "1")
-          return (
-            <>
-              <div className="btnWrap">
-                <CheckButton
-                  title="Trả phòng"
-                  onCheckButton={() => {
-                    onCheckOutButtonHandle(record);
-                  }}
-                ></CheckButton>
-              </div>
-            </>
-          );
-        else return <></>;
+          if (status === "0")
+            return (
+              <>
+                <div className="btnWrap">
+                  <CheckButton
+                    title="Nhận phòng"
+                    onCheckButton={() => {
+                      onCheckInButtonHandle(record);
+                    }}
+                  ></CheckButton>
+                  <CancelButton
+                    title="Hủy"
+                    onCancelButton={() => {
+                      onCancelButtonHandle(record);
+                    }}
+                  ></CancelButton>
+                </div>
+              </>
+            );
+          else if (status === "1")
+            return (
+              <>
+                <div className="btnWrap">
+                  <CheckButton
+                    title="Trả phòng"
+                    onCheckButton={() => {
+                      onCheckOutButtonHandle(record);
+                    }}
+                  ></CheckButton>
+                </div>
+              </>
+            );
+          else return <></>;
       },
     },
   ];
@@ -341,15 +351,22 @@ const BookingListTable = ({
       },
     });
   };
+
   const onCheckInButtonHandle = (record) => {
     Modal.confirm({
       title: "Xác nhận khách nhận phòng?",
       okText: "Đúng",
       okType: "danger",
       onOk: () => {
+        updateBookingStatus(user?.position, "1", record.id);
         updateBookingStatus(user?.position, "1", record.id)
           .then((data) => {
             SuccessAlert("Nhận phòng thành công");
+            setBooking((prev) =>
+              prev.filter((value) => {
+                return value.id !== record.id;
+              })
+            );
             setBooking((prev) =>
               prev.filter((value) => {
                 return value.id !== record.id;
@@ -369,9 +386,15 @@ const BookingListTable = ({
       okText: "Đúng",
       okType: "danger",
       onOk: () => {
+        updateBookingStatus(user?.position, "3", record.id);
         updateBookingStatus(user?.position, "3", record.id)
           .then((data) => {
             SuccessAlert("Huỷ đặt phòng thành công");
+            setBooking((prev) =>
+              prev.filter((value) => {
+                return value.id !== record.id;
+              })
+            );
             setBooking((prev) =>
               prev.filter((value) => {
                 return value.id !== record.id;
@@ -405,6 +428,16 @@ const BookingListTable = ({
     //Fetch employee information
     let serviceCost = 0;
     let rentCost = 0;
+    let tempEmployee;
+    await fetchEmployeeByUsername(user?.position, user?.account.username)
+      .then((data) => {
+        setCurrentEmployee(data.data);
+        console.log(data.data);
+        tempEmployee = JSON.parse(JSON.stringify(data.data));
+      })
+      .catch(() => {
+        ErrorAlert("Lấy dữ liệu nhân viên không thành công");
+      });
     await fetchEmployeeByUsername(user?.position, user?.account.username)
       .then((data) => {
         setCurrentEmployee(data.data);
@@ -414,6 +447,29 @@ const BookingListTable = ({
         ErrorAlert("Lấy dữ liệu nhân viên không thành công");
       });
 
+    console.log(selectedBooking);
+    //fetch service used
+    await getInventory(user?.position, selectedBooking.id)
+      .then(async (data) => {
+        console.log(data.data);
+        if (data.data) {
+          setUsedService(
+            data.data.map((value) => {
+              const newServiceCost = value.price * value.amount;
+              serviceCost = serviceCost + newServiceCost;
+              return {
+                item_name: value.item_name,
+                amount: value.amount,
+                price: value.price,
+                total_cost: newServiceCost,
+              };
+            })
+          );
+        }
+      })
+      .catch(() => {
+        ErrorAlert("Lấy dữ liệu dịch vụ thất bại");
+      });
     console.log(selectedBooking);
     //fetch service used
     await getInventory(user?.position, selectedBooking.id)
@@ -456,9 +512,13 @@ const BookingListTable = ({
     // calculate rent cost
     console.log(serviceCost);
     console.log(rentCost);
-    await createReceiptFunc(rentCost, serviceCost);
+    await createReceiptFunc(rentCost, serviceCost, tempEmployee);
   };
-  const createReceiptFunc = async (rentCost, serviceCost) => {
+  const createReceiptFunc = async (
+    rentCost,
+    serviceCost,
+    currentEmployeeTemp
+  ) => {
     let totalCost = rentCost + serviceCost;
     infoForm
       .validateFields()
@@ -478,7 +538,7 @@ const BookingListTable = ({
           user?.position,
           newReceipt,
           selectedBooking,
-          currentEmployee
+          currentEmployeeTemp
         )
           .then((data) => {
             setReceipt(data.data[0]);
@@ -673,7 +733,10 @@ const BookingListTable = ({
         else {
           console.log("giá đêm");
           //night ontime
-          if (dayjs(selectedBooking.checkin_time).hour() >= 21) {
+          if (
+            dayjs(selectedBooking.checkin_time).hour() >= 21 &&
+            dayjs(selectedBooking.checkin_time).hour() < 2
+          ) {
             console.log("đêm sau checkin đúng");
             //night checkout ontime
             if (dayjs(Date.now()).hour() < 12) {
@@ -741,14 +804,19 @@ const BookingListTable = ({
             // night checkin soon and checkout ontime
             if (dayjs(Date.now()).hour() < 12) {
               console.log("đêm trả phòng đúng");
+              console.log(
+                dayjs(Date.now()).diff(
+                  dayjs(selectedBooking.checkin_time),
+                  "day"
+                )
+              );
+              console.log(dayjs(selectedBooking.checkin_time).hour());
               const price =
                 (21 - dayjs(selectedBooking.checkin_time).hour()) *
                   value.hour_price +
-                Math.round(
-                  dayjs(Date.now()).diff(
-                    dayjs(selectedBooking.checkin_time),
-                    "day"
-                  )
+                dayjs(Date.now()).diff(
+                  dayjs(selectedBooking.checkin_time),
+                  "day"
                 ) *
                   value.overnight_price;
               return {
@@ -838,8 +906,7 @@ const BookingListTable = ({
       <Modal
         title="Hoá đơn"
         open={true}
-        okText="In hoá đơn"
-        cancelText="Hủy"
+        footer={null}
         onOk={handleCancelModal}
         onCancel={handleCancelModal}
         width="40%"
@@ -948,6 +1015,10 @@ const BookingListTable = ({
       ></Table>
     </div>
   );
+
+  function convertToValidDateString(date) {
+    return date.replace("T", " ");
+  }
 };
 
 export default BookingListTable;

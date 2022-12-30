@@ -65,7 +65,8 @@ const ImportingTable = ({
       align: "center",
       render: (_, record) => {
         // record.emloyee_id
-        return String(record.employee_id.fullname);
+        console.log(record);
+        return String(record?.employee_id?.fullname);
       },
     },
     {

@@ -62,10 +62,10 @@ const getRoomByBookingID = async (req, res, next) => {
         room_name: value.room_id.room_name,
         room_type: roomType[0].name,
         area: roomType[0].area,
-        first_hour_price: roomType[0].first_hour_price,
-        hour_price: roomType[0].hour_price,
-        overnight_price: roomType[0].overnight_price,
-        one_day_price: roomType[0].one_day_price,
+        first_hour_price: value.price.first_hour_price,
+        hour_price: value.price.hour_price,
+        overnight_price: value.price.overnight_price,
+        one_day_price: value.price.one_day_price,
       }
   }))
   returnList.then((data) => res.status(200).send(data))

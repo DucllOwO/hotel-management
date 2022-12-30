@@ -142,51 +142,16 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
     },
   ];
 
-  // const onAddButton = () => {
-  //   const randomNumber = parseInt(Math.random() * 1000);
-  //   const newData = {
-  //     idNum: "" + parseInt(rooms.length + 1),
-  //     name: "Name " + randomNumber,
-  //     roomType: "23/03/2002",
-  //     area: randomNumber + " area",
-  //   };
-
-  //   setRoom((pre) => {
-  //     return [...pre, newData];
-  //   });
-  // };
-
-  const onSuspendButton = (record) => {
-    Modal.confirm({
-      title: "Bạn có chắc là muốn dừng hoạt động phiếu giảm giá này không?",
-      okText: "Có",
-      cancelText: "Không",
-      okType: "danger",
-    });
-  };
-
-  // const onFinish = (values) => {
-  //   console.log(editingRow);
-  //   const updateDataSource = [...rooms];
-  //   updateDataSource.splice(editingRow - 1, 1, {
-  //     ...values,
-  //     idNum: editingRow,
-  //   });
-  //   console.log(updateDataSource);
-  //   setRoom(updateDataSource);
-  //   setEditingRow(null);
-  // };
-
   return (
     <div className="table">
       <>
         <Modal
-          title="Thông tin sản phẩm"
+          title="Thông tin phiếu giảm giá"
           open={isModalVisible}
-          onOk={handle}
+          onOk={handleModalOK}
           onCancel={handle}
         >
-          <PromotionForm />
+          <PromotionForm form={form} />
         </Modal>
       </>
       <div className="buttonContainer">
@@ -223,6 +188,17 @@ const PromotionTable = ({ vouchers, setVouchers }) => {
       ></Table>
     </div>
   );
+
+  function handleModalOK() {}
+
+  function onSuspendButton(record) {
+    Modal.confirm({
+      title: "Bạn có chắc là muốn dừng hoạt động phiếu giảm giá này không?",
+      okText: "Có",
+      cancelText: "Không",
+      okType: "danger",
+    });
+  }
 };
 
 export default PromotionTable;

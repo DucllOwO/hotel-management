@@ -29,16 +29,18 @@ const Import = ({
   const columns = [
     {
       key: "1",
-      title: "STT",
+      title: "TT",
       dataIndex: "id",
       align: "center",
       width: 50,
+      fixed: "left",
     },
     {
       key: "2",
       title: "Sản phẩm",
       dataIndex: "name",
       align: "center",
+      fixed: "left",
       render: (text, record) => {
         return (
           <Select
@@ -64,7 +66,6 @@ const Import = ({
       key: "3",
       title: "Số lượng",
       dataIndex: "amount",
-      width: 100,
       align: "center",
       render: (text, record) => {
         return (
@@ -138,7 +139,6 @@ const Import = ({
       key: "6",
       title: "Thao tác",
       dataIndex: "action",
-      width: 80,
       align: "center",
       render: (_, record) => {
         return (
@@ -272,7 +272,7 @@ const Import = ({
             size="small"
             columns={columns}
             dataSource={importList || initialValue}
-            scroll={{ y: 350 }}
+            scroll={{ y: "30vh" }}
             rowKey={(row) => row.id}
             pagination={false}
           ></Table>

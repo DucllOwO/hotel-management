@@ -23,7 +23,7 @@ const updateCheckInTime = (bookingID, checkInTime) => {
 }
 
 const getBookingByDate = (from, to) => {
-  return supabase.from(TABLE_NAME).select("id").or(`and(book_from.lt.${from},book_to.gt.${from}),and(book_to.gt.${to},book_from.lt.${to})`);
+  return supabase.from(TABLE_NAME).select("id").or(`and(book_from.lt.${from},book_to.gt.${from}),and(book_to.gt.${to},book_from.lt.${to}),and(book_from.gt.${from},book_to.lt.${to})`);
 };
 
 const insertBooking = (booking) => {
