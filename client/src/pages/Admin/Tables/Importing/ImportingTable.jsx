@@ -5,9 +5,10 @@ import { Table, Button, Modal, Form, Input, Slider } from "antd";
 import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import ImportForm from "../../../../components/Form/ImportForm";
 import { formatDate } from "../../../../Utils/formatter";
-import { createRecord } from "../../../../api/ImportAPI";
+import { createRecord, fetchRecordDetail } from "../../../../api/ImportAPI";
 import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
+import ImportingExpand from "../../../../components/ExpandedTable/ImportingExpand";
 
 const initialValue = [
   {
@@ -238,6 +239,28 @@ const ImportingTable = ({
         columns={columns}
         dataSource={importingRecord}
         scroll={{ y: "60vh  ", x: "100%" }}
+        expandable={{
+          expandedRowRender: (record) => {
+            return <ImportingExpand dataSource={record.detail} />;
+          },
+          onExpand: (expanded, record) => {
+            fetchRecordDetail(positionUser, record.id)
+              .then(({ data }) => {
+                setRecord((prev) => {
+                  return prev.map((importTemp) => {
+                    if (record.id === importTemp.id) {
+                      return { ...importTemp, detail: data.detail };
+                    }
+                    return importTemp;
+                  });
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+                ErrorAlert("Lấy dữ liệu tiện ích của loại phòng thất bại!!");
+              });
+          },
+        }}
       ></Table>
     </div>
   );

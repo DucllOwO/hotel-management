@@ -14,6 +14,22 @@ function getAllRecords() {
     )
     .order("id", { ascending: true });
 }
+
+const getPurchaseDetail = (purchaseID) => {
+  return supabase
+    .from("purchase_detail")
+    .select(
+      `
+      item_id (
+        id, name
+      ),
+      amount,
+      unit_price
+  `
+    )
+    .eq("purchase_id", purchaseID);
+};
+
 async function getRecordByID(filter) {
   const { data, error } = await supabase
     .from("purchase")
@@ -43,4 +59,5 @@ module.exports = {
   getAllRecords,
   getRecordByID,
   createNewRecord,
+  getPurchaseDetail,
 };

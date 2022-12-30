@@ -22,7 +22,7 @@ const RoomTypeExpand = ({ utils = [], ...prices }) => {
     },
     {
       key: "2",
-      title: "Giá",
+      title: "Giá (đ)",
       dataIndex: [
         "firstHourPrice",
         "overNightPrice",
@@ -30,7 +30,13 @@ const RoomTypeExpand = ({ utils = [], ...prices }) => {
         "hourPrice",
       ],
       render: (text, record) => {
-        return <p>{Object.values(record)[0].toLocaleString()}</p>;
+        return (
+          <p>
+            {Object.values(record)[0]
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </p>
+        );
       },
     },
   ];

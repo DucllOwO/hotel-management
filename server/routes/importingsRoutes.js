@@ -2,6 +2,7 @@ const {
   getAllRecord,
   getByID,
   createRecord,
+  getDeatailByPurchaseID,
 } = require("../controllers/importingController");
 
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
@@ -12,6 +13,7 @@ const router = require("express").Router();
 
 router.get("/", authorizeAccessToken, getAllRecord);
 router.get("/:id", authorizeAccessToken, getByID);
+router.get("/detail/:purchaseID", authorizeAccessToken, getDeatailByPurchaseID);
 router.post(
   "/",
   authorizeAccessToken,

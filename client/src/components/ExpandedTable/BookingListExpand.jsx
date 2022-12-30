@@ -79,6 +79,11 @@ const BookingListExpand = ({ utils = [], roomTypeSource, ...prices }) => {
       title: "Diện tích (m2)",
       dataIndex: "area",
       align: "center",
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+      },
     },
     {
       key: "6",
@@ -95,8 +100,8 @@ const BookingListExpand = ({ utils = [], roomTypeSource, ...prices }) => {
 
   return (
     <div id="BookingListExpandContainer">
-      <Row justify="space-around">
-        {/* <Col xs={24} xl={8}>
+      {/* <Row justify="space-around"> */}
+      {/* <Col xs={24} xl={8}>
           <Table
             dataSource={createDataSource(prices)}
             columns={columns}
@@ -104,15 +109,17 @@ const BookingListExpand = ({ utils = [], roomTypeSource, ...prices }) => {
             bordered={true}
           ></Table>
         </Col> */}
-        <Col xs={24} xl={8}>
-          <Table
-            dataSource={roomTypeSource}
-            columns={roomTypeColumns}
-            pagination={false}
-            bordered={true}
-          ></Table>
-        </Col>
-      </Row>
+      <div>
+        {/* <Col xs={24} xl={8}> */}
+        <Table
+          dataSource={roomTypeSource}
+          columns={roomTypeColumns}
+          pagination={false}
+          bordered={true}
+        ></Table>
+        {/* </Col> */}
+      </div>
+      {/* </Row> */}
     </div>
   );
 

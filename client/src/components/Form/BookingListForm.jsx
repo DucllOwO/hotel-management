@@ -39,7 +39,6 @@ const BookingListForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
         ]}
       >
         <Select
-          defaultValue={"Trực tiếp"}
           size="large"
           options={[
             {
