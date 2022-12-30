@@ -18,27 +18,33 @@ const ImportingExpand = ({ dataSource }) => {
       title: "Số lượng",
       dataIndex: "amount",
       width: "20%",
-      render: (text, record) => {
-        return record.amount.toLocaleString();
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
       },
       align: "center",
     },
     {
       key: "3",
-      title: "Đơn giá",
+      title: "Đơn giá (đ)",
       dataIndex: "unit_price",
       align: "center",
-      render: (text, record) => {
-        return record.unit_price.toLocaleString();
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
       },
     },
     {
       key: "4",
-      title: "Giá tổng",
+      title: "Giá tổng (đ)",
       dataIndex: "bed_amount",
       align: "center",
       render: (text, record) => {
-        return (record.amount * record.unit_price).toLocaleString();
+        return (record.amount * record.unit_price)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
     },
   ];

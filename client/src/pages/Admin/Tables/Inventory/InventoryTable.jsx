@@ -24,7 +24,7 @@ import {
 import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 
-const InventoryTable = ({ rooms, user, isLoading }) => {
+const InventoryTable = ({ rooms, user, isLoading, roomType }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -41,6 +41,13 @@ const InventoryTable = ({ rooms, user, isLoading }) => {
     10: "10",
     60: "60",
   };
+
+  const items = roomType.map((item) => {
+    return {
+      label: item.name.toString(),
+      value: item.name.toString(),
+    };
+  });
 
   const [filter, setFilter] = useState("");
   useEffect(() => {
@@ -84,15 +91,6 @@ const InventoryTable = ({ rooms, user, isLoading }) => {
       width: "26.6666%",
       align: "center",
       sorter: (a, b) => a.room_name.localeCompare(b.room_name),
-      // render: (_,record) => {}
-    },
-    {
-      key: "2",
-      title: "Loại phòng",
-      dataIndex: "room_type",
-      width: "26.6666%",
-      align: "center",
-      filteredValue: filter !== "" ? [filter] : null,
       onFilter: (value, record) => {
         return (
           String(record.room_name)
@@ -127,6 +125,16 @@ const InventoryTable = ({ rooms, user, isLoading }) => {
             .includes(value.toLocaleLowerCase())
         );
       },
+      // render: (_,record) => {}
+    },
+    {
+      key: "2",
+      title: "Loại phòng",
+      dataIndex: "room_type",
+      width: "26.6666%",
+      align: "center",
+      filteredValue: filter !== "" ? [filter] : null,
+
       // render: (text, record) => {
       //   // return <p>{record.room_type_id.name}</p>;
       // },
@@ -137,7 +145,7 @@ const InventoryTable = ({ rooms, user, isLoading }) => {
               <div>
                 <Select
                   size="medium"
-                  // options={items}
+                  options={items}
                   showSearch
                   placeholder="Chọn loại phòng"
                   onChange={(e) => {
@@ -162,6 +170,15 @@ const InventoryTable = ({ rooms, user, isLoading }) => {
       },
       filterIcon: () => {
         return <FilterOutlined />;
+      },
+      onFilter: (value, record) => {
+        if (filter === "") {
+          return record.room_type;
+        } else {
+          return record.room_type === value;
+        }
+        // record.roomType === value;
+        // console.log(value);
       },
     },
     {
@@ -299,7 +316,13 @@ const InventoryTable = ({ rooms, user, isLoading }) => {
     <div className="table">
       <>{isModalVisible ? modalForm() : null}</>
       <div className="buttonContainer">
-        <div></div>
+        <div>
+          <Button
+            onClick={() => {
+              console.log(rooms);
+            }}
+          ></Button>
+        </div>
         <div>
           <Input.Search
             onSearch={(value) => {

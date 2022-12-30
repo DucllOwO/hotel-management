@@ -46,6 +46,7 @@ const Inventory = () => {
     <ItemProvider>
       <div className="inventoryContainer">
         <InventoryTable
+          roomType={roomtype}
           rooms={rooms}
           user={user}
           isLoading={isLoading}
