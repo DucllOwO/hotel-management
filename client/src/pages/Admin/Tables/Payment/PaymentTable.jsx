@@ -10,13 +10,15 @@ import { createPayment } from "../../../../api/PaymentAPI";
 import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 
-const PaymentTable = ({ payment, setPayment, positionUser }) => {
-  const [type, setType] = useState("day");
-
-  const [editingRow, setEditingRow] = useState(null);
-
+const PaymentTable = ({
+  payment,
+  setPayment,
+  setTime,
+  type,
+  setType,
+  positionUser,
+}) => {
   const [form] = Form.useForm();
-
   const [searchedText, setSearchedText] = useState("");
 
   const [priceFilter, setPriceFilter] = useState(null);
@@ -67,23 +69,7 @@ const PaymentTable = ({ payment, setPayment, positionUser }) => {
       },
       dataIndex: "name",
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="date"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the purpose",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return <p>{text}</p>;
       },
     },
     {
@@ -146,36 +132,11 @@ const PaymentTable = ({ payment, setPayment, positionUser }) => {
           .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
       },
     },
-    // {
-    //   key: "5",
-    //   title: "Thao tác",
-    //   width: 100,
-    //   render: (_, record) => {
-    //     return (
-    //       <>
-    //         <div className="btnWrap">
-    //           <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
-    //         </div>
-    //       </>
-    //     );
-    //   },
-    // },
   ];
 
-  // const onDeleteButton = (record) => {
-  //   Modal.confirm({
-  //     title: "Bạn có chắc muốn xoá dữ liệu?",
-  //     okText: "Yes",
-  //     okType: "danger",
-  //     onOk: () => {
-  //       setPayment((pre) => {
-  //         return pre.filter((data) => data.idNum !== record.idNum);
-  //       });
-  //     },
-  //   });
-  // };
-
-  const onChange = () => {};
+  const onChange = (date, dateString) => {
+    setTime(dayjs(date));
+  };
 
   const modalAddPayment = () => (
     <Modal

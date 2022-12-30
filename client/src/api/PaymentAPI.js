@@ -6,6 +6,24 @@ export const getAllPayment = (positionUser) => {
   });
 };
 
+export const getDayPayment = (positionUser, day) => {
+  return userRequest.get(`/payment?day=${day}`, {
+    params: { user: { position: positionUser }, type: "day" },
+  });
+};
+
+export const getMonthPayment = (positionUser, firstDay, lastDay) => {
+  return userRequest.get(`/payment?firstDay=${firstDay}&&lastDay=${lastDay}`, {
+    params: { user: { position: positionUser }, type: "month" },
+  });
+};
+
+export const getYearPayment = (positionUser, firstDay, lastDay) => {
+  return userRequest.get(`/payment?firstDay=${firstDay}&&lastDay=${lastDay}`, {
+    params: { user: { position: positionUser }, type: "year" },
+  });
+};
+
 export const createPayment = (
   positionUser,
   { name, established_date, total_cost }

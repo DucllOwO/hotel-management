@@ -25,10 +25,10 @@ const insertAccount = (Account) => {
   return supabase.from(TABLE_NAME).insert(Account);
 };
 
-const updateAccount = (Account, username) => {
+const updateAccount = (password, username) => {
   return supabase
     .from(TABLE_NAME)
-    .update({ ...Account })
+    .update({ password: password })
     .eq("username", username);
 };
 
