@@ -59,6 +59,7 @@ const getRoomByBookingID = async (req, res, next) => {
     if(getRoomTypeError) return next(getRoomTypeError);
     else
       return {
+        id: value.id,
         room_name: value.room_id.room_name,
         room_type: roomType[0].name,
         area: roomType[0].area,
@@ -83,6 +84,18 @@ const updateRoom = async (req, res, next) => {
 
   res.status(200).send(data[0]);
 };
+const updateRoomStatus = async (req, res, next) => {
+  const {roomID} = req.query;
+  const {newStatus} = req.body;
+
+  if(!roomID || !newStatus) return next(BadRequestError);
+
+  const {data, error} = await roomDAL.updateStatus(roomID, newStatus);
+
+  if(error) return next(error)
+
+  res.status(200).send(data);
+}
 
 const createRoom = async (req, res, next) => {
   const { room } = req.body;
@@ -106,5 +119,6 @@ module.exports = {
   createRoom,
   updateRoom,
   getRoom,
-  getRoomByBookingID
+  getRoomByBookingID,
+  updateRoomStatus
 };

@@ -11,7 +11,16 @@ export const updateBookingStatus = (positionUser, newStatus, bookingID) => {
      user: { position: positionUser }, status: newStatus 
   });
 };
-
+export const updateUsedRoomTotalCost = (positionUser, usedRoomID, totalCost) => {
+  return userRequest.put(`/booking/used_room/${usedRoomID}`, {
+    user: { position: positionUser }, totalCost: totalCost 
+  })
+}
+export const updateRoomStatus = (positionUser, newStatus, roomID) => {
+  return userRequest.put(`/rooms/status/${roomID}`, {
+    user: { position: positionUser }, newStatus: newStatus 
+  })
+}
 export const createReceipt = (positionUser, newReceipt, booking, user) => {
   return userRequest.post("/receipt",
   { user: {position: positionUser}, receipt: newReceipt, booking: booking, employee: user, }

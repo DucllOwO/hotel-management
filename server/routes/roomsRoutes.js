@@ -5,6 +5,7 @@ const {
   updateRoom,
   getRoom,
   getRoomByBookingID,
+  updateRoomStatus
 } = require("../controllers/roomController");
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
 const { hasPermission } = require("../middlewares/roleAccessControl");
@@ -51,7 +52,12 @@ router.put(
   hasPermission(actionAC.UPDATE, resourceAC.ROOM),
   tryCatch(updateRoom)
 );
-
+router.put(
+  "status/:id",
+  authorizeAccessToken,
+  hasPermission(actionAC.UPDATE, resourceAC.ROOM),
+  tryCatch(updateRoomStatus)
+);
 // router.delete(
 //   "/:room_name",
 //   authorizeAccessToken,

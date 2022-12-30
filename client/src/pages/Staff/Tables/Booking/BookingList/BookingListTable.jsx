@@ -16,7 +16,7 @@ import BookingListExpand from "../../../../../components/ExpandedTable/BookingLi
 import { FilterOutlined } from "@ant-design/icons";
 import ErrorAlert from "../../../../../components/Error/Alert/ErrorAlert"
 import SuccessAlert from "../../../../../components/Success/SusscessAlert.jsx/SuccessAlert"
-import { createReceipt, getInventory, getRoomByBookingID, updateBookingStatus } from "../../../../../api/BookingListAPI";
+import { createReceipt, getInventory, getRoomByBookingID, updateBookingStatus, updateRoomStatus, updateUsedRoomTotalCost } from "../../../../../api/BookingListAPI";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { fetchBookingByStatus } from "../../../../../api/BookingListAPI";
@@ -223,6 +223,13 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
       onOk: () => {
           updateBookingStatus(user?.position, "1", record.id)
           .then((data) => {
+            record.room_type.forEach((value) => {
+              updateRoomStatus(user?.position, "1", value.id).then((data) => {
+  
+              }).catch(()=>{
+                ErrorAlert("Đã xảy ra lỗi")
+              });
+            })
             SuccessAlert("Nhận phòng thành công");
             setBooking((prev) => 
               prev.filter((value) => {return value.id !== record.id})
@@ -313,9 +320,13 @@ const BookingListTable = ({ booking, setBooking, setStatus, status }) => {
           rentRoomArray.forEach((value) => {
             console.log(value);
             rentCost = rentCost + value.price;
+            updateUsedRoomTotalCost(user?.position, value.id, value.price).then(() => {
+              
+            }).catch(() => {
+              ErrorAlert("Đã xảy ra lỗi");
+            })
           });
           setUsedRoom(rentRoomArray);
-
     });
 
     // calculate rent cost

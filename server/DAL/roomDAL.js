@@ -28,6 +28,7 @@ const getInfoByBookingIDList = (listBooking) => {
     .select(`
       booking_id,
       room_id(
+        id,
         room_name,
         room_type_id(
           id,
@@ -62,6 +63,7 @@ const getRoomByBookingID = (bookingID) => {
     .from("used_room")
     .select(
       `
+      id,
       room_id(room_name, room_type_id)
     `
     )
@@ -80,7 +82,14 @@ const getUsingRoom = (listBooking) => {
     .in("booking_id", listBooking)
     .order("room_id", {ascending: true});
 };
-
+const updateTotalCost = (totalCost, usedRoomID) => {
+  return supabase
+    .from("used_room")
+    .update({
+      total_cost: totalCost,
+    })
+    .eq("id", usedRoomID);
+}
 const getAvailableRoom = (listRoom) => {
   // console.log(listRoom);
   return supabase
@@ -142,7 +151,14 @@ const updateRoom = (room, id) => {
     `
     );
 };
-
+const updateStatus = (room_id, newStatus) => {
+  return supabase
+    .from(TABLE_NAME)
+    .update({
+      status: newStatus
+    })
+    .eq("id", room_id);
+}
 const insertRoom = (room) => {
   return supabase
     .from(TABLE_NAME)
@@ -168,7 +184,9 @@ module.exports = {
   getRoomByBookingID,
   getAllRooms,
   updateRoom,
+  updateStatus,
   insertRoom,
   getRoomByName,
+  updateTotalCost,
   getRoomByStatus,
 };

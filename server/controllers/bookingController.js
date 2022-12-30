@@ -21,6 +21,7 @@ const getBookingByStatus = async (req, res, next) => {
 
   const roomType = roomTypeList.map((value) => {
     return {
+      id: value.room_id.id,
       booking_id: value.booking_id,
       room_name: value.room_id.room_name,
       room_type: value.room_id.room_type_id.name,
@@ -104,7 +105,19 @@ const getBooking = async (req, res, next) => {
 
   res.status(200).send({ data: data[0] });
 };
+const updateTotalCost = async (req, res, next) => {
+  const {id} = req.query;
+  const {totalCost} = req.body;
 
+  if(!id || !totalCost) return next(BadRequestError);
+
+  const {data, error} = await roomDAL.updateTotalCost(totalCost, id);
+
+  if(error) return next(error);
+
+  res.status(200).send(data);
+}
+ 
 // tao booking khong can check phong trong vi chi co status available moi co nut dat phong
 const createBooking = async (req, res, next) => {
   const { booking, rooms } = req.body;
@@ -182,6 +195,7 @@ module.exports = {
   getRooms,
   getBooking,
   createBooking,
+  updateTotalCost,
   updateBookingStatus,
   deleteBooking,
 };

@@ -25,6 +25,12 @@ router.put(
   hasPermission(actionAC.GET, resourceAC.BOOKING),
   tryCatch(updateBookingStatus)
 );
+router.put(
+  "/used_room/:id",
+  authorizeAccessToken,
+  hasPermission(actionAC.GET, resourceAC.BOOKING),
+  tryCatch(updateBookingStatus)
+);
 router.get(
   "/room",
   authorizeAccessToken,
