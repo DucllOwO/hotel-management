@@ -32,14 +32,54 @@ const DetailRoomTable = ({ dataSource }) => {
     },
     {
       key: "4",
-      title: "Giá",
+      title: "Giờ đầu tiên (đ)",
       dataIndex: "price",
       align: "center",
       render: (value, record) => {
         console.log(record);
-        return String(record.roomInfo.price.toLocaleString());
+        return String(record.roomInfo.price.first_hour_price.toLocaleString());
       },
     },
+    {
+      key: "5",
+      title: "Một giờ (đ)",
+      dataIndex: "price",
+      align: "center",
+      render: (value, record) => {
+        console.log(record);
+        return String(record.roomInfo.price.hour_price.toLocaleString());
+      },
+    },
+    {
+      key: "6",
+      title: "Một ngày (đ)",
+      dataIndex: "price",
+      align: "center",
+      render: (value, record) => {
+        console.log(record);
+        return String(record.roomInfo.price.one_day_price.toLocaleString());
+      },
+    },
+    {
+      key: "7",
+      title: "Qua đêm (đ)",
+      dataIndex: "price",
+      align: "center",
+      render: (value, record) => {
+        console.log(record);
+        return String(record.roomInfo.price.overnight_price.toLocaleString());
+      },
+    },
+    // {
+    //   key: "7",
+    //   title: "Giá",
+    //   dataIndex: "price",
+    //   align: "center",
+    //   render: (value, record) => {
+    //     console.log(record);
+    //     return String(record.roomInfo.price.toLocaleString());
+    //   },
+    // },
   ];
 
   return (
