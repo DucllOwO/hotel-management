@@ -37,6 +37,7 @@ const DashboardTable = ({ data, setData, revenue, isLoading }) => {
       title: "ID",
       dataIndex: "id",
       align: "center",
+      width: 150,
       sorter: (a, b) => a.id - b.id,
     },
     {

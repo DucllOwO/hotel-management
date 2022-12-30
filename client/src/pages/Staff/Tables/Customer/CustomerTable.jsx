@@ -30,14 +30,14 @@ const CustomerTable = ({ customer, setCustomer, isLoading }) => {
       title: "CCCD",
       dataIndex: "id",
       width: "15%",
-      fixed: "left",
+      // fixed: "left",
     },
     {
       key: "2",
       title: "Họ và tên",
       width: "30%",
       align: "center",
-      fixed: "left",
+      // fixed: "left",
       sorter: (a, b) => a.fullname.localeCompare(b.fullname),
       filteredValue: [searchedText],
       onFilter: (value, record) => {
@@ -151,7 +151,7 @@ const CustomerTable = ({ customer, setCustomer, isLoading }) => {
         tableLayout="auto"
         columns={columns}
         dataSource={customer}
-        scroll={{ x: 1000, y: "60vh" }}
+        scroll={{ y: "60vh" }}
       ></Table>
     </div>
   );

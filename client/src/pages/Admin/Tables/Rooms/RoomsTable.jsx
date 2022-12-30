@@ -47,14 +47,6 @@ const RoomsTable = ({
       label: "Đang sử dụng",
       value: "1",
     },
-    {
-      label: "Đang chờ",
-      value: "2",
-    },
-    {
-      label: "Đang dọn dẹp",
-      value: "3",
-    },
   ];
 
   useEffect(() => {
@@ -252,7 +244,7 @@ const RoomsTable = ({
             <div className="filterContainer">
               <div>
                 <Select
-                  style={{ width: 300 }}
+                  style={{ width: 150 }}
                   size="medium"
                   options={statusItems}
                   showSearch

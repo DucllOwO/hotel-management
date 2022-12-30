@@ -61,7 +61,7 @@ const BookingListTable = ({
       key: "1",
       title: "ID",
       dataIndex: "id",
-      // width: "10%",
+      width: 50,
       align: "center",
       sorter: (a, b) => a.id - b.id,
     },
@@ -166,30 +166,26 @@ const BookingListTable = ({
       // width: "20%",
       align: "center",
       sorter: (a, b) => a.book_to.localeCompare(b.book_to),
+      render: (text, record) => {
+        return dayjs(convertToValidDateString(text)).format(DATE_FORMAT);
+      },
     },
+    // {
+    //   key: "5",
+    //   title: "Phòng",
+    //   dataIndex: "room_id",
+    //   align: "center",
+    //   sorter: (a, b) => a.room_id.localeCompare(b.room_id),
+    // },
+    // {
+    //   key: "5",
+    //   title: "Phòng",
+    //   dataIndex: "room_id",
+    //   align: "center",
+    //   sorter: (a, b) => a.room_id.localeCompare(b.room_id),
+    // },
     {
       key: "5",
-      title: "Phòng",
-      dataIndex: "room_id",
-      align: "center",
-      sorter: (a, b) => a.room_id.localeCompare(b.room_id),
-    },
-    // {
-    //   key: "5",
-    //   title: "Phòng",
-    //   dataIndex: "room_id",
-    //   align: "center",
-    //   sorter: (a, b) => a.room_id.localeCompare(b.room_id),
-    // },
-    // {
-    //   key: "5",
-    //   title: "Phòng",
-    //   dataIndex: "room_id",
-    //   align: "center",
-    //   sorter: (a, b) => a.room_id.localeCompare(b.room_id),
-    // },
-    {
-      key: "6",
       title: "Thao tác",
       render: (_, record) => {
         if (status === "0")

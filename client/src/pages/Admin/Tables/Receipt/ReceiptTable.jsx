@@ -12,10 +12,7 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import { FilterOutlined } from "@ant-design/icons";
-import moment from "moment";
 import DetailForm from "../../../../components/Form/DetailForm/DetailForm";
-import EditButton from "../../../../components/IconButton/EditButton/EditButton";
-import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 import { formatDate, formatterInt } from "../../../../Utils/formatter";
 import { useEffect } from "react";
 

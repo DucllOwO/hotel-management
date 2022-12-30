@@ -516,8 +516,8 @@ const BookingTable = ({
   const disabledRangeTime = (_, type) => {
     if (type === "start") {
       return {
-        disabledHours: () => range(0, 24).splice(0, dayjs().hour() - 1),
-        disabledMinutes: () => range(0, dayjs().minute()),
+        // disabledHours: () => range(0, 24).splice(0, dayjs().hour()),
+        // disabledMinutes: () => range(0, dayjs().minute()),
       };
     }
   };
@@ -529,7 +529,7 @@ const BookingTable = ({
         <div className="header">
           <div>
             <RangePicker
-              disabledTime={disabledRangeTime}
+              // disabledTime={disabledRangeTime}
               disabledDate={disabledDate}
               showTime={{
                 hideDisabledOptions: true,

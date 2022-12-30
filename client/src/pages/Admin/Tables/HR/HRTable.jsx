@@ -37,6 +37,7 @@ const HRTable = ({ employees, setEmployees }) => {
       title: "CCCD",
       dataIndex: "id",
       fixed: "left",
+      width: 150,
     },
     {
       key: "2",
@@ -44,7 +45,7 @@ const HRTable = ({ employees, setEmployees }) => {
       // width: "20%",
       align: "center",
       filteredValue: [searchedText],
-      fixed: "left",
+      // fixed: "left",
       onFilter: (value, record) => {
         var dob = "";
         var startDay = "";
@@ -142,7 +143,7 @@ const HRTable = ({ employees, setEmployees }) => {
     {
       key: "6",
       title: "Hành động",
-      fixed: "right",
+      // fixed: "right",
       render: (_, record) => {
         return (
           <>
