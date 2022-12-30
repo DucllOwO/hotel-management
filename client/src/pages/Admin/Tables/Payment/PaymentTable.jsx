@@ -6,8 +6,11 @@ import dayjs from "dayjs";
 import moment from "moment";
 import PaymentForm from "../../../../components/Form/PaymentForm";
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
+import { createPayment } from "../../../../api/PaymentAPI";
+import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
+import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 
-const PaymentTable = ({ payment, setPayment }) => {
+const PaymentTable = ({ payment, setPayment, positionUser }) => {
   const [type, setType] = useState("day");
 
   const [editingRow, setEditingRow] = useState(null);
@@ -143,64 +146,36 @@ const PaymentTable = ({ payment, setPayment }) => {
           .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
       },
     },
-    {
-      key: "5",
-      title: "Thao tác",
-      width: 100,
-      render: (_, record) => {
-        return (
-          <>
-            <div className="btnWrap">
-              <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
-            </div>
-          </>
-        );
-      },
-    },
+    // {
+    //   key: "5",
+    //   title: "Thao tác",
+    //   width: 100,
+    //   render: (_, record) => {
+    //     return (
+    //       <>
+    //         <div className="btnWrap">
+    //           <DeleteButton onDeleteButton={onDeleteButton}></DeleteButton>
+    //         </div>
+    //       </>
+    //     );
+    //   },
+    // },
   ];
 
-  const onChange = (date, dateString) => {
-    //console.log(date, dateString);
-  };
+  // const onDeleteButton = (record) => {
+  //   Modal.confirm({
+  //     title: "Bạn có chắc muốn xoá dữ liệu?",
+  //     okText: "Yes",
+  //     okType: "danger",
+  //     onOk: () => {
+  //       setPayment((pre) => {
+  //         return pre.filter((data) => data.idNum !== record.idNum);
+  //       });
+  //     },
+  //   });
+  // };
 
-  const onAddButton = () => {
-    const randomNumber = parseInt(Math.random() * 1000);
-    const newData = {
-      idNum: "" + parseInt(payment.length + 1),
-      date: "Date " + randomNumber,
-      amount: "20",
-      price: randomNumber + " price",
-    };
-
-    setPayment((pre) => {
-      return [...pre, newData];
-    });
-  };
-
-  const onDeleteButton = (record) => {
-    Modal.confirm({
-      title: "Bạn có chắc muốn xoá dữ liệu?",
-      okText: "Yes",
-      okType: "danger",
-      onOk: () => {
-        setPayment((pre) => {
-          return pre.filter((data) => data.idNum !== record.idNum);
-        });
-      },
-    });
-  };
-
-  const onFinish = (values) => {
-    console.log(editingRow);
-    const updateDataSource = [...payment];
-    updateDataSource.splice(editingRow - 1, 1, {
-      ...values,
-      idNum: editingRow,
-    });
-    console.log(updateDataSource);
-    setPayment(updateDataSource);
-    setEditingRow(null);
-  };
+  const onChange = () => {};
 
   const modalAddPayment = () => (
     <Modal
@@ -210,7 +185,7 @@ const PaymentTable = ({ payment, setPayment }) => {
       onCancel={handleCancelModal}
       width="40%"
     >
-      <PaymentForm></PaymentForm>
+      <PaymentForm form={form}></PaymentForm>
     </Modal>
   );
 
@@ -220,13 +195,31 @@ const PaymentTable = ({ payment, setPayment }) => {
   };
 
   const handleOKModalAdd = () => {
-    setModal(false);
+    form
+      .validateFields()
+      .then((values) => {
+        createPayment(positionUser, values)
+          .then(({ data }) => {
+            setPayment((prev) => [...prev, data]);
+            SuccessAlert("Tạo phiếu chi thành công.");
+          })
+          .catch((err) => {
+            console.log(err);
+            ErrorAlert("Tạo phiếu chi thất bại.");
+          })
+          .finally(() => {
+            setModal(false);
+            form.resetFields();
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
     <div className="table">
       <>{modal === true && modalAddPayment()}</>
-      {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div>
           <Button
@@ -261,7 +254,7 @@ const PaymentTable = ({ payment, setPayment }) => {
           {type === "day" && (
             <DatePicker
               onChange={onChange}
-              defaultValue={moment()}
+              defaultValue={dayjs(Date.now())}
               picker="date"
               format={dateFormat}
             ></DatePicker>

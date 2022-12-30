@@ -11,17 +11,18 @@ const getByID = (req, res) => {
   if (error) return next(error);
   res.status(200).send({ data });
 };
-const createPayment = (req, res) => {
+const createPayment = async (req, res) => {
   const { payment } = req.body;
 
   if (!payment) return next(BadRequestError());
 
-  const { error: insertPaymentError } = paymentDAL.createNewPayment({
-    ...payment,
-  });
+  const { data, error: insertPaymentError } = await paymentDAL.createNewPayment(
+    payment
+  );
 
-  if (insertPaymentError) return next(insertPaymentError);
-  res.status(201).send("Created");
+  if (insertPaymentError) throw insertPaymentError;
+
+  res.status(200).send(data[0]);
 };
 
 module.exports = {

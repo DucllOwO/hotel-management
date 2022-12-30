@@ -8,10 +8,11 @@ async function getPaymentByID(id) {
   const { data, error } = await supabase.from("payment").select().eq("id", id);
   return { data, error };
 }
-async function createNewPayment(newPayment) {
-  const { data, error } = await supabase.from("payment").insert({
+function createNewPayment(newPayment) {
+  return supabase.from("payment").insert({
     name: newPayment.name,
-    price: newPayment.price,
+    total_cost: newPayment.total_cost,
+    established_date: newPayment.established_date,
   });
 }
 

@@ -59,43 +59,9 @@ const updateAccount = async (req, res, next) => {
 
   if (!account) return next(BadRequestError());
 
-  let { username: usernameTemp, ...AccountWithoutUsername } = account;
+  const hashPassword = await bcrypt.hash(account?.password, BCRYPT_SALT);
 
-  //hash password before update account
-  if (AccountWithoutUsername?.password) {
-    const hashPassword = await bcrypt.hash(
-      AccountWithoutUsername?.password,
-      BCRYPT_SALT
-    );
-
-    AccountWithoutUsername = {
-      ...AccountWithoutUsername,
-      password: hashPassword,
-    };
-  }
-
-  // //change email of user auth supabase
-  // if (AccountWithoutUsername?.email) {
-  //   // can't get specific user because don't have uid
-  //   const { data: users, error: getAllError } = await usersAuthDAL.getAllUser();
-  //   if (getAllError) return next(getAllError);
-
-  //   const user = users.find((user) => user.email === oldEmail);
-
-  //   if (user) {
-  //     const { error: updateError } = await usersAuthDAL.updateUserById(
-  //       user.id,
-  //       { ...AccountWithoutUsername, password: account.password }
-  //     );
-
-  //     if (updateError) return next(updateError);
-  //   }
-  // }
-
-  const { error } = await AccountDAL.updateAccount(
-    AccountWithoutUsername,
-    username
-  );
+  const { error } = await AccountDAL.updateAccount(hashPassword, username);
 
   if (error) return next(error);
 

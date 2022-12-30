@@ -4,6 +4,8 @@ import { AppContext } from "../../../../context/AppContext";
 import Topbar from "../../../../components/Topbar/Topbar";
 import PaymentTable from "../../Tables/Payment/PaymentTable";
 import "./payment.css";
+import { getAllPayment } from "../../../../api/PaymentAPI";
+import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 
 const Payment = () => {
   const [payment, setPayment] = useState([]);
@@ -11,19 +13,23 @@ const Payment = () => {
 
   useEffect(() => {
     document.title = "Payment | Parallel Shine";
-    const fetchPayment = async () => {
-      const { data } = await userRequest.get("/payment", {
-        params: { user: { position: user?.position } },
+
+    getAllPayment(user?.position)
+      .then(({ data }) => {
+        setPayment(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        ErrorAlert("Lấy thông tin phiếu thu thất bại!!");
       });
-      console.log(data);
-      setPayment(data);
-      console.log(payment);
-    };
-    fetchPayment();
   }, []);
   return (
     <div className="paymentContainer">
-      <PaymentTable payment={payment}></PaymentTable>
+      <PaymentTable
+        payment={payment}
+        setPayment={setPayment}
+        positionUser={user?.position}
+      ></PaymentTable>
     </div>
   );
 };
