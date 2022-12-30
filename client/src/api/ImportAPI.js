@@ -6,6 +6,12 @@ export const fetchRecord = (positionUser) => {
   });
 };
 
+export const fetchRecordDetail = (positionUser, purchaseID) => {
+  return userRequest.get(`/importing/detail/${purchaseID}`, {
+    params: { user: { position: positionUser } },
+  });
+};
+
 // purchasedetail = { item_id, purchase_id, amount, price }
 export const createRecord = (
   positionUser,

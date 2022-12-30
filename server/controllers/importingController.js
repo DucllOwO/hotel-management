@@ -23,6 +23,18 @@ const getByID = (req, res, next) => {
   if (getImportingError) return next(getImportingError);
   else res.status(200).send(getByID(id));
 };
+
+const getDeatailByPurchaseID = async (req, res, next) => {
+  const { purchaseID } = req.params;
+
+  const { data: purchaseDeatail, error: getPurchaseDeatailError } =
+    await importingDAL.getPurchaseDetail(purchaseID);
+
+  if (getPurchaseDeatailError) return next(getPurchaseDeatailError);
+
+  res.status(200).send({ detail: purchaseDeatail, purchase_id: purchaseID });
+};
+
 const createRecord = async (req, res, next) => {
   const { record, purchaseDetail } = req.body;
 
@@ -68,4 +80,5 @@ module.exports = {
   getAllRecord,
   getByID,
   createRecord,
+  getDeatailByPurchaseID,
 };
