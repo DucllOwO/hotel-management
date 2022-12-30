@@ -807,7 +807,7 @@ const BookingListTable = ({
         footer={null}
         onOk={handleCancelModal}
         onCancel={handleCancelModal}
-        width="40%"
+        width="60%"
       >
         <DetailForm
           receipt={receipt}
