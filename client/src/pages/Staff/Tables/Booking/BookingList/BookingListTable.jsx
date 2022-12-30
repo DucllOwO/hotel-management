@@ -1,19 +1,9 @@
 import React, { useState } from "react";
 import "../../index.css";
-import {
-  Table,
-  Button,
-  Modal,
-  Form,
-  Input,
-  Tooltip,
-  Slider,
-  DatePicker,
-} from "antd";
+import { Table, Button, Modal, Form, Input, DatePicker } from "antd";
 import "./bookingListtable.css";
 import dayjs from "dayjs";
 import BookingListExpand from "../../../../../components/ExpandedTable/BookingListExpand";
-import { FilterOutlined } from "@ant-design/icons";
 import ErrorAlert from "../../../../../components/Error/Alert/ErrorAlert";
 import SuccessAlert from "../../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import {
@@ -22,8 +12,6 @@ import {
   getRoomByBookingID,
   updateBookingStatus,
 } from "../../../../../api/BookingListAPI";
-import { faSort } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DetailForm from "../../../../../components/Form/DetailForm/DetailForm";
 import CheckButton from "../../../../../components/IconButton/CheckButton/CheckButton";
 import CancelButton from "../../../../../components/IconButton/CancelButton/CancelButton";
@@ -32,7 +20,8 @@ import { AppContext } from "../../../../../context/AppContext";
 import BookingListForm from "../../../../../components/Form/BookingListForm";
 import { fetchEmployeeByUsername } from "../../../../../api/EmployeeAPI";
 
-const DATE_FORMAT = "HH:mm DD-MM-YYYY";
+const DATE_FORMAT_FULL = "HH:mm DD-MM-YYYY";
+const DATE_FORMAT = "DD-MM-YYYY";
 
 const BookingListTable = ({
   booking,
@@ -41,7 +30,7 @@ const BookingListTable = ({
   status,
   isLoading,
 }) => {
-  const [editingRow, setEditingRow] = useState(null);
+  const [bookingSearchDay, setBookingSearchDay] = useState(booking);
   const [isCheckout, setIsCheckout] = useState(false);
   const [currentEmployee, setCurrentEmployee] = useState({});
   const [selectedBooking, setSelectedBooking] = useState({});
@@ -54,14 +43,11 @@ const BookingListTable = ({
   const [searchedText, setSearchedText] = useState("");
   const [isShowReceipt, setShowReceipt] = useState(false);
 
-  const dateFormat = "DD-MM-YYYY";
-
   const columns = [
     {
       key: "1",
       title: "ID",
       dataIndex: "id",
-      // width: "10%",
       align: "center",
       sorter: (a, b) => a.id - b.id,
     },
@@ -129,23 +115,7 @@ const BookingListTable = ({
       },
       dataIndex: "customer_id",
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="customer"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the customer",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return <p>{text}</p>;
       },
     },
     {
@@ -156,7 +126,9 @@ const BookingListTable = ({
       align: "center",
       sorter: (a, b) => a.book_from.localeCompare(b.book_from),
       render: (text, record) => {
-        return dayjs(convertToValidDateString(text)).format(DATE_FORMAT);
+        return dayjs(convertToValidDateString(text))
+          .startOf("day")
+          .format(DATE_FORMAT_FULL);
       },
     },
     {
@@ -166,6 +138,9 @@ const BookingListTable = ({
       // width: "20%",
       align: "center",
       sorter: (a, b) => a.book_to.localeCompare(b.book_to),
+      render: (text, record) => {
+        return dayjs(convertToValidDateString(text)).format(DATE_FORMAT_FULL);
+      },
     },
     {
       key: "5",
@@ -174,20 +149,6 @@ const BookingListTable = ({
       align: "center",
       sorter: (a, b) => a.room_id.localeCompare(b.room_id),
     },
-    // {
-    //   key: "5",
-    //   title: "Phòng",
-    //   dataIndex: "room_id",
-    //   align: "center",
-    //   sorter: (a, b) => a.room_id.localeCompare(b.room_id),
-    // },
-    // {
-    //   key: "5",
-    //   title: "Phòng",
-    //   dataIndex: "room_id",
-    //   align: "center",
-    //   sorter: (a, b) => a.room_id.localeCompare(b.room_id),
-    // },
     {
       key: "6",
       title: "Thao tác",
@@ -300,23 +261,7 @@ const BookingListTable = ({
       },
       dataIndex: "customer_id",
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="customer"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the customer",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
-        }
+        return <p>{text}</p>;
       },
     },
     {
@@ -325,6 +270,9 @@ const BookingListTable = ({
       dataIndex: "book_from",
       align: "center",
       sorter: (a, b) => a.book_from.localeCompare(b.book_from),
+      render: (text, record) => {
+        return dayjs(convertToValidDateString(text)).format(DATE_FORMAT_FULL);
+      },
     },
     {
       key: "4",
@@ -332,6 +280,9 @@ const BookingListTable = ({
       dataIndex: "book_to",
       align: "center",
       sorter: (a, b) => a.book_to.localeCompare(b.book_to),
+      render: (text, record) => {
+        return dayjs(convertToValidDateString(text)).format(DATE_FORMAT_FULL);
+      },
     },
   ];
 
@@ -402,21 +353,6 @@ const BookingListTable = ({
     });
   };
 
-  const onBooking = (value) => {
-    console.log(value.idNum);
-  };
-
-  const onFinish = (values) => {
-    console.log(editingRow);
-    const updateDataSource = [...booking];
-    updateDataSource.splice(editingRow - 1, 1, {
-      ...values,
-      idNum: editingRow,
-    });
-    console.log(updateDataSource);
-    setBooking(updateDataSource);
-    setEditingRow(null);
-  };
   const handleOKModal = async () => {
     //Fetch employee information
     let serviceCost = 0;
@@ -935,9 +871,23 @@ const BookingListTable = ({
           ></Button> */}
           <DatePicker
             placeholder="Chọn thời gian"
-            onChange={(values) => {}}
+            onChange={(dayjsObj) => {
+              if (dayjsObj)
+                setBookingSearchDay(
+                  booking.filter((value) => {
+                    const startOfDay = dayjsObj.startOf("day");
+                    const endOfDay = dayjsObj.endOf("day");
+                    const dayToCampare = dayjs(value.book_to);
+                    console.log(dayToCampare.isBetween(startOfDay, endOfDay));
+                    if (dayToCampare.isBetween(startOfDay, endOfDay))
+                      return true;
+                    return false;
+                  })
+                );
+              else setBookingSearchDay(booking);
+            }}
             picker="date"
-            format={dateFormat}
+            format={DATE_FORMAT}
             style={{ marginRight: "5px" }}
           ></DatePicker>
           <Input.Search
@@ -967,7 +917,7 @@ const BookingListTable = ({
         rowKey={(row) => row.id}
         showSorterTooltip={false}
         columns={status === "2" || status === "3" ? columnsNoAction : columns}
-        dataSource={booking}
+        dataSource={bookingSearchDay}
         scroll={{ y: "60vh", x: "100%" }}
         expandable={{
           expandedRowRender: (record) => {

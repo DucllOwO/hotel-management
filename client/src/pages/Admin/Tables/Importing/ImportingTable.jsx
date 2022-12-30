@@ -241,13 +241,11 @@ const ImportingTable = ({
         scroll={{ y: "60vh  ", x: "100%" }}
         expandable={{
           expandedRowRender: (record) => {
-            console.log(record);
             return <ImportingExpand dataSource={record.detail} />;
           },
           onExpand: (expanded, record) => {
             fetchRecordDetail(positionUser, record.id)
               .then(({ data }) => {
-                console.log(data);
                 setRecord((prev) => {
                   return prev.map((importTemp) => {
                     if (record.id === importTemp.id) {
