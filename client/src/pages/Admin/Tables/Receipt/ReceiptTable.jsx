@@ -148,16 +148,16 @@ const ReceiptTable = ({
               <div>
                 <Select
                   style={{ width: 150 }}
-                  defaultValue={"Offline"}
                   placeholder="Chọn phương thức"
+                  defaultValue={"Trực tiếp"}
                   options={[
                     {
-                      value: "Offline",
-                      label: "Offline",
+                      value: "Trực tuyến",
+                      label: "Trực tuyến",
                     },
                     {
-                      value: "Online",
-                      label: "Online",
+                      value: "Trực tiếp",
+                      label: "Trực tiếp",
                     },
                   ]}
                   onChange={(e) => {

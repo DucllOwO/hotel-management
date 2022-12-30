@@ -32,7 +32,7 @@ import { AppContext } from "../../../../../context/AppContext";
 import BookingListForm from "../../../../../components/Form/BookingListForm";
 import { fetchEmployeeByUsername } from "../../../../../api/EmployeeAPI";
 
-const DATE_FORMAT = "HH:mm DD-MM-YYYY";
+const DATE_FORMAT = "HH:mm:ss DD-MM-YYYY";
 
 const BookingListTable = ({
   booking,
@@ -61,7 +61,7 @@ const BookingListTable = ({
       key: "1",
       title: "ID",
       dataIndex: "id",
-      width: 50,
+      width: 100,
       align: "center",
       sorter: (a, b) => a.id - b.id,
     },
@@ -231,6 +231,7 @@ const BookingListTable = ({
       title: "ID",
       dataIndex: "id",
       align: "center",
+      width: 100,
       sorter: (a, b) => a.id - b.id,
     },
     {
@@ -321,6 +322,9 @@ const BookingListTable = ({
       dataIndex: "book_from",
       align: "center",
       sorter: (a, b) => a.book_from.localeCompare(b.book_from),
+      render: (text, record) => {
+        return dayjs(convertToValidDateString(text)).format(DATE_FORMAT);
+      },
     },
     {
       key: "4",
@@ -328,6 +332,9 @@ const BookingListTable = ({
       dataIndex: "book_to",
       align: "center",
       sorter: (a, b) => a.book_to.localeCompare(b.book_to),
+      render: (text, record) => {
+        return dayjs(convertToValidDateString(text)).format(DATE_FORMAT);
+      },
     },
   ];
 

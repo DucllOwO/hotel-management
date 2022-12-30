@@ -450,6 +450,11 @@ const RoomTypeTable = ({
         //   return record.area >= value[0] && record.area <= value[1];
         // }
       },
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+      },
     },
     {
       key: "7",

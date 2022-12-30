@@ -3,7 +3,7 @@ import CheckableTag from "antd/es/tag/CheckableTag";
 import React from "react";
 import UtilitiesButton from "../Button/UtilitiesButton/UtilitiesButton";
 
-const BookingListExpand = ({ utils = [], roomTypeSource, ...prices}) => {
+const BookingListExpand = ({ utils = [], roomTypeSource, ...prices }) => {
   const priceTypes = {
     firstHourPrice: "Giờ đầu tiên",
     overNightPrice: "Qua đêm",
@@ -22,7 +22,7 @@ const BookingListExpand = ({ utils = [], roomTypeSource, ...prices}) => {
     },
     {
       key: "2",
-      title: "Giá",
+      title: "Giá (đ)",
       dataIndex: [
         "firstHourPrice",
         "overNightPrice",
@@ -30,7 +30,13 @@ const BookingListExpand = ({ utils = [], roomTypeSource, ...prices}) => {
         "hourPrice",
       ],
       render: (text, record) => {
-        return <p>{Object.values(record)[0].toLocaleString()}</p>;
+        return (
+          <p>
+            {Object.values(record)[0]
+              .toLocaleString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </p>
+        );
       },
     },
   ];
@@ -76,9 +82,14 @@ const BookingListExpand = ({ utils = [], roomTypeSource, ...prices}) => {
     },
     {
       key: "6",
-      title: "Giá ngày",
+      title: "Giá ngày (đ)",
       dataIndex: "one_day_price",
       align: "center",
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+      },
     },
   ];
 
