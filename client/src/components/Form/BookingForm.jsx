@@ -59,7 +59,7 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
   }
 
   return (
-    <Form form={form} layout="vertical">
+    <Form form={form} layout="vertical" autoComplete="off">
       <Form.Item label="Phòng" name="room_name">
         <div>
           {selectedRooms.map((room) => {

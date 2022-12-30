@@ -153,14 +153,16 @@ const AccountTable = ({ accounts, setAccount }) => {
           />
         </div>
       </div>
-      <Table
-        showSorterTooltip={false}
-        loading={accounts ? false : true}
-        columns={columns}
-        dataSource={accounts}
-        scroll={{ y: "60vh", x: "100%" }}
-        rowKey={(row) => row.username}
-      ></Table>
+      <Form form={form}>
+        <Table
+          showSorterTooltip={false}
+          loading={accounts ? false : true}
+          columns={columns}
+          dataSource={accounts}
+          scroll={{ y: "60vh", x: "100%" }}
+          rowKey={(row) => row.username}
+        ></Table>
+      </Form>
     </div>
   );
 

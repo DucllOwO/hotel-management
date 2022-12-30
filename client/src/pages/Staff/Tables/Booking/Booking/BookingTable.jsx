@@ -35,6 +35,7 @@ const BookingTable = ({
   listType,
   positionUser,
 }) => {
+  console.log(dayjs().hour());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState({});
   const [selectedRooms, setSelectedRooms] = useState([]);
