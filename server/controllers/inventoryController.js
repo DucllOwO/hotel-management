@@ -97,6 +97,7 @@ const getBookingByStatus = async (req, res, next) => {
 
   const returnList = listRoom?.map((value) => {
     return {
+      room_id: value.room_id.id,
       booking_id: value.booking_id,
       room_name: value.room_id.room_name,
       room_type: value.room_id.room_type_id.name,
