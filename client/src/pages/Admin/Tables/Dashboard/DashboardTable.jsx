@@ -3,8 +3,10 @@ import React, { useState } from "react";
 import { fetchDailyReport } from "../../../../api/DashboardAPI";
 import { useEffect } from "react";
 import { FilterOutlined } from "@ant-design/icons";
+import dayjs from "dayjs";
 
 const data = [];
+const DATE_FORMAT_FULL = "DD-MM-YYYY";
 
 const DashboardTable = ({ data, setData, revenue, isLoading }) => {
   const [type, setType] = useState("income");
@@ -46,6 +48,11 @@ const DashboardTable = ({ data, setData, revenue, isLoading }) => {
       dataIndex: "established_date",
       align: "center",
       sorter: (a, b) => a.established_date.localeCompare(b.established_date),
+      render: (text, record) => {
+        return dayjs(convertToValidDateString(text))
+          .startOf("day")
+          .format(DATE_FORMAT_FULL);
+      },
     },
     {
       key: "3",
@@ -146,6 +153,11 @@ const DashboardTable = ({ data, setData, revenue, isLoading }) => {
       dataIndex: "established_date",
       align: "center",
       sorter: (a, b) => a.established_date.localeCompare(b.established_date),
+      render: (text, record) => {
+        return dayjs(convertToValidDateString(text))
+          .startOf("day")
+          .format(DATE_FORMAT_FULL);
+      },
     },
     {
       key: "3",
@@ -172,6 +184,9 @@ const DashboardTable = ({ data, setData, revenue, isLoading }) => {
       ></Table>
     </div>
   );
+  function convertToValidDateString(date) {
+    return date.replace("T", " ");
+  }
 };
 
 export default DashboardTable;

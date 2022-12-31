@@ -155,7 +155,7 @@ const HRForm = ({
               },
             ]}
           >
-            <Input size="large" />
+            <Input size="large" maxLength={10} />
           </Form.Item>
         </div>
         <div className="right" style={{ marginLeft: "10%", width: "30vw" }}>

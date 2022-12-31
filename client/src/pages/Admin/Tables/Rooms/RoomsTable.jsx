@@ -209,107 +209,107 @@ const RoomsTable = ({
         // console.log(value);
       },
     },
-    {
-      key: "4",
-      title: "Trạng thái",
-      dataIndex: "status",
-      width: "20%",
-      align: "center",
-      render: (text, record) => {
-        switch (text) {
-          case "0":
-            return (
-              <Tag color="success" style={{ fontSize: 14 }}>
-                Trống
-              </Tag>
-            );
-          case "1":
-            return (
-              <Tag color="error" style={{ fontSize: 14 }}>
-                Đang sử dụng
-              </Tag>
-            );
-          default:
-            return (
-              <Tag style={{ fontSize: 14 }} color="#8A2BE2">
-                Trạng thái lỗi!!
-              </Tag>
-            );
-        }
-      },
-      filteredValue: statusFilter !== "" ? [statusFilter] : null,
-      filterDropdown: ({ confirm, clearFilters }) => {
-        return (
-          <>
-            <div className="filterContainer">
-              <div>
-                <Select
-                  style={{ width: 150 }}
-                  size="medium"
-                  options={statusItems}
-                  showSearch
-                  placeholder="Chọn trạng thái"
-                  onChange={(e) => {
-                    setStatusFilter(e);
-                    confirm();
-                    // if (e === 0) {
-                    //   setStatusFilter("0");
-                    //   confirm();
-                    //   return;
-                    // }
-                    // if (e === "Đang sử dụng") {
-                    //   setStatusFilter("1");
-                    //   confirm();
-                    //   return;
-                    // }
-                    // if (e === "Đang chờ") {
-                    //   setStatusFilter("2");
-                    //   confirm();
-                    //   return;
-                    // }
-                    // if (e === "Đang dọn dẹp") {
-                    //   setStatusFilter("3");
-                    //   confirm();
-                    //   return;
-                    // }
-                  }}
-                />
-              </div>
-              <Button
-                type="primary"
-                style={{ marginTop: "10px" }}
-                onClick={() => {
-                  console.log(statusFilter);
-                  setStatusFilter("");
-                  clearFilters({ closeDropdown: true });
-                }}
-              >
-                Reset
-              </Button>
-            </div>
-          </>
-        );
-      },
-      filterIcon: () => {
-        return <FilterOutlined />;
-      },
-      onFilter: (value, record) => {
-        console.log(statusFilter);
-        if (statusFilter === "") {
-          return record.status;
-        } else {
-          return record.status === value;
-        }
-        // return record.status;
-        // if (filter === "") {
-        //   return record.roomType;
-        // } else {
-        //   return record.roomType === value;
-        // }
-        // record.roomType === value;
-        // console.log(value);
-      },
-    },
+    // {
+    //   key: "4",
+    //   title: "Trạng thái",
+    //   dataIndex: "status",
+    //   width: "20%",
+    //   align: "center",
+    //   render: (text, record) => {
+    //     switch (text) {
+    //       case "0":
+    //         return (
+    //           <Tag color="success" style={{ fontSize: 14 }}>
+    //             Trống
+    //           </Tag>
+    //         );
+    //       case "1":
+    //         return (
+    //           <Tag color="error" style={{ fontSize: 14 }}>
+    //             Đang sử dụng
+    //           </Tag>
+    //         );
+    //       default:
+    //         return (
+    //           <Tag style={{ fontSize: 14 }} color="#8A2BE2">
+    //             Trạng thái lỗi!!
+    //           </Tag>
+    //         );
+    //     }
+    //   },
+    //   filteredValue: statusFilter !== "" ? [statusFilter] : null,
+    //   filterDropdown: ({ confirm, clearFilters }) => {
+    //     return (
+    //       <>
+    //         <div className="filterContainer">
+    //           <div>
+    //             <Select
+    //               style={{ width: 150 }}
+    //               size="medium"
+    //               options={statusItems}
+    //               showSearch
+    //               placeholder="Chọn trạng thái"
+    //               onChange={(e) => {
+    //                 setStatusFilter(e);
+    //                 confirm();
+    //                 // if (e === 0) {
+    //                 //   setStatusFilter("0");
+    //                 //   confirm();
+    //                 //   return;
+    //                 // }
+    //                 // if (e === "Đang sử dụng") {
+    //                 //   setStatusFilter("1");
+    //                 //   confirm();
+    //                 //   return;
+    //                 // }
+    //                 // if (e === "Đang chờ") {
+    //                 //   setStatusFilter("2");
+    //                 //   confirm();
+    //                 //   return;
+    //                 // }
+    //                 // if (e === "Đang dọn dẹp") {
+    //                 //   setStatusFilter("3");
+    //                 //   confirm();
+    //                 //   return;
+    //                 // }
+    //               }}
+    //             />
+    //           </div>
+    //           <Button
+    //             type="primary"
+    //             style={{ marginTop: "10px" }}
+    //             onClick={() => {
+    //               console.log(statusFilter);
+    //               setStatusFilter("");
+    //               clearFilters({ closeDropdown: true });
+    //             }}
+    //           >
+    //             Reset
+    //           </Button>
+    //         </div>
+    //       </>
+    //     );
+    //   },
+    //   filterIcon: () => {
+    //     return <FilterOutlined />;
+    //   },
+    //   onFilter: (value, record) => {
+    //     console.log(statusFilter);
+    //     if (statusFilter === "") {
+    //       return record.status;
+    //     } else {
+    //       return record.status === value;
+    //     }
+    //     // return record.status;
+    //     // if (filter === "") {
+    //     //   return record.roomType;
+    //     // } else {
+    //     //   return record.roomType === value;
+    //     // }
+    //     // record.roomType === value;
+    //     // console.log(value);
+    //   },
+    // },
     {
       key: "5",
       title: "Thao tác",

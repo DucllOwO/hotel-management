@@ -151,13 +151,6 @@ const BookingListTable = ({
     },
     {
       key: "5",
-      title: "Phòng",
-      dataIndex: "room_id",
-      align: "center",
-      sorter: (a, b) => a.room_id.localeCompare(b.room_id),
-    },
-    {
-      key: "5",
       title: "Thao tác",
       render: (_, record) => {
         if (status === "0")
@@ -877,29 +870,31 @@ const BookingListTable = ({
               console.log(status === "2");
             }}
           ></Button> */}
-          <DatePicker
-            placeholder="Chọn thời gian"
-            onChange={(dayjsObj) => {
-              console.log(bookingSearchDay);
-              console.log(dayjsObj);
-              if (dayjsObj)
-                setBookingSearchDay(
-                  booking.filter((value) => {
-                    const startOfDay = dayjsObj.startOf("day");
-                    const endOfDay = dayjsObj.endOf("day");
-                    const dayToCampare = dayjs(value.book_to);
-                    console.log(dayToCampare.isBetween(startOfDay, endOfDay));
-                    if (dayToCampare.isBetween(startOfDay, endOfDay))
-                      return true;
-                    return false;
-                  })
-                );
-              else setBookingSearchDay(booking);
-            }}
-            picker="date"
-            format={DATE_FORMAT}
-            style={{ marginRight: "5px" }}
-          ></DatePicker>
+          {status !== "2" && status !== "3" && (
+            <DatePicker
+              placeholder="Chọn thời gian"
+              onChange={(dayjsObj) => {
+                console.log(bookingSearchDay);
+                console.log(dayjsObj);
+                if (dayjsObj)
+                  setBookingSearchDay(
+                    booking.filter((value) => {
+                      const startOfDay = dayjsObj.startOf("day");
+                      const endOfDay = dayjsObj.endOf("day");
+                      const dayToCampare = dayjs(value.book_to);
+                      console.log(dayToCampare.isBetween(startOfDay, endOfDay));
+                      if (dayToCampare.isBetween(startOfDay, endOfDay))
+                        return true;
+                      return false;
+                    })
+                  );
+                else setBookingSearchDay(booking);
+              }}
+              picker="date"
+              format={DATE_FORMAT}
+              style={{ marginRight: "5px" }}
+            ></DatePicker>
+          )}
           <Input.Search
             onSearch={(value) => {
               setSearchedText(value);

@@ -38,8 +38,8 @@ const Receipt = () => {
       case "month":
         console.log("month case run");
         console.log(type);
-        const [firstDay, lastDay] = getFirstAndLastDayOfMonth(time);
-        getMonthReceipt(user?.position, firstDay, lastDay)
+        const lastDay = dayjs(time).endOf("month").add(1, "day");
+        getMonthReceipt(user?.position, 1, lastDay)
           .then(({ data }) => {
             setReceipt(data);
           })
@@ -51,8 +51,8 @@ const Receipt = () => {
           .finally(() => setIsLoading(false));
         break;
       case "year":
-        const [firstDayOfYear, lastDayOfYear] = getFirstAndLastDayOfYear(time);
-        getYearReceipt(user?.position, firstDayOfYear, lastDayOfYear)
+        const day = getFirstAndLastDayOfYear(time);
+        getYearReceipt(user?.position, day[0], day[1])
           .then(({ data }) => {
             setReceipt(data);
           })
@@ -82,15 +82,7 @@ const Receipt = () => {
   );
 
   function getFirstAndLastDayOfMonth(date) {
-    return [dayjs(date).startOf("month"), dayjs(date).endOf("month")];
-  }
-
-  function getFirstAndLastDayOfYear(date) {
-    return [dayjs(date).startOf("year"), dayjs(date).endOf("year")];
-  }
-
-  function getFirstAndLastDayOfMonth(date) {
-    return [dayjs(date).startOf("month"), dayjs(date).endOf("month")];
+    return [1, dayjs(date).endOf("month")];
   }
 
   function getFirstAndLastDayOfYear(date) {
