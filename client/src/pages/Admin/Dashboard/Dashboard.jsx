@@ -26,6 +26,7 @@ const Dashboard = () => {
   const [semiType, setSemiType] = useState("income");
   const [time, setTime] = useState(dayjs(Date.now()));
   const { user } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     document.title = "Dashboard | Parallel Shine";
@@ -33,28 +34,35 @@ const Dashboard = () => {
       case "day":
         console.log(time);
         if (semiType === "income") {
+          setIsLoading(true);
           fetchDailyReport(user?.position, time, semiType).then(({ data }) => {
             setData(data.data);
             setReport(data.report);
+            setIsLoading(false);
           });
         } else {
+          setIsLoading(true);
           fetchDailyReport(user?.position, time, semiType).then(({ data }) => {
             setData(data.data);
             setReport(data.report);
+            setIsLoading(false);
           });
         }
         break;
       case "month":
-        // console.log(time);
+        setIsLoading(true);
         fetchMonthlyReport(user?.position, getMonth(time)).then(({ data }) => {
           setData(data.data);
           setReport(data.report);
+          setIsLoading(false);
         });
         break;
       case "year":
+        setIsLoading(true);
         fetchYearlyReport(user?.position, getYear(time)).then(({ data }) => {
           setData(data.data);
           setReport(data.report);
+          setIsLoading(false);
         });
         break;
       default:
@@ -195,7 +203,11 @@ const Dashboard = () => {
         )}
         {/* {type === "day" ? <DashboardTable /> : <MultiLineChart />} */}
         {type === "day" ? (
-          <DashboardTable data={data}></DashboardTable>
+          <DashboardTable
+            data={data}
+            revenue={semiType}
+            isLoading={isLoading}
+          ></DashboardTable>
         ) : (
           <MultiLineChart reportData={data} />
         )}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import dayjs from "dayjs"
+import dayjs from "dayjs";
 import {
   Table,
   Button,
@@ -17,11 +17,14 @@ import TextButton from "../../../../components/TextButton/TextButton";
 import CheckButton from "../../../../components/IconButton/CheckButton/CheckButton";
 import { useContext } from "react";
 import { ItemContext } from "../../../../context/ItemContext";
-import { createInventoryDetail, createInventoryRecord } from "../../../../api/InventoryAPI";
+import {
+  createInventoryDetail,
+  createInventoryRecord,
+} from "../../../../api/InventoryAPI";
 import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 
-const InventoryTable = ({ rooms, user }) => {
+const InventoryTable = ({ rooms, user, isLoading, roomType }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -39,11 +42,18 @@ const InventoryTable = ({ rooms, user }) => {
     60: "60",
   };
 
+  const items = roomType.map((item) => {
+    return {
+      label: item.name.toString(),
+      value: item.name.toString(),
+    };
+  });
+
   const [filter, setFilter] = useState("");
   useEffect(() => {
     // setDataSource(rooms);
-    console.log(rooms)  
-  }, [rooms])
+    console.log(rooms);
+  }, [rooms]);
 
   // const items = rooms.map((value, index) => {
   //   // return {
@@ -81,15 +91,6 @@ const InventoryTable = ({ rooms, user }) => {
       width: "26.6666%",
       align: "center",
       sorter: (a, b) => a.room_name.localeCompare(b.room_name),
-      // render: (_,record) => {}
-    },
-    {
-      key: "2",
-      title: "Loại phòng",
-      dataIndex: "room_type",
-      width: "26.6666%",
-      align: "center",
-      filteredValue: filter !== "" ? [filter] : null,
       onFilter: (value, record) => {
         return (
           String(record.room_name)
@@ -124,6 +125,16 @@ const InventoryTable = ({ rooms, user }) => {
             .includes(value.toLocaleLowerCase())
         );
       },
+      // render: (_,record) => {}
+    },
+    {
+      key: "2",
+      title: "Loại phòng",
+      dataIndex: "room_type",
+      width: "26.6666%",
+      align: "center",
+      filteredValue: filter !== "" ? [filter] : null,
+
       // render: (text, record) => {
       //   // return <p>{record.room_type_id.name}</p>;
       // },
@@ -134,7 +145,7 @@ const InventoryTable = ({ rooms, user }) => {
               <div>
                 <Select
                   size="medium"
-                  // options={items}
+                  options={items}
                   showSearch
                   placeholder="Chọn loại phòng"
                   onChange={(e) => {
@@ -160,6 +171,15 @@ const InventoryTable = ({ rooms, user }) => {
       filterIcon: () => {
         return <FilterOutlined />;
       },
+      onFilter: (value, record) => {
+        if (filter === "") {
+          return record.room_type;
+        } else {
+          return record.room_type === value;
+        }
+        // record.roomType === value;
+        // console.log(value);
+      },
     },
     {
       key: "3",
@@ -182,11 +202,7 @@ const InventoryTable = ({ rooms, user }) => {
                 defaultValue={[10, 20]}
                 onChange={(value) => {}}
               />
-              <Button
-                type="primary"
-                onClick={() => {
-                }}
-              >
+              <Button type="primary" onClick={() => {}}>
                 Reset
               </Button>
             </div>
@@ -242,27 +258,29 @@ const InventoryTable = ({ rooms, user }) => {
           booking_id: selectedRoom.booking_id,
           room_id: selectedRoom.room_id,
         };
-        createInventoryRecord(user?.position, newRecord).then((value) => {
-          console.log(value)
-          record.forEach((item) => {
-            const newDetail = {
-              item_id: item.id,
-              price: item.price,
-              amount: item.amount,
-              record_id: value.data[0].id
-            }
-            createInventoryDetail(user?.position, newDetail).then(() => {
-              
-            }).catch((error) => {
-              ErrorAlert("Đã xảy ra lỗi");
-              throw error;
-            })
+        createInventoryRecord(user?.position, newRecord)
+          .then((value) => {
+            console.log(value);
+            record.forEach((item) => {
+              const newDetail = {
+                item_id: item.id,
+                price: item.price,
+                amount: item.amount,
+                record_id: value.data[0].id,
+              };
+              createInventoryDetail(user?.position, newDetail)
+                .then(() => {})
+                .catch((error) => {
+                  ErrorAlert("Đã xảy ra lỗi");
+                  throw error;
+                });
+            });
+            SuccessAlert("Kiểm phòng hoàn tất");
+          })
+          .catch((error) => {
+            ErrorAlert("Đã xảy ra lỗi");
+            throw error;
           });
-          SuccessAlert("Kiểm phòng hoàn tất");
-        }).catch((error)=> {
-          ErrorAlert("Đã xảy ra lỗi");
-          throw error;
-        })
       }
     );
     setIsModalVisible(false);
@@ -284,7 +302,12 @@ const InventoryTable = ({ rooms, user }) => {
         onCancel={handleCancelModal}
         width="50%"
       >
-        <InventoryForm form={form} record={record} setRecord={setRecord} room_name={selectedRoom.room_name}/>
+        <InventoryForm
+          form={form}
+          record={record}
+          setRecord={setRecord}
+          room_name={selectedRoom.room_name}
+        />
       </Modal>
     );
   };
@@ -293,7 +316,13 @@ const InventoryTable = ({ rooms, user }) => {
     <div className="table">
       <>{isModalVisible ? modalForm() : null}</>
       <div className="buttonContainer">
-        <div></div>
+        <div>
+          <Button
+            onClick={() => {
+              console.log(rooms);
+            }}
+          ></Button>
+        </div>
         <div>
           <Input.Search
             onSearch={(value) => {
@@ -309,6 +338,7 @@ const InventoryTable = ({ rooms, user }) => {
         </div>
       </div>
       <Table
+        loading={isLoading}
         showSorterTooltip={false}
         columns={columns}
         dataSource={rooms}

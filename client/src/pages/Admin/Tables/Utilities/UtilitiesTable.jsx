@@ -16,7 +16,12 @@ import {
   updateRoomFeatures,
 } from "../../../../api/RoomFeatureAPI";
 
-const UtilitiesTable = ({ utilities, setUtilities, positionUser }) => {
+const UtilitiesTable = ({
+  utilities,
+  setUtilities,
+  positionUser,
+  isLoading,
+}) => {
   const [isModalVisible, setIsModalVisible] = useState("");
 
   const [editingRow, setEditingRow] = useState(null);
@@ -177,6 +182,7 @@ const UtilitiesTable = ({ utilities, setUtilities, positionUser }) => {
       </div>
       <Form form={form}>
         <Table
+          loading={isLoading}
           rowKey={(row) => row.id}
           showSorterTooltip={false}
           columns={columns}

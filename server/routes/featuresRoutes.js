@@ -7,11 +7,6 @@ const router = require("express").Router();
 
 //router.post('/register', register);
 
-router.get(
-  "/",
-  authorizeAccessToken,
-  hasPermission(actionAC.GET, resourceAC.FEATURE),
-  tryCatch(getAllFeatures)
-);
+router.get("/", authorizeAccessToken, tryCatch(getAllFeatures));
 
 module.exports = router;

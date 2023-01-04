@@ -13,19 +13,9 @@ const { route } = require("./bookingsRoutes");
 const router = require("express").Router();
 const { tryCatch } = require("../middlewares/errorHandler");
 
-router.get(
-  "/",
-  authorizeAccessToken,
-  hasPermission(actionAC.GET, resourceAC.ROOMTYPE),
-  tryCatch(getAll)
-);
+router.get("/", authorizeAccessToken, tryCatch(getAll));
 
-router.get(
-  "/:id",
-  authorizeAccessToken,
-  hasPermission(actionAC.GET, resourceAC.ROOMTYPE),
-  tryCatch(getByID)
-);
+router.get("/:id", authorizeAccessToken, tryCatch(getByID));
 
 router.post(
   "/",

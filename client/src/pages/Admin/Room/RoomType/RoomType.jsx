@@ -11,8 +11,10 @@ const RoomType = () => {
   const [types, setTypes] = useState([]);
 
   const { user } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     document.title = "Room Type | Parallel Shine";
     Promise.all([
       getAllRoomType(user.position),
@@ -23,13 +25,16 @@ const RoomType = () => {
         LocalStorage.setItem("utils", res[1].data.data);
       })
       .catch((error) => {
+        setIsLoading(false);
         console.log(error);
         ErrorAlert("Lấy dữ liệu loại phòng thất bại!!");
-      });
+      })
+      .finally(() => setIsLoading(false));
   }, [user?.position]);
   return (
     <div className="roomTypeContainer">
       <RoomTypeTable
+        isLoading={isLoading}
         roomTypes={types}
         setRoomTypes={setTypes}
         positionUser={user.position}

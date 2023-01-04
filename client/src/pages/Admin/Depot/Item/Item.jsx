@@ -8,16 +8,24 @@ import "./item.css";
 const Item = () => {
   const [items, setItems] = useState([]);
   const { user } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     document.title = "Product | Parallel Shine";
     fetchItems(user?.position).then(({ data }) => {
       setItems(data);
+      setIsLoading(false);
     });
   }, []);
   return (
     <div className="itemContainer">
-      <ItemTable items={items} setItems={setItems} user={user}></ItemTable>
+      <ItemTable
+        items={items}
+        setItems={setItems}
+        user={user}
+        isLoading={isLoading}
+      ></ItemTable>
     </div>
   );
 };

@@ -59,7 +59,7 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
   }
 
   return (
-    <Form form={form} layout="vertical">
+    <Form form={form} layout="vertical" autoComplete="off">
       <Form.Item label="Phòng" name="room_name">
         <div>
           {selectedRooms.map((room) => {
@@ -164,18 +164,6 @@ const BookingForm = ({ form, setCurrentCustomer, selectedRooms = [] }) => {
             }
           /> */}
         <Input size="large" disabled={disable} type="tel" maxLength={10} />
-      </Form.Item>
-      <Form.Item
-        label="Email"
-        name="email"
-        rules={[
-          {
-            type: "email",
-            message: "Vui lòng nhập đúng định dạng email",
-          },
-        ]}
-      >
-        <Input size="large" disabled={disable} />
       </Form.Item>
       <Form.Item
         label="Chọn ngày sinh"

@@ -1,42 +1,39 @@
 const supabase = require("../database");
 
-async function getAllInventories()
-{
-    const {data, error} =  await supabase
-    .from('inventory_record')
-    .select()
-    return {data, error};
+async function getAllInventories() {
+  const { data, error } = await supabase.from("inventory_record").select();
+  return { data, error };
 }
 const getInventoryByBookingID = (bookingID) => {
-    return supabase.from("inventory_record").select().eq("booking_id", bookingID)
-}
-async function createNewRecord(newRecord)
-{
-    const{data, error} = await supabase
-    .from('inventory_record')
-    .insert({
-        ...newRecord
-    });
-    return {data, error};
+  return supabase.from("inventory_record").select().eq("booking_id", bookingID);
+};
+async function createNewRecord(newRecord) {
+  const { data, error } = await supabase.from("inventory_record").insert({
+    ...newRecord,
+  });
+  return { data, error };
 }
 const createDetail = (newDetail) => {
-    return supabase.from("inventory_detail").insert(newDetail);
-}
+  return supabase.from("inventory_detail").insert(newDetail);
+};
 const getInventoryDetail = (recordID) => {
-    return supabase
+  return supabase
     .from("inventory_detail")
-    .select(`
+    .select(
+      `
         item_id(id, name),
         price, 
-        amount
-    `)
+        amount,
+        record_id
+    `
+    )
     .in("record_id", recordID);
-}
- 
+};
+
 module.exports = {
-    getAllInventories,
-    createNewRecord,
-    getInventoryByBookingID,
-    getInventoryDetail,
-    createDetail
-}
+  getAllInventories,
+  createNewRecord,
+  getInventoryByBookingID,
+  getInventoryDetail,
+  createDetail,
+};

@@ -3,18 +3,17 @@ import { userRequest } from "./api";
 const DEDAULT_STATUS_BOOKING = 0;
 
 export const fetchBookingByDate = (positionUser, from, to) => {
-  return userRequest.get("/bookings/room", {
+  return userRequest.get(`/bookings/room`, {
     params: { user: { position: positionUser }, from: from, to: to },
   });
 };
 
-
-
 export const createCustomer = (positionUser, newCustomer) => {
-  console.log("called")
-  console.log(positionUser)
-  return userRequest.post("/users", {
-    user: { position: positionUser }, type: "customer", userInfo: newCustomer,
+  console.log("called");
+  console.log(positionUser);
+  return userRequest.post("/users?type=customer", {
+    user: { position: positionUser },
+    userInfo: newCustomer,
   });
 };
 

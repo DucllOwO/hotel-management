@@ -2,6 +2,7 @@ const {
   getAllRecord,
   getByID,
   createRecord,
+  getDeatailByPurchaseID,
 } = require("../controllers/importingController");
 
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
@@ -10,18 +11,9 @@ const { hasPermission } = require("../middlewares/roleAccessControl");
 const { actionAC, resourceAC } = require("../utils/constants");
 const router = require("express").Router();
 
-router.get(
-  "/",
-  authorizeAccessToken,
-  hasPermission(actionAC.GET, resourceAC.PURCHASE),
-  getAllRecord
-);
-router.get(
-  "/:id",
-  authorizeAccessToken,
-  hasPermission(actionAC.GET, resourceAC.PURCHASE),
-  getByID
-);
+router.get("/", authorizeAccessToken, getAllRecord);
+router.get("/:id", authorizeAccessToken, getByID);
+router.get("/detail/:purchaseID", authorizeAccessToken, getDeatailByPurchaseID);
 router.post(
   "/",
   authorizeAccessToken,

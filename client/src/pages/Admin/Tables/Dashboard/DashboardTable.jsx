@@ -6,7 +6,7 @@ import { FilterOutlined } from "@ant-design/icons";
 
 const data = [];
 
-const DashboardTable = ({ data, setData }) => {
+const DashboardTable = ({ data, setData, revenue, isLoading }) => {
   const [type, setType] = useState("income");
 
   const [methodFilter, setMethodFilter] = useState("");
@@ -30,6 +30,7 @@ const DashboardTable = ({ data, setData }) => {
         break;
     }
   }, [type]);
+
   const columns = [
     {
       key: "1",
@@ -130,10 +131,40 @@ const DashboardTable = ({ data, setData }) => {
     },
   ];
 
+  const columnsNoMethod = [
+    {
+      key: "1",
+      title: "ID",
+      dataIndex: "id",
+      align: "center",
+      sorter: (a, b) => a.id - b.id,
+    },
+    {
+      key: "2",
+      title: "Ngày lập",
+      dataIndex: "established_date",
+      align: "center",
+      sorter: (a, b) => a.established_date.localeCompare(b.established_date),
+    },
+    {
+      key: "3",
+      title: "Tổng tiền (đ)",
+      dataIndex: "total_cost",
+      align: "center",
+      sorter: (a, b) => a.total_cost - b.total_cost,
+      render: (value) => {
+        return `${value < 0 ? "-" : ""} ${Math.abs(value)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+      },
+    },
+  ];
+
   return (
     <div className="table">
       <Table
-        columns={columns}
+        loading={isLoading}
+        columns={revenue === "income" ? columns : columnsNoMethod}
         dataSource={data}
         scroll={{ y: "30vh" }}
         rowKey={(row) => row.idNum}

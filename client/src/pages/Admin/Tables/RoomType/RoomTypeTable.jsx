@@ -20,7 +20,12 @@ import {
 } from "../../../../api/hasRoomFeatures";
 import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 
-const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
+const RoomTypeTable = ({
+  roomTypes,
+  setRoomTypes,
+  positionUser,
+  isLoading,
+}) => {
   const [isModalVisible, setIsModalVisible] = useState();
 
   const [roomUtils, setRoomUtils] = useState(
@@ -634,6 +639,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
         </div>
       </div>
       <Table
+        loading={isLoading}
         showSorterTooltip={false}
         columns={columns}
         dataSource={roomTypes}
@@ -654,6 +660,7 @@ const RoomTypeTable = ({ roomTypes, setRoomTypes, positionUser }) => {
           onExpand: (expanded, record) => {
             getRoomUtilsByRoomTypeID(positionUser, record.id)
               .then(({ data }) => {
+                console.log(data);
                 setRoomTypes((prev) => {
                   return prev.map((roomType) => {
                     if (record.name === roomType.name) {
