@@ -4,9 +4,8 @@ import Navbar from "../../components/Admin/Navbar/Navbar";
 import Topbar from "../../components/Topbar/Topbar";
 import { Navigate, Outlet } from "react-router-dom";
 import LocalStorage from "../../Utils/localStorage";
-import { userRequest } from "../../api/api";
 import ErrorBoundary from "../../components/Error/ErrorBoundary/ErrorBoundary";
-
+import { userRequest } from "../../api/api";
 const Admin = () => {
   useEffect(() => {
     document.title = "Admin | Parallel Shine";
