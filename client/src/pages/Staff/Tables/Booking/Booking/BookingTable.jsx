@@ -10,6 +10,7 @@ import {
   Checkbox,
   Select,
   Slider,
+  TimePicker,
 } from "antd";
 import dayjs from "dayjs";
 import { FilterOutlined } from "@ant-design/icons";
@@ -20,8 +21,11 @@ import ErrorAlert from "../../../../../components/Error/Alert/ErrorAlert";
 import BottomBar from "../../../../../components/Admin/BottomBar/BottomBar";
 import RoomTypeExpand from "../../../../../components/ExpandedTable/RoomTypeExpand";
 import { getRoomUtilsByRoomTypeID } from "../../../../../api/hasRoomFeatures";
-import { getRoomTypeByID } from "../../../../../api/RoomTypeAPI";
+
 const { RangePicker } = DatePicker;
+const dateFormat = "DD-MM-YYYY";
+const monthFormat = "MM-YYYY";
+const hourFormat = "HH:mm";
 
 const BookingTable = ({
   rooms = null,
@@ -35,6 +39,7 @@ const BookingTable = ({
   listType,
   positionUser,
 }) => {
+  const [bookingType, setBookingType] = useState("day");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState({});
   const [selectedRooms, setSelectedRooms] = useState([]);
@@ -525,30 +530,54 @@ const BookingTable = ({
   return (
     <div className="table">
       <>{isModalOpen ? modalJSX() : null}</>
+      <div>
+        <Button
+          className="dateBtn"
+          type={bookingType === "hour" ? "primary" : "default"}
+          onClick={() => {
+            setBookingType("hour");
+          }}
+        >
+          Giờ
+        </Button>
+        <Button
+          className="dateBtn"
+          type={bookingType === "day" ? "primary" : "default"}
+          onClick={() => {
+            setBookingType("day");
+          }}
+        >
+          Ngày
+        </Button>
+        <Button
+          className="dateBtn"
+          type={bookingType === "overnight" ? "primary" : "default"}
+          onClick={() => {
+            setBookingType("overnight");
+          }}
+        >
+          Qua đêm
+        </Button>
+      </div>
       <div className="buttonContainer">
         <div className="header">
           <div>
-            <RangePicker
-              disabledTime={disabledRangeTime}
-              disabledDate={disabledDate}
-              showTime={{
-                hideDisabledOptions: true,
-              }}
-              format={"DD/MM/YYYY hh:mm:ss"}
-              onChange={(value) => {
-                console.log(value);
-                setFrom(value[0]?.$d);
-                setTo(value[1]?.$d);
-              }}
-            />
+            {bookingType === "hour" && (
+              <TimePicker.RangePicker format={hourFormat} order={true} />
+            )}
+            {bookingType === "day" && (
+              <RangePicker format={dateFormat} picker="date"></RangePicker>
+            )}
+            {bookingType === "overnight" && (
+              <DatePicker
+                defaultValue={dayjs(Date.now())}
+                picker="date"
+                format={dateFormat}
+              ></DatePicker>
+            )}
           </div>
         </div>
         <div>
-          {/* <Button
-            onClick={() => {
-              console.log(price);
-            }}
-          ></Button> */}
           <Input.Search
             onSearch={(value) => {
               setSearchedText(value);
