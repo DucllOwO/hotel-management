@@ -3,7 +3,7 @@ const dayjs = require("dayjs");
 const getReceiptByTime = async (req, res, next) => {
   //const { date}
 
-  const { data, error } = await receiptDAL.getAllReceipt(from, to);
+  const { data, error } = await receiptDAL.getAllReceipt();
   console.log(data);
 
   if (error) return next(error);

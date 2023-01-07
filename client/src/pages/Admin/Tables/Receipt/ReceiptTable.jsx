@@ -1,40 +1,25 @@
 import React, { useState } from "react";
 import "../index.css";
-import {
-  Table,
-  Button,
-  Modal,
-  Form,
-  Input,
-  DatePicker,
-  Select,
-  Slider,
-} from "antd";
+import { Table, Button, Modal, DatePicker, Select, Slider, Tag } from "antd";
 import dayjs from "dayjs";
 import { FilterOutlined } from "@ant-design/icons";
-import moment from "moment";
 import DetailForm from "../../../../components/Form/DetailForm/DetailForm";
-import EditButton from "../../../../components/IconButton/EditButton/EditButton";
-import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
-import { formatDate, formatterInt } from "../../../../Utils/formatter";
+import { formatDate } from "../../../../Utils/formatter";
 import { useEffect } from "react";
+import CheckButton from "../../../../components/IconButton/CheckButton/CheckButton";
 
 const ReceiptTable = ({
   setTime,
   receipt,
   setReceipt,
-  type,
-  setType,
+  dateType,
+  setDateType,
   positionUser,
   isLoading,
 }) => {
   useEffect(() => {
     document.title = "Receipt | Parallel Shine";
   });
-
-  const [editingRow, setEditingRow] = useState(null);
-
-  const [form] = Form.useForm();
 
   const [searchedText, setSearchedText] = useState("");
 
@@ -46,8 +31,12 @@ const ReceiptTable = ({
   const dateFormat = "DD-MM-YYYY";
   const monthFormat = "MM-YYYY";
 
-  const price = Math.max(...receipt.map((receipt) => receipt.total_cost));
-  const minPrice = Math.min(...receipt.map((receipt) => receipt.total_cost));
+  const price = Math.max(
+    receipt ? receipt.map((receipt) => receipt.total_cost) : []
+  );
+  const minPrice = Math.min(
+    receipt ? receipt.map((receipt) => receipt.total_cost) : []
+  );
 
   const priceMark = {
     [minPrice]: minPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
@@ -209,55 +198,72 @@ const ReceiptTable = ({
         return <FilterOutlined />;
       },
       render: (text, record) => {
-        if (editingRow === record.idNum) {
-          return (
-            <Form.Item
-              name="total"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the method",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          );
-        } else {
-          return <p>{text}</p>;
+        return <p>{text}</p>;
+      },
+    },
+    {
+      key: "5",
+      title: "Tình trạng",
+      align: "center",
+      dataIndex: "status",
+      render: (text, value) => {
+        switch (value.status) {
+          case "0":
+            return <Tag color="red">Chưa thanh toán</Tag>;
+          case "1":
+            return <Tag color="green">Đã thanh toán</Tag>;
+          default:
+            return <Tag>Lỗi trạng thái</Tag>;
         }
+      },
+    },
+    {
+      key: "6",
+      title: "Thao tác",
+      align: "center",
+      render: (text, value) => {
+        if (value.status === "0") {
+          return (
+            <>
+              <CheckButton />
+            </>
+          );
+        }
+        return null;
       },
     },
   ];
   return (
     <div className="table">
       {modal !== null && ModalDetail(modal)}
-
       <div className="buttonContainer">
         <div>
           <Button
             className="dateBtn"
-            type={type === "year" ? "primary" : "default"}
+            type={dateType === "year" ? "primary" : "default"}
             onClick={() => {
-              setType("year");
+              setDateType("year");
+              setTime(dayjs(Date.now()));
             }}
           >
             Năm
           </Button>
           <Button
             className="dateBtn"
-            type={type === "month" ? "primary" : "default"}
+            type={dateType === "month" ? "primary" : "default"}
             onClick={() => {
-              setType("month");
+              setDateType("month");
+              setTime(dayjs(Date.now()));
             }}
           >
             Tháng
           </Button>
           <Button
             className="dateBtn"
-            type={type === "day" ? "primary" : "default"}
+            type={dateType === "day" ? "primary" : "default"}
             onClick={() => {
-              setType("day");
+              setDateType("day");
+              setTime(dayjs(Date.now()));
             }}
           >
             Ngày
@@ -266,7 +272,7 @@ const ReceiptTable = ({
         <div>
           <div></div>
           <div>
-            {type === "day" && (
+            {dateType === "day" && (
               <DatePicker
                 onChange={onChange}
                 defaultValue={dayjs(Date.now())}
@@ -274,7 +280,7 @@ const ReceiptTable = ({
                 format={dateFormat}
               ></DatePicker>
             )}
-            {type === "month" && (
+            {dateType === "month" && (
               <DatePicker
                 onChange={onChange}
                 defaultValue={dayjs(Date.now())}
@@ -282,7 +288,7 @@ const ReceiptTable = ({
                 format={monthFormat}
               ></DatePicker>
             )}
-            {type === "year" && (
+            {dateType === "year" && (
               <DatePicker
                 onChange={onChange}
                 picker="year"

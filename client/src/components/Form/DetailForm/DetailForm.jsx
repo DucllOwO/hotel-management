@@ -13,18 +13,14 @@ import ErrorAlert from "../../Error/Alert/ErrorAlert";
 const DATE_FORMAT = "HH:mm, DD-MM-YYYY";
 
 const DetailForm = ({ receipt, positionUser }) => {
-  console.log(receipt);
   const [usedRooms, setUsedRoom] = useState([]);
 
   useEffect(() => {
-    const usedRoomRes = getUsedRoomByBookingID(
-      positionUser,
-      receipt.booking_id.id
-    );
+    const usedRoomRes = getUsedRoomByBookingID(positionUser, receipt.id);
 
     const inventoryDetailRes = fetchInventoryDetailByBookingID(
       positionUser,
-      receipt.booking_id.id
+      receipt.id
     );
 
     Promise.all([usedRoomRes, inventoryDetailRes])
