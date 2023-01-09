@@ -382,14 +382,16 @@ const BookingListTable = ({
         if (data.data) {
           setUsedService(
             data.data.map((value) => {
-              const newServiceCost = value.price * value.amount;
-              serviceCost = serviceCost + newServiceCost;
-              return {
-                item_name: value.item_name,
-                amount: value.amount,
-                price: value.price,
-                total_cost: newServiceCost,
-              };
+              value.inventory_detail.forEach((item) => {
+                const newServiceCost = item.price * item.amount;
+                serviceCost = serviceCost + newServiceCost;
+                return {
+                  item_name: item.item_name,
+                  amount: item.amount,
+                  price: item.price,
+                  total_cost: newServiceCost,
+                };
+              })
             })
           );
         }
@@ -638,20 +640,16 @@ const BookingListTable = ({
           console.log("giá đêm");
           //night ontime
           if (
-            dayjs(selectedBooking.checkin_time).hour() >= 21 &&
+            dayjs(selectedBooking.checkin_time).hour() >= 21 ||
             dayjs(selectedBooking.checkin_time).hour() < 2
           ) {
             console.log("đêm sau checkin đúng");
             //night checkout ontime
-            if (dayjs(Date.now()).hour() < 12) {
+            if (dayjs(Date.now()).hour() < 12 && dayjs(Date.now()).diff(
+              dayjs(selectedBooking.checkin_time),"day") <= 1)
+            {
               console.log("trả đúng");
-              const price =
-                Math.round(
-                  dayjs(Date.now()).diff(
-                    dayjs(selectedBooking.checkin_time),
-                    "day"
-                  )
-                ) * value.overnight_price;
+              const price = value.overnight_price;
               return {
                 room_name: value.room_name,
                 room_type: value.room_type,

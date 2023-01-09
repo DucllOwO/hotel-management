@@ -78,7 +78,7 @@ const getUsingRoom = (listBooking) => {
     .select(
       `
         booking_id,
-        room_id(room_name, room_type_id(name, area))
+        room_id(id,room_name, room_type_id(name, area))
       `
     )
     .in("booking_id", listBooking)
