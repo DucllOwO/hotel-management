@@ -563,16 +563,17 @@ const BookingTable = ({
         <div className="header">
           <div>
             {bookingType === "hour" && (
-              <TimePicker.RangePicker format={hourFormat} order={true} />
+              <TimePicker.RangePicker format={hourFormat} order={true} onChange={(value) => {setFrom(value[0].$d); setTo(value[1].$d)}}/>
             )}
             {bookingType === "day" && (
-              <RangePicker format={dateFormat} picker="date"></RangePicker>
+              <RangePicker format={dateFormat} picker="date" onChange={(value) => {setFrom(value[0].$d); setTo(value[1].$d)}}></RangePicker>
             )}
             {bookingType === "overnight" && (
               <DatePicker
                 defaultValue={dayjs(Date.now())}
                 picker="date"
                 format={dateFormat}
+                onChange={(value) => {setFrom(value.$d); setTo(value.$d)}}
               ></DatePicker>
             )}
           </div>
