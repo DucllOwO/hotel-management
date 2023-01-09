@@ -660,7 +660,6 @@ const RoomTypeTable = ({
           onExpand: (expanded, record) => {
             getRoomUtilsByRoomTypeID(positionUser, record.id)
               .then(({ data }) => {
-                console.log(data);
                 setRoomTypes((prev) => {
                   return prev.map((roomType) => {
                     if (record.name === roomType.name) {

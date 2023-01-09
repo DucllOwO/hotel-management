@@ -3,19 +3,16 @@ const bookingDAL = require("../DAL/bookingDAL");
 const roomDAL = require("../DAL/roomDAL");
 const { BadRequestError } = require("../middlewares/errorHandler");
 
-const getAll = async (req, res, next) => {
-  const { data, error } = await inventoryDAL.getAllInventories();
-  if (error) return next(error);
-  return data;
-};
-
 const getRecordByBookingID = async (req, res, next) => {
-  const { booking_id } = req.query;
+  const { booking_id, room_id } = req.query;
 
   if (!booking_id) return next(BadRequestError);
 
-  const { data: inventoryRecord, error: getInventoryError } =
-    await inventoryDAL.getInventoryByBookingID(booking_id);
+  const query = room_id
+    ? inventoryDAL.getInventoryByBookingID(booking_id, room_id)
+    : inventoryDAL.getInventoryByBookingID(booking_id);
+
+  const { data: inventoryRecord, error: getInventoryError } = await query;
 
   if (getInventoryError) return next(getInventoryError);
 
@@ -29,25 +26,19 @@ const getRecordByBookingID = async (req, res, next) => {
     let result = [];
     for (const ele of inventoryRecord) {
       const temp = inventoryDetail.filter(
-        (value) => value.record_id === ele.id
+        (value) => value.record_id.id === ele.id
       );
       if (temp) {
-        result.push({ room_id: ele.room_id, inventory_detail: temp });
+        result.push({
+          detail_id: temp.id,
+          room_id: ele.room_id,
+          inventory_detail: temp,
+        });
       }
     }
 
-    // const listItemUsed = inventoryDetail.map((value, index, arr) => {
-    //   return {
-    //     item_id: value.item_id.id,
-    //     item_name: value.item_id.name,
-    //     price: value.price,
-    //     amount: value.amount,
-    //     record_id: value.record_id,
-    //   };
-    // });
     res.status(200).send(result);
   } else res.status(200).send([]);
-  // console.log(inventoryDetail)
 };
 const createRecord = async (req, res, next) => {
   const { record } = req.body;
@@ -85,24 +76,27 @@ const getBookingByStatus = async (req, res, next) => {
   const { data: listBooking, error: getBookByStatusError } =
     await bookingDAL.getBookingByStatus(status);
 
-  const listBookingID = listBooking.map((value) => value.id);
-
   if (getBookByStatusError) return next(getBookByStatusError);
+
+  const listBookingID = listBooking.map((value) => value.id);
 
   const { data: listRoom, error: getUsingRoomError } =
     await roomDAL.getUsingRoom(listBookingID);
 
-  console.log(listRoom);
   if (getUsingRoomError) return next(getUsingRoomError);
 
   const returnList = listRoom?.map((value) => {
     return {
+      used_room_id: value.id,
+      room_id: value.room_id.id,
       booking_id: value.booking_id,
       room_name: value.room_id.room_name,
       room_type: value.room_id.room_type_id.name,
       area: value.room_id.room_type_id.area,
     };
   });
+
+  console.log(returnList);
 
   res.status(200).send(returnList);
 };
