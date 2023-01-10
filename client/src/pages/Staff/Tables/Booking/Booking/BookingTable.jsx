@@ -560,8 +560,8 @@ const BookingTable = ({
           type={bookingType === "overnight" ? "primary" : "default"}
           onClick={() => {
             setBookingType("overnight");
-            setFrom(dayjs(Date.now()).toISOString());
-            setTo(dayjs(Date.now()).toISOString());
+            setFrom('');
+            setTo('');
           }}
         >
           Qua đêm
@@ -574,14 +574,33 @@ const BookingTable = ({
               <TimePicker.RangePicker format={hourFormat} order={true} onChange={(value) => {setFrom(value[0].$d); setTo(value[1].$d)}}/>
             )}
             {bookingType === "day" && (
-              <RangePicker format={dateFormat} picker="date" onChange={(value) => {setFrom(value[0].$d); setTo(value[1].$d)}}></RangePicker>
+              <RangePicker 
+                format={dateFormat} 
+                picker="date" 
+                onChange={(value) => 
+                  {setFrom(value[0].$d); setTo(value[1].$d)}
+                }
+                showTime={{
+                  hideDisabledOptions: true,
+                  defaultValue: [dayjs('12:00:00', 'HH:mm:ss'), dayjs('14:00:00', 'HH:mm:ss')],
+                }}
+                ></RangePicker>
             )}
             {bookingType === "overnight" && (
               <DatePicker
-                defaultValue={dayjs(Date.now())}
                 picker="date"
                 format={dateFormat}
-                onChange={(value) => {setFrom(value.$d); setTo(value.$d)}}
+                showTime={{defaultValue: dayjs('21:00:00', 'HH:mm:ss')}}
+                onChange={(value) => 
+                  {
+                    setFrom(value.$d); 
+                    setTo(
+                      dayjs(
+                        dayjs(
+                          dayjs(value.$d)
+                          .date(dayjs(value.$d)
+                          .date()+1).$d).hour(12).$d).$d)
+                  }}
               ></DatePicker>
             )}
           </div>
