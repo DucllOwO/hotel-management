@@ -14,6 +14,7 @@ const Booking = () => {
   const { user } = useContext(AppContext);
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [bookingType, setBookingType] = useState("day");
   const [isLoading, setIsLoading] = useState(false);
   const [listType, setListType] = useState([]);
 
@@ -41,7 +42,11 @@ const Booking = () => {
         })
         .finally(() => setIsLoading(false));
     }
-  }, [user?.position, from, to]);
+    else {
+      setIsLoading(false);
+      setRooms([]);
+    }
+  }, [user?.position, from, to, bookingType]);
   return (
     <div className="container">
       <div className="bookingContainer">
@@ -49,6 +54,8 @@ const Booking = () => {
           isLoading={isLoading}
           user={user}
           rooms={rooms}
+          bookingType={bookingType}
+          setBookingType={setBookingType}
           setRooms={setRooms}
           setFrom={setFrom}
           from={from}

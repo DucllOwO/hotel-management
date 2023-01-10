@@ -13,6 +13,7 @@ import {
   TimePicker,
 } from "antd";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 import { FilterOutlined } from "@ant-design/icons";
 import BookingForm from "../../../../../components/Form/BookingForm";
 import { createBooking, createCustomer } from "../../../../../api/BookingAPI";
@@ -36,10 +37,11 @@ const BookingTable = ({
   user,
   from,
   to,
+  setBookingType,
+  bookingType,
   listType,
   positionUser,
 }) => {
-  const [bookingType, setBookingType] = useState("day");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState({});
   const [selectedRooms, setSelectedRooms] = useState([]);
@@ -536,6 +538,8 @@ const BookingTable = ({
           type={bookingType === "hour" ? "primary" : "default"}
           onClick={() => {
             setBookingType("hour");
+            setFrom("");
+            setTo("");
           }}
         >
           Giờ
@@ -545,6 +549,8 @@ const BookingTable = ({
           type={bookingType === "day" ? "primary" : "default"}
           onClick={() => {
             setBookingType("day");
+            setFrom("");
+            setTo("");
           }}
         >
           Ngày
@@ -554,6 +560,8 @@ const BookingTable = ({
           type={bookingType === "overnight" ? "primary" : "default"}
           onClick={() => {
             setBookingType("overnight");
+            setFrom(dayjs(Date.now()).toISOString());
+            setTo(dayjs(Date.now()).toISOString());
           }}
         >
           Qua đêm
