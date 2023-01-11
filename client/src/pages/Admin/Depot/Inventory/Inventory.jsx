@@ -46,10 +46,12 @@ const Inventory = () => {
     <ItemProvider>
       <div className="inventoryContainer">
         <InventoryTable
+          setRooms={setRooms}
           roomType={roomtype}
           rooms={rooms}
           user={user}
           isLoading={isLoading}
+          positionUser={user.position}
         ></InventoryTable>
       </div>
     </ItemProvider>
