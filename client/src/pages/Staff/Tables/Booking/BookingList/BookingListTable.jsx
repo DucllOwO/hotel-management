@@ -132,9 +132,11 @@ const BookingListTable = ({
       align: "center",
       sorter: (a, b) => a.book_from.localeCompare(b.book_from),
       render: (text, record) => {
-        return dayjs(convertToValidDateString(text))
-          // .startOf("day")
-          .format(DATE_FORMAT_FULL);
+        return (
+          dayjs(convertToValidDateString(text))
+            // .startOf("day")
+            .format(DATE_FORMAT_FULL)
+        );
       },
     },
     {
@@ -147,13 +149,6 @@ const BookingListTable = ({
       render: (text, record) => {
         return dayjs(convertToValidDateString(text)).format(DATE_FORMAT_FULL);
       },
-    },
-    {
-      key: "5",
-      title: "Phòng",
-      dataIndex: "room_id",
-      align: "center",
-      sorter: (a, b) => a.room_id.localeCompare(b.room_id),
     },
     {
       key: "6",
@@ -380,18 +375,18 @@ const BookingListTable = ({
       .then(async (data) => {
         console.log(data.data);
         if (data.data) {
-            data.data.forEach((value) => {
-              value.inventory_detail.forEach((item) => {
-                const newServiceCost = item.price * item.amount;
-                serviceCost = serviceCost + newServiceCost;
-                return {
-                  item_name: item.item_id.name,
-                  amount: item.amount,
-                  price: item.price,
-                  total_cost: newServiceCost,
-                };
-              })
-            })
+          data.data.forEach((value) => {
+            value.inventory_detail.forEach((item) => {
+              const newServiceCost = item.price * item.amount;
+              serviceCost = serviceCost + newServiceCost;
+              return {
+                item_name: item.item_id.name,
+                amount: item.amount,
+                price: item.price,
+                total_cost: newServiceCost,
+              };
+            });
+          });
         }
       })
       .catch(() => {
@@ -472,292 +467,295 @@ const BookingListTable = ({
     // console.log(usedRoom);
     return usedRoom.map((value) => {
       //hour price
-      // if (dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "hour") < 7) 
-    
+      // if (dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "hour") < 7)
+
       // } //day or overnight price
       // else {
       //   //day checkin before 12
-        if (dayjs(selectedBooking.book_from).hour() === 12) 
-        {
-          if(dayjs(selectedBooking.checkin_time) < dayjs(selectedBooking.book_from))
-          {
-            console.log("giá ngày checkin sớm");
+      if (dayjs(selectedBooking.book_from).hour() === 12) {
+        if (
+          dayjs(selectedBooking.checkin_time) < dayjs(selectedBooking.book_from)
+        ) {
+          console.log("giá ngày checkin sớm");
           //day checkout before 12
-            if (dayjs(Date.now()) < dayjs(selectedBooking.book_to)) {
-              console.log("giá ngày checkout sớm");
-              const price =
-                (dayjs(selectedBooking.book_from).hour() - 
+          if (dayjs(Date.now()) < dayjs(selectedBooking.book_to)) {
+            console.log("giá ngày checkout sớm");
+            const price =
+              (dayjs(selectedBooking.book_from).hour() -
                 dayjs(selectedBooking.checkin_time).hour()) *
-                  value.hour_price +
-                Math.round(
-                  dayjs(selectedBooking.book_to).diff(
-                    dayjs(selectedBooking.book_from),
-                    "day"
-                  )
-                ) *
-                  value.one_day_price;
-              return {
-                room_name: value.room_name,
-                room_type: value.room_type,
-                area: value.area,
-                price: price,
-              };
-            }
-            //day after 12 and before 17 (surcharge)
-            else if (
-              dayjs(Date.now()) >= dayjs(selectedBooking.book_to) &&
-              dayjs(Date.now()).hour() < 17
-            ) {
-              console.log("giá ngày checkout trễ phụ thu");
-              const price =
-                (12 -
-                  dayjs(selectedBooking.checkin_time).hour() +
-                  (dayjs(Date.now()).hour() - dayjs(selectedBooking.book_to).hour())) *
-                  value.hour_price +
-                Math.round(
-                  dayjs(Date.now()).diff(
-                    dayjs(selectedBooking.book_from),
-                    "day"
-                  )
-                ) *
-                  value.one_day_price;
-              return {
-                room_name: value.room_name,
-                room_type: value.room_type,
-                area: value.area,
-                price: price,
-              };
-            }
-            else if (
-              dayjs(Date.now()) >= dayjs(selectedBooking.book_to) &&
-              dayjs(Date.now()).hour() >= 17)
-            {
-              console.log("giá ngày checkout trễ thêm 1 ngày");
-              const price =
-                (dayjs(selectedBooking.book_from).hour() - 
-                dayjs(selectedBooking.checkin_time).hour()) *
-                  value.hour_price +
-                Math.round(
-                  dayjs(Date.now()).diff(
-                    dayjs(selectedBooking.book_from),
-                    "day"
-                  ) + 1
-                ) *
-                  value.one_day_price;
-              return {
-                room_name: value.room_name,
-                room_type: value.room_type,
-                area: value.area,
-                price: price,
-              };
-            }
+                value.hour_price +
+              Math.round(
+                dayjs(selectedBooking.book_to).diff(
+                  dayjs(selectedBooking.book_from),
+                  "day"
+                )
+              ) *
+                value.one_day_price;
+            return {
+              room_name: value.room_name,
+              room_type: value.room_type,
+              area: value.area,
+              price: price,
+            };
           }
-          //day after 17 (add 1 more day)
+          //day after 12 and before 17 (surcharge)
           else if (
-            dayjs(selectedBooking.checkin_time) >= dayjs(selectedBooking.book_from)
+            dayjs(Date.now()) >= dayjs(selectedBooking.book_to) &&
+            dayjs(Date.now()).hour() < 17
           ) {
-            console.log("ngày checkin đúng");
-            //day checkout ontime
-            if (dayjs(Date.now()) < dayjs(selectedBooking.book_to)) {
-              console.log("giá ngày checkout sớm");
-  
-              const price =
-                Math.round(
-                  dayjs(Date.now()).diff(
-                    dayjs(selectedBooking.book_from),
-                    "day"
-                  )
-                ) * value.one_day_price;
-              return {
-                room_name: value.room_name,
-                room_type: value.room_type,
-                area: value.area,
-                price: price,
-              };
-            }
-            //day checkout late with surcharge
-            else if (
-              dayjs(Date.now()) >= dayjs(selectedBooking.book_to) &&
-              dayjs(Date.now()).hour() < 17
-            ) {
-              console.log("giá ngày checkout trễ phụ thu");
-              console.log((dayjs(Date.now()).hour() - 12) * value.hour_price);
-              console.log(
-                dayjs(Date.now()).diff(
-                  dayjs(selectedBooking.checkin_time),
-                  "day"
-                ) * value.one_day_price
-              );
-              const price =
-                (dayjs(Date.now()).hour() - 12) * value.hour_price +
-                dayjs(Date.now()).diff(
-                  dayjs(selectedBooking.checkin_time),
-                  "day"
-                ) *
-                  value.one_day_price;
-              console.log(price);
-              return {
-                room_name: value.room_name,
-                room_type: value.room_type,
-                area: value.area,
-                price: price,
-              };
-            }
-            //day checkout late add 1 more day
-            else {
-              console.log("giá ngày checkout trễ thêm 1 ngày");
-  
-              const price =
-                Math.round(
-                  dayjs(Date.now()).diff(
-                    dayjs(selectedBooking.book_from),
-                    "day"
-                  ) + 1
-                ) * value.one_day_price;
-              return {
-                room_name: value.room_name,
-                room_type: value.room_type,
-                area: value.area,
-                price: price,
-              };
-            }
-          }
-        }
-        //day checkin after 12
-        //overnight
-        else if(dayjs(selectedBooking.book_from).hour() === 21){
-          console.log("giá đêm");
-          //night ontime
-          if (
-            dayjs(selectedBooking.checkin_time) >= dayjs(selectedBooking.book_from) ||
-            dayjs(selectedBooking.checkin_time).hour() < 2
+            console.log("giá ngày checkout trễ phụ thu");
+            const price =
+              (12 -
+                dayjs(selectedBooking.checkin_time).hour() +
+                (dayjs(Date.now()).hour() -
+                  dayjs(selectedBooking.book_to).hour())) *
+                value.hour_price +
+              Math.round(
+                dayjs(Date.now()).diff(dayjs(selectedBooking.book_from), "day")
+              ) *
+                value.one_day_price;
+            return {
+              room_name: value.room_name,
+              room_type: value.room_type,
+              area: value.area,
+              price: price,
+            };
+          } else if (
+            dayjs(Date.now()) >= dayjs(selectedBooking.book_to) &&
+            dayjs(Date.now()).hour() >= 17
           ) {
-            console.log("đêm sau checkin đúng");
-            //night checkout ontime
-            if (dayjs(Date.now()) < dayjs(selectedBooking.book_to))
-            {
-              console.log("trả đúng");
-              const price = value.overnight_price;
-              return {
-                room_name: value.room_name,
-                room_type: value.room_type,
-                area: value.area,
-                price: price,
-              };
-            }
-            //night checkout late with surcharge
-            else if (
-              dayjs(Date.now()) >= dayjs(selectedBooking.book_to) &&
-              dayjs(Date.now()).hour() < 17
-            ) {
-              console.log("trả trễ phụ thu");
-
-              const price = (dayjs(Date.now()).hour() - 12) * value.hour_price + value.overnight_price;
-              return {
-                room_name: value.room_name,
-                room_type: value.room_type,
-                area: value.area,
-                price: price,
-              };
-            }
-            //night checkout late become 1 day
-            else {
-              console.log("trả trễ 1 ngày");
-
-              const price = value.overnight_price + value.one_day_price;
-              return {
-                room_name: value.room_name,
-                room_type: value.room_type,
-                area: value.area,
-                price: price,
-              };
-            }
-          }
-          //night checkout before 21
-          else {
-            console.log("đêm sớm");
-            // night checkin soon and checkout ontime
-            if (dayjs(Date.now()).hour() < 12) {
-              console.log("đêm trả phòng đúng");
-              // console.log(
-              //   dayjs(Date.now()).diff(
-              //     dayjs(selectedBooking.checkin_time),
-              //     "day"
-              //   )
-              // );
-              // console.log(dayjs(selectedBooking.checkin_time).hour());
-              const price =
-                (dayjs(selectedBooking.book_from).hour() - dayjs(selectedBooking.checkin_time).hour()) *
-                  value.hour_price +
-                  value.overnight_price;
-              return {
-                room_name: value.room_name,
-                room_type: value.room_type,
-                area: value.area,
-                price: price,
-              };
-            }
-            //night checkin soon and checkout late with surcharge
-            else if (
-              dayjs(Date.now()).hour() >= dayjs(selectedBooking.book_to) &&
-              dayjs(Date.now()).hour() < 17
-            ) {
-              console.log("trả trễ phụ thu");
-
-              const price =
+            console.log("giá ngày checkout trễ thêm 1 ngày");
+            const price =
               (dayjs(selectedBooking.book_from).hour() -
                 dayjs(selectedBooking.checkin_time).hour()) *
-                value.hour_price + 
-                (dayjs(Date.now()).hour() - 
-                dayjs(selectedBooking.book_to).hour()) *
-                value.hour_price + 
-                  value.overnight_price;
-              return {
-                room_name: value.room_name,
-                room_type: value.room_type,
-                area: value.area,
-                price: price,
-              };
-            }
-            //night checkin soon and check out late, become 1 day full
-            else {
-              console.log("trả trễ 1 ngày");
-
-              const price =
-              (dayjs(selectedBooking.book_from).hour() -
-              dayjs(selectedBooking.checkin_time).hour()) *
-              value.hour_price +
-              value.overnight_price + 
-              value.one_day_price;
-              return {
-                room_name: value.room_name,
-                room_type: value.room_type,
-                area: value.area,
-                price: price,
-              };
-            }
+                value.hour_price +
+              Math.round(
+                dayjs(Date.now()).diff(
+                  dayjs(selectedBooking.book_from),
+                  "day"
+                ) + 1
+              ) *
+                value.one_day_price;
+            return {
+              room_name: value.room_name,
+              room_type: value.room_type,
+              area: value.area,
+              price: price,
+            };
           }
         }
-        else{
-          console.log("giá giờ");
-          let price;
-          if((dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "hour") - 1) > 0)
-            price = value.first_hour_price +
-            (dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "hour") -
-              1) *
-              value.hour_price;
-          else 
-            price = value.first_hour_price;
-          console.log(price);
-          return {
-            room_name: value.room_name,
-            room_type: value.room_type,
-            area: value.area,
-            price: price,
-          };
+        //day after 17 (add 1 more day)
+        else if (
+          dayjs(selectedBooking.checkin_time) >=
+          dayjs(selectedBooking.book_from)
+        ) {
+          console.log("ngày checkin đúng");
+          //day checkout ontime
+          if (dayjs(Date.now()) < dayjs(selectedBooking.book_to)) {
+            console.log("giá ngày checkout sớm");
+
+            const price =
+              Math.round(
+                dayjs(Date.now()).diff(dayjs(selectedBooking.book_from), "day")
+              ) * value.one_day_price;
+            return {
+              room_name: value.room_name,
+              room_type: value.room_type,
+              area: value.area,
+              price: price,
+            };
+          }
+          //day checkout late with surcharge
+          else if (
+            dayjs(Date.now()) >= dayjs(selectedBooking.book_to) &&
+            dayjs(Date.now()).hour() < 17
+          ) {
+            console.log("giá ngày checkout trễ phụ thu");
+            console.log((dayjs(Date.now()).hour() - 12) * value.hour_price);
+            console.log(
+              dayjs(Date.now()).diff(
+                dayjs(selectedBooking.checkin_time),
+                "day"
+              ) * value.one_day_price
+            );
+            const price =
+              (dayjs(Date.now()).hour() - 12) * value.hour_price +
+              dayjs(Date.now()).diff(
+                dayjs(selectedBooking.checkin_time),
+                "day"
+              ) *
+                value.one_day_price;
+            console.log(price);
+            return {
+              room_name: value.room_name,
+              room_type: value.room_type,
+              area: value.area,
+              price: price,
+            };
+          }
+          //day checkout late add 1 more day
+          else {
+            console.log("giá ngày checkout trễ thêm 1 ngày");
+
+            const price =
+              Math.round(
+                dayjs(Date.now()).diff(
+                  dayjs(selectedBooking.book_from),
+                  "day"
+                ) + 1
+              ) * value.one_day_price;
+            return {
+              room_name: value.room_name,
+              room_type: value.room_type,
+              area: value.area,
+              price: price,
+            };
+          }
         }
       }
-    );
+      //day checkin after 12
+      //overnight
+      else if (dayjs(selectedBooking.book_from).hour() === 21) {
+        console.log("giá đêm");
+        //night ontime
+        if (
+          dayjs(selectedBooking.checkin_time) >=
+            dayjs(selectedBooking.book_from) ||
+          dayjs(selectedBooking.checkin_time).hour() < 2
+        ) {
+          console.log("đêm sau checkin đúng");
+          //night checkout ontime
+          if (dayjs(Date.now()) < dayjs(selectedBooking.book_to)) {
+            console.log("trả đúng");
+            const price = value.overnight_price;
+            return {
+              room_name: value.room_name,
+              room_type: value.room_type,
+              area: value.area,
+              price: price,
+            };
+          }
+          //night checkout late with surcharge
+          else if (
+            dayjs(Date.now()) >= dayjs(selectedBooking.book_to) &&
+            dayjs(Date.now()).hour() < 17
+          ) {
+            console.log("trả trễ phụ thu");
+
+            const price =
+              (dayjs(Date.now()).hour() - 12) * value.hour_price +
+              value.overnight_price;
+            return {
+              room_name: value.room_name,
+              room_type: value.room_type,
+              area: value.area,
+              price: price,
+            };
+          }
+          //night checkout late become 1 day
+          else {
+            console.log("trả trễ 1 ngày");
+
+            const price = value.overnight_price + value.one_day_price;
+            return {
+              room_name: value.room_name,
+              room_type: value.room_type,
+              area: value.area,
+              price: price,
+            };
+          }
+        }
+        //night checkout before 21
+        else {
+          console.log("đêm sớm");
+          // night checkin soon and checkout ontime
+          if (dayjs(Date.now()).hour() < 12) {
+            console.log("đêm trả phòng đúng");
+            // console.log(
+            //   dayjs(Date.now()).diff(
+            //     dayjs(selectedBooking.checkin_time),
+            //     "day"
+            //   )
+            // );
+            // console.log(dayjs(selectedBooking.checkin_time).hour());
+            const price =
+              (dayjs(selectedBooking.book_from).hour() -
+                dayjs(selectedBooking.checkin_time).hour()) *
+                value.hour_price +
+              value.overnight_price;
+            return {
+              room_name: value.room_name,
+              room_type: value.room_type,
+              area: value.area,
+              price: price,
+            };
+          }
+          //night checkin soon and checkout late with surcharge
+          else if (
+            dayjs(Date.now()).hour() >= dayjs(selectedBooking.book_to) &&
+            dayjs(Date.now()).hour() < 17
+          ) {
+            console.log("trả trễ phụ thu");
+
+            const price =
+              (dayjs(selectedBooking.book_from).hour() -
+                dayjs(selectedBooking.checkin_time).hour()) *
+                value.hour_price +
+              (dayjs(Date.now()).hour() -
+                dayjs(selectedBooking.book_to).hour()) *
+                value.hour_price +
+              value.overnight_price;
+            return {
+              room_name: value.room_name,
+              room_type: value.room_type,
+              area: value.area,
+              price: price,
+            };
+          }
+          //night checkin soon and check out late, become 1 day full
+          else {
+            console.log("trả trễ 1 ngày");
+
+            const price =
+              (dayjs(selectedBooking.book_from).hour() -
+                dayjs(selectedBooking.checkin_time).hour()) *
+                value.hour_price +
+              value.overnight_price +
+              value.one_day_price;
+            return {
+              room_name: value.room_name,
+              room_type: value.room_type,
+              area: value.area,
+              price: price,
+            };
+          }
+        }
+      } else {
+        console.log("giá giờ");
+        let price;
+        if (
+          dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "hour") -
+            1 >
+          0
+        )
+          price =
+            value.first_hour_price +
+            (dayjs(Date.now()).diff(
+              dayjs(selectedBooking.checkin_time),
+              "hour"
+            ) -
+              1) *
+              value.hour_price;
+        else price = value.first_hour_price;
+        console.log(price);
+        return {
+          room_name: value.room_name,
+          room_type: value.room_type,
+          area: value.area,
+          price: price,
+        };
+      }
+    });
   };
 
   const handleCancelModal = () => {
