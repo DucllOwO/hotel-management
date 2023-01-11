@@ -262,10 +262,12 @@ const InventoryTable = ({ rooms, user, isLoading, roomType }) => {
           .then((value) => {
             console.log(value);
             record.forEach((item) => {
+              const detailCost = item.price * item.amount;
               const newDetail = {
                 item_id: item.id,
                 price: item.price,
                 amount: item.amount,
+                cost: detailCost,
                 record_id: value.data[0].id,
               };
               createInventoryDetail(user?.position, newDetail)

@@ -2,6 +2,14 @@ const supabase = require("../database");
 
 const TABLE_NAME = "invoice";
 
+const updateReceiptStatus = (receiptID) => {
+  return supabase
+  .from(TABLE_NAME)
+  .update({
+    status: "1"
+  })
+  .eq("id", receiptID);
+}
 const getAllReceipt = () => {
   return supabase
     .from(TABLE_NAME)
@@ -19,6 +27,7 @@ const getAllReceipt = () => {
       note,
       status,
       booking_id ( 
+        id,
         customer_id (id, fullname)
       ),
       employee_id (),
@@ -154,4 +163,5 @@ module.exports = {
   getReceiptByDay,
   getReceiptByMonth,
   getReceiptByYear,
+  updateReceiptStatus
 };

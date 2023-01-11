@@ -740,11 +740,14 @@ const BookingListTable = ({
         }
         else{
           console.log("giá giờ");
-          const price =
-            value.first_hour_price +
+          let price;
+          if((dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "hour") - 1) > 0)
+            price = value.first_hour_price +
             (dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "hour") -
               1) *
               value.hour_price;
+          else 
+            price = value.first_hour_price;
           console.log(price);
           return {
             room_name: value.room_name,

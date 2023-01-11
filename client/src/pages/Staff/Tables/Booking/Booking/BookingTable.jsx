@@ -582,7 +582,7 @@ const BookingTable = ({
                 }
                 showTime={{
                   hideDisabledOptions: true,
-                  defaultValue: [dayjs('12:00:00', 'HH:mm:ss'), dayjs('14:00:00', 'HH:mm:ss')],
+                  defaultValue: [dayjs('14:00:00', 'HH:mm:ss'), dayjs('12:00:00', 'HH:mm:ss')],
                 }}
                 ></RangePicker>
             )}

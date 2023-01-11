@@ -5,7 +5,11 @@ export const getAllReceipt = (positionUser) => {
     params: { user: { position: positionUser } },
   });
 };
-
+export const payReceipt = (positionUser, receiptID) => {
+  return userRequest.put(`/receipts/${receiptID}`, {
+    params: { user: { position: positionUser } },
+  });
+};
 export const getDayReceipt = (positionUser, day) => {
   return userRequest.get(`/receipts/day?day=${day}`, {
     params: { user: { position: positionUser } },

@@ -16,11 +16,11 @@ const DetailForm = ({ receipt, positionUser }) => {
   const [usedRooms, setUsedRoom] = useState([]);
 
   useEffect(() => {
-    const usedRoomRes = getUsedRoomByBookingID(positionUser, receipt.id);
+    const usedRoomRes = getUsedRoomByBookingID(positionUser, receipt.booking_id.id);
 
     const inventoryDetailRes = fetchInventoryDetailByBookingID(
       positionUser,
-      receipt.id
+      receipt.booking_id.id
     );
 
     Promise.all([usedRoomRes, inventoryDetailRes])

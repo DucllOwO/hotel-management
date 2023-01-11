@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import "../index.css";
 import { Table, Button, Modal, DatePicker, Select, Slider, Tag } from "antd";
 import dayjs from "dayjs";
+import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert"
+import { AppContext } from "../../../../context/AppContext";
 import { FilterOutlined } from "@ant-design/icons";
 import DetailForm from "../../../../components/Form/DetailForm/DetailForm";
 import { formatDate } from "../../../../Utils/formatter";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import CheckButton from "../../../../components/IconButton/CheckButton/CheckButton";
+import { payReceipt } from "../../../../api/receiptAPI";
+import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 
 const ReceiptTable = ({
   setTime,
@@ -27,6 +31,7 @@ const ReceiptTable = ({
 
   const [priceFilter, setPriceFilter] = useState(null);
   const [methodFilter, setMethodFilter] = useState("");
+  const { user } = useContext(AppContext);
 
   const dateFormat = "DD-MM-YYYY";
   const monthFormat = "MM-YYYY";
@@ -225,7 +230,7 @@ const ReceiptTable = ({
         if (value.status === "0") {
           return (
             <>
-              <CheckButton />
+              <CheckButton onCheckButton={() => onCheckButton(value)}/>
             </>
           );
         }
@@ -233,6 +238,18 @@ const ReceiptTable = ({
       },
     },
   ];
+  const onCheckButton = (receipt) => {
+    setModal(true);
+    
+    payReceipt(user?.position, receipt.id)
+    .then(() => {
+      SuccessAlert("Thanh toán thành công");
+    })
+    .catch((error) =>{
+      ErrorAlert("Đã xảy ra lỗi khi thanh toán");
+      throw error;
+    })
+  }
   return (
     <div className="table">
       {modal !== null && ModalDetail(modal)}
