@@ -48,11 +48,11 @@ const DashboardTable = ({ data, setData, revenue, isLoading }) => {
       dataIndex: "established_date",
       align: "center",
       sorter: (a, b) => a.established_date.localeCompare(b.established_date),
-      render: (text, record) => {
-        return dayjs(convertToValidDateString(text))
-          .startOf("day")
-          .format(DATE_FORMAT_FULL);
-      },
+      // render: (text, record) => {
+      //   // return dayjs(convertToValidDateString(text))
+      //   //   .startOf("day")
+      //   //   .format(DATE_FORMAT_FULL);
+      // },
     },
     {
       key: "3",
@@ -153,11 +153,11 @@ const DashboardTable = ({ data, setData, revenue, isLoading }) => {
       dataIndex: "established_date",
       align: "center",
       sorter: (a, b) => a.established_date.localeCompare(b.established_date),
-      render: (text, record) => {
-        return dayjs(convertToValidDateString(text))
-          .startOf("day")
-          .format(DATE_FORMAT_FULL);
-      },
+      // render: (text, record) => {
+      //   // return dayjs(convertToValidDateString(text))
+      //   //   .startOf("day")
+      //   //   .format(DATE_FORMAT_FULL);
+      // },
     },
     {
       key: "3",
@@ -184,9 +184,9 @@ const DashboardTable = ({ data, setData, revenue, isLoading }) => {
       ></Table>
     </div>
   );
-  function convertToValidDateString(date) {
-    return date.replace("T", " ");
-  }
+  // function convertToValidDateString(date) {
+  //   return date.toString().replace("T", " ");
+  // }
 };
 
 export default DashboardTable;

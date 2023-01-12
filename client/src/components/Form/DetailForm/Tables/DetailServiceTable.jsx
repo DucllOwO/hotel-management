@@ -70,20 +70,26 @@ const DetailServiceTable = ({ dataSource }) => {
     },
     {
       key: "4",
-      title: "Đơn giá",
+      title: "Đơn giá (đ)",
       dataIndex: "price",
       align: "center",
       render: (text, record) => {
-        return record.price ? String(record.price.toLocaleString()) : "";
+        return record.price
+          ? String(
+              record.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            )
+          : "";
       },
     },
     {
       key: "5",
-      title: "Tổng cộng",
+      title: "Tổng cộng (đ)",
       dataIndex: "total_cost",
       align: "center",
       render: (text, record) => {
-        return (record.price * record.amount).toLocaleString();
+        return (record.price * record.amount)
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
     },
   ];
