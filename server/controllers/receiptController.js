@@ -11,16 +11,28 @@ const getReceiptByTime = async (req, res, next) => {
 
   res.status(200).send(data);
 };
-const payReceipt = async (req, res, next) => {
+const updateReceipt = async (req, res, next) => {
   const {id} = req.params;
+  const {newReceipt} = req.body.params;
 
-  if(!id) return next(BadRequestError());
+  if(!id || !newReceipt) return next(BadRequestError());
 
-  const {error} = await receiptDAL.updateReceiptStatus(id);
+  const {data, error} = await receiptDAL.updateReceipt(id, newReceipt);
 
   if(error) return next(error);
 
-  res.status(200).send();
+  res.status(200).send(data);
+}
+const getReceiptByBookingID = async (req, res, next) => {
+  const {bookingID} = req.params;
+
+  if(!bookingID) return next(BadRequestError());
+
+  const {data, error} = await receiptDAL.getReceiptByBookingID(bookingID);
+
+  if(error) return next(error);
+
+  res.status(200).send(data[0]);
 }
 const getReceiptByDay = async (req, res, next) => {
   const { day } = req.query;
@@ -65,7 +77,7 @@ const createReceipt = async (req, res, next) => {
       ...receipt,
       employee_id: employee?.id,
       booking_id: booking?.id,
-      employee_name: employee?.name,
+      employee_name: employee?.fullname,
       checkin_time: booking?.checkin_time,
     });
 
@@ -80,5 +92,6 @@ module.exports = {
   getReceiptByDay,
   getReceiptByMonth,
   getReceiptByYear,
-  payReceipt
+  getReceiptByBookingID,
+  updateReceipt
 };

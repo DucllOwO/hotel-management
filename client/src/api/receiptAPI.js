@@ -5,8 +5,13 @@ export const getAllReceipt = (positionUser) => {
     params: { user: { position: positionUser } },
   });
 };
-export const payReceipt = (positionUser, receiptID) => {
+export const updateReceipt = (positionUser, receiptID, newReceipt) => {
   return userRequest.put(`/receipts/${receiptID}`, {
+    params: { user: { position: positionUser }, newReceipt: newReceipt },
+  });
+};
+export const getReceiptByBookingID = (positionUser, bookingID) => {
+  return userRequest.get(`/receipts/booking/${bookingID}`, {
     params: { user: { position: positionUser } },
   });
 };

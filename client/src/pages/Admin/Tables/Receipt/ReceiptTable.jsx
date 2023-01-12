@@ -9,7 +9,7 @@ import DetailForm from "../../../../components/Form/DetailForm/DetailForm";
 import { formatDate } from "../../../../Utils/formatter";
 import { useEffect, useContext } from "react";
 import CheckButton from "../../../../components/IconButton/CheckButton/CheckButton";
-import { payReceipt } from "../../../../api/receiptAPI";
+import { updateReceipt } from "../../../../api/receiptAPI";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
 
 const ReceiptTable = ({
@@ -238,17 +238,23 @@ const ReceiptTable = ({
       },
     },
   ];
+  
   const onCheckButton = (receipt) => {
-    setModal(true);
-    
-    payReceipt(user?.position, receipt.id)
-    .then(() => {
-      SuccessAlert("Thanh toán thành công");
-    })
-    .catch((error) =>{
-      ErrorAlert("Đã xảy ra lỗi khi thanh toán");
-      throw error;
-    })
+    Modal.confirm({
+      title: "Xác nhận thanh toán?",
+      okText: "Đúng",
+      okType: "danger",
+      onOk: () => {
+        updateReceipt(user?.position, receipt.id, {status: "1"})
+        .then(() => {
+          SuccessAlert("Thanh toán thành công");
+        })
+        .catch((error) =>{
+          ErrorAlert("Đã xảy ra lỗi khi thanh toán");
+          throw error;
+        })
+      }
+    });
   }
   return (
     <div className="table">

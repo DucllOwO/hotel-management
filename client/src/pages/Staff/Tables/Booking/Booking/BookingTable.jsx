@@ -427,7 +427,7 @@ const BookingTable = ({
                   {
                     case "day":
                       
-                      setTotalCost((prev) => prev + record.room_type_id.one_day_price * Math.round(dayjs(to).diff(dayjs(from),"day", true)));
+                      setTotalCost((prev) => prev + record.room_type_id.one_day_price * Math.ceil(dayjs(to).diff(dayjs(from),"day", true)));
                       break;
                     case "overnight":
                       setTotalCost((prev) => prev + record.room_type_id.overnight_price);
@@ -447,7 +447,7 @@ const BookingTable = ({
                   switch(bookingType)
                   {
                     case "day":
-                      setTotalCost((prev) => prev - record.room_type_id.one_day_price * Math.round(dayjs(to).diff(dayjs(from),"day", true)));
+                      setTotalCost((prev) => prev - record.room_type_id.one_day_price * Math.ceil(dayjs(to).diff(dayjs(from),"day", true)));
                       break;
                     case "overnight":
                       setTotalCost((prev) => prev - record.room_type_id.overnight_price);
