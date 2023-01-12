@@ -320,6 +320,10 @@ const BookingListTable = ({
       okText: "Đúng",
       okType: "danger",
       onOk: () => {
+
+
+
+        
         updateBookingStatus(user?.position, "1", record.id)
           .then((data) => {
             SuccessAlert("Nhận phòng thành công");
