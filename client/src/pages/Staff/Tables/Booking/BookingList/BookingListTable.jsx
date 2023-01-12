@@ -133,9 +133,11 @@ const BookingListTable = ({
       align: "center",
       sorter: (a, b) => a.book_from.localeCompare(b.book_from),
       render: (text, record) => {
-        return dayjs(convertToValidDateString(text))
-          // .startOf("day")
-          .format(DATE_FORMAT_FULL);
+        return (
+          dayjs(convertToValidDateString(text))
+            // .startOf("day")
+            .format(DATE_FORMAT_FULL)
+        );
       },
     },
     {
@@ -148,13 +150,6 @@ const BookingListTable = ({
       render: (text, record) => {
         return dayjs(convertToValidDateString(text)).format(DATE_FORMAT_FULL);
       },
-    },
-    {
-      key: "5",
-      title: "Phòng",
-      dataIndex: "room_id",
-      align: "center",
-      sorter: (a, b) => a.room_id.localeCompare(b.room_id),
     },
     {
       key: "6",

@@ -593,8 +593,8 @@ const BookingTable = ({
           type={bookingType === "overnight" ? "primary" : "default"}
           onClick={() => {
             setBookingType("overnight");
-            setFrom('');
-            setTo('');
+            setFrom("");
+            setTo("");
           }}
         >
           Qua đêm
@@ -604,36 +604,51 @@ const BookingTable = ({
         <div className="header">
           <div>
             {bookingType === "hour" && (
-              <TimePicker.RangePicker format={hourFormat} order={true} onChange={(value) => {setFrom(value[0].$d); setTo(value[1].$d)}}/>
+              <TimePicker.RangePicker
+                order={true}
+                showMinute={false}
+                showSecond={false}
+                showNow={true}
+                onChange={(value) => {
+                  setFrom(value[0].$d);
+                  setTo(value[1].$d);
+                }}
+              />
             )}
             {bookingType === "day" && (
-              <RangePicker 
-                format={dateFormat} 
-                picker="date" 
-                onChange={(value) => 
-                  {setFrom(value[0].$d); setTo(value[1].$d)}
-                }
+              <RangePicker
+                format={dateFormat}
+                picker="date"
+                showNow={true}
+                onChange={(value) => {
+                  setFrom(value[0].$d);
+                  setTo(value[1].$d);
+                }}
                 showTime={{
                   hideDisabledOptions: true,
-                  defaultValue: [dayjs('14:00:00', 'HH:mm:ss'), dayjs('12:00:00', 'HH:mm:ss')],
+                  defaultValue: [
+                    dayjs("14:00:00", "HH:mm:ss"),
+                    dayjs("12:00:00", "HH:mm:ss"),
+                  ],
                 }}
-                ></RangePicker>
+              ></RangePicker>
             )}
             {bookingType === "overnight" && (
               <DatePicker
                 picker="date"
                 format={dateFormat}
-                showTime={{defaultValue: dayjs('21:00:00', 'HH:mm:ss')}}
-                onChange={(value) => 
-                  {
-                    setFrom(value.$d); 
-                    setTo(
+                showNow={true}
+                showTime={{ defaultValue: dayjs("21:00:00", "HH:mm:ss") }}
+                onChange={(value) => {
+                  setFrom(value.$d);
+                  setTo(
+                    dayjs(
                       dayjs(
-                        dayjs(
-                          dayjs(value.$d)
-                          .date(dayjs(value.$d)
-                          .date()+1).$d).hour(12).$d).$d)
-                  }}
+                        dayjs(value.$d).date(dayjs(value.$d).date() + 1).$d
+                      ).hour(12).$d
+                    ).$d
+                  );
+                }}
               ></DatePicker>
             )}
           </div>
@@ -659,7 +674,7 @@ const BookingTable = ({
           columns={columns}
           dataSource={rooms}
           scroll={{
-            y: document.documentElement.clientHeight - 330,
+            y: document.documentElement.clientHeight - 360,
           }}
           rowKey={(row) => row.room_name}
           expandable={{
