@@ -4,6 +4,7 @@ const {
   getReceiptByDay,
   getReceiptByYear,
   getReceiptByMonth,
+  payReceipt,
 } = require("../controllers/receiptController");
 const authorizeAccessToken = require("../middlewares/authorizeAccessToken");
 const { tryCatch } = require("../middlewares/errorHandler");
@@ -13,11 +14,15 @@ const permissionsRoutes = require("./permissionsRotues.js");
 const router = require("express").Router();
 
 router.get("/", authorizeAccessToken, tryCatch(getReceiptByTime));
-
 router.get("/day", authorizeAccessToken, tryCatch(getReceiptByDay));
 
 router.get("/month", authorizeAccessToken, tryCatch(getReceiptByMonth));
 router.get("/year", authorizeAccessToken, tryCatch(getReceiptByYear));
+
+router.put(
+  "/:id", 
+  authorizeAccessToken, 
+  tryCatch(payReceipt));
 
 router.post(
   "/",

@@ -1,15 +1,27 @@
 const receiptDAL = require("../DAL/receiptDAL");
 const dayjs = require("dayjs");
+const { BadRequestError } = require("../middlewares/errorHandler");
 const getReceiptByTime = async (req, res, next) => {
   //const { date}
 
-  const { data, error } = await receiptDAL.getAllReceipt(from, to);
+  const { data, error } = await receiptDAL.getAllReceipt();
   console.log(data);
 
   if (error) return next(error);
 
   res.status(200).send(data);
 };
+const payReceipt = async (req, res, next) => {
+  const {id} = req.params;
+
+  if(!id) return next(BadRequestError());
+
+  const {error} = await receiptDAL.updateReceiptStatus(id);
+
+  if(error) return next(error);
+
+  res.status(200).send();
+}
 const getReceiptByDay = async (req, res, next) => {
   const { day } = req.query;
 
@@ -68,4 +80,5 @@ module.exports = {
   getReceiptByDay,
   getReceiptByMonth,
   getReceiptByYear,
+  payReceipt
 };
