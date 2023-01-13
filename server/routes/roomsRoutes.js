@@ -15,7 +15,7 @@ const router = require("express").Router();
 // only manager need to get all room feature to edit
 router.get("/", authorizeAccessToken, tryCatch(getAllRoom));
 router.get("/booking", authorizeAccessToken, tryCatch(getRoomByBookingID));
-router.get("/booking", authorizeAccessToken, tryCatch(getRoomByBookingID));
+// router.get("/booking", authorizeAccessToken, tryCatch(getRoomByBookingID));
 router.get("/:id", authorizeAccessToken, tryCatch(getRoom));
 
 router.post(
