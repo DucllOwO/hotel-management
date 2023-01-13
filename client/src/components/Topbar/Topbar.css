@@ -8,6 +8,10 @@
     align-items: center;
 }
 
+.information {
+    margin-right: 2vw;
+}
+
 .avatar {
     height: 49px;
     width: 49px;

@@ -1,8 +1,8 @@
 .bottomBar {
     height: 60px;
     position: fixed;
-        bottom: 0;
-        width: 100%;
+    bottom: 0;
+    width: 70vw;
     background-color: var(--light-grey);
     align-self: flex-end;
     display: flex;
