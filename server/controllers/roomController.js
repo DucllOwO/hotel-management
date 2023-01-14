@@ -59,6 +59,7 @@ const getRoomByBookingID = async (req, res, next) => {
     if(getRoomTypeError) return next(getRoomTypeError);
     else
       return {
+        id: value.room_id.id,
         room_name: value.room_id.room_name,
         room_type: roomType[0].name,
         area: roomType[0].area,
@@ -73,8 +74,8 @@ const getRoomByBookingID = async (req, res, next) => {
 const updateRoom = async (req, res, next) => {
   const { room } = req.body;
   const { id } = req.params;
-
-  if (!room) return next(BadRequestError());
+  
+  if (!room || !id) return next(BadRequestError());
 
   const { data, error: updateRoomError } = await roomDAL.updateRoom(room, id);
 

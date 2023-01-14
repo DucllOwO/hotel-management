@@ -11,6 +11,7 @@ import {
   getInventory,
   getRoomByBookingID,
   updateBookingStatus,
+  updateRoomStatus,
 } from "../../../../../api/BookingListAPI";
 import DetailForm from "../../../../../components/Form/DetailForm/DetailForm";
 import CheckButton from "../../../../../components/IconButton/CheckButton/CheckButton";
@@ -344,6 +345,7 @@ const BookingListTable = ({
       onOk: async () => {
         let rentCost = 0;
         let tempEmployee;
+        
         fetchEmployeeByUsername(user?.position, user?.account.username)
         .then((data) => {
           setCurrentEmployee(data.data);
@@ -362,6 +364,10 @@ const BookingListTable = ({
             rentRoomArray.forEach((value) => {
               console.log(value);
               rentCost = rentCost + value.price;
+              updateRoomStatus(user?.position, value.id, {status: "1"})
+              .catch(()=> {
+                ErrorAlert("Thay đổi trạng thái phòng không thành công")
+              });
             });
             setUsedRoom(rentRoomArray);
             createReceiptFunc(rentCost, tempEmployee, record);
@@ -443,6 +449,7 @@ const BookingListTable = ({
               ) *
                 value.one_day_price;
             return {
+              id: value.id,
               room_name: value.room_name,
               room_type: value.room_type,
               area: value.area,
@@ -466,6 +473,7 @@ const BookingListTable = ({
               ) *
                 value.one_day_price;
             return {
+              id: value.id,
               room_name: value.room_name,
               room_type: value.room_type,
               area: value.area,
@@ -484,6 +492,7 @@ const BookingListTable = ({
             ) * value.hour_price +
             value.overnight_price;
           return {
+            id: value.id,
             room_name: value.room_name,
             room_type: value.room_type,
             area: value.area,
@@ -495,6 +504,7 @@ const BookingListTable = ({
           console.log("giá đêm");
           const price = value.overnight_price;
           return {
+            id: value.id,
             room_name: value.room_name,
             room_type: value.room_type,
             area: value.area,
@@ -510,6 +520,7 @@ const BookingListTable = ({
             value.hour_price;
         console.log(price);
         return {
+          id: value.id,
           room_name: value.room_name,
           room_type: value.room_type,
           area: value.area,
@@ -571,6 +582,7 @@ const BookingListTable = ({
             rentRoomArray.forEach((value) => {
               console.log(value);
               rentCost = rentCost + value.additionPrice;
+              updateRoomStatus(user?.position, value.id, {status: "0"});
             });
             setUsedRoom(rentRoomArray);
             infoForm.validateFields()
@@ -638,6 +650,7 @@ const BookingListTable = ({
           const additionPrice =
             Math.ceil(dayjs(Date.now()).diff(dayjs(selectedBooking.book_to), "hour", true)) * value.hour_price;
           return {
+            id: value.id,
             room_name: value.room_name,
             room_type: value.room_type,
             area: value.area,
@@ -651,6 +664,7 @@ const BookingListTable = ({
           console.log("giá ngày checkout trễ thêm 1 ngày");
           const additionPrice = value.one_day_price;
               return {
+                id: value.id,
                 room_name: value.room_name,
                 room_type: value.room_type,
                 area: value.area,
@@ -667,6 +681,7 @@ const BookingListTable = ({
           console.log("trả trễ phụ thu");
           const additionPrice = Math.ceil(dayjs(Date.now()).diff(dayjs(selectedBooking.book_to), "hour", true)) * value.hour_price;
           return {
+            id: value.id,
             room_name: value.room_name,
             room_type: value.room_type,
             area: value.area,
@@ -679,6 +694,7 @@ const BookingListTable = ({
 
           const additionPrice = value.one_day_price;
           return {
+            id: value.id,
             room_name: value.room_name,
             room_type: value.room_type,
             area: value.area,

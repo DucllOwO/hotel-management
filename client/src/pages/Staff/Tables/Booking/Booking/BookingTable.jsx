@@ -56,6 +56,9 @@ const BookingTable = ({
   const [priceFilter, setPriceFilter] = useState("");
   const [sliderFilter, setSliderFilter] = useState([0, 5000000]);
 
+  useEffect(() => {
+    setTotalCost(0);
+  }, rooms);
   const minPrice =
     priceFilter === "Qua đêm"
       ? Math.min(...rooms.map((rooms) => rooms.room_type_id.overnight_price))
@@ -442,7 +445,7 @@ const BookingTable = ({
                           prev +
                           record.room_type_id.first_hour_price +
                           record.room_type_id.hour_price *
-                            (dayjs(to).diff(dayjs(from), "hour") - 1)
+                            Math.ceil(dayjs(to).diff(dayjs(from), "hour", true) - 1)
                       );
                       break;
                     default:
@@ -457,8 +460,8 @@ const BookingTable = ({
                       setTotalCost(
                         (prev) =>
                           prev -
-                          record.room_type_id.one_day_price *
-                            Math.ceil(dayjs(to).diff(dayjs(from), "day", true))
+                        (record.room_type_id.one_day_price *
+                            Math.ceil(dayjs(to).diff(dayjs(from), "day", true)))
                       );
                       break;
                     case "overnight":
@@ -470,9 +473,9 @@ const BookingTable = ({
                       setTotalCost(
                         (prev) =>
                           prev -
-                          record.room_type_id.first_hour_price +
+                          (record.room_type_id.first_hour_price +
                           record.room_type_id.hour_price *
-                            (dayjs(from).diff(dayjs(to), "hour") - 1)
+                            Math.ceil(dayjs(to).diff(dayjs(from), "hour", true) - 1))
                       );
                       break;
                     default:
