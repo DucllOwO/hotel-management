@@ -10,7 +10,5 @@
 
 .homeContainer {
     flex: 4;
-    margin-left: 5px;
-    width: 80%;
-    margin-right: 10px;
+    width: 80vw;
 }
