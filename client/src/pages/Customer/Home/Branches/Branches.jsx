@@ -10,7 +10,7 @@ const BranchesContainer = styled.div`
 const Title = styled.div`
   display: flex;
   justify-content: center;
-  font-size: var(--fs-50);
+  font-size: var(--fs-40);
   font-weight: var(--fw-bold);
   color: var(--black);
   margin-bottom: 50px;
