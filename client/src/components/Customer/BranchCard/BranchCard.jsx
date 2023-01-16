@@ -11,6 +11,7 @@ const BranchImage = styled.img`
   width: 100%;
   height: 200px;
   object-fit: cover;
+  border-radius: 10px;
 `;
 
 const BranchName = styled.div`

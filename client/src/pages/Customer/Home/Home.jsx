@@ -6,6 +6,11 @@ import TopBar from "../../../components/Customer/TopBar/TopBar";
 import Services from "./Services/Services";
 import Branches from "./Branches/Branches";
 import Work from "./Work/Work";
+import Footer from "../../../components/Customer/Footer/Footer";
+
+const MainHome = styled.div`
+  background-color: var(--customer-background);
+`;
 
 const HomeContainer = styled.div`
   width: 100%;
@@ -13,7 +18,7 @@ const HomeContainer = styled.div`
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none;
-  background-color: var(--light-grey);
+  /* background-color: var(--customer-background); */
 `;
 
 const SliderContainer = styled.div`
@@ -24,7 +29,7 @@ const SliderContainer = styled.div`
 
 const Home = () => {
   return (
-    <div>
+    <MainHome>
       <HomeContainer>
         <TopBar />
 
@@ -35,7 +40,8 @@ const Home = () => {
       <Services></Services>
       <Branches></Branches>
       <Work></Work>
-    </div>
+      <Footer></Footer>
+    </MainHome>
   );
 };
 

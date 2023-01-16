@@ -10,7 +10,7 @@ const WorkContainer = styled.div`
 const TitleContainer = styled.div`
   display: flex;
   justify-content: center;
-  font-size: var(--fs-50);
+  font-size: var(--fs-40);
   font-weight: var(--fw-bold);
 `;
 
@@ -40,9 +40,9 @@ const Work = () => {
       </TitleContainer>
       <WorkDetails>
         <WorkCard />
+        <WorkCard reverse={true} />
         <WorkCard />
-        <WorkCard />
-        <WorkCard />
+        <WorkCard reverse={true} />
       </WorkDetails>
     </WorkContainer>
   );

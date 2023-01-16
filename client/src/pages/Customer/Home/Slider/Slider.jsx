@@ -4,6 +4,7 @@ import {
   StarOutlined,
   AppstoreAddOutlined,
   SearchOutlined,
+  SwapRightOutlined,
 } from "@ant-design/icons";
 import { Button } from "antd";
 import styled from "styled-components";
@@ -98,6 +99,29 @@ const CenterDetails = styled.div`
   border-radius: 0 20px 20px 20px;
   justify-content: space-between;
   padding: 0 30px;
+  position: relative;
+  padding-bottom: 30px;
+`;
+
+const DetailButton = styled.div`
+  position: absolute;
+  width: 18%;
+  height: 35%;
+  background-color: var(--black);
+  bottom: -20%;
+  right: 5%;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const DetailLabel = styled.div`
+  margin-left: 10px;
+  font-size: var(--fs-14);
+  font-weight: var(--fw-bold);
+  color: var(--primary-color);
 `;
 
 const CenterAddress = styled.div`
@@ -131,7 +155,7 @@ const ImageList = styled.div`
 
 const ImageItem = styled.img`
   width: 22%;
-  height: 100%;
+  aspect-ratio: 1;
   margin: 0 10px;
   border-radius: 15px;
   cursor: pointer;
@@ -151,6 +175,17 @@ const Bullet = styled.div`
   border-radius: 50%;
   background-color: var(--grey);
   margin-right: 10px;
+`;
+
+const SearchButton = styled.div`
+  height: 55%;
+  aspect-ratio: 1;
+  background-color: var(--black);
+  border-radius: 15px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Slider = () => {
@@ -177,6 +212,12 @@ const Slider = () => {
         </CenterNav>
 
         <CenterDetails>
+          <DetailButton>
+            <DetailLabel>Detail</DetailLabel>
+            <SwapRightOutlined
+              style={{ fontSize: "150%", color: "white", marginLeft: "5px" }}
+            ></SwapRightOutlined>
+          </DetailButton>
           <CenterAddress>
             <AddressLabel>ADDRESS</AddressLabel>
             <Address>120 Trần Phú, Nha Trang</Address>
@@ -202,13 +243,11 @@ const Slider = () => {
             />
           </ImageList>
 
-          <div className="searchBtn">
-            <Button
-              icon={<SearchOutlined />}
-              type="primary"
-              size="large"
-            ></Button>
-          </div>
+          <SearchButton>
+            <SearchOutlined
+              style={{ color: "white", fontSize: "180%" }}
+            ></SearchOutlined>
+          </SearchButton>
         </CenterDetails>
 
         <SliderBullets>

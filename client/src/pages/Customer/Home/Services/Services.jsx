@@ -4,7 +4,7 @@ import styled from "styled-components";
 const ServiceContainer = styled.div`
   justify-content: space-between;
   padding: 0 60px;
-  margin-top: 30px;
+  margin-top: 100px;
 `;
 const ServicesContainer = styled.div`
   display: flex;

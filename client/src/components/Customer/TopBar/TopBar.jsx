@@ -45,7 +45,25 @@ const Bullet = styled.div`
 `;
 
 const Buttons = styled.div`
+  font-size: var(--fs-14);
   font-weight: var(--fw-bold);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const LoginButton = styled.div`
+  color: var(--black);
+  margin-right: 10px;
+  cursor: pointer;
+`;
+
+const SignUpButton = styled.div`
+  color: var(--primary-color);
+  background-color: var(--black);
+  border-radius: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
 `;
 
 const TopBar = () => {
@@ -62,12 +80,8 @@ const TopBar = () => {
         <PageItem>ĐÁNH GIÁ</PageItem>
       </NavBar>
       <Buttons>
-        <Button type="link" className="loginBtn">
-          Login
-        </Button>
-        <Button type="primary" className="signupBtn">
-          Sign Up
-        </Button>
+        <LoginButton>Log in</LoginButton>
+        <SignUpButton>Sign up</SignUpButton>
       </Buttons>
     </TopBarContainer>
   );
