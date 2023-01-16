@@ -25,6 +25,7 @@ import AuthErrorBoundary from "./components/Error/ErrorBoundary/AuthErrorBoundar
 import Promotion from "./pages/Admin/Promotion/Promotion";
 import Import from "./components/Admin/Import/Import";
 import Home from "./pages/Customer/Home/Home";
+import BookingCustomer from "./pages/Customer/Booking/Booking";
 
 import "./app.css";
 
@@ -42,6 +43,11 @@ const App = () => {
           <Route key="login" index element={<Login />}></Route>
           <Route key="login1" path="/login" element={<Login />}></Route>
           <Route key="home" path="/home" element={<Home />}></Route>
+          <Route
+            key="booking"
+            path="/booking"
+            element={<BookingCustomer />}
+          ></Route>
           <Route key="admin" path="/admin" element={<Admin />}>
             {listFeature
               ? listRoute.map((item) => {

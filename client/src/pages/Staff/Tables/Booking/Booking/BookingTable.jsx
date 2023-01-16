@@ -20,7 +20,6 @@ import ErrorAlert from "../../../../../components/Error/Alert/ErrorAlert";
 import BottomBar from "../../../../../components/Admin/BottomBar/BottomBar";
 import RoomTypeExpand from "../../../../../components/ExpandedTable/RoomTypeExpand";
 import { getRoomUtilsByRoomTypeID } from "../../../../../api/hasRoomFeatures";
-import { getRoomTypeByID } from "../../../../../api/RoomTypeAPI";
 const { RangePicker } = DatePicker;
 
 const BookingTable = ({
