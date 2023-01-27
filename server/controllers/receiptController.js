@@ -1,15 +1,39 @@
 const receiptDAL = require("../DAL/receiptDAL");
 const dayjs = require("dayjs");
+const { BadRequestError } = require("../middlewares/errorHandler");
 const getReceiptByTime = async (req, res, next) => {
   //const { date}
 
-  const { data, error } = await receiptDAL.getAllReceipt(from, to);
+  const { data, error } = await receiptDAL.getAllReceipt();
   console.log(data);
 
   if (error) return next(error);
 
   res.status(200).send(data);
 };
+const updateReceipt = async (req, res, next) => {
+  const {id} = req.params;
+  const {newReceipt} = req.body.params;
+
+  if(!id || !newReceipt) return next(BadRequestError());
+
+  const {data, error} = await receiptDAL.updateReceipt(id, newReceipt);
+
+  if(error) return next(error);
+
+  res.status(200).send(data);
+}
+const getReceiptByBookingID = async (req, res, next) => {
+  const {bookingID} = req.params;
+
+  if(!bookingID) return next(BadRequestError());
+
+  const {data, error} = await receiptDAL.getReceiptByBookingID(bookingID);
+
+  if(error) return next(error);
+
+  res.status(200).send(data[0]);
+}
 const getReceiptByDay = async (req, res, next) => {
   const { day } = req.query;
 
@@ -53,7 +77,7 @@ const createReceipt = async (req, res, next) => {
       ...receipt,
       employee_id: employee?.id,
       booking_id: booking?.id,
-      employee_name: employee?.name,
+      employee_name: employee?.fullname,
       checkin_time: booking?.checkin_time,
     });
 
@@ -68,4 +92,6 @@ module.exports = {
   getReceiptByDay,
   getReceiptByMonth,
   getReceiptByYear,
+  getReceiptByBookingID,
+  updateReceipt
 };

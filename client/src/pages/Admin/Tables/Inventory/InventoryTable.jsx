@@ -1,36 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import dayjs from "dayjs";
-import {
-  Table,
-  Button,
-  Modal,
-  Form,
-  Input,
-  Slider,
-  Dropdown,
-  Select,
-} from "antd";
-import { PlusOutlined, FilterOutlined, DownOutlined } from "@ant-design/icons";
+import { Table, Button, Modal, Form, Input, Slider, Select } from "antd";
+import { FilterOutlined } from "@ant-design/icons";
 import InventoryForm from "../../../../components/Form/InventoryForm";
 import { fetchEmployeeByUsername } from "../../../../api/EmployeeAPI";
-import TextButton from "../../../../components/TextButton/TextButton";
 import CheckButton from "../../../../components/IconButton/CheckButton/CheckButton";
 import { useContext } from "react";
 import { ItemContext } from "../../../../context/ItemContext";
 import {
   createInventoryDetail,
   createInventoryRecord,
+  fetchInventoryDetailByBookingID,
+  fetchInventoryDetailByBookingID_RoomID,
 } from "../../../../api/InventoryAPI";
 import SuccessAlert from "../../../../components/Success/SusscessAlert.jsx/SuccessAlert";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
+import InventoryExpand from "../../../../components/ExpandedTable/InventoryExpand";
 
-const InventoryTable = ({ rooms, user, isLoading, roomType }) => {
+const InventoryTable = ({
+  rooms,
+  setRooms,
+  user,
+  isLoading,
+  roomType,
+  positionUser,
+}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
-  };
-  const handle = () => {
-    setIsModalVisible(false);
   };
   const [form] = Form.useForm();
   const { item, setItem, record, setRecord } = useContext(ItemContext);
@@ -50,38 +47,6 @@ const InventoryTable = ({ rooms, user, isLoading, roomType }) => {
   });
 
   const [filter, setFilter] = useState("");
-  useEffect(() => {
-    // setDataSource(rooms);
-    console.log(rooms);
-  }, [rooms]);
-
-  // const items = rooms.map((value, index) => {
-  //   // return {
-  //   //   label: "" + value.roomType.toString(),
-  //   //   value: "" + value.roomType.toString(),
-  //   // };
-  // });
-
-  // const [dataSource, setDataSource] = useState([
-  //   {
-  //     id: 1,
-  //     name: "Bàn chải đánh răng",
-  //     amount: "10",
-  //     price: "20000",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Ly",
-  //     amount: "1",
-  //     price: "20000",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Giường",
-  //     amount: "1",
-  //     price: "20000",
-  //   },
-  // ]);
 
   const columns = [
     {
@@ -262,10 +227,12 @@ const InventoryTable = ({ rooms, user, isLoading, roomType }) => {
           .then((value) => {
             console.log(value);
             record.forEach((item) => {
+              const detailCost = item.price * item.amount;
               const newDetail = {
                 item_id: item.id,
                 price: item.price,
                 amount: item.amount,
+                cost: detailCost,
                 record_id: value.data[0].id,
               };
               createInventoryDetail(user?.position, newDetail)
@@ -316,7 +283,6 @@ const InventoryTable = ({ rooms, user, isLoading, roomType }) => {
     <div className="table">
       <>{isModalVisible ? modalForm() : null}</>
       <div className="buttonContainer">
-        <div></div>
         <div>
           <Input.Search
             onSearch={(value) => {
@@ -332,10 +298,40 @@ const InventoryTable = ({ rooms, user, isLoading, roomType }) => {
         </div>
       </div>
       <Table
+        rowKey={(record) => record.used_room_id}
         loading={isLoading}
         showSorterTooltip={false}
         columns={columns}
         dataSource={rooms}
+        expandable={{
+          expandedRowRender: (record) => {
+            return (
+              <InventoryExpand
+                inventoryDetail={record.inventoryDetails}
+              ></InventoryExpand>
+            );
+          },
+          onExpand: (expanded, record) => {
+            if (expanded)
+              fetchInventoryDetailByBookingID_RoomID(
+                positionUser,
+                record.booking_id,
+                record.room_id
+              ).then(({ data }) => {
+                setRooms((prev) => {
+                  return prev.map((invenRecord) => {
+                    if (
+                      record.booking_id === invenRecord.booking_id &&
+                      record.room_id === invenRecord.room_id
+                    ) {
+                      return { ...invenRecord, inventoryDetails: data };
+                    }
+                    return invenRecord;
+                  });
+                });
+              });
+          },
+        }}
         scroll={{ y: "60vh", x: "100%" }}
       ></Table>
     </div>

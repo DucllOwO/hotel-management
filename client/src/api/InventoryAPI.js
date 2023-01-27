@@ -11,6 +11,18 @@ export const fetchInventoryDetailByBookingID = (positionUser, bookingID) => {
     params: { user: { position: positionUser } },
   });
 };
+export const fetchInventoryDetailByBookingID_RoomID = (
+  positionUser,
+  bookingID,
+  roomID
+) => {
+  return userRequest.get(
+    `/inventory/record?booking_id=${bookingID}&&room_id=${roomID}`,
+    {
+      params: { user: { position: positionUser } },
+    }
+  );
+};
 export const createInventoryRecord = (positionUser, newRecord) => {
   return userRequest.post("/inventory/record", {
     user: { position: positionUser },
