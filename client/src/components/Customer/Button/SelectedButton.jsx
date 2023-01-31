@@ -20,6 +20,7 @@ const UnSelectButton = styled.button`
   font-family: "Inter";
   font-weight: var(--fw-medium);
 `;
+
 const SelectedButton = ({ text, style }) => {
   const [clicked, setClicked] = useState(true);
   return clicked ? (
