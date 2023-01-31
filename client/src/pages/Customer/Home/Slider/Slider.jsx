@@ -15,6 +15,9 @@ const SliderContainer = styled.div`
   background-image: url("https://media.cntraveler.com/photos/53da8c106dec627b149f1e4d/master/pass/one-only-the-palm-dubai-dubai-united-arab-emirates-112572-1.jpg");
   border-radius: 40px;
   position: relative;
+  @media (max-width: 820px) {
+    height: 30vh;
+  }
 `;
 
 const BlackBackground = styled.div`
@@ -29,6 +32,9 @@ const Name = styled.div`
   color: var(--primary-color);
   padding-left: 40px;
   padding-top: 40px;
+  @media (max-width: 820px) {
+    font-size: var(--fs-40);
+  }
 `;
 
 const CenterBarContainer = styled.div`
@@ -48,6 +54,9 @@ const CenterNav = styled.div`
   font-weight: var(--fw-bold);
   justify-content: space-between;
   align-items: center;
+  @media (max-width: 820px) {
+    font-size: var(--fs-14);
+  }
 `;
 
 const CenterButtonFirst = styled.div`
@@ -87,11 +96,14 @@ const CenterButtonLast = styled.div`
 const ButtonLabel = styled.div`
   font-size: var(--fs-18);
   margin-left: 10px;
+  @media (max-width: 820px) {
+    font-size: var(--fs-14);
+  }
 `;
 
 const CenterDetails = styled.div`
-  width: 100%;
-  height: 70%;
+  /* width: 100%; */
+  height: 50%;
   background-color: white;
   display: flex;
   align-items: center;
@@ -139,11 +151,17 @@ const CenterAddress = styled.div`
 
 const AddressLabel = styled.div`
   color: var(--grey);
+  @media (max-width: 820px) {
+    font-size: var(--fs-12);
+  }
 `;
 
 const Address = styled.div`
   font-size: 15px;
   margin-top: 3px;
+  @media (max-width: 820px) {
+    font-size: var(--fs-12);
+  }
 `;
 
 const ImageList = styled.div`

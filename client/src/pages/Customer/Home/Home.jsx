@@ -14,7 +14,6 @@ const MainHome = styled.div`
 
 const HomeContainer = styled.div`
   width: 100%;
-  height: 100vh;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none;
@@ -32,7 +31,6 @@ const Home = () => {
     <MainHome>
       <HomeContainer>
         <TopBar />
-
         <SliderContainer>
           <Slider></Slider>
         </SliderContainer>

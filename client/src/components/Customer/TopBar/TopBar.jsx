@@ -15,6 +15,9 @@ const TopBarContainer = styled.div`
 const LogoImg = styled.img`
   width: 150px;
   object-fit: cover;
+  @media (max-width: 820px) {
+    width: 100px;
+  }
 `;
 
 const NavBar = styled.ul`
@@ -27,6 +30,7 @@ const NavBar = styled.ul`
   position: absolute;
   left: 50%;
   transform: translate(-50%, -50%);
+  margin-top: 20px;
 `;
 
 const PageItem = styled.div`
@@ -35,6 +39,9 @@ const PageItem = styled.div`
   color: var(--grey);
   margin: 0 10px;
   cursor: pointer;
+  @media (max-width: 820px) {
+    font-size: var(--fs-12);
+  }
 `;
 
 const Bullet = styled.div`

@@ -5,17 +5,32 @@ const ServiceContainer = styled.div`
   justify-content: space-between;
   padding: 0 60px;
   margin-top: 100px;
+  @media (max-width: 820px) {
+    margin-top: 40px;
+    padding: 0 20px;
+  }
+  @media (max-width: 640px) {
+    padding: 0 20px;
+  }
 `;
 const ServicesContainer = styled.div`
   display: flex;
   margin-top: 30px;
   justify-content: space-between;
+  @media (max-width: 420px) {
+    flex-direction: column;
+  }
 `;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 23%;
+  @media (max-width: 420px) {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+  }
 `;
 
 const WhatWeServeContainer = styled.div`
@@ -44,9 +59,15 @@ const TopValuesContainer = styled.div`
   font-weight: var(--fw-bold);
   color: var(--black);
   height: 60%;
+  @media (max-width: 420px) {
+    text-align: center;
+  }
+  @media (max-width: 640px) {
+    font-size: var(--fs-32);
+  }
 `;
 
-const Content = styled.span`
+const Content = styled.div`
   font-size: var(--fs-18);
   color: var(--grey);
   margin-top: 10px;
@@ -56,6 +77,9 @@ const ChoicesImage = styled.img`
   width: 60%;
   height: 60%;
   object-fit: contain;
+  @media (max-width: 420px) {
+    margin: 0 auto;
+  }
 `;
 
 const Title = styled.div`
@@ -64,7 +88,9 @@ const Title = styled.div`
   margin-top: 10px;
 `;
 
-const BestViews = styled.div``;
+const TopValuesContent = styled.div`
+  width: 100%;
+`;
 
 const Services = () => {
   return (
@@ -76,8 +102,8 @@ const Services = () => {
       <ServicesContainer>
         <Container>
           <TopValuesContainer>
-            <span>Top Values</span>
-            <span>For You</span>
+            <TopValuesContent>Top Values</TopValuesContent>
+            <TopValuesContent>For You</TopValuesContent>
           </TopValuesContainer>
           <Content>Try a variety of benifits when using our services</Content>
         </Container>
