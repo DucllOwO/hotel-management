@@ -10,8 +10,10 @@ import {
   Checkbox,
   Select,
   Slider,
+  TimePicker,
 } from "antd";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 import { FilterOutlined } from "@ant-design/icons";
 import BookingForm from "../../../../../components/Form/BookingForm";
 import { createBooking, createCustomer } from "../../../../../api/BookingAPI";
@@ -20,8 +22,11 @@ import ErrorAlert from "../../../../../components/Error/Alert/ErrorAlert";
 import BottomBar from "../../../../../components/Admin/BottomBar/BottomBar";
 import RoomTypeExpand from "../../../../../components/ExpandedTable/RoomTypeExpand";
 import { getRoomUtilsByRoomTypeID } from "../../../../../api/hasRoomFeatures";
-import { getRoomTypeByID } from "../../../../../api/RoomTypeAPI";
+
 const { RangePicker } = DatePicker;
+const dateFormat = "DD-MM-YYYY";
+const monthFormat = "MM-YYYY";
+const hourFormat = "HH:mm";
 
 const BookingTable = ({
   rooms = null,
@@ -32,6 +37,8 @@ const BookingTable = ({
   user,
   from,
   to,
+  setBookingType,
+  bookingType,
   listType,
   positionUser,
 }) => {
@@ -40,7 +47,7 @@ const BookingTable = ({
   const [selectedRooms, setSelectedRooms] = useState([]);
   const [customerInfoForm] = Form.useForm();
   const [roomForm] = Form.useForm();
-
+  const [totalCost, setTotalCost] = useState(0);
   const [searchedText, setSearchedText] = useState("");
 
   const [filter, setFilter] = useState("");
@@ -414,11 +421,44 @@ const BookingTable = ({
               onChange={(e) => {
                 console.log(e);
                 if (!selectedRooms.includes(record))
+                {  
                   setSelectedRooms((prev) => [...prev, record]);
+                  switch(bookingType)
+                  {
+                    case "day":
+                      
+                      setTotalCost((prev) => prev + record.room_type_id.one_day_price * Math.ceil(dayjs(to).diff(dayjs(from),"day", true)));
+                      break;
+                    case "overnight":
+                      setTotalCost((prev) => prev + record.room_type_id.overnight_price);
+                      break;
+                    case "hour":
+                      setTotalCost((prev) => prev + record.room_type_id.first_hour_price + record.room_type_id.hour_price * (dayjs(to).diff(dayjs(from), "hour") - 1));
+                      break;
+                    default:
+                      break;
+                  }
+                }
                 else if (selectedRooms.includes(record))
+                {
                   setSelectedRooms((prev) =>
                     prev.filter((data) => data !== record)
                   );
+                  switch(bookingType)
+                  {
+                    case "day":
+                      setTotalCost((prev) => prev - record.room_type_id.one_day_price * Math.ceil(dayjs(to).diff(dayjs(from),"day", true)));
+                      break;
+                    case "overnight":
+                      setTotalCost((prev) => prev - record.room_type_id.overnight_price);
+                      break;
+                    case "hour":
+                      setTotalCost((prev) => prev - record.room_type_id.first_hour_price + record.room_type_id.hour_price * (dayjs(from).diff(dayjs(to), "hour") - 1));
+                      break;
+                    default:
+                      break;
+                  }
+                }  
               }}
             ></Checkbox>
           </Form.Item>
@@ -525,30 +565,95 @@ const BookingTable = ({
   return (
     <div className="table">
       <>{isModalOpen ? modalJSX() : null}</>
+      <div>
+        <Button
+          className="dateBtn"
+          type={bookingType === "hour" ? "primary" : "default"}
+          onClick={() => {
+            setBookingType("hour");
+            setFrom("");
+            setTo("");
+          }}
+        >
+          Giờ
+        </Button>
+        <Button
+          className="dateBtn"
+          type={bookingType === "day" ? "primary" : "default"}
+          onClick={() => {
+            setBookingType("day");
+            setFrom("");
+            setTo("");
+          }}
+        >
+          Ngày
+        </Button>
+        <Button
+          className="dateBtn"
+          type={bookingType === "overnight" ? "primary" : "default"}
+          onClick={() => {
+            setBookingType("overnight");
+            setFrom("");
+            setTo("");
+          }}
+        >
+          Qua đêm
+        </Button>
+      </div>
       <div className="buttonContainer">
         <div className="header">
           <div>
-            <RangePicker
-              // disabledTime={disabledRangeTime}
-              disabledDate={disabledDate}
-              showTime={{
-                hideDisabledOptions: true,
-              }}
-              format={"DD/MM/YYYY hh:mm:ss"}
-              onChange={(value) => {
-                console.log(value);
-                setFrom(value[0]?.$d);
-                setTo(value[1]?.$d);
-              }}
-            />
+            {bookingType === "hour" && (
+              <TimePicker.RangePicker
+                order={true}
+                showMinute={false}
+                showSecond={false}
+                showNow={true}
+                onChange={(value) => {
+                  setFrom(value[0].$d);
+                  setTo(value[1].$d);
+                }}
+              />
+            )}
+            {bookingType === "day" && (
+              <RangePicker
+                format={dateFormat}
+                picker="date"
+                showNow={true}
+                onChange={(value) => {
+                  setFrom(value[0].$d);
+                  setTo(value[1].$d);
+                }}
+                showTime={{
+                  hideDisabledOptions: true,
+                  defaultValue: [
+                    dayjs("14:00:00", "HH:mm:ss"),
+                    dayjs("12:00:00", "HH:mm:ss"),
+                  ],
+                }}
+              ></RangePicker>
+            )}
+            {bookingType === "overnight" && (
+              <DatePicker
+                picker="date"
+                format={dateFormat}
+                showNow={true}
+                showTime={{ defaultValue: dayjs("21:00:00", "HH:mm:ss") }}
+                onChange={(value) => {
+                  setFrom(value.$d);
+                  setTo(
+                    dayjs(
+                      dayjs(
+                        dayjs(value.$d).date(dayjs(value.$d).date() + 1).$d
+                      ).hour(12).$d
+                    ).$d
+                  );
+                }}
+              ></DatePicker>
+            )}
           </div>
         </div>
         <div>
-          {/* <Button
-            onClick={() => {
-              console.log(price);
-            }}
-          ></Button> */}
           <Input.Search
             onSearch={(value) => {
               setSearchedText(value);
@@ -569,7 +674,7 @@ const BookingTable = ({
           columns={columns}
           dataSource={rooms}
           scroll={{
-            y: document.documentElement.clientHeight - 330,
+            y: document.documentElement.clientHeight - 360,
           }}
           rowKey={(row) => row.room_name}
           expandable={{
@@ -608,6 +713,10 @@ const BookingTable = ({
         <Button type="primary" onClick={openModalInfoCustomer}>
           Đặt
         </Button>
+        <div className="totalText">
+          <div className="totalTitle">Tổng cộng</div>
+          {totalCost ? totalCost.toLocaleString() : 0}
+        </div>
       </BottomBar>
     </div>
   );

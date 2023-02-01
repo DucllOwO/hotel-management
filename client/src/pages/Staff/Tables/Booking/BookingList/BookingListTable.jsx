@@ -19,6 +19,7 @@ import { useContext } from "react";
 import { AppContext } from "../../../../../context/AppContext";
 import BookingListForm from "../../../../../components/Form/BookingListForm";
 import { fetchEmployeeByUsername } from "../../../../../api/EmployeeAPI";
+import { getReceiptByBookingID, updateReceipt } from "../../../../../api/receiptAPI";
 
 const DATE_FORMAT_FULL = "HH:mm DD-MM-YYYY";
 const DATE_FORMAT = "DD-MM-YYYY";
@@ -35,19 +36,19 @@ const BookingListTable = ({
   );
   useEffect(() => {
     setBookingSearchDay(booking.map((value) => value));
-  }, [booking.length]);
+  }, [booking]);
 
   const [isCheckout, setIsCheckout] = useState(false);
   const [currentEmployee, setCurrentEmployee] = useState({});
   const [selectedBooking, setSelectedBooking] = useState({});
   const [usedRoom, setUsedRoom] = useState([]);
   const [usedService, setUsedService] = useState([]);
+  const [currentReceipt, setCurrentReceipt] = useState({});
   // const [form] = Form.useForm();
   const [infoForm] = Form.useForm();
-  const [receipt, setReceipt] = useState({});
   const { user } = useContext(AppContext);
   const [searchedText, setSearchedText] = useState("");
-  const [isShowReceipt, setShowReceipt] = useState(false);
+  // const [isShowReceipt, setShowReceipt] = useState(false);
 
   const columns = [
     {
@@ -133,9 +134,11 @@ const BookingListTable = ({
       align: "center",
       sorter: (a, b) => a.book_from.localeCompare(b.book_from),
       render: (text, record) => {
-        return dayjs(convertToValidDateString(text))
-          .startOf("day")
-          .format(DATE_FORMAT_FULL);
+        return (
+          dayjs(convertToValidDateString(text))
+            // .startOf("day")
+            .format(DATE_FORMAT_FULL)
+        );
       },
     },
     {
@@ -150,7 +153,7 @@ const BookingListTable = ({
       },
     },
     {
-      key: "5",
+      key: "6",
       title: "Thao tác",
       render: (_, record) => {
         if (status === "0")
@@ -159,13 +162,15 @@ const BookingListTable = ({
               <div className="btnWrap">
                 <CheckButton
                   title="Nhận phòng"
-                  onCheckButton={() => {
+                  onCheckButton={async () => {
+                    setSelectedBooking(record);
                     onCheckInButtonHandle(record);
                   }}
                 ></CheckButton>
                 <CancelButton
                   title="Hủy"
                   onCancelButton={() => {
+                    setSelectedBooking(record);
                     onCancelButtonHandle(record);
                   }}
                 ></CancelButton>
@@ -179,6 +184,7 @@ const BookingListTable = ({
                 <CheckButton
                   title="Trả phòng"
                   onCheckButton={() => {
+                    setSelectedBooking(record);
                     onCheckOutButtonHandle(record);
                   }}
                 ></CheckButton>
@@ -294,7 +300,7 @@ const BookingListTable = ({
       okType: "danger",
       onOk: () => {
         setIsCheckout(true);
-        setSelectedBooking(record);
+        // setSelectedBooking(record);
         // updateBookingStatus(user?.position, "2", record.id)
         //   .then((data) => {
         //     SuccessAlert("Trả phòng thành công");
@@ -309,28 +315,7 @@ const BookingListTable = ({
       },
     });
   };
-  const onCheckInButtonHandle = (record) => {
-    Modal.confirm({
-      title: "Xác nhận khách nhận phòng?",
-      okText: "Đúng",
-      okType: "danger",
-      onOk: () => {
-        updateBookingStatus(user?.position, "1", record.id)
-          .then((data) => {
-            SuccessAlert("Nhận phòng thành công");
-            setBooking((prev) =>
-              prev.filter((value) => {
-                return value.id !== record.id;
-              })
-            );
-          })
-          .catch((value) => {
-            ErrorAlert("Nhận phòng thất bại");
-            throw value;
-          });
-      },
-    });
-  };
+  
   const onCancelButtonHandle = (record) => {
     Modal.confirm({
       title: "Bạn có chắc muốn huỷ phiếu đặt phòng này?",
@@ -353,129 +338,176 @@ const BookingListTable = ({
       },
     });
   };
-
-  const handleOKModal = async () => {
-    //Fetch employee information
-    let serviceCost = 0;
-    let rentCost = 0;
-    let tempEmployee;
-    await fetchEmployeeByUsername(user?.position, user?.account.username)
-      .then((data) => {
-        setCurrentEmployee(data.data);
-        console.log(data.data);
-        tempEmployee = JSON.parse(JSON.stringify(data.data));
-      })
-      .catch(() => {
-        ErrorAlert("Lấy dữ liệu nhân viên không thành công");
-      });
-
-    console.log(selectedBooking);
-    //fetch service used
-    await getInventory(user?.position, selectedBooking.id)
-      .then(async (data) => {
-        console.log(data.data);
-        if (data.data) {
-          setUsedService(
-            data.data.map((value) => {
-              value.inventory_detail.forEach((item) => {
-                const newServiceCost = item.price * item.amount;
-                serviceCost = serviceCost + newServiceCost;
-                return {
-                  item_name: item.item_name,
-                  amount: item.amount,
-                  price: item.price,
-                  total_cost: newServiceCost,
-                };
-              })
-            })
-          );
-        }
-      })
-      .catch(() => {
-        ErrorAlert("Lấy dữ liệu dịch vụ thất bại");
-      });
-
-    //fetch room information (contains all price);
-    await getRoomByBookingID(user?.position, selectedBooking.id).then(
-      (data) => {
-        console.log(data.data);
-        const rentRoomArray = calcRentCost(data.data);
-        console.log(rentRoomArray);
-        console.log(serviceCost);
-        rentRoomArray.forEach((value) => {
-          console.log(value);
-          rentCost = rentCost + value.price;
+  const onCheckInButtonHandle = (record) => {
+    Modal.confirm({
+      title: "Xác nhận khách nhận phòng?",
+      okText: "Đúng",
+      okType: "danger",
+      onOk: async () => {
+        let rentCost = 0;
+        let tempEmployee;
+        fetchEmployeeByUsername(user?.position, user?.account.username)
+        .then((data) => {
+          setCurrentEmployee(data.data);
+          console.log(data.data);
+          tempEmployee = JSON.parse(JSON.stringify(data.data));
+        })
+        .catch(() => {
+          ErrorAlert("Lấy dữ liệu nhân viên không thành công");
         });
-        setUsedRoom(rentRoomArray);
-      }
-    );
 
-    // calculate rent cost
-    console.log(serviceCost);
-    console.log(rentCost);
-    await createReceiptFunc(rentCost, serviceCost, tempEmployee);
+        getRoomByBookingID(user?.position, record.id).then(
+          (data) => {
+            console.log(data.data);
+            const rentRoomArray = calcCheckInRentCost(data.data, record);
+            console.log(rentRoomArray);
+            rentRoomArray.forEach((value) => {
+              console.log(value);
+              rentCost = rentCost + value.price;
+            });
+            setUsedRoom(rentRoomArray);
+            createReceiptFunc(rentCost, tempEmployee, record);
+          }
+        ).catch(() => {
+          ErrorAlert("Lấy dữ liệu phòng không thành công")
+        });
+
+        updateBookingStatus(user?.position, "1", record.id)
+          .then((data) => {
+            SuccessAlert("Nhận phòng thành công");
+            setBooking((prev) =>
+              prev.filter((value) => {
+                return value.id !== record.id;
+              })
+            );
+          })
+          .catch((value) => {
+            ErrorAlert("Nhận phòng thất bại");
+            throw value;
+          });
+      },
+    });
   };
+  
   const createReceiptFunc = async (
     rentCost,
-    serviceCost,
-    currentEmployeeTemp
+    currentEmployeeTemp,
+    booking
   ) => {
-    let totalCost = rentCost + serviceCost;
-    infoForm
-      .validateFields()
-      .then(async (data) => {
-        if (data.surcharge) totalCost = totalCost + data.surcharge;
-        const newReceipt = {
-          established_date: dayjs(Date.now()),
-          payment_method: data.method,
-          checkout_time: dayjs(Date.now()),
-          note: data.note,
-          surcharge: data.surcharge,
-          service_cost: serviceCost,
-          rent_cost: rentCost,
-          total_cost: totalCost,
-        };
-        await createReceipt(
-          user?.position,
-          newReceipt,
-          selectedBooking,
-          currentEmployeeTemp
-        )
-          .then((data) => {
-            setReceipt(data.data[0]);
-            console.log(data.data);
-            SuccessAlert("Trả phòng thành công");
-            setBooking((prev) =>
-              prev.filter((value) => value !== selectedBooking)
-            );
-            setIsCheckout(false);
-            setShowReceipt(true);
-            infoForm.resetFields();
-            updateBookingStatus(user?.position, "2", selectedBooking.id);
-            console.log(usedRoom);
-            console.log(usedService);
-          })
-          .catch((error) => {
-            ErrorAlert("Đã xảy ra lỗi khi tạo hoá đơn");
-            throw error;
-          });
+    const newReceipt = {
+      established_date: dayjs(Date.now()),
+      checkin_time: dayjs(Date.now()),
+      surcharge: 0,
+      service_cost: 0,
+      rent_cost: rentCost,
+      total_cost: rentCost,
+    };
+    await createReceipt(
+      user?.position,
+      newReceipt,
+      booking,
+      currentEmployeeTemp
+    )
+      .then((data) => {
+        console.log(data.data);
+        SuccessAlert("Tạo hoá đơn thành công");
+        setBooking((prev) =>
+          prev.filter((value) => value !== booking)
+        );
+        // setIsCheckout(false);
+        // setShowReceipt(true);
+        // infoForm.resetFields();
+        updateBookingStatus(user?.position, "1", booking.id);
+        // console.log(usedRoom);
+        // console.log(usedService);
       })
-      .catch((value) => {
-        ErrorAlert("Vui lòng nhập đủ các thông tin");
-        throw value;
+      .catch((error) => {
+        ErrorAlert("Đã xảy ra lỗi khi tạo hoá đơn");
+        throw error;
       });
   };
-  const calcRentCost = (usedRoom) => {
-    console.log(usedRoom);
+  const calcCheckInRentCost = (usedRoom, booking) => {
     return usedRoom.map((value) => {
-      //hour price
-      if (
-        dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "hour") < 7
-      ) {
+      if (dayjs(booking.book_from).hour() === 14) 
+        {
+          if(dayjs(Date.now()) < dayjs(booking.book_from))
+          {
+            console.log("giá ngày sớm");
+            const price =
+              Math.ceil(
+                dayjs(booking.book_from).diff(dayjs(Date.now()), "hour", true)
+              ) * value.hour_price +
+              Math.ceil(
+                dayjs(booking.book_to).diff(
+                  dayjs(booking.book_from),
+                  "day"
+                )
+              ) *
+                value.one_day_price;
+            return {
+              room_name: value.room_name,
+              room_type: value.room_type,
+              area: value.area,
+              price: price,
+            };
+          }
+          else{
+            console.log("giá ngày đúng");
+            // const a = Math.ceil(
+            //   dayjs(booking.book_to).diff(
+            //     dayjs(booking.book_from),
+            //     "day"
+            //   )
+            // )
+            const price =
+              Math.ceil(
+                dayjs(booking.book_to).diff(
+                  dayjs(booking.book_from),
+                  "day"
+                )
+              ) *
+                value.one_day_price;
+            return {
+              room_name: value.room_name,
+              room_type: value.room_type,
+              area: value.area,
+              price: price,
+            };
+          } 
+      }
+      else if(dayjs(booking.book_from).hour() === 21)
+      {
+        if(dayjs(Date.now()) < dayjs(booking.book_from))
+        {
+          console.log("giá đêm sớm");
+          const price =
+            Math.ceil(
+              dayjs(booking.book_from).diff(dayjs(Date.now()), "hour", true)
+            ) * value.hour_price +
+            value.overnight_price;
+          return {
+            room_name: value.room_name,
+            room_type: value.room_type,
+            area: value.area,
+            price: price,
+          };
+        }
+        else
+        {
+          console.log("giá đêm");
+          const price = value.overnight_price;
+          return {
+            room_name: value.room_name,
+            room_type: value.room_type,
+            area: value.area,
+            price: price,
+          };
+        }
+      }
+      else {
         console.log("giá giờ");
-        const price =
-          value.first_hour_price +
-          (dayjs(Date.now()).diff(dayjs(selectedBooking.checkin_time), "hour") -
+        const price = value.first_hour_price +
+          (dayjs(booking.book_to).diff(dayjs(booking.book_from), "hour") -
             1) *
             value.hour_price;
         console.log(price);
@@ -485,295 +517,177 @@ const BookingListTable = ({
           area: value.area,
           price: price,
         };
-      } //day or overnight price
-      else {
-        //day checkin before 12
+      }
+    })
+  }
+  const handleOKModal = async () => {
+    //Fetch employee information
+    let serviceCost = 0;
+    // console.log(selectedBooking);
+    //fetch service used
+    await getInventory(user?.position, selectedBooking.id)
+      .then(async (data) => {
+        console.log(data.data);
+        if (data.data) {
+          data.data.forEach((value) => {
+            value.inventory_detail.forEach((item) => {
+              const newServiceCost = item.price * item.amount;
+              serviceCost = serviceCost + newServiceCost;
+              return {
+                item_name: item.item_id.name,
+                amount: item.amount,
+                price: item.price,
+                total_cost: newServiceCost,
+              };
+            })
+          })
+        }
+      })
+      .catch(() => {
+        ErrorAlert("Lấy dữ liệu dịch vụ thất bại");
+      });
+    updateReceiptFunc(serviceCost);
+
+    
+  };
+  const updateReceiptFunc = async (serviceCost) => {
+    let rentCost = 0;
+    let totalCost = 0;
+    let receiptID
+    let newReceipt;
+    
+    getReceiptByBookingID(
+      user?.position, 
+      selectedBooking.id)
+      .then((data) => {
+        setCurrentReceipt(data.data);
+        totalCost = data.data.total_cost;
+        rentCost = data.data.rent_cost;
+        receiptID = data.data.id
+        getRoomByBookingID(user?.position, selectedBooking.id).then(
+          (data) => {
+            console.log(data.data);
+            const rentRoomArray = calcCheckOutRentCost(data.data);
+            console.log(rentRoomArray);
+            console.log(serviceCost);
+            rentRoomArray.forEach((value) => {
+              console.log(value);
+              rentCost = rentCost + value.additionPrice;
+            });
+            setUsedRoom(rentRoomArray);
+            infoForm.validateFields()
+              .then(async (data) => {
+                if (data.surcharge) totalCost = rentCost + data.surcharge;
+                  newReceipt = {
+                  payment_method: data.method,
+                  checkout_time: dayjs(Date.now()),
+                  note: data.note,
+                  surcharge: data.surcharge,
+                  service_cost: serviceCost,
+                  rent_cost: rentCost,
+                  total_cost: totalCost,
+                };
+                updateReceipt(  
+                  user?.position,
+                  receiptID,
+                  newReceipt,
+                )
+                  .then((data) => {
+                    console.log(data.data);
+                    SuccessAlert("Trả phòng thành công");
+                    setBooking((prev) =>
+                      prev.filter((value) => value !== selectedBooking)
+                    );
+                    setIsCheckout(false);
+                    // setShowReceipt(true);
+                    infoForm.resetFields();
+                    updateBookingStatus(user?.position, "2", selectedBooking.id);
+                    // console.log(usedRoom);
+                    // console.log(usedService);
+                  })
+                  .catch((error) => {
+                    ErrorAlert("Đã xảy ra lỗi khi tạo hoá đơn");
+                    throw error;
+                  });
+              }).catch(() => {
+                ErrorAlert("Vui lòng nhập các thông tin còn thiếu");
+              })
+          }).catch(() => 
+          {
+            ErrorAlert("Lấy dữ liệu phòng sử dụng không thành công");
+        })
+      })
+      .catch(()=>{
+        ErrorAlert("Lấy dữ liệu hoá đơn không thành công")
+    })
+    
+    
+    
+    
+  }
+  
+  
+  const calcCheckOutRentCost = (usedRoom) => {
+    return usedRoom.map((value) => {
+      if (dayjs(selectedBooking.book_from).hour() === 14) 
+      {
         if (
-          dayjs(selectedBooking.checkin_time).hour() >= 6 &&
-          dayjs(selectedBooking.checkin_time).hour() < 12
-        ) {
-          console.log("giá ngày checkin sớm");
-          //day checkout before 12
-          if (dayjs(Date.now()).hour() < 12) {
-            console.log("giá ngày checkout sớm");
-            const price =
-              (12 - dayjs(selectedBooking.checkin_time).hour()) *
-                value.hour_price +
-              Math.round(
-                dayjs(Date.now()).diff(
-                  dayjs(selectedBooking.checkin_time),
-                  "day"
-                )
-              ) *
-                value.one_day_price;
-            return {
-              room_name: value.room_name,
-              room_type: value.room_type,
-              area: value.area,
-              price: price,
-            };
-          }
-          //day after 12 and before 17 (surcharge)
-          else if (
-            dayjs(Date.now()).hour() >= 12 &&
-            dayjs(Date.now()).hour() < 17
-          ) {
-            console.log("giá ngày checkout trễ phụ thu");
-            const price =
-              (12 -
-                dayjs(selectedBooking.checkin_time).hour() +
-                (dayjs(Date.now()).hour() - 12)) *
-                value.hour_price +
-              Math.round(
-                dayjs(Date.now()).diff(
-                  dayjs(selectedBooking.checkin_time),
-                  "day"
-                )
-              ) *
-                value.one_day_price;
-            return {
-              room_name: value.room_name,
-              room_type: value.room_type,
-              area: value.area,
-              price: price,
-            };
-          }
-          //day after 17 (add 1 more day)
-          else {
-            console.log("giá ngày checkout trễ thêm 1 ngày");
-            const price =
-              (12 - dayjs(selectedBooking.checkin_time).hour()) *
-                value.hour_price +
-              Math.round(
-                dayjs(Date.now()).diff(
-                  dayjs(selectedBooking.checkin_time),
-                  "day"
-                ) + 1
-              ) *
-                value.one_day_price;
-            return {
-              room_name: value.room_name,
-              room_type: value.room_type,
-              area: value.area,
-              price: price,
-            };
-          }
+              dayjs(Date.now()) >= dayjs(selectedBooking.book_to) &&
+              dayjs(Date.now()).hour() < 17
+            ) 
+        {
+          console.log("giá ngày checkout trễ phụ thu");
+          const additionPrice =
+            Math.ceil(dayjs(Date.now()).diff(dayjs(selectedBooking.book_to), "hour", true)) * value.hour_price;
+          return {
+            room_name: value.room_name,
+            room_type: value.room_type,
+            area: value.area,
+            additionPrice: additionPrice,
+          };
         }
-        //day checkin after 12
         else if (
-          dayjs(selectedBooking.checkin_time).hour() >= 12 &&
-          dayjs(selectedBooking.checkin_time).hour() < 17
-        ) {
-          console.log("ngày checkin đúng");
-          //day checkout ontime
-          if (dayjs(Date.now()).hour() < 12) {
-            console.log("giá ngày checkout sớm");
-
-            const price =
-              Math.round(
-                dayjs(Date.now()).diff(
-                  dayjs(selectedBooking.checkin_time),
-                  "day"
-                )
-              ) * value.one_day_price;
-            return {
-              room_name: value.room_name,
-              room_type: value.room_type,
-              area: value.area,
-              price: price,
-            };
-          }
-          //day checkout late with surcharge
-          else if (
-            dayjs(Date.now()).hour() >= 12 &&
-            dayjs(Date.now()).hour() < 17
-          ) {
-            console.log("giá ngày checkout trễ phụ thu");
-            console.log((dayjs(Date.now()).hour() - 12) * value.hour_price);
-            console.log(
-              dayjs(Date.now()).diff(
-                dayjs(selectedBooking.checkin_time),
-                "day"
-              ) * value.one_day_price
-            );
-            const price =
-              (dayjs(Date.now()).hour() - 12) * value.hour_price +
-              dayjs(Date.now()).diff(
-                dayjs(selectedBooking.checkin_time),
-                "day"
-              ) *
-                value.one_day_price;
-            console.log(price);
-            return {
-              room_name: value.room_name,
-              room_type: value.room_type,
-              area: value.area,
-              price: price,
-            };
-          }
-          //day checkout late add 1 more day
-          else {
-            console.log("giá ngày checkout trễ thêm 1 ngày");
-
-            const price =
-              Math.round(
-                dayjs(Date.now()).diff(
-                  dayjs(selectedBooking.checkin_time),
-                  "day"
-                ) + 1
-              ) * value.one_day_price;
-            return {
-              room_name: value.room_name,
-              room_type: value.room_type,
-              area: value.area,
-              price: price,
-            };
-          }
-        }
-        //overnight
-        else {
-          console.log("giá đêm");
-          //night ontime
-          if (
-            dayjs(selectedBooking.checkin_time).hour() >= 21 ||
-            dayjs(selectedBooking.checkin_time).hour() < 2
-          ) {
-            console.log("đêm sau checkin đúng");
-            //night checkout ontime
-            if (dayjs(Date.now()).hour() < 12 && dayjs(Date.now()).diff(
-              dayjs(selectedBooking.checkin_time),"day") <= 1)
-            {
-              console.log("trả đúng");
-              const price = value.overnight_price;
+          dayjs(Date.now()) >= dayjs(selectedBooking.book_to) &&
+          dayjs(Date.now()).hour() >= 17)
+        {
+          console.log("giá ngày checkout trễ thêm 1 ngày");
+          const additionPrice = value.one_day_price;
               return {
                 room_name: value.room_name,
                 room_type: value.room_type,
                 area: value.area,
-                price: price,
+                additionPrice: additionPrice,
               };
-            }
-            //night checkout late with surcharge
-            else if (
-              dayjs(Date.now()).hour() >= 12 &&
-              dayjs(Date.now()).hour() < 17
-            ) {
-              console.log("trả trễ phụ thu");
-
-              const price =
-                (dayjs(Date.now()).hour() - 12) * value.hour_price +
-                Math.round(
-                  dayjs(Date.now()).diff(
-                    dayjs(selectedBooking.checkin_time),
-                    "day"
-                  )
-                ) *
-                  value.overnight_price;
-              return {
-                room_name: value.room_name,
-                room_type: value.room_type,
-                area: value.area,
-                price: price,
-              };
-            }
-            //night checkout late become 1 day
-            else {
-              console.log("trả trễ 1 ngày");
-
-              const price =
-                Math.round(
-                  dayjs(Date.now()).diff(
-                    dayjs(selectedBooking.checkin_time),
-                    "day"
-                  )
-                ) * value.one_day_price;
-              return {
-                room_name: value.room_name,
-                room_type: value.room_type,
-                area: value.area,
-                price: price,
-              };
-            }
-          }
-          //night checkout before 21
-          else {
-            console.log("đêm sớm");
-
-            // night checkin soon and checkout ontime
-            if (dayjs(Date.now()).hour() < 12) {
-              console.log("đêm trả phòng đúng");
-              console.log(
-                dayjs(Date.now()).diff(
-                  dayjs(selectedBooking.checkin_time),
-                  "day"
-                )
-              );
-              console.log(dayjs(selectedBooking.checkin_time).hour());
-              const price =
-                (21 - dayjs(selectedBooking.checkin_time).hour()) *
-                  value.hour_price +
-                dayjs(Date.now()).diff(
-                  dayjs(selectedBooking.checkin_time),
-                  "day"
-                ) *
-                  value.overnight_price;
-              return {
-                room_name: value.room_name,
-                room_type: value.room_type,
-                area: value.area,
-                price: price,
-              };
-            }
-            //night checkin soon and checkout late with surcharge
-            else if (
-              dayjs(Date.now()).hour() >= 12 &&
-              dayjs(Date.now()).hour() < 17
-            ) {
-              console.log("trả trễ phụ thu");
-
-              const price =
-                21 -
-                dayjs(selectedBooking.checkin_time).hour() +
-                (dayjs(Date.now()) - 12) +
-                Math.round(
-                  dayjs(Date.now()).diff(
-                    dayjs(selectedBooking.checkin_time),
-                    "day"
-                  )
-                ) *
-                  value.overnight_price;
-              return {
-                room_name: value.room_name,
-                room_type: value.room_type,
-                area: value.area,
-                price: price,
-              };
-            }
-            //night checkin soon and check out late, become 1 day full
-            else {
-              console.log("trả trễ 1 ngày");
-
-              const price =
-                21 -
-                dayjs(selectedBooking.checkin_time).hour() +
-                (dayjs(Date.now()) - 12) +
-                Math.round(
-                  dayjs(Date.now()).diff(
-                    dayjs(selectedBooking.checkin_time),
-                    "day"
-                  )
-                ) *
-                  value.one_day_price +
-                value.overnight_price;
-              return {
-                room_name: value.room_name,
-                room_type: value.room_type,
-                area: value.area,
-                price: price,
-              };
-            }
-          }
         }
       }
+      else if (dayjs(selectedBooking.book_from).hour() === 21)  
+      {
+        if (
+          dayjs(Date.now()) >= dayjs(selectedBooking.book_to) &&
+          dayjs(Date.now()).hour() < 17
+        ) {
+          console.log("trả trễ phụ thu");
+          const additionPrice = Math.ceil(dayjs(Date.now()).diff(dayjs(selectedBooking.book_to), "hour", true)) * value.hour_price;
+          return {
+            room_name: value.room_name,
+            room_type: value.room_type,
+            area: value.area,
+            additionPrice: additionPrice,
+          };
+        }
+            //night checkout late become 1 day
+        else {
+          console.log("trả trễ 1 ngày");
+
+          const additionPrice = value.one_day_price;
+          return {
+            room_name: value.room_name,
+            room_type: value.room_type,
+            area: value.area,
+            additionPrice: additionPrice,
+          };
+        }
+      }           
     });
   };
 
@@ -781,7 +695,7 @@ const BookingListTable = ({
     setUsedRoom([]);
     setUsedService([]);
     setIsCheckout(false);
-    setShowReceipt(false);
+    // setShowReceipt(false);
   };
   function modalJSX() {
     return (
@@ -798,30 +712,30 @@ const BookingListTable = ({
       </Modal>
     );
   }
-  function receiptJSX() {
-    return (
-      <Modal
-        title="Hoá đơn"
-        open={true}
-        footer={null}
-        onOk={handleCancelModal}
-        onCancel={handleCancelModal}
-        width="60%"
-      >
-        <DetailForm
-          receipt={receipt}
-          usedRoom={usedRoom}
-          usedService={usedService}
-          rowIndex={0}
-        />
-      </Modal>
-    );
-  }
+  // function receiptJSX() {
+  //   return (
+  //     <Modal
+  //       title="Hoá đơn"
+  //       open={true}
+  //       footer={null}
+  //       onOk={handleCancelModal}
+  //       onCancel={handleCancelModal}
+  //       width="60%"
+  //     >
+  //       <DetailForm
+  //         receipt={receipt}
+  //         usedRoom={usedRoom}
+  //         usedService={usedService}
+  //         rowIndex={0}
+  //       />
+  //     </Modal>
+  //   );
+  // }
 
   return (
     <div className="table">
       <>{isCheckout ? modalJSX() : null}</>
-      <>{isShowReceipt ? receiptJSX() : null}</>
+      {/* <>{isShowReceipt ? receiptJSX() : null}</> */}
       {/* <Button onClick={onAddButton} type='primary'>Add</Button> */}
       <div className="buttonContainer">
         <div className="headerButtons">

@@ -4,43 +4,6 @@ import React from "react";
 import UtilitiesButton from "../Button/UtilitiesButton/UtilitiesButton";
 
 const BookingListExpand = ({ utils = [], roomTypeSource, ...prices }) => {
-  const priceTypes = {
-    firstHourPrice: "Giờ đầu tiên",
-    overNightPrice: "Qua đêm",
-    oneDayPrice: "Một ngày",
-    hourPrice: "Một giờ",
-  };
-
-  const columns = [
-    {
-      key: "1",
-      title: "Loại giờ",
-      render: (text, record) => {
-        return String(priceTypes[Object.keys(record)[0]]);
-      },
-      width: 300,
-    },
-    {
-      key: "2",
-      title: "Giá (đ)",
-      dataIndex: [
-        "firstHourPrice",
-        "overNightPrice",
-        "oneDayPrice",
-        "hourPrice",
-      ],
-      render: (text, record) => {
-        return (
-          <p>
-            {Object.values(record)[0]
-              .toLocaleString()
-              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </p>
-        );
-      },
-    },
-  ];
-
   const roomTypeColumns = [
     {
       key: "1",
@@ -122,14 +85,6 @@ const BookingListExpand = ({ utils = [], roomTypeSource, ...prices }) => {
       {/* </Row> */}
     </div>
   );
-
-  function createDataSource(prices) {
-    let priceArray = Object.entries(prices);
-
-    return priceArray.map((price) => {
-      return { [price[0]]: price[1] };
-    });
-  }
 };
 
 export default BookingListExpand;

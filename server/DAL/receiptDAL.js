@@ -2,9 +2,23 @@ const supabase = require("../database");
 
 const TABLE_NAME = "invoice";
 
+const updateReceipt = (receiptID, newInfo) => {
+  return supabase
+  .from(TABLE_NAME)
+  .update(newInfo)
+  .eq("id", receiptID);
+}
+const getReceiptByBookingID = (bookingID) => {
+  return supabase
+  .from(TABLE_NAME)
+  .select()
+  .eq("booking_id", bookingID);
+}
 const getAllReceipt = () => {
-  return supabase.from(TABLE_NAME).select(
-    `
+  return supabase
+    .from(TABLE_NAME)
+    .select(
+      `
       id,
       established_date,
       payment_method,
@@ -15,13 +29,16 @@ const getAllReceipt = () => {
       surcharge,
       total_cost,
       note,
+      status,
       booking_id ( 
+        id,
         customer_id (id, fullname)
       ),
       employee_id (),
       employee_name
       `
-  );
+    )
+    .order("id", { ascending: false });
   //console.log("fetch all Permission data " + JSON.stringify(data));
   //console.log("error " + JSON.stringify(error));
 };
@@ -41,6 +58,7 @@ const getReceiptByDay = (day) => {
     surcharge,
     total_cost,
     note,
+    status,
     booking_id (
       id,
       customer_id (
@@ -52,9 +70,39 @@ const getReceiptByDay = (day) => {
     `
     )
     .eq("established_date", day)
-    .order("id", { ascending: true });
+    .order("id", { ascending: false });
 };
 const getReceiptByMonth = (firstDay, lastDay) => {
+  return supabase
+    .from(TABLE_NAME)
+    .select(
+      `
+    id,
+    established_date,
+    payment_method,
+    checkin_time,
+    checkout_time,
+    service_cost,
+    rent_cost,
+    surcharge,
+    total_cost,
+    note,
+    status,
+    booking_id (
+      id,
+      customer_id (
+        id, 
+        fullname
+      )
+    ),
+    employee_name
+    `
+    )
+    .gt("established_date", firstDay)
+    .lt("established_date", lastDay)
+    .order("id", { ascending: false });
+};
+const getReceiptByYear = (firstDay, lastDay) => {
   return supabase
     .from(TABLE_NAME)
     .select(
@@ -79,41 +127,9 @@ const getReceiptByMonth = (firstDay, lastDay) => {
     employee_name
     `
     )
-    .lt("established_date", lastDay)
     .gt("established_date", firstDay)
-    .order("id", { ascending: true });
-};
-const getReceiptByYear = (firstDay, lastDay) => {
-  return (
-    supabase
-      .from(TABLE_NAME)
-      .select(
-        `
-    id,
-    established_date,
-    payment_method,
-    checkin_time,
-    checkout_time,
-    service_cost,
-    rent_cost,
-    surcharge,
-    total_cost,
-    note,
-    booking_id (
-      id,
-      customer_id (
-        id, 
-        fullname
-      )
-    ),
-    employee_name
-    `
-      )
-      .lt("established_date", lastDay)
-      .gt("established_date", firstDay)
-      // .rangeLte("established_date", [firstDay, lastDay])
-      .order("id", { ascending: true })
-  );
+    .lt("established_date", lastDay)
+    .order("id", { ascending: false });
 };
 
 const createReceipt = async (receipt) => {
@@ -151,4 +167,6 @@ module.exports = {
   getReceiptByDay,
   getReceiptByMonth,
   getReceiptByYear,
+  updateReceipt,
+  getReceiptByBookingID
 };
