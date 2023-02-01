@@ -33,17 +33,14 @@
     font-weight: var(fw-normal);
 }
 
-@media only screen and (max-width: 600px) {
-
-.menuButton{
-    display: block;
-}
-
-}
 @media only screen and (max-width: 900px) {
 
 .menuButton{
     display: block;
+}
+.topbar{
+    width: 100vw;
+    position: static;
 }
 
 }
