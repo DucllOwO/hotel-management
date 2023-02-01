@@ -28,6 +28,7 @@ import Home from "./pages/Customer/Home/Home";
 import BookingCustomer from "./pages/Customer/Booking/Booking";
 
 import "./app.css";
+import Review from "./pages/Customer/Review/Review";
 
 const App = () => {
   const { user } = useContext(AppContext);
@@ -48,6 +49,7 @@ const App = () => {
             path="/booking"
             element={<BookingCustomer />}
           ></Route>
+          <Route key="review" path="/review" element={<Review />}></Route>
           <Route key="admin" path="/admin" element={<Admin />}>
             {listFeature
               ? listRoute.map((item) => {
