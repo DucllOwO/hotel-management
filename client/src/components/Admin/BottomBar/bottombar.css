@@ -2,7 +2,7 @@
     height: 60px;
     position: fixed;
         bottom: 0;
-        width: 100%;
+        width: 75%;
     background-color: var(--light-grey);
     align-self: flex-end;
     display: flex;
@@ -12,8 +12,9 @@
     padding: 0 30px;
 }
 
-/* @media only screen and (max-width: 900px) {
+@media only screen and (max-width: 900px) {
     .bottomBar{
         position: relative;
+        width: 100%;
     }
-} */
+}

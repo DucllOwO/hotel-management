@@ -714,7 +714,7 @@ const BookingTable = ({
           Đặt
         </Button>
         <div className="totalText">
-          <div className="totalTitle">Tổng cộng</div>
+          <div className="totalTitle">Tổng cộng:</div>
           {totalCost ? totalCost.toLocaleString() : 0}
         </div>
       </BottomBar>

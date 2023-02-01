@@ -41,6 +41,7 @@
 @media only screen and (max-width: 900px) {
   .navBar{
       /* display: none; */
+      height: 100vh;
       width: 50%;
       max-width: 200px;
       position: absolute;
