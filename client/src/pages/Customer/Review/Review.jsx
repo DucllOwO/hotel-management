@@ -186,7 +186,7 @@ const Review = () => {
               style={{
                 backgroundColor: "rgba(192, 192, 192, 1)",
                 height: 5,
-                width: 270,
+                width: "80%",
                 border: "none",
                 marginBottom: 25,
               }}

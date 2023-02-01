@@ -53,6 +53,19 @@ const App = () => {
             path="/booking"
             element={<BookingCustomer />}
           ></Route>
+          <Route key="signup" path="/signup" element={<SignUp />}></Route>
+          <Route key="forgot" path="/forgot" element={<Forgot />}></Route>
+          <Route key="reset" path="/reset" element={<Reset />}></Route>
+          <Route
+            key="verify"
+            path="/forgot/verify"
+            element={<Verify />}
+          ></Route>
+          <Route
+            key="verify"
+            path="/signup/verify"
+            element={<Verify />}
+          ></Route>
           <Route key="review" path="/review" element={<Review />}></Route>
           <Route key="admin" path="/admin" element={<Admin />}>
             {listFeature
