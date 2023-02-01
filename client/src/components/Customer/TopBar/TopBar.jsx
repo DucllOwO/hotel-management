@@ -22,6 +22,8 @@ const TopBarContainer = styled.div`
   }
   @media (max-width: 640px) {
     height: 8vh;
+    position: sticky;
+    top: 0;
   }
 `;
 
