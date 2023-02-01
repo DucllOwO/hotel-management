@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   HomeOutlined,
   StarOutlined,
@@ -15,6 +15,17 @@ const SliderContainer = styled.div`
   background-image: url("https://media.cntraveler.com/photos/53da8c106dec627b149f1e4d/master/pass/one-only-the-palm-dubai-dubai-united-arab-emirates-112572-1.jpg");
   border-radius: 40px;
   position: relative;
+  margin-top: 50px;
+  @media (max-width: 820px) {
+    height: 30vh;
+    margin-top: 0px;
+  }
+  @media (max-width: 768px) {
+    margin-top: 20px;
+  }
+  @media (max-width: 640px) {
+    display: none;
+  }
 `;
 
 const BlackBackground = styled.div`
@@ -29,6 +40,10 @@ const Name = styled.div`
   color: var(--primary-color);
   padding-left: 40px;
   padding-top: 40px;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  @media (max-width: 820px) {
+    font-size: var(--fs-40);
+  }
 `;
 
 const CenterBarContainer = styled.div`
@@ -48,6 +63,9 @@ const CenterNav = styled.div`
   font-weight: var(--fw-bold);
   justify-content: space-between;
   align-items: center;
+  @media (max-width: 820px) {
+    font-size: var(--fs-14);
+  }
 `;
 
 const CenterButtonFirst = styled.div`
@@ -56,10 +74,14 @@ const CenterButtonFirst = styled.div`
   align-items: center;
   width: 33.4%;
   justify-content: center;
-  background-color: var(--black);
-  color: var(--primary-color);
+  /* background-color: var(--black);
+  color: var(--primary-color); */
   cursor: pointer;
   border-radius: 20px 0 0 0;
+  background-color: ${(props) =>
+    props.isChosen === 0 ? "var(--primary-color)" : "var(--black)"};
+  color: ${(props) =>
+    props.isChosen === 0 ? "var(--black)" : "var(--primary-color)"};
 `;
 const CenterButtonSecond = styled.div`
   height: 100%;
@@ -70,6 +92,10 @@ const CenterButtonSecond = styled.div`
   background-color: var(--black);
   color: var(--primary-color);
   cursor: pointer;
+  background-color: ${(props) =>
+    props.isChosen === 1 ? "var(--primary-color)" : "var(--black)"};
+  color: ${(props) =>
+    props.isChosen === 1 ? "var(--black)" : "var(--primary-color)"};
 `;
 
 const CenterButtonLast = styled.div`
@@ -82,16 +108,23 @@ const CenterButtonLast = styled.div`
   color: var(--primary-color);
   cursor: pointer;
   border-radius: 0 20px 0 0;
+  background-color: ${(props) =>
+    props.isChosen === 2 ? "var(--primary-color)" : "var(--black)"};
+  color: ${(props) =>
+    props.isChosen === 2 ? "var(--black)" : "var(--primary-color)"};
 `;
 
 const ButtonLabel = styled.div`
   font-size: var(--fs-18);
   margin-left: 10px;
+  @media (max-width: 820px) {
+    font-size: var(--fs-14);
+  }
 `;
 
 const CenterDetails = styled.div`
-  width: 100%;
-  height: 70%;
+  /* width: 100%; */
+  height: 50%;
   background-color: white;
   display: flex;
   align-items: center;
@@ -135,22 +168,30 @@ const CenterAddress = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-top: 10px;
 `;
 
 const AddressLabel = styled.div`
   color: var(--grey);
+  @media (max-width: 1024px) {
+    font-size: var(--fs-12);
+  }
 `;
 
 const Address = styled.div`
   font-size: 15px;
   margin-top: 3px;
+  @media (max-width: 1024px) {
+    font-size: var(--fs-12);
+  }
 `;
 
 const ImageList = styled.div`
-  display: flex;
+  /* display: flex; */
   flex-direction: row;
   width: 60%;
   height: 80%;
+  display: ${(props) => (props.search ? "none" : "flex")};
 `;
 
 const ImageItem = styled.img`
@@ -178,7 +219,7 @@ const Bullet = styled.div`
 `;
 
 const SearchButton = styled.div`
-  height: 55%;
+  height: 70%;
   aspect-ratio: 1;
   background-color: var(--black);
   border-radius: 15px;
@@ -188,7 +229,31 @@ const SearchButton = styled.div`
   align-items: center;
 `;
 
+const Search = styled.div`
+  width: 60%;
+  height: 60%;
+  border-radius: 20px;
+  border: 1px solid black;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  /* display: ${(props) => (props.search ? "flex" : "none")}; */
+`;
+
+const SearchInput = styled.input`
+  font-size: var(--fs-24);
+  width: 100%;
+  outline: none;
+  border: 0;
+  margin: 0 5px;
+  padding-left: 10px;
+  transition: 5s;
+`;
+
 const Slider = () => {
+  const [search, setSearch] = useState(false);
+  const [isChosen, setIsChosen] = useState(0);
+
   return (
     <SliderContainer>
       <BlackBackground>
@@ -197,15 +262,30 @@ const Slider = () => {
 
       <CenterBarContainer>
         <CenterNav>
-          <CenterButtonFirst>
+          <CenterButtonFirst
+            isChosen={isChosen}
+            onClick={() => {
+              setIsChosen(0);
+            }}
+          >
             <HomeOutlined></HomeOutlined>
             <ButtonLabel>Stay</ButtonLabel>
           </CenterButtonFirst>
-          <CenterButtonSecond>
+          <CenterButtonSecond
+            isChosen={isChosen}
+            onClick={() => {
+              setIsChosen(1);
+            }}
+          >
             <StarOutlined></StarOutlined>
             <ButtonLabel>Reviews</ButtonLabel>
           </CenterButtonSecond>
-          <CenterButtonLast>
+          <CenterButtonLast
+            isChosen={isChosen}
+            onClick={() => {
+              setIsChosen(2);
+            }}
+          >
             <AppstoreAddOutlined></AppstoreAddOutlined>
             <ButtonLabel>Features</ButtonLabel>
           </CenterButtonLast>
@@ -224,26 +304,38 @@ const Slider = () => {
             <Address>Việt Nam</Address>
           </CenterAddress>
 
-          <ImageList>
-            <ImageItem
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
-              alt=""
-            />
-            <ImageItem
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
-              alt=""
-            />
-            <ImageItem
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
-              alt=""
-            />
-            <ImageItem
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
-              alt=""
-            />
-          </ImageList>
+          {search ? (
+            <Search>
+              <SearchInput placeholder="Search here..."></SearchInput>
+            </Search>
+          ) : (
+            <ImageList>
+              <ImageItem
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
+                alt=""
+              />
+              <ImageItem
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
+                alt=""
+              />
+              <ImageItem
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
+                alt=""
+              />
+              <ImageItem
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
+                alt=""
+              />
+            </ImageList>
+          )}
 
-          <SearchButton>
+          <SearchButton
+            onClick={() => {
+              setSearch((pre) => {
+                return !pre;
+              });
+            }}
+          >
             <SearchOutlined
               style={{ color: "white", fontSize: "180%" }}
             ></SearchOutlined>

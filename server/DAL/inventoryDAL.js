@@ -4,8 +4,14 @@ async function getAllInventories() {
   const { data, error } = await supabase.from("inventory_record").select();
   return { data, error };
 }
-const getInventoryByBookingID = (bookingID) => {
-  return supabase.from("inventory_record").select().eq("booking_id", bookingID);
+const getInventoryByBookingID = (bookingID, roomID = null) => {
+  const query = roomID
+    ? supabase
+        .from("inventory_record")
+        .select()
+        .match({ booking_id: bookingID, room_id: roomID })
+    : supabase.from("inventory_record").select().eq("booking_id", bookingID);
+  return query;
 };
 async function createNewRecord(newRecord) {
   const { data, error } = await supabase.from("inventory_record").insert({
@@ -21,10 +27,11 @@ const getInventoryDetail = (recordID) => {
     .from("inventory_detail")
     .select(
       `
+      id,
         item_id(id, name),
         price, 
         amount,
-        record_id
+        record_id (id, date)
     `
     )
     .in("record_id", recordID);

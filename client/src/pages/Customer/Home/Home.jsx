@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "antd";
 import Slider from "./Slider/Slider";
 import styled from "styled-components";
@@ -14,7 +14,6 @@ const MainHome = styled.div`
 
 const HomeContainer = styled.div`
   width: 100%;
-  height: 100vh;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none;
@@ -30,9 +29,8 @@ const SliderContainer = styled.div`
 const Home = () => {
   return (
     <MainHome>
+      <TopBar />
       <HomeContainer>
-        <TopBar />
-
         <SliderContainer>
           <Slider></Slider>
         </SliderContainer>

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import SocialMediaImage from "../../../assets/images/SocialMedia.png";
 
 const FooterContainer = styled.div`
-  height: 35vh;
+  height: fit-content;
   background-color: var(--black);
   width: 100%;
   margin-top: 40px;
@@ -13,6 +13,9 @@ const FooterContainer = styled.div`
 const InformationContainer = styled.div`
   display: flex;
   height: 80%;
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
 `;
 
 const HotelInformation = styled.div`
@@ -71,6 +74,9 @@ const CopyRightContainer = styled.div`
   padding: 0 20px;
   display: flex;
   justify-content: space-between;
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
 `;
 
 const PrivaryContainer = styled.div`

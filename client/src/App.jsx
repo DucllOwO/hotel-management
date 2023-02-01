@@ -14,6 +14,7 @@ import Utilities from "./pages/Admin/Room/Utilities/Utilities";
 import Payment from "./pages/Admin/Turnover/Payment/Payment";
 import Receipt from "./pages/Admin/Turnover/Reciept/Receipt";
 import Login from "./pages/Login/Login";
+import SignUp from "./pages/SignUp/SignUp";
 import Customer from "./pages/Staff/Customer/Customer";
 import BookingList from "./pages/Staff/Booking/BookingList/BookingList";
 import { AppContext } from "./context/AppContext";
@@ -29,6 +30,9 @@ import BookingCustomer from "./pages/Customer/Booking/Booking";
 
 import "./app.css";
 import Review from "./pages/Customer/Review/Review";
+import Verify from "./pages/Verify/Verify";
+import Forgot from "./pages/ForgotPassword/Forgot";
+import Reset from "./pages/ResetPassword/Reset";
 
 const App = () => {
   const { user } = useContext(AppContext);
@@ -140,7 +144,7 @@ const listRoute = [
   },
   {
     key: "Đặt phòng",
-    value: <Route index path="bookings" element={<Booking />} />,
+    value: <Route key="Booking" index path="bookings" element={<Booking />} />,
   },
   {
     key: "Phiếu giảm giá",
@@ -154,7 +158,7 @@ const listRoute = [
   },
   {
     key: "Nhập hàng",
-    value: <Route index path="/importing" element={<Import />} />,
+    value: <Route key="Import" index path="/importing" element={<Import />} />,
   },
 ];
 

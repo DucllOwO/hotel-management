@@ -15,9 +15,6 @@ const ItemTable = ({ items, setItems, user, isLoading }) => {
   const showModal = () => {
     setIsModalVisible(true);
   };
-  const handle = () => {
-    setIsModalVisible(false);
-  };
 
   const [editingRow, setEditingRow] = useState(null);
   // const {user} = useContext(AppContext);
@@ -228,7 +225,7 @@ const ItemTable = ({ items, setItems, user, isLoading }) => {
           <>
             <div className="btnWrap">
               <EditButton
-                openModalEdit={() => {
+                onEditButton={() => {
                   setSelectedItem(record);
                   onEditButton(record);
                 }}

@@ -28,8 +28,11 @@ const featuresRoutes = require("./routes/featuresRoutes");
 const reportRoutes = require("./routes/reportRoutes");
 const hasRoomFeatureRoutes = require("./routes/hasRoomFeaturesRoutes");
 const usedRoomRoute = require("./routes/usedRoomRoutes");
+const dayjs = require("dayjs");
 
 const app = express();
+
+dayjs.locale("vi");
 
 app.use(cors());
 app.use(morgan("dev"));
