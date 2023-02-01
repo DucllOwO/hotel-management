@@ -16,12 +16,12 @@
     margin-right: 10px;
     z-index: 0;
 }
+@media only screen and (max-width: 900px) {
 .blur{
     height: 100vh;
     z-index: 2;
     opacity: 0.5;
 }
-@media only screen and (max-width: 900px) {
 .mainContainer{
     display: block;
 }

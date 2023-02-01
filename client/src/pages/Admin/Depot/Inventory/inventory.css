@@ -1,10 +1,16 @@
 .container {
     display: flex;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .inventoryContainer {
     width: 100%;
     flex: 4;
     margin-left: 5px;
+}
+
+@media only screen and (max-width: 900px){
+    .container{
+        width: 100%;
+    }
 }

@@ -22,3 +22,9 @@
 .income, .payment {
     color: var(--dark-grey)
 }
+
+@media only screen and (max-width: 900px) {
+    .sumary{
+        width: 100vw;
+    }
+}
