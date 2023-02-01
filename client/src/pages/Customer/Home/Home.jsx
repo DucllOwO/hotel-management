@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "antd";
 import Slider from "./Slider/Slider";
 import styled from "styled-components";
@@ -29,8 +29,8 @@ const SliderContainer = styled.div`
 const Home = () => {
   return (
     <MainHome>
+      <TopBar />
       <HomeContainer>
-        <TopBar />
         <SliderContainer>
           <Slider></Slider>
         </SliderContainer>
