@@ -5,8 +5,14 @@ import {
   AppstoreAddOutlined,
   SearchOutlined,
   SwapRightOutlined,
+  StarFilled,
+  WifiOutlined,
+  ColumnWidthOutlined,
+  CoffeeOutlined,
+  SlidersOutlined,
+  SkinOutlined,
+  TransactionOutlined,
 } from "@ant-design/icons";
-import { Button } from "antd";
 import styled from "styled-components";
 
 const SliderContainer = styled.div`
@@ -176,6 +182,9 @@ const AddressLabel = styled.div`
   @media (max-width: 1024px) {
     font-size: var(--fs-12);
   }
+  @media (max-width: 768px) {
+    font-size: var(--fs-10);
+  }
 `;
 
 const Address = styled.div`
@@ -183,6 +192,9 @@ const Address = styled.div`
   margin-top: 3px;
   @media (max-width: 1024px) {
     font-size: var(--fs-12);
+  }
+  @media (max-width: 768px) {
+    font-size: var(--fs-11);
   }
 `;
 
@@ -200,6 +212,10 @@ const ImageItem = styled.img`
   margin: 0 10px;
   border-radius: 15px;
   cursor: pointer;
+  @media (max-width: 768px) {
+    width: 18%;
+    height: 90%;
+  }
 `;
 
 const SliderBullets = styled.div`
@@ -250,6 +266,108 @@ const SearchInput = styled.input`
   transition: 5s;
 `;
 
+const ReviewContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  margin-top: 10px;
+`;
+
+const RatingContainer = styled.div`
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center;
+  font-size: var(--fs-24);
+  width: 20%;
+`;
+
+const RatingLabel = styled.div`
+  font-weight: var(--fw-bold);
+`;
+
+const VerticalLine = styled.div`
+  width: 1px;
+  height: 100%;
+  background-color: var(--grey);
+  margin-left: 5px;
+`;
+
+const CommentContainer = styled.div`
+  width: 35%;
+  display: flex;
+  font-size: var(--fs-24);
+  margin-left: 20px;
+  align-items: center;
+`;
+
+const CommentAva = styled.img`
+  width: 70px;
+  height: 70px;
+  background-size: cover;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  @media (max-width: 768px) {
+    width: 50px;
+    height: 50px;
+  }
+  /* background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3HGWSrIZjGnlMVh9tlh5wGYsgNZ1hTwqRAg&usqp=CAU"); */
+`;
+
+const CommentInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-left: 4px;
+`;
+
+const CommentName = styled.div`
+  font-weight: var(--fw-bold);
+  color: var(--black);
+  font-size: var(--fs-18);
+  padding-top: 5px;
+  color: var(--grey);
+  @media (max-width: 768px) {
+    font-size: var(--fs-14);
+    margin-top: 10px;
+  }
+`;
+
+const CommentContent = styled.div`
+  font-size: var(--fs-14);
+  font-weight: var(--fw-normal);
+  padding-top: 10px;
+  @media (max-width: 768px) {
+    font-size: var(--fs-12);
+    padding-top: 2px;
+  }
+`;
+
+const FeaturesContainer = styled.div`
+  display: flex;
+  font-size: var(--fs-18);
+  color: var(--black);
+  width: 100%;
+  height: 100%;
+  margin-top: 20px;
+  @media (max-width: 768px) {
+    font-size: var(--fs-14);
+  }
+`;
+
+const FeatureItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 16.6667%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const FeatureName = styled.div`
+  font-weight: var(--fw-bold);
+  margin-top: 5px;
+`;
+
 const Slider = () => {
   const [search, setSearch] = useState(false);
   const [isChosen, setIsChosen] = useState(0);
@@ -298,17 +416,22 @@ const Slider = () => {
               style={{ fontSize: "150%", color: "white", marginLeft: "5px" }}
             ></SwapRightOutlined>
           </DetailButton>
-          <CenterAddress>
-            <AddressLabel>ADDRESS</AddressLabel>
-            <Address>120 Trần Phú, Nha Trang</Address>
-            <Address>Việt Nam</Address>
-          </CenterAddress>
 
-          {search ? (
+          {isChosen === 0 ? (
+            <CenterAddress>
+              <AddressLabel>ADDRESS</AddressLabel>
+              <Address>120 Trần Phú, Nha Trang</Address>
+              <Address>Việt Nam</Address>
+            </CenterAddress>
+          ) : (
+            <div></div>
+          )}
+
+          {search && isChosen === 0 ? (
             <Search>
               <SearchInput placeholder="Search here..."></SearchInput>
             </Search>
-          ) : (
+          ) : isChosen === 0 ? (
             <ImageList>
               <ImageItem
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
@@ -327,19 +450,98 @@ const Slider = () => {
                 alt=""
               />
             </ImageList>
+          ) : (
+            <div></div>
           )}
 
-          <SearchButton
-            onClick={() => {
-              setSearch((pre) => {
-                return !pre;
-              });
-            }}
-          >
-            <SearchOutlined
-              style={{ color: "white", fontSize: "180%" }}
-            ></SearchOutlined>
-          </SearchButton>
+          {isChosen === 0 ? (
+            <SearchButton
+              onClick={() => {
+                setSearch((pre) => {
+                  return !pre;
+                });
+              }}
+            >
+              <SearchOutlined
+                style={{ color: "white", fontSize: "180%" }}
+              ></SearchOutlined>
+            </SearchButton>
+          ) : (
+            <div></div>
+          )}
+
+          {isChosen === 1 ? (
+            <ReviewContainer>
+              <RatingContainer>
+                <RatingLabel>4.8</RatingLabel>
+                <StarFilled
+                  style={{
+                    fontSize: "35px",
+                    color: "#f5c706",
+                    marginLeft: "10px",
+                  }}
+                ></StarFilled>
+              </RatingContainer>
+              <VerticalLine></VerticalLine>
+              <CommentContainer>
+                <CommentAva src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3HGWSrIZjGnlMVh9tlh5wGYsgNZ1hTwqRAg&usqp=CAU"></CommentAva>
+                <CommentInfo>
+                  <CommentName>Lucy</CommentName>
+                  <CommentContent>Beautiful view, modern rooms</CommentContent>
+                </CommentInfo>
+              </CommentContainer>
+              <VerticalLine></VerticalLine>
+              <CommentContainer>
+                <CommentAva src="https://www.studytienganh.vn/upload/2022/08/114992.png"></CommentAva>
+                <CommentInfo>
+                  <CommentName>Jenifer</CommentName>
+                  <CommentContent>A good choice for its price</CommentContent>
+                </CommentInfo>
+              </CommentContainer>
+            </ReviewContainer>
+          ) : (
+            <div></div>
+          )}
+
+          {isChosen === 2 ? (
+            <FeaturesContainer>
+              <FeatureItem>
+                <ColumnWidthOutlined
+                  style={{ fontSize: "35px" }}
+                ></ColumnWidthOutlined>
+                <FeatureName>Parking</FeatureName>
+              </FeatureItem>
+              <VerticalLine></VerticalLine>
+              <FeatureItem>
+                <WifiOutlined style={{ fontSize: "35px" }}></WifiOutlined>
+                <FeatureName>Wifi</FeatureName>
+              </FeatureItem>
+              <VerticalLine></VerticalLine>
+              <FeatureItem>
+                <CoffeeOutlined style={{ fontSize: "35px" }}></CoffeeOutlined>
+                <FeatureName>Breakfast</FeatureName>
+              </FeatureItem>
+              <VerticalLine></VerticalLine>
+              <FeatureItem>
+                <SlidersOutlined style={{ fontSize: "35px" }}></SlidersOutlined>
+                <FeatureName>Fitness</FeatureName>
+              </FeatureItem>
+              <VerticalLine></VerticalLine>
+              <FeatureItem>
+                <SkinOutlined style={{ fontSize: "35px" }}></SkinOutlined>
+                <FeatureName>Wahsing</FeatureName>
+              </FeatureItem>
+              <VerticalLine></VerticalLine>
+              <FeatureItem>
+                <TransactionOutlined
+                  style={{ fontSize: "35px" }}
+                ></TransactionOutlined>
+                <FeatureName>Exchange</FeatureName>
+              </FeatureItem>
+            </FeaturesContainer>
+          ) : (
+            <div></div>
+          )}
         </CenterDetails>
 
         <SliderBullets>

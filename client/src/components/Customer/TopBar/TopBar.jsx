@@ -36,28 +36,6 @@ const LogoImg = styled.img`
 `;
 
 const NavBar = styled.ul`
-  /* display: flex;
-  flex-direction: row;
-  list-style-type: none;
-  justify-content: space-between;
-  align-items: center;
-  font-size: var(--fs-14);
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  margin-top: 20px;
-  @media (max-width: 768px) {
-    padding-top: 10vh;
-    position: fixed;
-    top: 10vh;
-    width: 100%;
-    height: 300px;
-    background-color: var(--black);
-    border-radius: 0 0 20px 20px;
-    z-index: 10;
-    flex-direction: column;
-    justify-content: space-around;
-  } */
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -76,9 +54,6 @@ const NavBar = styled.ul`
   @media (max-width: 640px) {
     top: 8vh;
   }
-  /* active {
-    transform: translateX(0);
-  } */
 `;
 
 const NavBarActive = styled.ul`

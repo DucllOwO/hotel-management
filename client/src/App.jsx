@@ -48,8 +48,16 @@ const App = () => {
           <Route key="signup" path="/signup" element={<SignUp />}></Route>
           <Route key="forgot" path="/forgot" element={<Forgot />}></Route>
           <Route key="reset" path="/reset" element={<Reset />}></Route>
-          <Route key="verify" path="/forgot/verify" element={<Verify />}></Route>
-          <Route key="verify" path="/signup/verify" element={<Verify />}></Route>
+          <Route
+            key="verify"
+            path="/forgot/verify"
+            element={<Verify />}
+          ></Route>
+          <Route
+            key="verify"
+            path="/signup/verify"
+            element={<Verify />}
+          ></Route>
           <Route key="home" path="/home" element={<Home />}></Route>
           <Route key="admin" path="/admin" element={<Admin />}>
             {listFeature
@@ -75,7 +83,9 @@ const App = () => {
 const listRoute = [
   {
     key: "Thống kê",
-    value: <Route key="Dashboard" index path="dashboard" element={<Dashboard />} />,
+    value: (
+      <Route key="Dashboard" index path="dashboard" element={<Dashboard />} />
+    ),
   },
   {
     key: "Tài khoản",
@@ -83,7 +93,9 @@ const listRoute = [
   },
   {
     key: "Nhập sản phẩm",
-    value: <Route key="Import" index path="importing" element={<Importing />} />,
+    value: (
+      <Route key="Import" index path="importing" element={<Importing />} />
+    ),
   },
   {
     key: "Nhân sự",
@@ -91,7 +103,9 @@ const listRoute = [
   },
   {
     key: "Kiểm tra phòng",
-    value: <Route key="Inventory" index path="inventory" element={<Inventory />} />,
+    value: (
+      <Route key="Inventory" index path="inventory" element={<Inventory />} />
+    ),
   },
   {
     key: "Quản lý sản phẩm",
@@ -103,11 +117,15 @@ const listRoute = [
   },
   {
     key: "Loại phòng",
-    value: <Route key="Room_type" index path="roomtype" element={<RoomType />} />,
+    value: (
+      <Route key="Room_type" index path="roomtype" element={<RoomType />} />
+    ),
   },
   {
     key: "Tiện ích",
-    value: <Route key="Utilities" index path="utilities" element={<Utilities />} />,
+    value: (
+      <Route key="Utilities" index path="utilities" element={<Utilities />} />
+    ),
   },
   {
     key: "Phiếu chi",
@@ -119,11 +137,15 @@ const listRoute = [
   },
   {
     key: "Chức vụ",
-    value: <Route key="Position" index path="position" element={<Position />} />,
+    value: (
+      <Route key="Position" index path="position" element={<Position />} />
+    ),
   },
   {
     key: "Khách hàng",
-    value: <Route key="Customer" index path="customer" element={<Customer />} />,
+    value: (
+      <Route key="Customer" index path="customer" element={<Customer />} />
+    ),
   },
   {
     key: "Đặt phòng",
@@ -131,11 +153,20 @@ const listRoute = [
   },
   {
     key: "Phiếu giảm giá",
-    value: <Route key="Promotion" index path="promotion" element={<Promotion />} />,
+    value: (
+      <Route key="Promotion" index path="promotion" element={<Promotion />} />
+    ),
   },
   {
     key: "Đặt phòng",
-    value: <Route key="BookingList" index path="bookings/list" element={<BookingList />} />,
+    value: (
+      <Route
+        key="BookingList"
+        index
+        path="bookings/list"
+        element={<BookingList />}
+      />
+    ),
   },
   {
     key: "Nhập hàng",
