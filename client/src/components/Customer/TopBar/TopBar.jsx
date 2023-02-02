@@ -298,7 +298,12 @@ const TopBar = () => {
         </PageItem>
       </NavBarActive>
       <Buttons>
-        <LoginButton>Log in</LoginButton>
+        <LoginButton
+          onClick={() => {
+            console.log("first")
+            console.log("first")
+          }}
+        >Log in</LoginButton>
         <SignUpButton>Sign up</SignUpButton>
       </Buttons>
       <NavToggler onClick={navToggle}>
