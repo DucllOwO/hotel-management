@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import "./signup.css";
 import logo from "../../assets/images/LogoWhite.png";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { userRequest } from "../../api/api";
 import LocalStorage from "../../Utils/localStorage";
 import { AppContext } from "../../context/AppContext";
@@ -16,12 +16,10 @@ const SignUp = () => {
     document.title = "Sign Up | Parallel Shine";
   });
   const { setUser } = useContext(AppContext);
-  const userLocal = LocalStorage.getItem("user");
   const [isLoading, setIsLoading] = useState(false);
   const [type, setType] = useState("password");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleUsername = (e) => {
@@ -30,11 +28,8 @@ const SignUp = () => {
   const handlePassword = (e) => setPassword(e.target.value);
 
   return (
-    <div
-      className="login"
-      onKeyDownCapture={(e) => e.key === "Enter" && login(e)}
-    >
-      <div>
+    <div className="login">
+      <div onClick={() => navigate("/home")}>
         <img src={logo} alt="logo" className="logoImg" />
       </div>
 
@@ -43,7 +38,9 @@ const SignUp = () => {
       <div className="form">
         <div className="confirmContainer">
           <div className="confirm">Already A Member ?</div>
-          <Button type="link">Login</Button>
+          <Button type="link" onClick={() => navigate("/login")}>
+            Login
+          </Button>
         </div>
         <div className="inputContainer">
           <div className="labelInput">Full name</div>
@@ -51,7 +48,7 @@ const SignUp = () => {
             <input
               id=""
               type="text"
-              placeholder="Vui lòng nhập họ và tên"
+              placeholder="Input full name"
               className="input"
               // value={username}
               // onChange={handleUsername}
@@ -64,7 +61,7 @@ const SignUp = () => {
             <input
               id=""
               type="text"
-              placeholder="Vui lòng nhập email"
+              placeholder="Input email"
               className="input"
               // value={username}
               // onChange={handleUsername}
@@ -78,7 +75,7 @@ const SignUp = () => {
             <div className="input">
               <input
                 type={type}
-                placeholder="Vui lòng nhập mật khẩu"
+                placeholder="Input password"
                 className="input"
                 value={password}
                 onChange={handlePassword}
@@ -105,7 +102,7 @@ const SignUp = () => {
             <Spin tip="Loading..."></Spin>
           </div>
         ) : (
-          <div className="loginButton">
+          <div className="loginButton" onClick={(e) => signUp(e)}>
             <div className="buttonText">Đăng ký</div>
           </div>
         )}
@@ -121,45 +118,10 @@ const SignUp = () => {
     }
   }
 
-  async function login(e) {
+  function signUp(e) {
     e.preventDefault();
-    if (isLoading === false) {
-      if (!username || !password) {
-        ErrorAlert("Vui lòng nhập đầy đủ thông tin");
-        return;
-      }
 
-      setIsLoading(true);
-      loginAPI(username.trim(), password.trim())
-        .then(({ data }) => {
-          setIsLoading(false);
-          console.log(data);
-          if (data) {
-            const user = {
-              account: data?.user,
-              token: data?.accessToken,
-              position: data?.position,
-              permission: data?.permission,
-            };
-
-            // save token for axios
-            LocalStorage.setItem("user", user);
-            // save user to app context
-            setUser(user);
-
-            userRequest.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${data?.accessToken}`;
-
-            navigate("/admin");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          ErrorAlert("Đăng nhập không thành công!!");
-        })
-        .finally(() => setIsLoading(false));
-    }
+    navigate("/login");
   }
 };
 

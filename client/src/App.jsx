@@ -33,6 +33,7 @@ import Review from "./pages/Customer/Review/Review";
 import Verify from "./pages/Verify/Verify";
 import Forgot from "./pages/ForgotPassword/Forgot";
 import Reset from "./pages/ResetPassword/Reset";
+import MyInformation from "./components/Customer/MyInfomation/MyInformation";
 
 const App = () => {
   const { user } = useContext(AppContext);
@@ -48,6 +49,11 @@ const App = () => {
           <Route key="login" index element={<Login />}></Route>
           <Route key="login1" path="/login" element={<Login />}></Route>
           <Route key="home" path="/home" element={<Home />}></Route>
+          <Route
+            key="my-information"
+            path="/my-information"
+            element={<MyInformation />}
+          ></Route>
           <Route
             key="booking"
             path="/booking"

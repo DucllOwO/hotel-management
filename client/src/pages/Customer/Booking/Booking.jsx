@@ -17,7 +17,7 @@ import { useState } from "react";
 import FloatingButton from "../../../components/Customer/Button/FloatingButton";
 
 const BookingContainer = styled.div`
-  width: 98vw;
+  width: 100%;
   height: auto;
 `;
 
@@ -46,8 +46,8 @@ const FilterContainer = styled.div`
   border: 2px solid var(--grey);
   border-radius: 20px;
   padding: 20px 20px 0 20px;
-  margin: 0 20px 40px 0;
-  @media (min-width: 300px) {
+  margin: 0 40px 40px 0;
+  @media (max-width: 480px) {
     margin: 0px;
     padding: 5px 0px 0 10px;
   }

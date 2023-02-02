@@ -1,8 +1,10 @@
-import { Button } from "antd";
+import { Button, Dropdown, Space } from "antd";
 import React, { useState } from "react";
 import styled from "styled-components";
 import Logo from "../../../assets/images/navBarLogo.png";
-import { MenuOutlined, LoginOutlined } from "@ant-design/icons";
+import { MenuOutlined, LoginOutlined, DownOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import LocalStorage from "../../../Utils/localStorage";
 
 const TopBarContainer = styled.div`
   display: flex;
@@ -200,11 +202,41 @@ const FloatButton = styled.div`
 `;
 
 const TopBar = () => {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(LocalStorage.getItem("pages") || 0);
   const [active, setActive] = useState(true);
   const navToggle = () => {
     active ? setActive(false) : setActive(true);
   };
+  const navigate = useNavigate();
+  const [customer, setCustomer] = useState(LocalStorage.getItem("customer"));
+
+  const items = [
+    {
+      key: "1",
+      label: (
+        <div
+          onClick={() => {
+            navigate("/my-information");
+          }}
+        >
+          My information
+        </div>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <div
+          onClick={() => {
+            LocalStorage.deleteItem("customer");
+            setCustomer(null);
+          }}
+        >
+          Logout
+        </div>
+      ),
+    },
+  ];
 
   return active ? (
     <TopBarContainer>
@@ -213,7 +245,9 @@ const TopBar = () => {
         <PageItem
           className={page === 0 ? "active" : ""}
           onClick={() => {
+            LocalStorage.setItem("pages", 0);
             setPage(0);
+            navigate("/home");
           }}
         >
           HOME
@@ -222,7 +256,9 @@ const TopBar = () => {
         <PageItem
           className={page === 1 ? "active" : ""}
           onClick={() => {
+            LocalStorage.setItem("pages", 1);
             setPage(1);
+            navigate("/booking");
           }}
         >
           BOOKING
@@ -231,6 +267,7 @@ const TopBar = () => {
         <PageItem
           className={page === 2 ? "active" : ""}
           onClick={() => {
+            LocalStorage.setItem("pages", 2);
             setPage(2);
           }}
         >
@@ -240,16 +277,49 @@ const TopBar = () => {
         <PageItem
           className={page === 3 ? "active" : ""}
           onClick={() => {
+            LocalStorage.setItem("pages", 3);
             setPage(3);
+            navigate("/review");
           }}
         >
           REVIEW
         </PageItem>
       </NavBar>
-      <Buttons>
-        <LoginButton>Log in</LoginButton>
-        <SignUpButton>Sign up</SignUpButton>
-      </Buttons>
+      {customer ? (
+        <div>
+          <Dropdown menu={{ items }} placement="bottomCenter" arrow>
+            <a onClick={(e) => e.preventDefault()}>
+              <div
+                style={{
+                  fontWeight: "var(--fw-bold)",
+                  fontSize: "var(--fs-14)",
+                }}
+              >
+                Hi, Duc!{"   "}
+                <DownOutlined />
+              </div>
+            </a>
+          </Dropdown>
+        </div>
+      ) : (
+        <Buttons>
+          <LoginButton
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            Log in
+          </LoginButton>
+          <SignUpButton
+            onClick={() => {
+              navigate("/signup");
+            }}
+          >
+            Sign up
+          </SignUpButton>
+        </Buttons>
+      )}
+
       <NavToggler onClick={navToggle}>
         <MenuOutlined></MenuOutlined>
       </NavToggler>
@@ -291,6 +361,7 @@ const TopBar = () => {
         <PageItem
           className={page === 3 ? "active" : ""}
           onClick={() => {
+            console.log("admin");
             setPage(3);
           }}
         >
@@ -298,8 +369,20 @@ const TopBar = () => {
         </PageItem>
       </NavBarActive>
       <Buttons>
-        <LoginButton>Log in</LoginButton>
-        <SignUpButton>Sign up</SignUpButton>
+        <LoginButton
+          onClick={(e) => {
+            navigate("/login");
+          }}
+        >
+          Log in
+        </LoginButton>
+        <SignUpButton
+          onClick={(e) => {
+            navigate("/signup");
+          }}
+        >
+          Sign up
+        </SignUpButton>
       </Buttons>
       <NavToggler onClick={navToggle}>
         <MenuOutlined></MenuOutlined>
