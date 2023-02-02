@@ -1,0 +1,30 @@
+.table {
+    width: 80vw;
+    align-items: center;
+    margin-top: 16px;
+    padding-right: 5px;
+}
+
+.buttonContainer{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin: 16px 0;
+}
+
+.searchInput {
+    margin-right: 16px;
+}
+
+.addButton:hover, .addButton.active{
+    background-color: var(--black);
+    color: var(--white);
+}
+
+.filterActive {
+    color: var(--light-blue)
+}
+
+.filterNormal {
+    color: var(--grey)
+}

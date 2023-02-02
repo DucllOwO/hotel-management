@@ -1,0 +1,16 @@
+.outlineButton {
+    width: 75px;
+    height: 32px;
+    background-color: transparent;
+    border: 1px solid var(--black);
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--black);
+    cursor: pointer;
+}
+
+.title {
+    font-size: 14px;
+}

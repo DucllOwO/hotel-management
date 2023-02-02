@@ -1,0 +1,88 @@
+.formItem {
+    font-size: var(--fs-14);
+    font-weight: var(--fw-bold);
+}
+
+.totalContainer {
+    display: flex;
+    flex-direction: column;
+    margin-left: 100px;
+    margin-top: 30px;
+}
+
+.rightDetail {
+    display: flex;
+    flex-direction: row;
+}
+
+.title {
+    font-size: var(--fs-14);
+    font-weight: var(--fw-regular);
+}
+
+.price {
+    font-size: var(--fs-24);
+    font-weight: var(--fw-bold);
+}
+
+.discountTitle {
+    font-size: var(--fs-14);
+    font-weight: var(--fw-regular);
+    color: var(--grey);
+}
+
+.discountPrice {
+    font-size: var(--fs-24);
+    font-weight: var(--fw-regular);
+    color: var(--grey);
+}
+
+.itemListContainer{
+    justify-content: end;
+}
+
+.itemList {
+    display: flex;
+    justify-content: flex-end;
+    font-size: var(--fs-14);
+    margin-top: 10px;
+    font-weight: var(--fw-medium);
+}
+
+.priceList{
+    display: flex;
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-14);
+    justify-content: end;
+    margin-top: 10px;
+}
+
+.note {
+    display: flex;
+    justify-content: flex-end;
+    font-size: var(--fs-12);
+}
+
+.noteTitle {
+    font-size: var(--fs-14);
+    font-weight: var(--fw-medium);
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.totalTitle{
+    display: flex;
+    justify-content: flex-end;
+    font-size: var(--fs-18);
+    margin-top: 10px;
+    font-weight: var(--fw-bold);
+}
+
+.totalText{
+    display: flex;
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-18);
+    justify-content: end;
+    margin-top: 10px;
+}

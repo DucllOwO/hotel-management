@@ -1,0 +1,10 @@
+.container {
+    display: flex;
+    overflow: hidden;
+}
+
+.inventoryContainer {
+    width: 100%;
+    flex: 4;
+    margin-left: 5px;
+}

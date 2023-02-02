@@ -1,0 +1,22 @@
+.import {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.importContainer{
+    display: flex;
+    flex-direction: column;
+    margin: 0px 30px;
+}
+
+.label {
+    margin-right: 15px;
+}
+
+.inputCon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 30px 0;
+}

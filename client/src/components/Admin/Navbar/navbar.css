@@ -1,0 +1,29 @@
+.navBar {
+  width: 20%;
+  height: 100vh;
+  background-color: var(--dark-blue);
+  display: flex;
+  flex-direction: column;
+}
+
+.menu::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
+}
+
+.menu {
+  flex: 5;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  overflow-y: scroll; 
+}
+
+.logo {
+  flex: 1;
+  max-width: 90%;
+  margin: 5vh auto;
+  max-height: 100%;
+  object-fit:contain;
+}
+

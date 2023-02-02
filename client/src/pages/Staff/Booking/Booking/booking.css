@@ -1,0 +1,19 @@
+.bookingContainer {
+    height: 100%;
+    margin-top: 16px;
+}
+.totalTitle{
+    display: flex;
+    justify-content: flex-end;
+    font-size: var(--fs-18);
+    margin-top: 10px;
+    font-weight: var(--fw-bold);
+}
+
+.totalText{
+    display: flex;
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-18);
+    justify-content: end;
+    margin-top: 10px;
+}

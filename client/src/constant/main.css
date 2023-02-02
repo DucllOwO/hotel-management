@@ -1,0 +1,35 @@
+:root {
+    /* Color */
+    --primary-color: #ffffff;
+    --black: black;
+    --grey: #C0C0C0;
+    --dark-grey: #707070;
+    --light-black: #101010;
+    --light-grey: #F8F8F8;
+    --red: red;
+    --customer-background: #f7f7f7;
+    --dark-blue: #001529;
+    --light-blue: #1677ff;
+
+    /* Font Weight */
+    --fw-bold: bold;
+    --fw-regular: 400;
+    --fw-medium: 500 ;
+
+    /* Font Size */
+    --fs-12: 12px;
+    --fs-14: 14px;
+    --fs-18: 18px;
+    --fs-24: 24px;
+    --fs-28: 28px;
+    --fs-32: 32px;
+    --fs-40: 40px;
+    --fs-50: 50px;
+    --fs-60: 60px;
+
+    /* Space */
+    --space-65: 65px;
+
+    /* border raidus */
+    --br-30: 30px;
+}
