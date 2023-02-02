@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   HomeOutlined,
   StarOutlined,
@@ -12,7 +12,6 @@ import styled from "styled-components";
 const SliderContainer = styled.div`
   width: 80%;
   height: 70vh;
-  background-image: url("https://media.cntraveler.com/photos/53da8c106dec627b149f1e4d/master/pass/one-only-the-palm-dubai-dubai-united-arab-emirates-112572-1.jpg");
   border-radius: 40px;
   position: relative;
   margin-top: 50px;
@@ -216,6 +215,11 @@ const Bullet = styled.div`
   border-radius: 50%;
   background-color: var(--grey);
   margin-right: 10px;
+
+  &.choose {
+    background-color: black;
+    transform: scale(1.5);
+  }
 `;
 
 const SearchButton = styled.div`
@@ -250,12 +254,75 @@ const SearchInput = styled.input`
   transition: 5s;
 `;
 
+const dataSlider = [
+  {
+    address: "120 Trần Phú, Nha Trang",
+    images: [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+    ],
+    mainBackground:
+      "https://media.cntraveler.com/photos/53da8c106dec627b149f1e4d/master/pass/one-only-the-palm-dubai-dubai-united-arab-emirates-112572-1.jpg",
+  },
+  {
+    address: "121 Trần Phú, Nha Trang",
+    images: [
+      "https://thuthuatnhanh.com/wp-content/uploads/2020/01/hinh-nen-cho-chan-ngan-corgi-dep-dang-tao-dang-chup-anh.jpeg",
+      "https://thuthuatnhanh.com/wp-content/uploads/2020/01/hinh-nen-cho-chan-ngan-corgi-dep-dang-tao-dang-chup-anh.jpeg",
+      "https://thuthuatnhanh.com/wp-content/uploads/2020/01/hinh-nen-cho-chan-ngan-corgi-dep-dang-tao-dang-chup-anh.jpeg",
+      "https://thuthuatnhanh.com/wp-content/uploads/2020/01/hinh-nen-cho-chan-ngan-corgi-dep-dang-tao-dang-chup-anh.jpeg",
+    ],
+    mainBackground:
+      "https://thuthuatnhanh.com/wp-content/uploads/2020/01/hinh-nen-cho-chan-ngan-corgi-dep-dang-tao-dang-chup-anh.jpeg",
+  },
+  {
+    address: "122 Trần Phú, Nha Trang",
+    images: [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+    ],
+    mainBackground:
+      "https://media.cntraveler.com/photos/53da8c106dec627b149f1e4d/master/pass/one-only-the-palm-dubai-dubai-united-arab-emirates-112572-1.jpg",
+  },
+  {
+    address: "123 Trần Phú, Nha Trang",
+    images: [
+      "https://anhdep123.com/wp-content/uploads/2020/05/h%C3%ACnh-%E1%BA%A3nh-con-ch%C3%B3-%C4%91%E1%BA%B9p.jpg",
+      "https://anhdep123.com/wp-content/uploads/2020/05/h%C3%ACnh-%E1%BA%A3nh-con-ch%C3%B3-%C4%91%E1%BA%B9p.jpg",
+      "https://anhdep123.com/wp-content/uploads/2020/05/h%C3%ACnh-%E1%BA%A3nh-con-ch%C3%B3-%C4%91%E1%BA%B9p.jpg",
+      "https://anhdep123.com/wp-content/uploads/2020/05/h%C3%ACnh-%E1%BA%A3nh-con-ch%C3%B3-%C4%91%E1%BA%B9p.jpg",
+    ],
+    mainBackground:
+      "https://anhdep123.com/wp-content/uploads/2020/05/h%C3%ACnh-%E1%BA%A3nh-con-ch%C3%B3-%C4%91%E1%BA%B9p.jpg",
+  },
+];
+
 const Slider = () => {
   const [search, setSearch] = useState(false);
   const [isChosen, setIsChosen] = useState(0);
+  const [countCarousel, setCountCarousel] = useState(0);
+
+  useEffect(() => {
+    setInterval(() => {
+      setCountCarousel((prev) => {
+        const temp = prev + 1;
+        console.log(prev);
+        if (temp >= 4) return 0;
+        return temp;
+      });
+    }, 5000);
+  }, []);
 
   return (
-    <SliderContainer>
+    <SliderContainer
+      style={{
+        backgroundImage: `url(${dataSlider[countCarousel].mainBackground})`,
+      }}
+    >
       <BlackBackground>
         <Name>Parallel Shine</Name>
       </BlackBackground>
@@ -300,8 +367,7 @@ const Slider = () => {
           </DetailButton>
           <CenterAddress>
             <AddressLabel>ADDRESS</AddressLabel>
-            <Address>120 Trần Phú, Nha Trang</Address>
-            <Address>Việt Nam</Address>
+            <Address>{dataSlider[countCarousel].address}</Address>
           </CenterAddress>
 
           {search ? (
@@ -310,22 +376,10 @@ const Slider = () => {
             </Search>
           ) : (
             <ImageList>
-              <ImageItem
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
-                alt=""
-              />
-              <ImageItem
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
-                alt=""
-              />
-              <ImageItem
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
-                alt=""
-              />
-              <ImageItem
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
-                alt=""
-              />
+              <ImageItem src={dataSlider[countCarousel].images[0]} alt="" />
+              <ImageItem src={dataSlider[countCarousel].images[0]} alt="" />
+              <ImageItem src={dataSlider[countCarousel].images[0]} alt="" />
+              <ImageItem src={dataSlider[countCarousel].images[0]} alt="" />
             </ImageList>
           )}
 
@@ -343,10 +397,10 @@ const Slider = () => {
         </CenterDetails>
 
         <SliderBullets>
-          <Bullet></Bullet>
-          <Bullet></Bullet>
-          <Bullet></Bullet>
-          <Bullet></Bullet>
+          <Bullet className={countCarousel === 0 ? "choose" : ""}></Bullet>
+          <Bullet className={countCarousel === 1 ? "choose" : ""}></Bullet>
+          <Bullet className={countCarousel === 2 ? "choose" : ""}></Bullet>
+          <Bullet className={countCarousel === 3 ? "choose" : ""}></Bullet>
         </SliderBullets>
       </CenterBarContainer>
     </SliderContainer>

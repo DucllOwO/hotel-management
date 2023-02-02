@@ -11,7 +11,7 @@ const RoomWrapper = styled.div`
   @media only screen and (max-device-width: 480px) {
     grid-template-columns: repeat(1, 1fr);
   }
-  @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) {
+  @media only screen and (min-device-width: 481px) and (max-device-width: 1248px) {
     grid-template-columns: repeat(2, 1fr);
   }
 `;

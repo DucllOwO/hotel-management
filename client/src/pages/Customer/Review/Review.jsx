@@ -107,7 +107,7 @@ const ReviewContainer = styled.div`
   height: 100%;
   margin-top: 20px;
 
-  @media only screen and (max-device-width: 1024px) {
+  @media only screen and (max-device-width: 1248px) {
     grid-template-columns: repeat(1, 1fr);
     row-gap: 50px;
     justify-content: center;
