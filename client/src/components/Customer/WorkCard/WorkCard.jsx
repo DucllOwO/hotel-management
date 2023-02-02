@@ -77,10 +77,10 @@ const Title = styled.div`
   font-weight: var(--fw-bold);
   color: var(--primary-color);
   @media (max-width: 450px) {
-    font-size: var(--fs-24);
+    font-size: var(--fs-32);
   }
   @media (min-width: 768px) and (max-width: 1024px) {
-    font-size: var(--fs-40);
+    font-size: var(--fs-32);
   }
 `;
 
@@ -89,10 +89,10 @@ const ReverseTitle = styled.div`
   font-weight: var(--fw-bold);
   color: var(--black);
   @media (max-width: 450px) {
-    font-size: var(--fs-24);
+    font-size: var(--fs-32);
   }
   @media (min-width: 768px) and (max-width: 1024px) {
-    font-size: var(--fs-40);
+    font-size: var(--fs-32);
   }
 `;
 
@@ -101,10 +101,10 @@ const Content = styled.div`
   color: var(--grey);
   text-align: center;
   @media (max-width: 450px) {
-    font-size: var(--fs-14);
+    font-size: var(--fs-24);
   }
   @media (min-width: 768px) and (max-width: 1024px) {
-    font-size: var(--fs-28);
+    font-size: var(--fs-24);
   }
 `;
 
@@ -113,10 +113,10 @@ const ReverseContent = styled.div`
   color: var(--black);
   text-align: center;
   @media (max-width: 450px) {
-    font-size: var(--fs-14);
+    font-size: var(--fs-24);
   }
   @media (min-width: 768px) and (max-width: 1024px) {
-    font-size: var(--fs-28);
+    font-size: var(--fs-24);
   }
 `;
 

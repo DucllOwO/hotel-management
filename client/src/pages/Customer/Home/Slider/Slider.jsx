@@ -253,6 +253,10 @@ const Search = styled.div`
   margin-top: 10px;
   display: flex;
   align-items: center;
+  @media (max-width: 768px) {
+    width: 50%;
+    height: 50%;
+  }
   /* display: ${(props) => (props.search ? "flex" : "none")}; */
 `;
 
@@ -264,6 +268,9 @@ const SearchInput = styled.input`
   margin: 0 5px;
   padding-left: 10px;
   transition: 5s;
+  @media (max-width: 768px) {
+    font-size: var(--fs-18);
+  }
 `;
 
 const ReviewContainer = styled.div`

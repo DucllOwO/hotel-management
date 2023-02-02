@@ -47,22 +47,30 @@ const MobileContainer = styled.div`
 `;
 
 const Welcome = styled.div`
-  font-size: var(--fs-20);
+  font-size: var(--fs-40);
+  font-weight: var(--fw-bold);
+  color: var(--black);
+`;
+
+const HotelName = styled.div`
+  font-size: var(--fs-40);
   font-weight: var(--fw-bold);
   color: var(--black);
 `;
 
 const Slogan = styled.div`
   color: var(--black);
-  font-size: var(--fs-20);
+  font-size: var(--fs-24);
   font-weight: var(--fw-normal);
+  margin-top: 10px;
 `;
 
 const SearchContainer = styled.div`
   display: flex;
   border-radius: 20px;
   margin-top: 30px;
-  background-color: var(--grey);
+  /* background-color: var(--grey); */
+  border: 1.5px solid black;
   width: 100%;
   margin-bottom: 30px;
   height: 60px;
@@ -156,7 +164,8 @@ const Home = () => {
         <SliderContainer>
           <Slider></Slider>
           <MobileContainer>
-            <Welcome>Welcome to Parallel Shine</Welcome>
+            <Welcome>Welcome to </Welcome>
+            <HotelName>Parallel Shine</HotelName>
             <Slogan>Let's enjoy your life</Slogan>
             <SearchContainer>
               <SearchOutlined
