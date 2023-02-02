@@ -31,6 +31,7 @@ import "./app.css";
 import Verify from "./pages/Verify/Verify";
 import Forgot from "./pages/ForgotPassword/Forgot";
 import Reset from "./pages/ResetPassword/Reset";
+import CustomerReceipt from "./pages/Customer/Home/Receipt/Receipt";
 
 const App = () => {
   const { user } = useContext(AppContext);
@@ -51,6 +52,7 @@ const App = () => {
           <Route key="verify" path="/forgot/verify" element={<Verify />}></Route>
           <Route key="verify" path="/signup/verify" element={<Verify />}></Route>
           <Route key="home" path="/home" element={<Home />}></Route>
+          <Route key="customerReceipt" path="/customer/receipt" element={<CustomerReceipt />}></Route>
           <Route key="admin" path="/admin" element={<Admin />}>
             {listFeature
               ? listRoute.map((item) => {
