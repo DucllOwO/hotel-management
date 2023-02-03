@@ -7,6 +7,7 @@ import { Button, Col, Form, Row, Table } from "antd";
 const DetailContainer = styled.div`
   justify-content: space-between;
   padding: 0 150px;
+  min-width: 600px;
   
 `;
 const ButtonContainer = styled.div`
