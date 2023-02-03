@@ -1,4 +1,4 @@
-.login {
+.signup {
     width: 100wh;
     height: 100vh;
     background-image: url('../../assets/images/LoginBg.png');
@@ -6,7 +6,7 @@
     background-size: cover;
     background-color: transparent;
     padding: 37px 64px;
-    overflow: hidden;
+    overflow:auto;
 }
 
 .logoImg {
