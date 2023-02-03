@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   HomeOutlined,
   StarOutlined,
@@ -12,9 +12,19 @@ import styled from "styled-components";
 const SliderContainer = styled.div`
   width: 80%;
   height: 70vh;
-  background-image: url("https://media.cntraveler.com/photos/53da8c106dec627b149f1e4d/master/pass/one-only-the-palm-dubai-dubai-united-arab-emirates-112572-1.jpg");
   border-radius: 40px;
   position: relative;
+  margin-top: 50px;
+  @media (max-width: 820px) {
+    height: 30vh;
+    margin-top: 0px;
+  }
+  @media (max-width: 768px) {
+    margin-top: 20px;
+  }
+  @media (max-width: 640px) {
+    display: none;
+  }
 `;
 
 const BlackBackground = styled.div`
@@ -29,6 +39,10 @@ const Name = styled.div`
   color: var(--primary-color);
   padding-left: 40px;
   padding-top: 40px;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  @media (max-width: 820px) {
+    font-size: var(--fs-40);
+  }
 `;
 
 const CenterBarContainer = styled.div`
@@ -48,6 +62,9 @@ const CenterNav = styled.div`
   font-weight: var(--fw-bold);
   justify-content: space-between;
   align-items: center;
+  @media (max-width: 820px) {
+    font-size: var(--fs-14);
+  }
 `;
 
 const CenterButtonFirst = styled.div`
@@ -56,10 +73,14 @@ const CenterButtonFirst = styled.div`
   align-items: center;
   width: 33.4%;
   justify-content: center;
-  background-color: var(--black);
-  color: var(--primary-color);
+  /* background-color: var(--black);
+  color: var(--primary-color); */
   cursor: pointer;
   border-radius: 20px 0 0 0;
+  background-color: ${(props) =>
+    props.isChosen === 0 ? "var(--primary-color)" : "var(--black)"};
+  color: ${(props) =>
+    props.isChosen === 0 ? "var(--black)" : "var(--primary-color)"};
 `;
 const CenterButtonSecond = styled.div`
   height: 100%;
@@ -70,6 +91,10 @@ const CenterButtonSecond = styled.div`
   background-color: var(--black);
   color: var(--primary-color);
   cursor: pointer;
+  background-color: ${(props) =>
+    props.isChosen === 1 ? "var(--primary-color)" : "var(--black)"};
+  color: ${(props) =>
+    props.isChosen === 1 ? "var(--black)" : "var(--primary-color)"};
 `;
 
 const CenterButtonLast = styled.div`
@@ -82,16 +107,23 @@ const CenterButtonLast = styled.div`
   color: var(--primary-color);
   cursor: pointer;
   border-radius: 0 20px 0 0;
+  background-color: ${(props) =>
+    props.isChosen === 2 ? "var(--primary-color)" : "var(--black)"};
+  color: ${(props) =>
+    props.isChosen === 2 ? "var(--black)" : "var(--primary-color)"};
 `;
 
 const ButtonLabel = styled.div`
   font-size: var(--fs-18);
   margin-left: 10px;
+  @media (max-width: 820px) {
+    font-size: var(--fs-14);
+  }
 `;
 
 const CenterDetails = styled.div`
-  width: 100%;
-  height: 70%;
+  /* width: 100%; */
+  height: 50%;
   background-color: white;
   display: flex;
   align-items: center;
@@ -135,22 +167,30 @@ const CenterAddress = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-top: 10px;
 `;
 
 const AddressLabel = styled.div`
   color: var(--grey);
+  @media (max-width: 1024px) {
+    font-size: var(--fs-12);
+  }
 `;
 
 const Address = styled.div`
   font-size: 15px;
   margin-top: 3px;
+  @media (max-width: 1024px) {
+    font-size: var(--fs-12);
+  }
 `;
 
 const ImageList = styled.div`
-  display: flex;
+  /* display: flex; */
   flex-direction: row;
   width: 60%;
   height: 80%;
+  display: ${(props) => (props.search ? "none" : "flex")};
 `;
 
 const ImageItem = styled.img`
@@ -175,10 +215,15 @@ const Bullet = styled.div`
   border-radius: 50%;
   background-color: var(--grey);
   margin-right: 10px;
+
+  &.choose {
+    background-color: black;
+    transform: scale(1.5);
+  }
 `;
 
 const SearchButton = styled.div`
-  height: 55%;
+  height: 70%;
   aspect-ratio: 1;
   background-color: var(--black);
   border-radius: 15px;
@@ -188,24 +233,126 @@ const SearchButton = styled.div`
   align-items: center;
 `;
 
+const Search = styled.div`
+  width: 60%;
+  height: 60%;
+  border-radius: 20px;
+  border: 1px solid black;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  /* display: ${(props) => (props.search ? "flex" : "none")}; */
+`;
+
+const SearchInput = styled.input`
+  font-size: var(--fs-24);
+  width: 100%;
+  outline: none;
+  border: 0;
+  margin: 0 5px;
+  padding-left: 10px;
+  transition: 5s;
+`;
+
+const dataSlider = [
+  {
+    address: "120 Trần Phú, Nha Trang",
+    images: [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+    ],
+    mainBackground:
+      "https://media.cntraveler.com/photos/53da8c106dec627b149f1e4d/master/pass/one-only-the-palm-dubai-dubai-united-arab-emirates-112572-1.jpg",
+  },
+  {
+    address: "121 Trần Phú, Nha Trang",
+    images: [
+      "https://thuthuatnhanh.com/wp-content/uploads/2020/01/hinh-nen-cho-chan-ngan-corgi-dep-dang-tao-dang-chup-anh.jpeg",
+      "https://thuthuatnhanh.com/wp-content/uploads/2020/01/hinh-nen-cho-chan-ngan-corgi-dep-dang-tao-dang-chup-anh.jpeg",
+      "https://thuthuatnhanh.com/wp-content/uploads/2020/01/hinh-nen-cho-chan-ngan-corgi-dep-dang-tao-dang-chup-anh.jpeg",
+      "https://thuthuatnhanh.com/wp-content/uploads/2020/01/hinh-nen-cho-chan-ngan-corgi-dep-dang-tao-dang-chup-anh.jpeg",
+    ],
+    mainBackground:
+      "https://thuthuatnhanh.com/wp-content/uploads/2020/01/hinh-nen-cho-chan-ngan-corgi-dep-dang-tao-dang-chup-anh.jpeg",
+  },
+  {
+    address: "122 Trần Phú, Nha Trang",
+    images: [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+    ],
+    mainBackground:
+      "https://media.cntraveler.com/photos/53da8c106dec627b149f1e4d/master/pass/one-only-the-palm-dubai-dubai-united-arab-emirates-112572-1.jpg",
+  },
+  {
+    address: "123 Trần Phú, Nha Trang",
+    images: [
+      "https://anhdep123.com/wp-content/uploads/2020/05/h%C3%ACnh-%E1%BA%A3nh-con-ch%C3%B3-%C4%91%E1%BA%B9p.jpg",
+      "https://anhdep123.com/wp-content/uploads/2020/05/h%C3%ACnh-%E1%BA%A3nh-con-ch%C3%B3-%C4%91%E1%BA%B9p.jpg",
+      "https://anhdep123.com/wp-content/uploads/2020/05/h%C3%ACnh-%E1%BA%A3nh-con-ch%C3%B3-%C4%91%E1%BA%B9p.jpg",
+      "https://anhdep123.com/wp-content/uploads/2020/05/h%C3%ACnh-%E1%BA%A3nh-con-ch%C3%B3-%C4%91%E1%BA%B9p.jpg",
+    ],
+    mainBackground:
+      "https://anhdep123.com/wp-content/uploads/2020/05/h%C3%ACnh-%E1%BA%A3nh-con-ch%C3%B3-%C4%91%E1%BA%B9p.jpg",
+  },
+];
+
 const Slider = () => {
+  const [search, setSearch] = useState(false);
+  const [isChosen, setIsChosen] = useState(0);
+  const [countCarousel, setCountCarousel] = useState(0);
+
+  useEffect(() => {
+    setInterval(() => {
+      setCountCarousel((prev) => {
+        const temp = prev + 1;
+        console.log(prev);
+        if (temp >= 4) return 0;
+        return temp;
+      });
+    }, 5000);
+  }, []);
+
   return (
-    <SliderContainer>
+    <SliderContainer
+      style={{
+        backgroundImage: `url(${dataSlider[countCarousel].mainBackground})`,
+      }}
+    >
       <BlackBackground>
         <Name>Parallel Shine</Name>
       </BlackBackground>
 
       <CenterBarContainer>
         <CenterNav>
-          <CenterButtonFirst>
+          <CenterButtonFirst
+            isChosen={isChosen}
+            onClick={() => {
+              setIsChosen(0);
+            }}
+          >
             <HomeOutlined></HomeOutlined>
             <ButtonLabel>Stay</ButtonLabel>
           </CenterButtonFirst>
-          <CenterButtonSecond>
+          <CenterButtonSecond
+            isChosen={isChosen}
+            onClick={() => {
+              setIsChosen(1);
+            }}
+          >
             <StarOutlined></StarOutlined>
             <ButtonLabel>Reviews</ButtonLabel>
           </CenterButtonSecond>
-          <CenterButtonLast>
+          <CenterButtonLast
+            isChosen={isChosen}
+            onClick={() => {
+              setIsChosen(2);
+            }}
+          >
             <AppstoreAddOutlined></AppstoreAddOutlined>
             <ButtonLabel>Features</ButtonLabel>
           </CenterButtonLast>
@@ -220,30 +367,29 @@ const Slider = () => {
           </DetailButton>
           <CenterAddress>
             <AddressLabel>ADDRESS</AddressLabel>
-            <Address>120 Trần Phú, Nha Trang</Address>
-            <Address>Việt Nam</Address>
+            <Address>{dataSlider[countCarousel].address}</Address>
           </CenterAddress>
 
-          <ImageList>
-            <ImageItem
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
-              alt=""
-            />
-            <ImageItem
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
-              alt=""
-            />
-            <ImageItem
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
-              alt=""
-            />
-            <ImageItem
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
-              alt=""
-            />
-          </ImageList>
+          {search ? (
+            <Search>
+              <SearchInput placeholder="Search here..."></SearchInput>
+            </Search>
+          ) : (
+            <ImageList>
+              <ImageItem src={dataSlider[countCarousel].images[0]} alt="" />
+              <ImageItem src={dataSlider[countCarousel].images[0]} alt="" />
+              <ImageItem src={dataSlider[countCarousel].images[0]} alt="" />
+              <ImageItem src={dataSlider[countCarousel].images[0]} alt="" />
+            </ImageList>
+          )}
 
-          <SearchButton>
+          <SearchButton
+            onClick={() => {
+              setSearch((pre) => {
+                return !pre;
+              });
+            }}
+          >
             <SearchOutlined
               style={{ color: "white", fontSize: "180%" }}
             ></SearchOutlined>
@@ -251,10 +397,10 @@ const Slider = () => {
         </CenterDetails>
 
         <SliderBullets>
-          <Bullet></Bullet>
-          <Bullet></Bullet>
-          <Bullet></Bullet>
-          <Bullet></Bullet>
+          <Bullet className={countCarousel === 0 ? "choose" : ""}></Bullet>
+          <Bullet className={countCarousel === 1 ? "choose" : ""}></Bullet>
+          <Bullet className={countCarousel === 2 ? "choose" : ""}></Bullet>
+          <Bullet className={countCarousel === 3 ? "choose" : ""}></Bullet>
         </SliderBullets>
       </CenterBarContainer>
     </SliderContainer>

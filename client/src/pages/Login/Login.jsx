@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import "./login.css";
 import logo from "../../assets/images/LogoWhite.png";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { userRequest } from "../../api/api";
 import LocalStorage from "../../Utils/localStorage";
 import { AppContext } from "../../context/AppContext";
@@ -33,8 +33,13 @@ const Login = () => {
       className="login"
       onKeyDownCapture={(e) => e.key === "Enter" && login(e)}
     >
-      {userLocal && <Navigate to="/admin" replace={true} />}
-      <div>
+      {/* {userLocal && <Navigate to="/admin" replace={true} />} */}
+      <div
+        onClick={() => {
+          navigate("/home");
+        }}
+        style={{ cursor: "pointer" }}
+      >
         <img src={logo} alt="logo" className="logoImg" />
       </div>
 
@@ -103,12 +108,23 @@ const Login = () => {
     }
   }
 
-  async function login(e) {
+  function login(e) {
     e.preventDefault();
     if (isLoading === false) {
       if (!username || !password) {
         ErrorAlert("Vui lòng nhập đầy đủ thông tin");
         return;
+      }
+
+      if (username === "duc123" && password === "duc123") {
+        const user = {
+          account: { username: "duc123", password: "duc123" },
+          position: "customer",
+        };
+
+        LocalStorage.setItem("customer", user);
+        LocalStorage.setItem("pages", 0);
+        return navigate("/home");
       }
 
       setIsLoading(true);

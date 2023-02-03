@@ -5,6 +5,18 @@ const BranchCardContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 24%;
+  @media (max-width: 768px) {
+    width: 48%;
+    margin-bottom: 10px;
+  }
+  @media (max-width: 420px) {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    width: 48%;
+    margin-bottom: 10px;
+  }
 `;
 
 const BranchImage = styled.img`

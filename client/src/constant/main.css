@@ -1,6 +1,6 @@
 :root {
     /* Color */
-    --primary-color: white;
+    --primary-color: #ffffff;
     --black: black;
     --grey: #C0C0C0;
     --dark-grey: #707070;
@@ -29,4 +29,7 @@
 
     /* Space */
     --space-65: 65px;
+
+    /* border raidus */
+    --br-30: 30px;
 }
