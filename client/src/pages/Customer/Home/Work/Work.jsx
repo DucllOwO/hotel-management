@@ -47,10 +47,24 @@ const Work = () => {
         <Works>WORKS</Works>
       </TitleContainer>
       <WorkDetails>
-        <WorkCard />
-        <WorkCard reverse={true} />
-        <WorkCard />
-        <WorkCard reverse={true} />
+        <WorkCard
+          title="BOOKING"
+          content="Booking your own rooms online and capture your screen"
+        />
+        <WorkCard
+          title="CHECK IN"
+          content="Check-in in reception and receive your rooms"
+          reverse={true}
+        />
+        <WorkCard
+          title="ENJOY"
+          content="Enjoy your journey and have experience with perfect services"
+        />
+        <WorkCard
+          title="GOING BACK"
+          content="Going back with many vouchers"
+          reverse={true}
+        />
       </WorkDetails>
     </WorkContainer>
   );

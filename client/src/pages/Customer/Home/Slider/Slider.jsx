@@ -14,11 +14,12 @@ import {
   TransactionOutlined,
 } from "@ant-design/icons";
 import styled from "styled-components";
+import { Image } from "antd";
 
 const SliderContainer = styled.div`
   width: 80%;
   height: 70vh;
-  background-image: url("https://media.cntraveler.com/photos/53da8c106dec627b149f1e4d/master/pass/one-only-the-palm-dubai-dubai-united-arab-emirates-112572-1.jpg");
+  background-image: url("https://cms-assets.jung.de/cms/media/89/8922/980x496/standard/CA321-18-ver.jpg");
   border-radius: 40px;
   position: relative;
   margin-top: 50px;
@@ -206,7 +207,7 @@ const ImageList = styled.div`
   display: ${(props) => (props.search ? "none" : "flex")};
 `;
 
-const ImageItem = styled.img`
+const ImageItem = styled.div`
   width: 22%;
   aspect-ratio: 1;
   margin: 0 10px;
@@ -403,7 +404,7 @@ const Slider = () => {
             }}
           >
             <StarOutlined></StarOutlined>
-            <ButtonLabel>Reviews</ButtonLabel>
+            <ButtonLabel>Rating</ButtonLabel>
           </CenterButtonSecond>
           <CenterButtonLast
             isChosen={isChosen}
@@ -412,7 +413,7 @@ const Slider = () => {
             }}
           >
             <AppstoreAddOutlined></AppstoreAddOutlined>
-            <ButtonLabel>Features</ButtonLabel>
+            <ButtonLabel>Facilities</ButtonLabel>
           </CenterButtonLast>
         </CenterNav>
 
@@ -440,7 +441,36 @@ const Slider = () => {
             </Search>
           ) : isChosen === 0 ? (
             <ImageList>
-              <ImageItem
+              <ImageItem>
+                <Image
+                  src="https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg"
+                  // width={100}
+                  style={{ borderRadius: "15px" }}
+                ></Image>
+              </ImageItem>
+              <ImageItem>
+                <Image
+                  src="https://img2.10bestmedia.com/Images/Photos/378649/Park-Hyatt-New-York-Manhattan-Sky-Suite-Master-Bedroom-low-res_54_990x660.jpg"
+                  // width={100}
+                  style={{ borderRadius: "15px" }}
+                ></Image>
+              </ImageItem>
+              <ImageItem>
+                <Image
+                  src="https://www.travelandleisure.com/thmb/hKAApndt2eCPmDbcswLyQTKKwIA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/prince-de-galles-lalique-suite-LUXESUITE0122-eab91d3e620c4d939cd168c6319ff980.jpg"
+                  // width={100}
+                  style={{ borderRadius: "15px" }}
+                ></Image>
+              </ImageItem>
+              <ImageItem>
+                <Image
+                  src="https://t4.ftcdn.net/jpg/01/72/36/17/360_F_172361703_znZIvSiPTVUI1ykGWt2SQBpENgYeDT32.jpg"
+                  // width={100}
+                  style={{ borderRadius: "15px" }}
+                ></Image>
+              </ImageItem>
+
+              {/* <ImageItem
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
                 alt=""
               />
@@ -455,7 +485,7 @@ const Slider = () => {
               <ImageItem
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
                 alt=""
-              />
+              /> */}
             </ImageList>
           ) : (
             <div></div>

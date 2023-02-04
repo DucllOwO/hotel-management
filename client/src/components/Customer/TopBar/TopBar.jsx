@@ -9,11 +9,13 @@ const TopBarContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 60px;
-  height: 12vh;
-  position: relative;
-  background-color: var(--customer-background);
+  height: 10vh;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--primary-color);
   @media (max-width: 768px) {
-    background-color: var(--black);
+    /* background-color: var(--black); */
     position: sticky;
     top: 0;
     z-index: 10;
@@ -28,7 +30,7 @@ const TopBarContainer = styled.div`
 `;
 
 const LogoImg = styled.img`
-  width: 150px;
+  width: 100px;
   object-fit: cover;
   @media (max-width: 820px) {
     width: 100px;
@@ -66,7 +68,7 @@ const NavBarActive = styled.ul`
     right: 0;
     width: 100%;
     height: 30vh;
-    background-color: var(--black);
+    background-color: var(--primary-color);
     z-index: 10;
     flex-direction: column;
     border-radius: 0 0 50px 50px;
@@ -90,7 +92,7 @@ const PageItem = styled.div`
   &.active {
     color: var(--black);
     @media (max-width: 768px) {
-      color: var(--primary-color);
+      color: var(--black);
     }
   }
 `;
@@ -141,7 +143,7 @@ const NavToggler = styled.div`
   cursor: pointer;
   @media (max-width: 768px) {
     display: block;
-    color: var(--primary-color);
+    color: var(--black);
     z-index: 100;
   }
 `;
@@ -226,7 +228,7 @@ const TopBar = () => {
         <SignUpButton>Sign up</SignUpButton>
       </Buttons>
       <NavToggler onClick={navToggle}>
-        <MenuOutlined></MenuOutlined>
+        <MenuOutlined style={{ color: "black" }}></MenuOutlined>
       </NavToggler>
       <FloatButton>
         <LoginOutlined></LoginOutlined>

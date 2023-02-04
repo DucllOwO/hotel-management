@@ -122,8 +122,8 @@ const ReverseContent = styled.div`
 
 const ReWorkCardContainer = styled.div``;
 
-const WorkCard = ({ reverse }) => {
-  if (reverse === true) {
+const WorkCard = (props) => {
+  if (props.reverse === true) {
     return (
       <ReverseWorkCardContainer>
         <ReverseCircle>
@@ -131,10 +131,8 @@ const WorkCard = ({ reverse }) => {
             style={{ fontSize: "170%", color: "white" }}
           ></AuditOutlined>
         </ReverseCircle>
-        <ReverseTitle>BOOKING</ReverseTitle>
-        <ReverseContent>
-          Booking your own room online and capture your screen
-        </ReverseContent>
+        <ReverseTitle>{props.title}</ReverseTitle>
+        <ReverseContent>{props.content}</ReverseContent>
       </ReverseWorkCardContainer>
     );
   } else {
@@ -143,8 +141,8 @@ const WorkCard = ({ reverse }) => {
         <Circle>
           <AuditOutlined style={{ fontSize: "170%" }}></AuditOutlined>
         </Circle>
-        <Title>BOOKING</Title>
-        <Content>Booking your own room online and capture your screen</Content>
+        <Title>{props.title}</Title>
+        <Content>{props.content}</Content>
       </WorkCardContainer>
     );
   }

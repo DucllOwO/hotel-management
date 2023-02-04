@@ -40,12 +40,12 @@ const BranchAddress = styled.div`
   margin-top: 10px;
 `;
 
-const BranchCard = () => {
+const BranchCard = (props) => {
   return (
     <BranchCardContainer>
-      <BranchImage src="https://i0.wp.com/theluxurytravelexpert.com/wp-content/uploads/2017/07/avani-quy-nhon-resort-spa.jpg?fit=970%2C546&ssl=1"></BranchImage>
-      <BranchName>Nha Trang RS</BranchName>
-      <BranchAddress>136 Trần Phú, Nha Trang, Việt Nam</BranchAddress>
+      <BranchImage src={props.img}></BranchImage>
+      <BranchName>{props.name}</BranchName>
+      <BranchAddress>{props.address}</BranchAddress>
     </BranchCardContainer>
   );
 };

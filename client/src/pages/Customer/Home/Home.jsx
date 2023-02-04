@@ -230,22 +230,22 @@ const Home = () => {
 
               <SliderSlick {...settings1}>
                 <ImageContainer>
-                  <OfferImage src="https://www.cvent.com/sites/default/files/image/2018-07/luxury-hotel.jpg"></OfferImage>
+                  <OfferImage src="https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg"></OfferImage>
                 </ImageContainer>
                 <ImageContainer>
-                  <OfferImage src="https://curlytales.com/wp-content/uploads/2020/09/oorr-watervilla-bedroom-2-1170x731.jpg"></OfferImage>
+                  <OfferImage src="https://img2.10bestmedia.com/Images/Photos/378649/Park-Hyatt-New-York-Manhattan-Sky-Suite-Master-Bedroom-low-res_54_990x660.jpg"></OfferImage>
                 </ImageContainer>
                 <ImageContainer>
-                  <OfferImage src="https://img1.10bestmedia.com/Images/Photos/398289/Anantara_54_990x660.jpg"></OfferImage>
+                  <OfferImage src="https://www.travelandleisure.com/thmb/hKAApndt2eCPmDbcswLyQTKKwIA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/prince-de-galles-lalique-suite-LUXESUITE0122-eab91d3e620c4d939cd168c6319ff980.jpg"></OfferImage>
                 </ImageContainer>
                 <ImageContainer>
-                  <OfferImage src="https://luxurylondon.co.uk/wp-content/uploads/2022/08/best-new-hotels-opening-in-2022-xl-hd-1465x1099-c-center.jpg"></OfferImage>
+                  <OfferImage src="https://t4.ftcdn.net/jpg/01/72/36/17/360_F_172361703_znZIvSiPTVUI1ykGWt2SQBpENgYeDT32.jpg"></OfferImage>
                 </ImageContainer>
                 <ImageContainer>
-                  <OfferImage src="https://www.rd.com/wp-content/uploads/2017/08/02-World%E2%80%99s-Most-Outrageous-Luxury-Hotels-and-Resorts-via-mardanpalace.com_-760x506.jpg?resize=640,426"></OfferImage>
+                  <OfferImage src="https://cms-assets.jung.de/cms/media/89/8922/980x496/standard/CA321-18-ver.jpg"></OfferImage>
                 </ImageContainer>
                 <ImageContainer>
-                  <OfferImage src="https://media.istockphoto.com/id/119926339/photo/resort-swimming-pool.jpg?s=612x612&w=0&k=20&c=9QtwJC2boq3GFHaeDsKytF4-CavYKQuy1jBD2IRfYKc="></OfferImage>
+                  <OfferImage src="https://amazingarchitecture.com/storage/1827/black_house_amin_moazzen_bangal_india.jpg"></OfferImage>
                 </ImageContainer>
               </SliderSlick>
             </SliderSlickContainer>
