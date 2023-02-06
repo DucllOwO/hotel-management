@@ -34,6 +34,7 @@ import Verify from "./pages/Verify/Verify";
 import Forgot from "./pages/ForgotPassword/Forgot";
 import Reset from "./pages/ResetPassword/Reset";
 import MyInformation from "./components/Customer/MyInfomation/MyInformation";
+import Branches from "./pages/Customer/Branches/Branches";
 
 const App = () => {
   const { user } = useContext(AppContext);
@@ -71,6 +72,11 @@ const App = () => {
             key="verify"
             path="/signup/verify"
             element={<Verify />}
+          ></Route>
+          <Route
+            key={"branches"}
+            path="/branches"
+            element={<Branches />}
           ></Route>
           <Route key="review" path="/review" element={<Review />}></Route>
           <Route key="admin" path="/admin" element={<Admin />}>
