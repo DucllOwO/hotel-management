@@ -551,11 +551,11 @@ const BookingListTable = ({
             })
           })
         }
+        updateReceiptFunc(serviceCost);
       })
       .catch(() => {
         ErrorAlert("Lấy dữ liệu dịch vụ thất bại");
       });
-    updateReceiptFunc(serviceCost);
 
     
   };
@@ -688,6 +688,17 @@ const BookingListTable = ({
             additionPrice: additionPrice,
           };
         }
+        else if (
+          dayjs(Date.now()) <= dayjs(selectedBooking.book_to) 
+        ){
+          return {
+            id: value.id,
+            room_name: value.room_name,
+            room_type: value.room_type,
+            area: value.area,
+            additionPrice: 0,
+          };
+        }
             //night checkout late become 1 day
         else {
           console.log("trả trễ 1 ngày");
@@ -701,7 +712,16 @@ const BookingListTable = ({
             additionPrice: additionPrice,
           };
         }
-      }           
+      }  
+      else{
+        return {
+          id: value.id,
+          room_name: value.room_name,
+          room_type: value.room_type,
+          area: value.area,
+          additionPrice: 0,
+        };
+      }         
     });
   };
 
