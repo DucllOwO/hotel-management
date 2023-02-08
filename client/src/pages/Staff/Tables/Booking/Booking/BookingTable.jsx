@@ -22,7 +22,6 @@ import ErrorAlert from "../../../../../components/Error/Alert/ErrorAlert";
 import BottomBar from "../../../../../components/Admin/BottomBar/BottomBar";
 import RoomTypeExpand from "../../../../../components/ExpandedTable/RoomTypeExpand";
 import { getRoomUtilsByRoomTypeID } from "../../../../../api/hasRoomFeatures";
-
 const { RangePicker } = DatePicker;
 const dateFormat = "DD-MM-YYYY";
 const monthFormat = "MM-YYYY";
@@ -420,45 +419,65 @@ const BookingTable = ({
             <Checkbox
               onChange={(e) => {
                 console.log(e);
-                if (!selectedRooms.includes(record))
-                {  
+                if (!selectedRooms.includes(record)) {
                   setSelectedRooms((prev) => [...prev, record]);
-                  switch(bookingType)
-                  {
+                  switch (bookingType) {
                     case "day":
-                      
-                      setTotalCost((prev) => prev + record.room_type_id.one_day_price * Math.ceil(dayjs(to).diff(dayjs(from),"day", true)));
+                      setTotalCost(
+                        (prev) =>
+                          prev +
+                          record.room_type_id.one_day_price *
+                            Math.ceil(dayjs(to).diff(dayjs(from), "day", true))
+                      );
                       break;
                     case "overnight":
-                      setTotalCost((prev) => prev + record.room_type_id.overnight_price);
+                      setTotalCost(
+                        (prev) => prev + record.room_type_id.overnight_price
+                      );
                       break;
                     case "hour":
-                      setTotalCost((prev) => prev + record.room_type_id.first_hour_price + record.room_type_id.hour_price * (dayjs(to).diff(dayjs(from), "hour") - 1));
+                      setTotalCost(
+                        (prev) =>
+                          prev +
+                          record.room_type_id.first_hour_price +
+                          record.room_type_id.hour_price *
+                            (dayjs(to).diff(dayjs(from), "hour") - 1)
+                      );
+                      break;
+                    default:
+                      break;
+                  }
+                } else if (selectedRooms.includes(record)) {
+                  setSelectedRooms((prev) =>
+                    prev.filter((data) => data !== record)
+                  );
+                  switch (bookingType) {
+                    case "day":
+                      setTotalCost(
+                        (prev) =>
+                          prev -
+                          record.room_type_id.one_day_price *
+                            Math.ceil(dayjs(to).diff(dayjs(from), "day", true))
+                      );
+                      break;
+                    case "overnight":
+                      setTotalCost(
+                        (prev) => prev - record.room_type_id.overnight_price
+                      );
+                      break;
+                    case "hour":
+                      setTotalCost(
+                        (prev) =>
+                          prev -
+                          record.room_type_id.first_hour_price +
+                          record.room_type_id.hour_price *
+                            (dayjs(from).diff(dayjs(to), "hour") - 1)
+                      );
                       break;
                     default:
                       break;
                   }
                 }
-                else if (selectedRooms.includes(record))
-                {
-                  setSelectedRooms((prev) =>
-                    prev.filter((data) => data !== record)
-                  );
-                  switch(bookingType)
-                  {
-                    case "day":
-                      setTotalCost((prev) => prev - record.room_type_id.one_day_price * Math.ceil(dayjs(to).diff(dayjs(from),"day", true)));
-                      break;
-                    case "overnight":
-                      setTotalCost((prev) => prev - record.room_type_id.overnight_price);
-                      break;
-                    case "hour":
-                      setTotalCost((prev) => prev - record.room_type_id.first_hour_price + record.room_type_id.hour_price * (dayjs(from).diff(dayjs(to), "hour") - 1));
-                      break;
-                    default:
-                      break;
-                  }
-                }  
               }}
             ></Checkbox>
           </Form.Item>

@@ -5,6 +5,7 @@ import WorkCard from "../../../../components/Customer/WorkCard/WorkCard";
 const WorkContainer = styled.div`
   padding: 0 60px;
   margin-top: 100px;
+  margin-bottom: 20px;
   @media (max-width: 640px) {
     padding: 0 20px;
   }

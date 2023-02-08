@@ -6,7 +6,6 @@ const FooterContainer = styled.div`
   height: fit-content;
   background-color: var(--black);
   width: 100%;
-  margin-top: 40px;
   color: var(--primary-color);
 `;
 

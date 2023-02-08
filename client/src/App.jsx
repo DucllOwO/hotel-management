@@ -26,11 +26,15 @@ import AuthErrorBoundary from "./components/Error/ErrorBoundary/AuthErrorBoundar
 import Promotion from "./pages/Admin/Promotion/Promotion";
 import Import from "./components/Admin/Import/Import";
 import Home from "./pages/Customer/Home/Home";
+import BookingCustomer from "./pages/Customer/Booking/Booking";
 
 import "./app.css";
+import Review from "./pages/Customer/Review/Review";
 import Verify from "./pages/Verify/Verify";
 import Forgot from "./pages/ForgotPassword/Forgot";
 import Reset from "./pages/ResetPassword/Reset";
+import MyInformation from "./components/Customer/MyInfomation/MyInformation";
+import Branches from "./pages/Customer/Branches/Branches";
 
 const App = () => {
   const { user } = useContext(AppContext);
@@ -45,6 +49,17 @@ const App = () => {
         <Routes>
           <Route key="login" index element={<Login />}></Route>
           <Route key="login1" path="/login" element={<Login />}></Route>
+          <Route key="home" path="/home" element={<Home />}></Route>
+          <Route
+            key="my-information"
+            path="/my-information"
+            element={<MyInformation />}
+          ></Route>
+          <Route
+            key="booking"
+            path="/booking"
+            element={<BookingCustomer />}
+          ></Route>
           <Route key="signup" path="/signup" element={<SignUp />}></Route>
           <Route key="forgot" path="/forgot" element={<Forgot />}></Route>
           <Route key="reset" path="/reset" element={<Reset />}></Route>
@@ -58,7 +73,12 @@ const App = () => {
             path="/signup/verify"
             element={<Verify />}
           ></Route>
-          <Route key="home" path="/home" element={<Home />}></Route>
+          <Route
+            key={"branches"}
+            path="/branches"
+            element={<Branches />}
+          ></Route>
+          <Route key="review" path="/review" element={<Review />}></Route>
           <Route key="admin" path="/admin" element={<Admin />}>
             {listFeature
               ? listRoute.map((item) => {
@@ -159,14 +179,7 @@ const listRoute = [
   },
   {
     key: "Đặt phòng",
-    value: (
-      <Route
-        key="BookingList"
-        index
-        path="bookings/list"
-        element={<BookingList />}
-      />
-    ),
+    value: <Route index path="bookings/list" element={<BookingList />} />,
   },
   {
     key: "Nhập hàng",

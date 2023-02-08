@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   HomeOutlined,
   StarOutlined,
@@ -19,10 +19,11 @@ import { Image } from "antd";
 const SliderContainer = styled.div`
   width: 80%;
   height: 70vh;
-  background-image: url("https://cms-assets.jung.de/cms/media/89/8922/980x496/standard/CA321-18-ver.jpg");
   border-radius: 40px;
   position: relative;
   margin-top: 50px;
+  background-repeat: no-repeat;
+  background-size: cover;
   @media (max-width: 820px) {
     height: 30vh;
     margin-top: 0px;
@@ -233,6 +234,11 @@ const Bullet = styled.div`
   border-radius: 50%;
   background-color: var(--grey);
   margin-right: 10px;
+
+  &.choose {
+    background-color: black;
+    transform: scale(1.5);
+  }
 `;
 
 const SearchButton = styled.div`
@@ -376,12 +382,75 @@ const FeatureName = styled.div`
   margin-top: 5px;
 `;
 
+const dataSlider = [
+  {
+    address: "23 Fansipan, Lao Cai",
+    images: [
+      "https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg",
+      "https://img2.10bestmedia.com/Images/Photos/378649/Park-Hyatt-New-York-Manhattan-Sky-Suite-Master-Bedroom-low-res_54_990x660.jpg",
+      "https://www.travelandleisure.com/thmb/hKAApndt2eCPmDbcswLyQTKKwIA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/prince-de-galles-lalique-suite-LUXESUITE0122-eab91d3e620c4d939cd168c6319ff980.jpg",
+      "https://t4.ftcdn.net/jpg/01/72/36/17/360_F_172361703_znZIvSiPTVUI1ykGWt2SQBpENgYeDT32.jpg",
+    ],
+    mainBackground:
+      "https://cms-assets.jung.de/cms/media/89/8922/980x496/standard/CA321-18-ver.jpg ",
+  },
+  {
+    address: "03 Vo Nguyen Giap, Da Nang",
+    images: [
+      "https://t4.ftcdn.net/jpg/01/72/36/17/360_F_172361703_znZIvSiPTVUI1ykGWt2SQBpENgYeDT32.jpg",
+      "https://img2.10bestmedia.com/Images/Photos/378649/Park-Hyatt-New-York-Manhattan-Sky-Suite-Master-Bedroom-low-res_54_990x660.jpg",
+      "https://www.travelandleisure.com/thmb/hKAApndt2eCPmDbcswLyQTKKwIA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/prince-de-galles-lalique-suite-LUXESUITE0122-eab91d3e620c4d939cd168c6319ff980.jpg",
+      "https://t4.ftcdn.net/jpg/01/72/36/17/360_F_172361703_znZIvSiPTVUI1ykGWt2SQBpENgYeDT32.jpg",
+    ],
+    mainBackground:
+      "https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg",
+  },
+  {
+    address: "2002, Cong Hoa, Sai Gon",
+    images: [
+      "https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg",
+      "https://img2.10bestmedia.com/Images/Photos/378649/Park-Hyatt-New-York-Manhattan-Sky-Suite-Master-Bedroom-low-res_54_990x660.jpg",
+      "https://www.travelandleisure.com/thmb/hKAApndt2eCPmDbcswLyQTKKwIA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/prince-de-galles-lalique-suite-LUXESUITE0122-eab91d3e620c4d939cd168c6319ff980.jpg",
+      "https://t4.ftcdn.net/jpg/01/72/36/17/360_F_172361703_znZIvSiPTVUI1ykGWt2SQBpENgYeDT32.jpg",
+    ],
+    mainBackground:
+      "https://www.travelandleisure.com/thmb/hKAApndt2eCPmDbcswLyQTKKwIA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/prince-de-galles-lalique-suite-LUXESUITE0122-eab91d3e620c4d939cd168c6319ff980.jpg",
+  },
+  {
+    address: "2023 Nguyen Van Cu, Can Tho",
+    images: [
+      "https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg",
+      "https://img2.10bestmedia.com/Images/Photos/378649/Park-Hyatt-New-York-Manhattan-Sky-Suite-Master-Bedroom-low-res_54_990x660.jpg",
+      "https://www.travelandleisure.com/thmb/hKAApndt2eCPmDbcswLyQTKKwIA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/prince-de-galles-lalique-suite-LUXESUITE0122-eab91d3e620c4d939cd168c6319ff980.jpg",
+      "https://t4.ftcdn.net/jpg/01/72/36/17/360_F_172361703_znZIvSiPTVUI1ykGWt2SQBpENgYeDT32.jpg",
+    ],
+    mainBackground:
+      "https://amazingarchitecture.com/storage/files/1/architecture-firms/amin-moazzen/black-fly/black_house_amin_moazzen_bangal_india-5.jpg",
+  },
+];
+
 const Slider = () => {
   const [search, setSearch] = useState(false);
   const [isChosen, setIsChosen] = useState(0);
+  const [countCarousel, setCountCarousel] = useState(0);
+
+  useEffect(() => {
+    setInterval(() => {
+      setCountCarousel((prev) => {
+        const temp = prev + 1;
+        console.log(prev);
+        if (temp >= 4) return 0;
+        return temp;
+      });
+    }, 10000);
+  }, []);
 
   return (
-    <SliderContainer>
+    <SliderContainer
+      style={{
+        backgroundImage: `url(${dataSlider[countCarousel].mainBackground})`,
+      }}
+    >
       <BlackBackground>
         <Name>Parallel Shine</Name>
       </BlackBackground>
@@ -424,16 +493,10 @@ const Slider = () => {
               style={{ fontSize: "150%", color: "white", marginLeft: "5px" }}
             ></SwapRightOutlined>
           </DetailButton>
-
-          {isChosen === 0 ? (
-            <CenterAddress>
-              <AddressLabel>ADDRESS</AddressLabel>
-              <Address>120 Trần Phú, Nha Trang</Address>
-              <Address>Việt Nam</Address>
-            </CenterAddress>
-          ) : (
-            <div></div>
-          )}
+          <CenterAddress>
+            <AddressLabel>ADDRESS</AddressLabel>
+            <Address>{dataSlider[countCarousel].address}</Address>
+          </CenterAddress>
 
           {search && isChosen === 0 ? (
             <Search>
@@ -443,49 +506,36 @@ const Slider = () => {
             <ImageList>
               <ImageItem>
                 <Image
-                  src="https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg"
+                  src={dataSlider[countCarousel].images[0]}
                   // width={100}
                   style={{ borderRadius: "15px" }}
                 ></Image>
               </ImageItem>
               <ImageItem>
                 <Image
-                  src="https://img2.10bestmedia.com/Images/Photos/378649/Park-Hyatt-New-York-Manhattan-Sky-Suite-Master-Bedroom-low-res_54_990x660.jpg"
+                  src={dataSlider[countCarousel].images[1]}
                   // width={100}
                   style={{ borderRadius: "15px" }}
                 ></Image>
               </ImageItem>
               <ImageItem>
                 <Image
-                  src="https://www.travelandleisure.com/thmb/hKAApndt2eCPmDbcswLyQTKKwIA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/prince-de-galles-lalique-suite-LUXESUITE0122-eab91d3e620c4d939cd168c6319ff980.jpg"
+                  src={dataSlider[countCarousel].images[2]}
                   // width={100}
                   style={{ borderRadius: "15px" }}
                 ></Image>
               </ImageItem>
               <ImageItem>
                 <Image
-                  src="https://t4.ftcdn.net/jpg/01/72/36/17/360_F_172361703_znZIvSiPTVUI1ykGWt2SQBpENgYeDT32.jpg"
+                  src={dataSlider[countCarousel].images[3]}
                   // width={100}
                   style={{ borderRadius: "15px" }}
                 ></Image>
               </ImageItem>
-
-              {/* <ImageItem
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
-                alt=""
-              />
-              <ImageItem
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
-                alt=""
-              />
-              <ImageItem
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
-                alt=""
-              />
-              <ImageItem
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU"
-                alt=""
-              /> */}
+              {/* <ImageItem src={dataSlider[countCarousel].images[0]} alt="" />
+              <ImageItem src={dataSlider[countCarousel].images[1]} alt="" />
+              <ImageItem src={dataSlider[countCarousel].images[2]} alt="" />
+              <ImageItem src={dataSlider[countCarousel].images[3]} alt="" /> */}
             </ImageList>
           ) : (
             <div></div>
@@ -582,10 +632,10 @@ const Slider = () => {
         </CenterDetails>
 
         <SliderBullets>
-          <Bullet></Bullet>
-          <Bullet></Bullet>
-          <Bullet></Bullet>
-          <Bullet></Bullet>
+          <Bullet className={countCarousel === 0 ? "choose" : ""}></Bullet>
+          <Bullet className={countCarousel === 1 ? "choose" : ""}></Bullet>
+          <Bullet className={countCarousel === 2 ? "choose" : ""}></Bullet>
+          <Bullet className={countCarousel === 3 ? "choose" : ""}></Bullet>
         </SliderBullets>
       </CenterBarContainer>
     </SliderContainer>
