@@ -78,7 +78,6 @@ const createReceipt = async (req, res, next) => {
       employee_id: employee?.id,
       booking_id: booking?.id,
       employee_name: employee?.fullname,
-      checkin_time: booking?.checkin_time,
     });
 
   if (insertReceiptError) return next(insertReceiptError);
