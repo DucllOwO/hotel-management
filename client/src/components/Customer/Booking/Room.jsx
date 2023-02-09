@@ -1,10 +1,10 @@
-import { ConfigProvider, Image } from "antd";
+import { Image } from "antd";
 import React, { useState } from "react";
 import styled from "styled-components";
 
 const RoomInfoContainer = styled.div`
   background-color: white;
-  width: 400px;
+  width: 330px;
   height: 390px;
   border-radius: 30px;
   padding: 8px;
@@ -13,6 +13,10 @@ const RoomInfoContainer = styled.div`
 
   border: ${(props) => (props.isChosen ? "2px solid #C0C0C0" : "none")};
   cursor: pointer;
+  @media only screen and (max-width: 960px) {
+    width: 280px;
+    height: 390px;
+  }
   @media only screen and (max-width: 960px) {
     width: 280px;
     height: 390px;
