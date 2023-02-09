@@ -303,9 +303,9 @@ const TopBar = () => {
       <NavToggler onClick={navToggle}>
         <MenuOutlined style={{ color: "black" }}></MenuOutlined>
       </NavToggler>
-      <FloatButton>
+      {/* <FloatButton>
         <LoginOutlined></LoginOutlined>
-      </FloatButton>
+      </FloatButton> */}
     </TopBarContainer>
   ) : (
     <TopBarContainer>
