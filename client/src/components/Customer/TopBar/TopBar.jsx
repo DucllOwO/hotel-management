@@ -367,9 +367,9 @@ const TopBar = () => {
       <NavToggler onClick={navToggle}>
         <MenuOutlined></MenuOutlined>
       </NavToggler>
-      <FloatButton>
+      {/* <FloatButton>
         <LoginOutlined></LoginOutlined>
-      </FloatButton>
+      </FloatButton> */}
     </TopBarContainer>
   );
 };
