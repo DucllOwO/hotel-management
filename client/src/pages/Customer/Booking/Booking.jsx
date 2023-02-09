@@ -1,15 +1,7 @@
 import styled from "styled-components";
 import SelectedButton from "../../../components/Customer/Button/SelectedButton";
 import { SearchOutlined } from "@ant-design/icons";
-import {
-  Badge,
-  ConfigProvider,
-  DatePicker,
-  Empty,
-  FloatButton,
-  Select,
-  Slider,
-} from "antd";
+import { Badge, ConfigProvider, DatePicker, Empty, Select, Slider } from "antd";
 import TopBar from "../../../components/Customer/TopBar/TopBar";
 import Footer from "../../../components/Customer/Footer/Footer";
 import RoomList from "../../../components/Customer/Booking/RoomList";

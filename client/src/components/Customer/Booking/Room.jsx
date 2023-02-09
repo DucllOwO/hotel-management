@@ -17,10 +17,6 @@ const RoomInfoContainer = styled.div`
     width: 280px;
     height: 390px;
   }
-  @media only screen and (max-width: 960px) {
-    width: 280px;
-    height: 390px;
-  }
 `;
 
 const RoomInfo = styled.div`
