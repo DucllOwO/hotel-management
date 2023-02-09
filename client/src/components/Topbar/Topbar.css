@@ -20,8 +20,27 @@
     font-size: var(--fs-14);
     font-weight: var(--fw-bold);
 }
-
+.menuButton {
+    position: absolute;
+    align-items: center;
+    left: 5px;
+    display: none;
+    top: 10px;
+    z-index: 2;
+}
 .position {
     font-size: var(--fs-14);
     font-weight: var(fw-normal);
+}
+
+@media only screen and (max-width: 900px) {
+
+.menuButton{
+    display: block;
+}
+.topbar{
+    width: 100vw;
+    position: static;
+}
+
 }

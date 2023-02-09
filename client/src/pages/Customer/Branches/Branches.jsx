@@ -113,6 +113,20 @@ const BranchesContainer = styled.div`
   }
 `;
 
+const Iframe = styled.iframe`
+  width: 600px;
+  height: 450px;
+
+  @media only screen and (max-device-width: 480px) {
+    width: auto;
+    height: 400px;
+    margin-bottom: 20px;
+  }
+  @media only screen and (min-device-width: 481px) and (max-device-width: 1248px) {
+    margin-bottom: 20px;
+  }
+`;
+
 const Branches = () => {
   return (
     <div>
@@ -265,15 +279,12 @@ const Branches = () => {
             margin: "auto 0",
           }}
         >
-          <iframe
+          <Iframe
             title="map"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.2312403776427!2d106.80086541476484!3d10.87000889225807!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317527587e9ad5bf%3A0xafa66f9c8be3c91!2sUniversity%20of%20Information%20Technology%20-%20VNUHCM!5e0!3m2!1sen!2s!4v1675692547284!5m2!1sen!2s"
-            width="600"
-            height="450"
             style={{ border: 0, borderRadius: 10 }}
-            loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
+          ></Iframe>
         </div>
       </BranchesContainer>
       <Footer />

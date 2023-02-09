@@ -2,6 +2,7 @@
   width: 20%;
   height: 100vh;
   background-color: var(--dark-blue);
+  opacity: 1;
   display: flex;
   flex-direction: column;
 }
@@ -27,3 +28,41 @@
   object-fit:contain;
 }
 
+
+/* @media only screen and (max-width: 600px) {
+  .navBar{ */
+      /* display: none; */
+      /* width: 70%;
+      position: absolute;
+      z-index: 1;
+  }
+      
+} */
+@media only screen and (max-width: 900px) {
+  .navBar{
+      /* display: none; */
+      height: 100vh;
+      width: 50%;
+      max-width: 200px;
+      position: absolute;
+      top: 60px;
+      z-index: 4;
+  }
+  /* .logo{
+    max-height: 40%;
+  } */
+  /* @keyframes left_to_right {
+    from
+  } */
+  
+  /* The element to apply the animation to */
+  /* div {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    background-color: red;
+    animation-name: example;
+    animation-duration: 4s;
+  } */
+      
+}
