@@ -50,6 +50,7 @@ const FilterContainer = styled.div`
   @media (max-width: 480px) {
     margin: 0px;
     padding: 5px 0px 0 10px;
+    width: 100%;
   }
 `;
 
@@ -89,19 +90,20 @@ const SearchInput = styled.input`
   :focus {
     outline: none;
   }
-  @media (min-width: 300px) {
+  @media (max-width: 435px) {
+    width: 100%;
   }
 `;
 
 const SearchButton = styled.button`
   background-color: black;
-  width: 41px;
+  width: 40px;
   color: white;
   padding: 5px;
   border-radius: 14px;
   margin: 0 30px 0 20px;
-  @media (min-width: 300px) {
-    margin: 0 10px 0 20px;
+  @media (max-width: 435px) {
+    margin: 0;
   }
 `;
 
@@ -124,6 +126,13 @@ const BodyContainer = styled.div`
   background-color: var(--light-grey);
   height: fit-content;
   padding: 50px 40px;
+  @media only screen and (max-device-width: 480px) {
+    padding: 20px auto;
+  }
+
+  @media only screen and (max-device-width: 320px) {
+    padding: 0;
+  }
 `;
 
 const BranchInfoContainer = styled.div`
