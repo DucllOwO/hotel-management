@@ -201,6 +201,8 @@ const FloatButton = styled.div`
   }
 `;
 
+const Iframe = styled.iframe``;
+
 const TopBar = () => {
   const [page, setPage] = useState(LocalStorage.getItem("pages") || 0);
   const [active, setActive] = useState(true);
@@ -269,6 +271,7 @@ const TopBar = () => {
           onClick={() => {
             LocalStorage.setItem("pages", 2);
             setPage(2);
+            navigate("/branches");
           }}
         >
           BRANCHES
