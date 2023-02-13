@@ -1,10 +1,10 @@
-import { ConfigProvider, Image } from "antd";
+import { Image } from "antd";
 import React, { useState } from "react";
 import styled from "styled-components";
 
 const RoomInfoContainer = styled.div`
   background-color: white;
-  width: 400px;
+  width: 330px;
   height: 390px;
   border-radius: 30px;
   padding: 8px;

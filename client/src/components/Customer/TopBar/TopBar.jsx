@@ -11,11 +11,13 @@ const TopBarContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 60px;
-  height: 12vh;
-  position: relative;
-  background-color: var(--customer-background);
+  height: 10vh;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--primary-color);
   @media (max-width: 768px) {
-    background-color: var(--black);
+    /* background-color: var(--black); */
     position: sticky;
     top: 0;
     z-index: 10;
@@ -30,7 +32,7 @@ const TopBarContainer = styled.div`
 `;
 
 const LogoImg = styled.img`
-  width: 150px;
+  width: 100px;
   object-fit: cover;
   @media (max-width: 820px) {
     width: 100px;
@@ -38,28 +40,6 @@ const LogoImg = styled.img`
 `;
 
 const NavBar = styled.ul`
-  /* display: flex;
-  flex-direction: row;
-  list-style-type: none;
-  justify-content: space-between;
-  align-items: center;
-  font-size: var(--fs-14);
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  margin-top: 20px;
-  @media (max-width: 768px) {
-    padding-top: 10vh;
-    position: fixed;
-    top: 10vh;
-    width: 100%;
-    height: 300px;
-    background-color: var(--black);
-    border-radius: 0 0 20px 20px;
-    z-index: 10;
-    flex-direction: column;
-    justify-content: space-around;
-  } */
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -78,9 +58,6 @@ const NavBar = styled.ul`
   @media (max-width: 640px) {
     top: 8vh;
   }
-  /* active {
-    transform: translateX(0);
-  } */
 `;
 
 const NavBarActive = styled.ul`
@@ -93,7 +70,7 @@ const NavBarActive = styled.ul`
     right: 0;
     width: 100%;
     height: 30vh;
-    background-color: var(--black);
+    background-color: var(--primary-color);
     z-index: 10;
     flex-direction: column;
     border-radius: 0 0 50px 50px;
@@ -117,7 +94,7 @@ const PageItem = styled.div`
   &.active {
     color: var(--black);
     @media (max-width: 768px) {
-      color: var(--primary-color);
+      color: var(--black);
     }
   }
 `;
@@ -168,7 +145,7 @@ const NavToggler = styled.div`
   cursor: pointer;
   @media (max-width: 768px) {
     display: block;
-    color: var(--primary-color);
+    color: var(--black);
     z-index: 100;
   }
 `;
@@ -200,6 +177,8 @@ const FloatButton = styled.div`
     font-size: var(--fs-32);
   }
 `;
+
+const Iframe = styled.iframe``;
 
 const TopBar = () => {
   const [page, setPage] = useState(LocalStorage.getItem("pages") || 0);
@@ -269,6 +248,7 @@ const TopBar = () => {
           onClick={() => {
             LocalStorage.setItem("pages", 2);
             setPage(2);
+            navigate("/branches");
           }}
         >
           BRANCHES
@@ -321,11 +301,11 @@ const TopBar = () => {
       )}
 
       <NavToggler onClick={navToggle}>
-        <MenuOutlined></MenuOutlined>
+        <MenuOutlined style={{ color: "black" }}></MenuOutlined>
       </NavToggler>
-      <FloatButton>
+      {/* <FloatButton>
         <LoginOutlined></LoginOutlined>
-      </FloatButton>
+      </FloatButton> */}
     </TopBarContainer>
   ) : (
     <TopBarContainer>
@@ -387,9 +367,9 @@ const TopBar = () => {
       <NavToggler onClick={navToggle}>
         <MenuOutlined></MenuOutlined>
       </NavToggler>
-      <FloatButton>
+      {/* <FloatButton>
         <LoginOutlined></LoginOutlined>
-      </FloatButton>
+      </FloatButton> */}
     </TopBarContainer>
   );
 };

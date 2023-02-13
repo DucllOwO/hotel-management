@@ -1,11 +1,12 @@
-.container {
+.mainContainer {
     display: flex;
     height: 100vh;
-    width: 100wh;
+    width: 100vw;
 }
 
 .navbar {
     flex: 1;
+    z-index: 1;
 }
 
 .homeContainer {
@@ -13,4 +14,18 @@
     margin-left: 5px;
     width: 80%;
     margin-right: 10px;
+    z-index: 0;
+}
+@media only screen and (max-width: 900px) {
+.blur{
+    height: 100vh;
+    z-index: 2;
+    opacity: 0.5;
+}
+.mainContainer{
+    display: block;
+}
+.homeContainer{
+    width: 100%;
+}
 }

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { userRequest } from "../../api/api";
 import LocalStorage from "../../Utils/localStorage";
 import { AppContext } from "../../context/AppContext";
-import { Spin } from "antd";
+import { Button, Spin } from "antd";
 import ErrorAlert from "../../components/Error/Alert/ErrorAlert";
 import { loginAPI } from "../../api/AuthAPI";
 
@@ -45,6 +45,12 @@ const Login = () => {
 
       <div className="welcome">Welcome, let's enjoy your life</div>
       <div className="form">
+        <div className="confirmContainer">
+          <div className="confirm">Don't have an account ?</div>
+          <Button type="link" onClick={() => navigate("/signup")}>
+            Sign up
+          </Button>
+        </div>
         <div className="inputContainer">
           <div className="labelInput">Tên đăng nhập</div>
           <div className="input">

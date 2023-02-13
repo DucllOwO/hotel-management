@@ -33,7 +33,9 @@ import Review from "./pages/Customer/Review/Review";
 import Verify from "./pages/Verify/Verify";
 import Forgot from "./pages/ForgotPassword/Forgot";
 import Reset from "./pages/ResetPassword/Reset";
+import CustomerReceipt from "./pages/Customer/Home/Receipt/Receipt";
 import MyInformation from "./components/Customer/MyInfomation/MyInformation";
+import Branches from "./pages/Customer/Branches/Branches";
 
 const App = () => {
   const { user } = useContext(AppContext);
@@ -62,6 +64,10 @@ const App = () => {
           <Route key="signup" path="/signup" element={<SignUp />}></Route>
           <Route key="forgot" path="/forgot" element={<Forgot />}></Route>
           <Route key="reset" path="/reset" element={<Reset />}></Route>
+          {/* <Route key="verify" path="/forgot/verify" element={<Verify />}></Route>
+          <Route key="verify" path="/signup/verify" element={<Verify />}></Route> */}
+          <Route key="home" path="/home" element={<Home />}></Route>
+          <Route key="customerReceipt" path="/customer/receipt" element={<CustomerReceipt />}></Route>
           <Route
             key="verify"
             path="/forgot/verify"
@@ -71,6 +77,11 @@ const App = () => {
             key="verify"
             path="/signup/verify"
             element={<Verify />}
+          ></Route>
+          <Route
+            key={"branches"}
+            path="/branches"
+            element={<Branches />}
           ></Route>
           <Route key="review" path="/review" element={<Review />}></Route>
           <Route key="admin" path="/admin" element={<Admin />}>

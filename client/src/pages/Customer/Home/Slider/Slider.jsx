@@ -5,9 +5,16 @@ import {
   AppstoreAddOutlined,
   SearchOutlined,
   SwapRightOutlined,
+  StarFilled,
+  WifiOutlined,
+  ColumnWidthOutlined,
+  CoffeeOutlined,
+  SlidersOutlined,
+  SkinOutlined,
+  TransactionOutlined,
 } from "@ant-design/icons";
-import { Button } from "antd";
 import styled from "styled-components";
+import { Image } from "antd";
 
 const SliderContainer = styled.div`
   width: 80%;
@@ -15,6 +22,8 @@ const SliderContainer = styled.div`
   border-radius: 40px;
   position: relative;
   margin-top: 50px;
+  background-repeat: no-repeat;
+  background-size: cover;
   @media (max-width: 820px) {
     height: 30vh;
     margin-top: 0px;
@@ -175,6 +184,9 @@ const AddressLabel = styled.div`
   @media (max-width: 1024px) {
     font-size: var(--fs-12);
   }
+  @media (max-width: 768px) {
+    font-size: var(--fs-10);
+  }
 `;
 
 const Address = styled.div`
@@ -182,6 +194,9 @@ const Address = styled.div`
   margin-top: 3px;
   @media (max-width: 1024px) {
     font-size: var(--fs-12);
+  }
+  @media (max-width: 768px) {
+    font-size: var(--fs-11);
   }
 `;
 
@@ -193,12 +208,16 @@ const ImageList = styled.div`
   display: ${(props) => (props.search ? "none" : "flex")};
 `;
 
-const ImageItem = styled.img`
+const ImageItem = styled.div`
   width: 22%;
   aspect-ratio: 1;
   margin: 0 10px;
   border-radius: 15px;
   cursor: pointer;
+  @media (max-width: 768px) {
+    width: 18%;
+    height: 90%;
+  }
 `;
 
 const SliderBullets = styled.div`
@@ -241,6 +260,10 @@ const Search = styled.div`
   margin-top: 10px;
   display: flex;
   align-items: center;
+  @media (max-width: 768px) {
+    width: 50%;
+    height: 50%;
+  }
   /* display: ${(props) => (props.search ? "flex" : "none")}; */
 `;
 
@@ -252,52 +275,157 @@ const SearchInput = styled.input`
   margin: 0 5px;
   padding-left: 10px;
   transition: 5s;
+  @media (max-width: 768px) {
+    font-size: var(--fs-18);
+  }
+`;
+
+const ReviewContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  margin-top: 10px;
+`;
+
+const RatingContainer = styled.div`
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center;
+  font-size: var(--fs-24);
+  width: 20%;
+`;
+
+const RatingLabel = styled.div`
+  font-weight: var(--fw-bold);
+`;
+
+const VerticalLine = styled.div`
+  width: 1px;
+  height: 100%;
+  background-color: var(--grey);
+  margin-left: 5px;
+`;
+
+const CommentContainer = styled.div`
+  width: 35%;
+  display: flex;
+  font-size: var(--fs-24);
+  margin-left: 20px;
+  align-items: center;
+`;
+
+const CommentAva = styled.img`
+  width: 70px;
+  height: 70px;
+  background-size: cover;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  @media (max-width: 768px) {
+    width: 50px;
+    height: 50px;
+  }
+  /* background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3HGWSrIZjGnlMVh9tlh5wGYsgNZ1hTwqRAg&usqp=CAU"); */
+`;
+
+const CommentInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-left: 4px;
+`;
+
+const CommentName = styled.div`
+  font-weight: var(--fw-bold);
+  color: var(--black);
+  font-size: var(--fs-18);
+  padding-top: 5px;
+  color: var(--grey);
+  @media (max-width: 768px) {
+    font-size: var(--fs-14);
+    margin-top: 10px;
+  }
+`;
+
+const CommentContent = styled.div`
+  font-size: var(--fs-14);
+  font-weight: var(--fw-normal);
+  padding-top: 10px;
+  @media (max-width: 768px) {
+    font-size: var(--fs-12);
+    padding-top: 2px;
+  }
+`;
+
+const FeaturesContainer = styled.div`
+  display: flex;
+  font-size: var(--fs-18);
+  color: var(--black);
+  width: 100%;
+  height: 100%;
+  margin-top: 20px;
+  @media (max-width: 768px) {
+    font-size: var(--fs-14);
+  }
+`;
+
+const FeatureItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 16.6667%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const FeatureName = styled.div`
+  font-weight: var(--fw-bold);
+  margin-top: 5px;
 `;
 
 const dataSlider = [
   {
-    address: "120 Trần Phú, Nha Trang",
+    address: "23 Fansipan, Lao Cai",
     images: [
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+      "https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg",
+      "https://img2.10bestmedia.com/Images/Photos/378649/Park-Hyatt-New-York-Manhattan-Sky-Suite-Master-Bedroom-low-res_54_990x660.jpg",
+      "https://www.travelandleisure.com/thmb/hKAApndt2eCPmDbcswLyQTKKwIA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/prince-de-galles-lalique-suite-LUXESUITE0122-eab91d3e620c4d939cd168c6319ff980.jpg",
+      "https://t4.ftcdn.net/jpg/01/72/36/17/360_F_172361703_znZIvSiPTVUI1ykGWt2SQBpENgYeDT32.jpg",
     ],
     mainBackground:
-      "https://media.cntraveler.com/photos/53da8c106dec627b149f1e4d/master/pass/one-only-the-palm-dubai-dubai-united-arab-emirates-112572-1.jpg",
+      "https://cms-assets.jung.de/cms/media/89/8922/980x496/standard/CA321-18-ver.jpg ",
   },
   {
-    address: "121 Trần Phú, Nha Trang",
+    address: "03 Vo Nguyen Giap, Da Nang",
     images: [
-      "https://thuthuatnhanh.com/wp-content/uploads/2020/01/hinh-nen-cho-chan-ngan-corgi-dep-dang-tao-dang-chup-anh.jpeg",
-      "https://thuthuatnhanh.com/wp-content/uploads/2020/01/hinh-nen-cho-chan-ngan-corgi-dep-dang-tao-dang-chup-anh.jpeg",
-      "https://thuthuatnhanh.com/wp-content/uploads/2020/01/hinh-nen-cho-chan-ngan-corgi-dep-dang-tao-dang-chup-anh.jpeg",
-      "https://thuthuatnhanh.com/wp-content/uploads/2020/01/hinh-nen-cho-chan-ngan-corgi-dep-dang-tao-dang-chup-anh.jpeg",
+      "https://t4.ftcdn.net/jpg/01/72/36/17/360_F_172361703_znZIvSiPTVUI1ykGWt2SQBpENgYeDT32.jpg",
+      "https://img2.10bestmedia.com/Images/Photos/378649/Park-Hyatt-New-York-Manhattan-Sky-Suite-Master-Bedroom-low-res_54_990x660.jpg",
+      "https://www.travelandleisure.com/thmb/hKAApndt2eCPmDbcswLyQTKKwIA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/prince-de-galles-lalique-suite-LUXESUITE0122-eab91d3e620c4d939cd168c6319ff980.jpg",
+      "https://t4.ftcdn.net/jpg/01/72/36/17/360_F_172361703_znZIvSiPTVUI1ykGWt2SQBpENgYeDT32.jpg",
     ],
     mainBackground:
-      "https://thuthuatnhanh.com/wp-content/uploads/2020/01/hinh-nen-cho-chan-ngan-corgi-dep-dang-tao-dang-chup-anh.jpeg",
+      "https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg",
   },
   {
-    address: "122 Trần Phú, Nha Trang",
+    address: "2002, Cong Hoa, Sai Gon",
     images: [
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwGH5HQBLQoO6d_sEmWbzi-kLrZ2ITCaSyRw&usqp=CAU",
+      "https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg",
+      "https://img2.10bestmedia.com/Images/Photos/378649/Park-Hyatt-New-York-Manhattan-Sky-Suite-Master-Bedroom-low-res_54_990x660.jpg",
+      "https://www.travelandleisure.com/thmb/hKAApndt2eCPmDbcswLyQTKKwIA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/prince-de-galles-lalique-suite-LUXESUITE0122-eab91d3e620c4d939cd168c6319ff980.jpg",
+      "https://t4.ftcdn.net/jpg/01/72/36/17/360_F_172361703_znZIvSiPTVUI1ykGWt2SQBpENgYeDT32.jpg",
     ],
     mainBackground:
-      "https://media.cntraveler.com/photos/53da8c106dec627b149f1e4d/master/pass/one-only-the-palm-dubai-dubai-united-arab-emirates-112572-1.jpg",
+      "https://www.travelandleisure.com/thmb/hKAApndt2eCPmDbcswLyQTKKwIA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/prince-de-galles-lalique-suite-LUXESUITE0122-eab91d3e620c4d939cd168c6319ff980.jpg",
   },
   {
-    address: "123 Trần Phú, Nha Trang",
+    address: "2023 Nguyen Van Cu, Can Tho",
     images: [
-      "https://anhdep123.com/wp-content/uploads/2020/05/h%C3%ACnh-%E1%BA%A3nh-con-ch%C3%B3-%C4%91%E1%BA%B9p.jpg",
-      "https://anhdep123.com/wp-content/uploads/2020/05/h%C3%ACnh-%E1%BA%A3nh-con-ch%C3%B3-%C4%91%E1%BA%B9p.jpg",
-      "https://anhdep123.com/wp-content/uploads/2020/05/h%C3%ACnh-%E1%BA%A3nh-con-ch%C3%B3-%C4%91%E1%BA%B9p.jpg",
-      "https://anhdep123.com/wp-content/uploads/2020/05/h%C3%ACnh-%E1%BA%A3nh-con-ch%C3%B3-%C4%91%E1%BA%B9p.jpg",
+      "https://t3.ftcdn.net/jpg/02/71/08/28/360_F_271082810_CtbTjpnOU3vx43ngAKqpCPUBx25udBrg.jpg",
+      "https://img2.10bestmedia.com/Images/Photos/378649/Park-Hyatt-New-York-Manhattan-Sky-Suite-Master-Bedroom-low-res_54_990x660.jpg",
+      "https://www.travelandleisure.com/thmb/hKAApndt2eCPmDbcswLyQTKKwIA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/prince-de-galles-lalique-suite-LUXESUITE0122-eab91d3e620c4d939cd168c6319ff980.jpg",
+      "https://t4.ftcdn.net/jpg/01/72/36/17/360_F_172361703_znZIvSiPTVUI1ykGWt2SQBpENgYeDT32.jpg",
     ],
     mainBackground:
-      "https://anhdep123.com/wp-content/uploads/2020/05/h%C3%ACnh-%E1%BA%A3nh-con-ch%C3%B3-%C4%91%E1%BA%B9p.jpg",
+      "https://amazingarchitecture.com/storage/files/1/architecture-firms/amin-moazzen/black-fly/black_house_amin_moazzen_bangal_india-5.jpg",
   },
 ];
 
@@ -314,7 +442,7 @@ const Slider = () => {
         if (temp >= 4) return 0;
         return temp;
       });
-    }, 5000);
+    }, 10000);
   }, []);
 
   return (
@@ -345,7 +473,7 @@ const Slider = () => {
             }}
           >
             <StarOutlined></StarOutlined>
-            <ButtonLabel>Reviews</ButtonLabel>
+            <ButtonLabel>Rating</ButtonLabel>
           </CenterButtonSecond>
           <CenterButtonLast
             isChosen={isChosen}
@@ -354,7 +482,7 @@ const Slider = () => {
             }}
           >
             <AppstoreAddOutlined></AppstoreAddOutlined>
-            <ButtonLabel>Features</ButtonLabel>
+            <ButtonLabel>Facilities</ButtonLabel>
           </CenterButtonLast>
         </CenterNav>
 
@@ -370,30 +498,137 @@ const Slider = () => {
             <Address>{dataSlider[countCarousel].address}</Address>
           </CenterAddress>
 
-          {search ? (
+          {search && isChosen === 0 ? (
             <Search>
               <SearchInput placeholder="Search here..."></SearchInput>
             </Search>
-          ) : (
+          ) : isChosen === 0 ? (
             <ImageList>
-              <ImageItem src={dataSlider[countCarousel].images[0]} alt="" />
-              <ImageItem src={dataSlider[countCarousel].images[0]} alt="" />
-              <ImageItem src={dataSlider[countCarousel].images[0]} alt="" />
-              <ImageItem src={dataSlider[countCarousel].images[0]} alt="" />
+              <ImageItem>
+                <Image
+                  src={dataSlider[countCarousel].images[0]}
+                  // width={100}
+                  style={{ borderRadius: "15px" }}
+                ></Image>
+              </ImageItem>
+              <ImageItem>
+                <Image
+                  src={dataSlider[countCarousel].images[1]}
+                  // width={100}
+                  style={{ borderRadius: "15px" }}
+                ></Image>
+              </ImageItem>
+              <ImageItem>
+                <Image
+                  src={dataSlider[countCarousel].images[2]}
+                  // width={100}
+                  style={{ borderRadius: "15px" }}
+                ></Image>
+              </ImageItem>
+              <ImageItem>
+                <Image
+                  src={dataSlider[countCarousel].images[3]}
+                  // width={100}
+                  style={{ borderRadius: "15px" }}
+                ></Image>
+              </ImageItem>
+              {/* <ImageItem src={dataSlider[countCarousel].images[0]} alt="" />
+              <ImageItem src={dataSlider[countCarousel].images[1]} alt="" />
+              <ImageItem src={dataSlider[countCarousel].images[2]} alt="" />
+              <ImageItem src={dataSlider[countCarousel].images[3]} alt="" /> */}
             </ImageList>
+          ) : (
+            <div></div>
           )}
 
-          <SearchButton
-            onClick={() => {
-              setSearch((pre) => {
-                return !pre;
-              });
-            }}
-          >
-            <SearchOutlined
-              style={{ color: "white", fontSize: "180%" }}
-            ></SearchOutlined>
-          </SearchButton>
+          {isChosen === 0 ? (
+            <SearchButton
+              onClick={() => {
+                setSearch((pre) => {
+                  return !pre;
+                });
+              }}
+            >
+              <SearchOutlined
+                style={{ color: "white", fontSize: "180%" }}
+              ></SearchOutlined>
+            </SearchButton>
+          ) : (
+            <div></div>
+          )}
+
+          {isChosen === 1 ? (
+            <ReviewContainer>
+              <RatingContainer>
+                <RatingLabel>4.8</RatingLabel>
+                <StarFilled
+                  style={{
+                    fontSize: "35px",
+                    color: "#f5c706",
+                    marginLeft: "10px",
+                  }}
+                ></StarFilled>
+              </RatingContainer>
+              <VerticalLine></VerticalLine>
+              <CommentContainer>
+                <CommentAva src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3HGWSrIZjGnlMVh9tlh5wGYsgNZ1hTwqRAg&usqp=CAU"></CommentAva>
+                <CommentInfo>
+                  <CommentName>Lucy</CommentName>
+                  <CommentContent>Beautiful view, modern rooms</CommentContent>
+                </CommentInfo>
+              </CommentContainer>
+              <VerticalLine></VerticalLine>
+              <CommentContainer>
+                <CommentAva src="https://www.studytienganh.vn/upload/2022/08/114992.png"></CommentAva>
+                <CommentInfo>
+                  <CommentName>Jenifer</CommentName>
+                  <CommentContent>A good choice for its price</CommentContent>
+                </CommentInfo>
+              </CommentContainer>
+            </ReviewContainer>
+          ) : (
+            <div></div>
+          )}
+
+          {isChosen === 2 ? (
+            <FeaturesContainer>
+              <FeatureItem>
+                <ColumnWidthOutlined
+                  style={{ fontSize: "35px" }}
+                ></ColumnWidthOutlined>
+                <FeatureName>Parking</FeatureName>
+              </FeatureItem>
+              <VerticalLine></VerticalLine>
+              <FeatureItem>
+                <WifiOutlined style={{ fontSize: "35px" }}></WifiOutlined>
+                <FeatureName>Wifi</FeatureName>
+              </FeatureItem>
+              <VerticalLine></VerticalLine>
+              <FeatureItem>
+                <CoffeeOutlined style={{ fontSize: "35px" }}></CoffeeOutlined>
+                <FeatureName>Breakfast</FeatureName>
+              </FeatureItem>
+              <VerticalLine></VerticalLine>
+              <FeatureItem>
+                <SlidersOutlined style={{ fontSize: "35px" }}></SlidersOutlined>
+                <FeatureName>Fitness</FeatureName>
+              </FeatureItem>
+              <VerticalLine></VerticalLine>
+              <FeatureItem>
+                <SkinOutlined style={{ fontSize: "35px" }}></SkinOutlined>
+                <FeatureName>Wahsing</FeatureName>
+              </FeatureItem>
+              <VerticalLine></VerticalLine>
+              <FeatureItem>
+                <TransactionOutlined
+                  style={{ fontSize: "35px" }}
+                ></TransactionOutlined>
+                <FeatureName>Exchange</FeatureName>
+              </FeatureItem>
+            </FeaturesContainer>
+          ) : (
+            <div></div>
+          )}
         </CenterDetails>
 
         <SliderBullets>

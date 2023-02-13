@@ -17,7 +17,8 @@ const SignUp = () => {
   });
   const { setUser } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [type, setType] = useState("password");
+  const [type1, setType1] = useState("password");
+  const [type2, setType2] = useState("password");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const SignUp = () => {
   const handlePassword = (e) => setPassword(e.target.value);
 
   return (
-    <div className="login">
+    <div className="signup">
       <div onClick={() => navigate("/home")}>
         <img src={logo} alt="logo" className="logoImg" />
       </div>
@@ -74,15 +75,36 @@ const SignUp = () => {
           <div className="passwordLine">
             <div className="input">
               <input
-                type={type}
+                type={type1}
                 placeholder="Input password"
                 className="input"
                 value={password}
                 onChange={handlePassword}
               />
             </div>
-            <div className="type" onClick={typeHandler}>
-              {type !== "password" ? (
+            <div className="type" onClick={type1Handler}>
+              {type1 !== "password" ? (
+                <EyeInvisibleOutlined className="icon"></EyeInvisibleOutlined>
+              ) : (
+                <EyeOutlined className="icon"></EyeOutlined>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="inputContainer">
+          <div className="labelInput">Confirm password</div>
+          <div className="passwordLine">
+            <div className="input">
+              <input
+                type={type2}
+                placeholder="Input password"
+                className="input"
+                value={password}
+                onChange={handlePassword}
+              />
+            </div>
+            <div className="type" onClick={type2Handler}>
+              {type2 !== "password" ? (
                 <EyeInvisibleOutlined className="icon"></EyeInvisibleOutlined>
               ) : (
                 <EyeOutlined className="icon"></EyeOutlined>
@@ -110,11 +132,18 @@ const SignUp = () => {
     </div>
   );
 
-  function typeHandler() {
-    if (type === "password") {
-      setType("text");
+  function type1Handler() {
+    if (type1 === "password") {
+      setType1("text");
     } else {
-      setType("password");
+      setType1("password");
+    }
+  }
+  function type2Handler() {
+    if (type2 === "password") {
+      setType2("text");
+    } else {
+      setType2("password");
     }
   }
 

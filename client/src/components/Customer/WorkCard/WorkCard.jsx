@@ -77,10 +77,10 @@ const Title = styled.div`
   font-weight: var(--fw-bold);
   color: var(--primary-color);
   @media (max-width: 450px) {
-    font-size: var(--fs-24);
+    font-size: var(--fs-32);
   }
   @media (min-width: 768px) and (max-width: 1024px) {
-    font-size: var(--fs-40);
+    font-size: var(--fs-32);
   }
 `;
 
@@ -89,10 +89,10 @@ const ReverseTitle = styled.div`
   font-weight: var(--fw-bold);
   color: var(--black);
   @media (max-width: 450px) {
-    font-size: var(--fs-24);
+    font-size: var(--fs-32);
   }
   @media (min-width: 768px) and (max-width: 1024px) {
-    font-size: var(--fs-40);
+    font-size: var(--fs-32);
   }
 `;
 
@@ -101,10 +101,10 @@ const Content = styled.div`
   color: var(--grey);
   text-align: center;
   @media (max-width: 450px) {
-    font-size: var(--fs-14);
+    font-size: var(--fs-24);
   }
   @media (min-width: 768px) and (max-width: 1024px) {
-    font-size: var(--fs-28);
+    font-size: var(--fs-24);
   }
 `;
 
@@ -113,17 +113,17 @@ const ReverseContent = styled.div`
   color: var(--black);
   text-align: center;
   @media (max-width: 450px) {
-    font-size: var(--fs-14);
+    font-size: var(--fs-24);
   }
   @media (min-width: 768px) and (max-width: 1024px) {
-    font-size: var(--fs-28);
+    font-size: var(--fs-24);
   }
 `;
 
 const ReWorkCardContainer = styled.div``;
 
-const WorkCard = ({ reverse }) => {
-  if (reverse === true) {
+const WorkCard = (props) => {
+  if (props.reverse === true) {
     return (
       <ReverseWorkCardContainer>
         <ReverseCircle>
@@ -131,10 +131,8 @@ const WorkCard = ({ reverse }) => {
             style={{ fontSize: "170%", color: "white" }}
           ></AuditOutlined>
         </ReverseCircle>
-        <ReverseTitle>BOOKING</ReverseTitle>
-        <ReverseContent>
-          Booking your own room online and capture your screen
-        </ReverseContent>
+        <ReverseTitle>{props.title}</ReverseTitle>
+        <ReverseContent>{props.content}</ReverseContent>
       </ReverseWorkCardContainer>
     );
   } else {
@@ -143,8 +141,8 @@ const WorkCard = ({ reverse }) => {
         <Circle>
           <AuditOutlined style={{ fontSize: "170%" }}></AuditOutlined>
         </Circle>
-        <Title>BOOKING</Title>
-        <Content>Booking your own room online and capture your screen</Content>
+        <Title>{props.title}</Title>
+        <Content>{props.content}</Content>
       </WorkCardContainer>
     );
   }
