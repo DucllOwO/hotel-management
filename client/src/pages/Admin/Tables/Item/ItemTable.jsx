@@ -9,6 +9,7 @@ import ItemForm from "../../../../components/Form/ItemForm";
 import EditButton from "../../../../components/IconButton/EditButton/EditButton";
 import DeleteButton from "../../../../components/IconButton/DeleteButton/DeleteButton";
 import ErrorAlert from "../../../../components/Error/Alert/ErrorAlert";
+import ColumnGroup from "antd/es/table/ColumnGroup";
 
 const ItemTable = ({ items, setItems, user, isLoading }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -26,10 +27,16 @@ const ItemTable = ({ items, setItems, user, isLoading }) => {
   const [priceFilter, setPriceFilter] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  const minPrice = Math.min(...items.map((items) => items.sell_price));
-  const price = Math.max(...items.map((items) => items.sell_price));
-  const minReserve = Math.min(...items.map((items) => items.reserve_amount));
-  const reserve = Math.max(...items.map((items) => items.reserve_amount));
+  const minPrice = items
+    ? Math.min(...items.map((items) => items.sell_price))
+    : 0;
+  const price = items ? Math.max(...items.map((items) => items.sell_price)) : 0;
+  const minReserve = items
+    ? Math.min(...items.map((items) => items.reserve_amount))
+    : 0;
+  const reserve = items
+    ? Math.max(...items.map((items) => items.reserve_amount))
+    : 0;
 
   const priceMark = {
     [minPrice]: minPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ",
@@ -284,7 +291,7 @@ const ItemTable = ({ items, setItems, user, isLoading }) => {
               value
             );
             setItems((prev) => {
-              prev.map((item) => {
+              return prev.map((item) => {
                 if (item.id === selectedItem.id) {
                   setSelectedItem((prev) => {
                     return {
@@ -293,7 +300,13 @@ const ItemTable = ({ items, setItems, user, isLoading }) => {
                       sell_price: value.sell_price,
                     };
                   });
+                  return {
+                    ...item,
+                    reserve_amount: value.reserve_amount,
+                    sell_price: value.sell_price,
+                  };
                 }
+                return item;
               });
             });
             SuccessAlert("Cập nhật sản phẩm thành công");

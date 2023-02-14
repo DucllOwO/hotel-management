@@ -95,13 +95,13 @@ const HRForm = ({
                 message: "CMND/CCCD chỉ được nhập số",
               },
             ]}
-            tooltip="Số CMND/CCCD của khách hàng"
+            tooltip="Số CMND/CCCD của nhân viên"
           >
             <Search
               onSearch={() => {
                 checkIDExist();
               }}
-              placeholder="Nhập CCCD của khách hàng"
+              placeholder="Nhập CCCD của nhân viên"
               size="large"
               maxLength={12}
               enterButton="Kiểm tra"

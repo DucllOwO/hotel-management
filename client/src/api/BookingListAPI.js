@@ -33,3 +33,9 @@ export const getRoomByBookingID = (positionUser, bookingID) => {
     params: { user: { position: positionUser }, bookingID: bookingID },
   });
 };
+
+export const updateRoomStatus = (positionUser, bookingID, newStatus) => {
+  return userRequest.put(`/rooms/${bookingID}`, 
+    { user: { position: positionUser }, room: newStatus},
+  );
+};
