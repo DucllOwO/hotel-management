@@ -1,5 +1,5 @@
 const inventoryDAL = require("../DAL/inventoryDAL");
-const bookingDAL = require("../DAL/bookingDAL");
+const bookingDAL = require("../DAL/BookingDAL");
 const roomDAL = require("../DAL/roomDAL");
 const { BadRequestError } = require("../middlewares/errorHandler");
 

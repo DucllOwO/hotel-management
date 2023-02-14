@@ -1,4 +1,4 @@
-const bookingDAL = require("../DAL/bookingDAL");
+const bookingDAL = require("../DAL/BookingDAL");
 const roomDAL = require("../DAL/roomDAL");
 const dayjs = require("dayjs");
 const usedRoomDAL = require("../DAL/usedRoomDAL");
