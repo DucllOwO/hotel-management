@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import Admin from "./pages/Admin/Admin";
 import HR from "./pages/Admin/HR/HR";
 import Dashboard from "./pages/Admin/Dashboard/Dashboard";
@@ -45,12 +45,12 @@ const App = () => {
   }, [user]);
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div className="App" style={{ height: "100vh" }}>
         <Routes>
-          <Route key="login" index element={<Login />}></Route>
+          <Route key="login" element={<Login />}></Route>
           <Route key="login1" path="/login" element={<Login />}></Route>
-          <Route key="home" path="/home" element={<Home />}></Route>
+          <Route index key="home" path="/home" element={<Home />}></Route>
           <Route
             key="my-information"
             path="/my-information"
@@ -67,7 +67,11 @@ const App = () => {
           {/* <Route key="verify" path="/forgot/verify" element={<Verify />}></Route>
           <Route key="verify" path="/signup/verify" element={<Verify />}></Route> */}
           <Route key="home" path="/home" element={<Home />}></Route>
-          <Route key="customerReceipt" path="/customer/receipt" element={<CustomerReceipt />}></Route>
+          <Route
+            key="customerReceipt"
+            path="/customer/receipt"
+            element={<CustomerReceipt />}
+          ></Route>
           <Route
             key="verify"
             path="/forgot/verify"
@@ -101,7 +105,7 @@ const App = () => {
           />
         </Routes>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 

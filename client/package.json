@@ -28,8 +28,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "react-scripts build",
+    "deploy": "gh-pages -d build"
   },
+  "homepage": "https://ducllowo.github.io/hotel-management/#",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -49,6 +52,7 @@
     ]
   },
   "devDependencies": {
-    "babel-plugin-import": "^1.13.5"
+    "babel-plugin-import": "^1.13.5",
+    "gh-pages": "^5.0.0"
   }
 }
